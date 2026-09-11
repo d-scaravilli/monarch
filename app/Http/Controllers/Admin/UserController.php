@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Actions\CreateUserAccount;
 use App\Http\Controllers\Controller;
 use App\Models\Module;
 use App\Models\User;
@@ -9,7 +10,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class UserController extends Controller
@@ -27,21 +27,11 @@ class UserController extends Controller
         ]);
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request, CreateUserAccount $creator): RedirectResponse
     {
         $data = $this->validateUser($request);
 
-        $password = Str::password(12);
-
-        $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($password),
-            'email_verified_at' => now(),
-        ]);
-
-        $user->syncRoles($data['roles'] ?? []);
-        $user->modules()->sync($data['modules'] ?? []);
+        [$user, $password] = $creator->handle($data['name'], $data['email'], $data['roles'] ?? [], $data['modules'] ?? []);
 
         return redirect()->route('admin.users.edit', $user)
             ->with('status', "Utente creato. Password iniziale: {$password}");

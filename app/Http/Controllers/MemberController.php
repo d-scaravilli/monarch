@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\CreateUserAccount;
 use App\Models\Course;
 use App\Models\MemberProfile;
 use App\Models\Module;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class MemberController extends Controller
@@ -72,24 +71,29 @@ class MemberController extends Controller
     {
         $this->authorize('create', User::class);
 
-        return view('members.create');
+        $linkableUsers = User::whereDoesntHave('memberProfile')->orderBy('name')->get();
+
+        return view('members.create', compact('linkableUsers'));
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request, CreateUserAccount $creator): RedirectResponse
     {
         $this->authorize('create', User::class);
 
+        $palestra = Module::where('slug', 'palestra')->first();
+
+        if ($request->input('mode') === 'link') {
+            return $this->storeLinkedMember($request, $palestra);
+        }
+
         $data = $this->validateMember($request);
 
-        $password = Str::password(12);
-
-        $member = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($password),
-            'email_verified_at' => now(),
-        ]);
-        $member->assignRole('member');
+        [$member, $password] = $creator->handle(
+            $data['name'],
+            $data['email'],
+            ['member'],
+            $palestra ? [$palestra->id] : [],
+        );
 
         MemberProfile::create([
             'user_id' => $member->id,
@@ -98,13 +102,40 @@ class MemberController extends Controller
             'notes' => $data['notes'] ?? null,
         ]);
 
-        $palestra = Module::where('slug', 'palestra')->first();
+        return redirect()->route('members.show', $member)
+            ->with('status', "Iscritto creato. Password iniziale: {$password}");
+    }
+
+    /**
+     * "Collega utente esistente": attach the member role/profile to an
+     * account that already exists (e.g. an instructor enrolling as a
+     * student too), instead of creating a brand new login.
+     */
+    private function storeLinkedMember(Request $request, ?Module $palestra): RedirectResponse
+    {
+        $data = $request->validate([
+            'existing_user_id' => 'required|exists:users,id|unique:member_profiles,user_id',
+            'fiscal_code' => 'nullable|string|max:32',
+            'emergency_contact' => 'nullable|string|max:255',
+            'notes' => 'nullable|string',
+        ]);
+
+        $member = User::findOrFail($data['existing_user_id']);
+        $member->assignRole('member');
+
         if ($palestra) {
             $member->modules()->syncWithoutDetaching([$palestra->id]);
         }
 
+        MemberProfile::create([
+            'user_id' => $member->id,
+            'fiscal_code' => $data['fiscal_code'] ?? null,
+            'emergency_contact' => $data['emergency_contact'] ?? null,
+            'notes' => $data['notes'] ?? null,
+        ]);
+
         return redirect()->route('members.show', $member)
-            ->with('status', "Iscritto creato. Password iniziale: {$password}");
+            ->with('status', 'Utente collegato come iscritto.');
     }
 
     public function show(User $member): View
@@ -115,11 +146,17 @@ class MemberController extends Controller
             'memberProfile',
             'medicalCertificates' => fn ($q) => $q->orderByDesc('expiry_date'),
             'enrollments' => fn ($q) => $q->with(['course.discipline', 'payments', 'attendances.lesson'])->orderByDesc('enrollment_date'),
+            'notes' => fn ($q) => $q->with(['author', 'lesson.course.discipline']),
         ]);
+
+        $recentInjury = $member->notes
+            ->where('type', 'infortunio')
+            ->first(fn ($note) => $note->created_at->diffInDays(now()) <= 30);
 
         return view('members.show', [
             'member' => $member,
             'latestCertificate' => $member->medicalCertificates->first(),
+            'recentInjury' => $recentInjury,
         ]);
     }
 

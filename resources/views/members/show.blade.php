@@ -43,7 +43,12 @@
                         {{ mb_strtoupper($initials) }}
                     </span>
                     <div>
-                        <p class="font-semibold text-lg text-gray-900 dark:text-gray-100">{{ $member->name }}</p>
+                        <p class="font-semibold text-lg text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                            {{ $member->name }}
+                            @if ($recentInjury)
+                                <x-badge color="red">Infortunio recente</x-badge>
+                            @endif
+                        </p>
                         <p class="text-sm text-gray-500 dark:text-gray-400">{{ $member->email }}</p>
                     </div>
                 </div>
@@ -110,12 +115,26 @@
             <x-section-header>Iscrizioni</x-section-header>
             <x-card class="divide-y divide-gray-100 dark:divide-white/10 p-0">
                 @forelse ($member->enrollments as $enrollment)
-                    <a href="{{ route('courses.show', $enrollment->course) }}" class="flex items-center justify-between px-5 py-3.5">
-                        <div>
-                            <p class="font-medium text-gray-900 dark:text-gray-100">{{ $enrollment->course->discipline->name }} &middot; {{ $enrollment->course->year }}</p>
-                            <p class="text-xs text-gray-400">Dal {{ $enrollment->enrollment_date->translatedFormat('d M Y') }}</p>
+                    <a href="{{ route('courses.show', $enrollment->course) }}" class="block px-5 py-3.5">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="font-medium text-gray-900 dark:text-gray-100">{{ $enrollment->course->discipline->name }} &middot; {{ $enrollment->course->year }}</p>
+                                <p class="text-xs text-gray-400">Dal {{ $enrollment->enrollment_date->translatedFormat('d M Y') }}</p>
+                            </div>
+                            <x-badge :color="$enrollment->status === 'active' ? 'green' : 'gray'">{{ $enrollment->status }}</x-badge>
                         </div>
-                        <x-badge :color="$enrollment->status === 'active' ? 'green' : 'gray'">{{ $enrollment->status }}</x-badge>
+
+                        @if ($enrollment->status === 'active')
+                            <div class="mt-3">
+                                <div class="h-1.5 w-full rounded-full bg-gray-100 dark:bg-white/10 overflow-hidden">
+                                    <div class="h-full rounded-full {{ $accent['badge'] }}" style="width: {{ $enrollment->renewalProgressPercent() }}%"></div>
+                                </div>
+                                <p class="mt-1.5 text-xs text-gray-400">
+                                    Rinnovo {{ $enrollment->billing_frequency === 'monthly' ? 'mensile' : 'annuale' }}
+                                    &middot; {{ $enrollment->daysUntilRenewal() }} giorni al {{ $enrollment->renewalDate()->translatedFormat('d M Y') }}
+                                </p>
+                            </div>
+                        @endif
                     </a>
                 @empty
                     <p class="px-5 py-6 text-sm text-gray-500">Nessuna iscrizione.</p>
@@ -196,6 +215,29 @@
                     </div>
                 @endif
             </div>
+        </div>
+
+        <div>
+            <x-section-header>Note</x-section-header>
+            <x-card class="divide-y divide-gray-100 dark:divide-white/10 p-0">
+                @forelse ($member->notes as $note)
+                    <div class="px-5 py-3.5">
+                        <div class="flex items-center gap-2">
+                            <x-badge :color="$note->type === 'infortunio' ? 'red' : 'gray'">{{ $note->typeLabel() }}</x-badge>
+                            <span class="text-xs text-gray-400">
+                                {{ $note->created_at->translatedFormat('d M Y') }}
+                                &middot; {{ $note->author->name }}
+                                @if ($note->lesson?->course?->discipline)
+                                    &middot; {{ $note->lesson->course->discipline->name }}
+                                @endif
+                            </span>
+                        </div>
+                        <p class="mt-1.5 text-sm text-gray-700 dark:text-gray-300">{{ $note->description }}</p>
+                    </div>
+                @empty
+                    <p class="px-5 py-6 text-sm text-gray-500">Nessuna nota registrata.</p>
+                @endforelse
+            </x-card>
         </div>
     </div>
 </x-app-layout>
