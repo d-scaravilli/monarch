@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EnrollmentController;
+use App\Http\Controllers\LessonController;
 use App\Http\Controllers\MemberAreaController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\ProfileController;
@@ -39,6 +41,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::post('/courses/{course}/enrollments', [EnrollmentController::class, 'store'])->name('courses.enrollments.store');
         Route::delete('/enrollments/{enrollment}', [EnrollmentController::class, 'destroy'])->name('enrollments.destroy');
+
+        Route::get('/lessons', [LessonController::class, 'index'])->name('lessons.index');
+        Route::get('/lessons/create', [LessonController::class, 'create'])->name('lessons.create');
+        Route::post('/lessons', [LessonController::class, 'store'])->name('lessons.store');
+        Route::get('/lessons/generate', [LessonController::class, 'generateForm'])->name('lessons.generate');
+        Route::post('/lessons/generate', [LessonController::class, 'generateStore'])->name('lessons.generate.store');
+        Route::delete('/lessons/{lesson}', [LessonController::class, 'destroy'])->name('lessons.destroy');
+
+        Route::get('/courses/{course}/lessons/{lesson}/attendance', [AttendanceController::class, 'edit'])->name('courses.lessons.attendance.edit');
+        Route::patch('/courses/{course}/lessons/{lesson}/attendance', [AttendanceController::class, 'toggle'])->name('courses.lessons.attendance.toggle');
+        Route::post('/courses/{course}/lessons/{lesson}/attendance/mark-all', [AttendanceController::class, 'markAllPresent'])->name('courses.lessons.attendance.mark-all');
     });
 });
 

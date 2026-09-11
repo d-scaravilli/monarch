@@ -14,20 +14,20 @@ class AttendancePolicy
         }
 
         if ($user->hasRole('instructor')) {
-            return $attendance->lesson->courseEdition->instructors()->whereKey($user->id)->exists();
+            return $attendance->lesson->course->instructors()->whereKey($user->id)->exists();
         }
 
         return false;
     }
 
     /**
-     * Only an instructor assigned to the lesson's course edition may
+     * Only an instructor assigned to the lesson's course may
      * record attendance (admin bypasses via Gate::before).
      */
     public function update(User $user, Attendance $attendance): bool
     {
         return $user->hasRole('instructor')
-            && $attendance->lesson->courseEdition->instructors()->whereKey($user->id)->exists();
+            && $attendance->lesson->course->instructors()->whereKey($user->id)->exists();
     }
 
     public function create(User $user): bool

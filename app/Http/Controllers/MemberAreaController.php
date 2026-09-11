@@ -17,8 +17,8 @@ class MemberAreaController extends Controller
 
         $enrollments = $user->enrollments()
             ->with([
-                'courseEdition.course',
-                'courseEdition.room',
+                'course.discipline',
+                'course.room',
                 'attendances.lesson',
                 'payments',
             ])
