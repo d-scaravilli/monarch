@@ -16,6 +16,14 @@
 
     $attendances = $member->enrollments->flatMap(fn ($e) => $e->attendances->map(fn ($a) => tap($a, fn ($a) => $a->enrollment = $e)));
     $payments = $member->enrollments->flatMap(fn ($e) => $e->payments->map(fn ($p) => tap($p, fn ($p) => $p->enrollment = $e)));
+
+    $activeEnrollmentsCount = $member->enrollments->where('status', 'active')->count();
+    $attendanceRate = $attendances->isEmpty() ? null : round($attendances->where('present', true)->count() / $attendances->count() * 100);
+    $totalPaid = $payments->sum('amount');
+
+    $accentColor = $currentModule->color ?? 'gray';
+    $accent = \App\Support\ModuleTheme::classes($accentColor);
+    $initials = collect(explode(' ', $member->name))->map(fn ($p) => mb_substr($p, 0, 1))->take(2)->implode('');
 @endphp
 
 <x-app-layout>
@@ -30,9 +38,14 @@
 
         <x-card>
             <div class="flex items-start justify-between gap-3">
-                <div>
-                    <p class="font-semibold text-gray-900 dark:text-gray-100">{{ $member->name }}</p>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ $member->email }}</p>
+                <div class="flex items-center gap-4">
+                    <span class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl {{ $accent['badge'] }} text-lg font-bold text-white">
+                        {{ mb_strtoupper($initials) }}
+                    </span>
+                    <div>
+                        <p class="font-semibold text-lg text-gray-900 dark:text-gray-100">{{ $member->name }}</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">{{ $member->email }}</p>
+                    </div>
                 </div>
                 @if (! $member->trashed())
                     <div class="flex items-center gap-1 shrink-0">
@@ -47,6 +60,21 @@
                         </form>
                     </div>
                 @endif
+            </div>
+
+            <div class="mt-5 grid grid-cols-3 divide-x divide-gray-100 dark:divide-white/10 rounded-xl bg-gray-50 dark:bg-white/5 py-3 text-center">
+                <div>
+                    <p class="text-xl font-bold text-gray-900 dark:text-gray-100">{{ $activeEnrollmentsCount }}</p>
+                    <p class="text-xs text-gray-400">iscrizioni attive</p>
+                </div>
+                <div>
+                    <p class="text-xl font-bold text-gray-900 dark:text-gray-100">{{ $attendanceRate !== null ? $attendanceRate.'%' : '—' }}</p>
+                    <p class="text-xs text-gray-400">presenze</p>
+                </div>
+                <div>
+                    <p class="text-xl font-bold text-gray-900 dark:text-gray-100">&euro;{{ number_format($totalPaid, 0) }}</p>
+                    <p class="text-xs text-gray-400">totale versato</p>
+                </div>
             </div>
 
             <div class="mt-4 flex items-center justify-between rounded-xl bg-gray-50 dark:bg-white/5 px-4 py-3">

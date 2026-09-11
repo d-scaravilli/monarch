@@ -18,6 +18,7 @@
     @else
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             @foreach ($courses as $course)
+                @php $fillPercent = min(100, $course->room->capacity > 0 ? round($course->enrollments_count / $course->room->capacity * 100) : 0); @endphp
                 <a href="{{ route('courses.show', $course) }}">
                     <x-card class="h-full hover:ring-gray-300 dark:hover:ring-white/20 transition">
                         <div class="flex items-start justify-between gap-3">
@@ -30,6 +31,13 @@
 
                         <p class="mt-4 text-3xl font-bold {{ $accent['text'] }}">{{ $course->enrollments_count }}</p>
                         <p class="text-xs font-semibold uppercase tracking-wide text-gray-400">{{ $course->enrollments_count === 1 ? 'iscritto' : 'iscritti' }}</p>
+
+                        <div class="mt-4">
+                            <div class="h-1.5 w-full rounded-full bg-gray-100 dark:bg-white/10 overflow-hidden">
+                                <div class="h-full rounded-full {{ $accent['badge'] }}" style="width: {{ $fillPercent }}%"></div>
+                            </div>
+                            <p class="mt-1.5 text-xs text-gray-400">{{ $course->enrollments_count }}/{{ $course->room->capacity }} posti sala</p>
+                        </div>
                     </x-card>
                 </a>
             @endforeach
