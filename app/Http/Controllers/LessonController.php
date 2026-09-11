@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use App\Models\Lesson;
-use App\Models\Room;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -13,45 +12,13 @@ use Illuminate\View\View;
 class LessonController extends Controller
 {
     /**
-     * Filterable lesson table. Defaults to the current month unless a
-     * date range is given or the "all" flag removes the filter.
+     * Filterable, sortable, paginated lesson table (see the
+     * lessons-table Livewire component for the actual query/filters).
      */
     public function index(Request $request): View
     {
-        $user = $request->user();
-
-        $showAll = $request->boolean('all');
-        $from = $request->date('from') ?? ($showAll ? null : now()->startOfMonth());
-        $to = $request->date('to') ?? ($showAll ? null : now()->endOfMonth());
-
-        $lessons = Lesson::query()
-            ->with(['course.discipline', 'course.room', 'attendances'])
-            ->when(! $user->hasRole('admin'), fn ($q) => $q->whereHas(
-                'course.instructors',
-                fn ($q2) => $q2->whereKey($user->id),
-            ))
-            ->when($request->filled('course_id'), fn ($q) => $q->where('course_id', $request->input('course_id')))
-            ->when($request->filled('room_id'), fn ($q) => $q->whereHas(
-                'course',
-                fn ($q2) => $q2->where('room_id', $request->input('room_id')),
-            ))
-            ->when($from, fn ($q) => $q->whereDate('date', '>=', $from))
-            ->when($to, fn ($q) => $q->whereDate('date', '<=', $to))
-            ->orderBy('date')
-            ->get();
-
-        $courses = Course::with('discipline')
-            ->when(! $user->hasRole('admin'), fn ($q) => $q->whereHas('instructors', fn ($q2) => $q2->whereKey($user->id)))
-            ->get();
-        $rooms = Room::orderBy('name')->get();
-
         return view('lessons.index', [
-            'lessons' => $lessons,
-            'courses' => $courses,
-            'rooms' => $rooms,
-            'showAll' => $showAll,
-            'from' => $from,
-            'to' => $to,
+            'selectedCourseId' => $request->integer('course_id') ?: null,
         ]);
     }
 
