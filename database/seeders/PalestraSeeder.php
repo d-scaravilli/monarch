@@ -38,6 +38,20 @@ class PalestraSeeder extends Seeder
             $user->assignRole('instructor');
         });
 
+        $testMember = User::firstOrCreate(
+            ['email' => 'test@example.com'],
+            ['name' => 'Test User', 'password' => bcrypt('password'), 'email_verified_at' => now()],
+        );
+        $testMember->assignRole('member');
+        MemberProfile::firstOrCreate(['user_id' => $testMember->id], [
+            'fiscal_code' => 'TSTUSR85M01H501Z',
+            'emergency_contact' => 'Mario Rossi - 333 1234567',
+        ]);
+        MedicalCertificate::firstOrCreate(
+            ['user_id' => $testMember->id],
+            ['issue_date' => now()->subMonths(3), 'expiry_date' => now()->addMonths(9)],
+        );
+
         $members = User::factory(8)->create()->each(function (User $user, int $i) {
             $user->forceFill(['name' => 'Iscritto '.($i + 1)])->save();
             $user->assignRole('member');
@@ -51,12 +65,15 @@ class PalestraSeeder extends Seeder
             ]);
         });
 
+        // The test account is always enrolled, so the member views have real data to show.
+        $members->push($testMember);
+
         $rooms = Room::factory(3)->create();
 
         $courses = collect(['Yoga', 'Pilates', 'Karate', 'Nuoto'])
             ->map(fn (string $name) => Course::factory()->create(['name' => $name]));
 
-        $courses->each(function (Course $course) use ($rooms, $instructors, $members) {
+        $courses->each(function (Course $course, int $courseIndex) use ($rooms, $instructors, $members, $testMember) {
             $edition = CourseEdition::factory()->create([
                 'course_id' => $course->id,
                 'room_id' => $rooms->random()->id,
@@ -71,7 +88,12 @@ class PalestraSeeder extends Seeder
                 ])
             );
 
-            $members->random(4)->each(function (User $member) use ($edition, $lessons) {
+            $enrolledMembers = $members->random(3);
+            if ($courseIndex === 0) {
+                $enrolledMembers->push($testMember);
+            }
+
+            $enrolledMembers->unique('id')->each(function (User $member) use ($edition, $lessons) {
                 $enrollment = Enrollment::factory()->create([
                     'user_id' => $member->id,
                     'course_edition_id' => $edition->id,
