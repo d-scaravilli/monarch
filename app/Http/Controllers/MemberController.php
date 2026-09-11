@@ -36,10 +36,16 @@ class MemberController extends Controller
     /**
      * Quick card view of members, filterable by course/year — a faster
      * visual complement to the searchable index above, not a replacement.
+     * Defaults to the most recently *created* course's year (not the
+     * calendar year), so a member from a past-year course only shows
+     * up once you explicitly pick that year or "Tutti".
      */
     public function team(Request $request): View
     {
         $this->authorize('viewAny', User::class);
+
+        $defaultYear = Course::query()->latest('created_at')->value('year');
+        $year = $request->has('year') ? $request->input('year') : $defaultYear;
 
         $members = User::role('member')
             ->with(['memberProfile', 'enrollments.course.discipline'])
@@ -47,15 +53,16 @@ class MemberController extends Controller
                 'enrollments',
                 fn ($q2) => $q2->where('course_id', $request->input('course_id')),
             ))
-            ->when($request->filled('year'), fn ($q) => $q->whereHas(
+            ->when($year, fn ($q) => $q->whereHas(
                 'enrollments.course',
-                fn ($q2) => $q2->where('year', $request->input('year')),
+                fn ($q2) => $q2->where('year', $year),
             ))
             ->orderBy('name')
             ->get();
 
         return view('members.team', [
             'members' => $members,
+            'selectedYear' => $year,
             'courses' => Course::with('discipline')->orderBy('year')->get(),
             'years' => Course::query()->distinct()->orderByDesc('year')->pluck('year'),
         ]);

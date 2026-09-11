@@ -17,13 +17,13 @@
             <div class="space-y-1.5">
                 <x-input-label value="Anno" />
                 <select name="year" onchange="this.form.submit()" class="rounded-xl border-gray-200 bg-gray-50 dark:border-white/10 dark:bg-white/5 dark:text-gray-100">
-                    <option value="">Tutti</option>
+                    <option value="">Tutti gli anni</option>
                     @foreach ($years as $year)
-                        <option value="{{ $year }}" @selected(request('year') === $year)>{{ $year }}</option>
+                        <option value="{{ $year }}" @selected($selectedYear === $year)>{{ $year }}</option>
                     @endforeach
                 </select>
             </div>
-            @if (request()->hasAny(['course_id', 'year']))
+            @if (request()->filled('course_id') || request()->has('year'))
                 <a href="{{ route('members.team') }}" class="text-sm font-medium text-gray-500 hover:text-gray-700 pb-2.5">Azzera</a>
             @endif
         </form>
