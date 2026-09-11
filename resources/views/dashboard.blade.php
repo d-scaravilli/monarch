@@ -15,7 +15,12 @@
     @else
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             @foreach ($modules as $module)
-                <a href="{{ route('modules.enter', $module) }}">
+                <a href="{{ route('modules.enter', $module) }}" class="relative block">
+                    @if (($moduleAlerts[$module->id] ?? 0) > 0)
+                        <span class="absolute -top-2 -right-2 z-10 flex h-6 min-w-6 items-center justify-center rounded-full bg-red-500 px-1.5 text-xs font-bold text-white ring-2 ring-gray-50 dark:ring-gray-950">
+                            {{ $moduleAlerts[$module->id] }}
+                        </span>
+                    @endif
                     <x-card class="h-full hover:ring-gray-300 dark:hover:ring-white/20 transition flex items-center gap-4">
                         <x-module-badge :icon="$module->icon" :color="$module->color" size="h-12 w-12" />
                         <div>

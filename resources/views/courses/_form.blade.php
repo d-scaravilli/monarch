@@ -41,12 +41,12 @@
 
 <div class="grid grid-cols-2 gap-4">
     <div class="space-y-1.5">
-        <x-input-label for="monthly_cost" value="Costo mensile (&euro;)" />
+        <x-input-label for="monthly_cost" value="Costo mensile (€)" />
         <x-text-input id="monthly_cost" type="number" step="0.01" min="0" name="monthly_cost" value="{{ old('monthly_cost', $course->monthly_cost ?? '') }}" class="w-full" />
         <x-input-error :messages="$errors->get('monthly_cost')" class="mt-1" />
     </div>
     <div class="space-y-1.5">
-        <x-input-label for="annual_cost" value="Costo annuale (&euro;)" />
+        <x-input-label for="annual_cost" value="Costo annuale (€)" />
         <x-text-input id="annual_cost" type="number" step="0.01" min="0" name="annual_cost" value="{{ old('annual_cost', $course->annual_cost ?? '') }}" class="w-full" />
         <x-input-error :messages="$errors->get('annual_cost')" class="mt-1" />
     </div>

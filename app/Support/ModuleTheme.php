@@ -24,10 +24,30 @@ class ModuleTheme
     ];
 
     /**
+     * The same palette as hex values, for contexts CSS classes can't
+     * reach (chart series colors, canvas fills).
+     */
+    private const HEX = [
+        'orange' => '#f97316',
+        'blue' => '#3b82f6',
+        'green' => '#22c55e',
+        'purple' => '#a855f7',
+        'pink' => '#ec4899',
+        'teal' => '#14b8a6',
+        'red' => '#ef4444',
+        'gray' => '#111827',
+    ];
+
+    /**
      * @return array{badge: string, text: string, soft: string, ring: string}
      */
     public static function classes(?string $color): array
     {
         return self::PALETTE[$color] ?? self::PALETTE['gray'];
+    }
+
+    public static function hex(?string $color): string
+    {
+        return self::HEX[$color] ?? self::HEX['gray'];
     }
 }

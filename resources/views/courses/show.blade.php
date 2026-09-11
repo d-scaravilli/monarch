@@ -18,7 +18,7 @@
                 <div class="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-gray-600 dark:text-gray-400">
                     <span class="flex items-center gap-1.5"><x-heroicon-o-home class="h-4 w-4" /> {{ $course->room->name }}</span>
                     <span class="flex items-center gap-1.5"><x-heroicon-o-calendar-days class="h-4 w-4" /> {{ $course->year }}</span>
-                    <span class="flex items-center gap-1.5"><x-heroicon-o-credit-card class="h-4 w-4" /> &euro;{{ number_format($course->monthly_cost, 2) }}/mese &middot; &euro;{{ number_format($course->annual_cost, 2) }}/anno</span>
+                    <span class="flex items-center gap-1.5"><x-heroicon-o-credit-card class="h-4 w-4" /> €{{ number_format($course->monthly_cost, 2) }}/mese &middot; €{{ number_format($course->annual_cost, 2) }}/anno</span>
                 </div>
 
                 @if ($canManage && ! $course->trashed())
@@ -56,7 +56,7 @@
                             </div>
                             <div class="flex items-center gap-2">
                                 @if ($enrollment->discount > 0)
-                                    <x-badge color="amber">-&euro;{{ number_format($enrollment->discount, 2) }}</x-badge>
+                                    <x-badge color="amber">-€{{ number_format($enrollment->discount, 2) }}</x-badge>
                                 @endif
                                 <x-badge :color="$enrollment->status === 'active' ? 'green' : 'gray'">{{ $enrollment->status }}</x-badge>
                             </div>
@@ -86,7 +86,7 @@
                                 </select>
                             </div>
                             <div class="w-28 space-y-1.5">
-                                <x-input-label value="Sconto &euro;" />
+                                <x-input-label value="Sconto €" />
                                 <x-text-input type="number" step="0.01" min="0" name="discount" value="0" class="w-full" />
                             </div>
                             <x-primary-button>Iscrivi</x-primary-button>
@@ -142,7 +142,7 @@
                                     <p class="font-medium text-gray-900 dark:text-gray-100">{{ $payment->enrollment->user->name }}</p>
                                     <p class="text-xs text-gray-400">{{ $payment->date->translatedFormat('d M Y') }} &middot; {{ $payment->method }}</p>
                                 </div>
-                                <span class="font-semibold text-gray-900 dark:text-gray-100">&euro;{{ number_format($payment->amount, 2) }}</span>
+                                <span class="font-semibold text-gray-900 dark:text-gray-100">€{{ number_format($payment->amount, 2) }}</span>
                             </div>
                         </x-swipe-row>
                     @empty
@@ -168,7 +168,7 @@
                                     </select>
                                 </div>
                                 <div class="w-24 space-y-1.5">
-                                    <x-input-label value="Importo &euro;" />
+                                    <x-input-label value="Importo €" />
                                     <x-text-input type="number" step="0.01" min="0" name="amount" class="w-full" />
                                 </div>
                                 <div class="w-32 space-y-1.5">

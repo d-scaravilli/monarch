@@ -36,6 +36,7 @@
         </script>
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @livewireStyles
     </head>
     <body class="font-sans antialiased text-gray-900 bg-gray-50 dark:bg-gray-950 dark:text-gray-100">
         <div class="lg:flex lg:items-start">
@@ -52,6 +53,9 @@
                     </x-sidebar-link>
 
                     @if ($isStaff)
+                        <x-sidebar-link :href="route('palestra.dashboard')" icon="home" :color="$accentColor" :active="request()->routeIs('palestra.dashboard')">
+                            Dashboard
+                        </x-sidebar-link>
                         <x-sidebar-link :href="route('courses.index')" icon="academic-cap" :color="$accentColor" :active="request()->routeIs('courses.*')">
                             Corsi
                         </x-sidebar-link>
@@ -90,10 +94,10 @@
             <div class="flex-1 min-h-screen flex flex-col">
                 {{-- Mobile top bar --}}
                 <header class="lg:hidden sticky top-0 z-20 flex items-center justify-between bg-gray-50/90 dark:bg-gray-950/90 backdrop-blur px-4 pt-[max(1rem,env(safe-area-inset-top))] pb-3">
-                    <div class="flex items-center gap-2">
+                    <a href="{{ route('dashboard') }}" class="flex items-center gap-2">
                         <x-module-badge :icon="$accentIcon" :color="$accentColor" size="h-8 w-8" />
                         <span class="text-lg font-semibold tracking-tight">{{ $header ?? ($currentModule->name ?? 'Beru') }}</span>
-                    </div>
+                    </a>
                     <a href="{{ route('profile.edit') }}" class="flex h-9 w-9 items-center justify-center rounded-full bg-gray-900 dark:bg-white/10 text-white text-sm font-semibold">
                         {{ Str::of($user->name)->substr(0, 1)->upper() }}
                     </a>
@@ -121,11 +125,10 @@
 
         {{-- Mobile bottom tab bar --}}
         <nav class="lg:hidden fixed inset-x-0 bottom-0 z-20 flex border-t border-gray-100 dark:border-white/10 bg-white/95 dark:bg-gray-900/95 backdrop-blur pb-[env(safe-area-inset-bottom)]">
-            <x-tab-link :href="route('dashboard')" icon="squares-2x2" :active="request()->routeIs('dashboard')">
-                Moduli
-            </x-tab-link>
-
             @if ($isStaff)
+                <x-tab-link :href="route('palestra.dashboard')" icon="home" :color="$accentColor" :active="request()->routeIs('palestra.dashboard')">
+                    Dashboard
+                </x-tab-link>
                 <x-tab-link :href="route('courses.index')" icon="academic-cap" :color="$accentColor" :active="request()->routeIs('courses.*')">
                     Corsi
                 </x-tab-link>
@@ -134,6 +137,10 @@
                 </x-tab-link>
                 <x-tab-link :href="route('lessons.index')" icon="calendar-days" :color="$accentColor" :active="request()->routeIs('lessons.*')">
                     Lezioni
+                </x-tab-link>
+            @else
+                <x-tab-link :href="route('dashboard')" icon="squares-2x2" :active="request()->routeIs('dashboard')">
+                    Moduli
                 </x-tab-link>
             @endif
 
@@ -147,5 +154,7 @@
                 Profilo
             </x-tab-link>
         </nav>
+
+        @livewireScripts
     </body>
 </html>
