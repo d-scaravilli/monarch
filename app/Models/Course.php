@@ -61,4 +61,16 @@ class Course extends Model
     {
         return $this->hasMany(CourseSchedule::class);
     }
+
+    /**
+     * "Lun 20:00–22:00, Gio 21:30–22:30" — recurring slots for card/list
+     * display, ordered Sunday-first to match CourseSchedule::WEEKDAYS.
+     */
+    public function scheduleSummary(): string
+    {
+        return $this->schedules
+            ->sortBy('weekday')
+            ->map(fn (CourseSchedule $s) => $s->weekdayLabel().' '.substr($s->start_time, 0, 5).'–'.substr($s->end_time, 0, 5))
+            ->implode(', ');
+    }
 }

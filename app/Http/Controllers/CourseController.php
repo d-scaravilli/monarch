@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Attendance;
 use App\Models\Course;
 use App\Models\Discipline;
 use App\Models\Room;
@@ -22,7 +23,7 @@ class CourseController extends Controller
         $user = Auth::user();
 
         $courses = Course::query()
-            ->with(['discipline', 'room'])
+            ->with(['discipline', 'room', 'schedules'])
             ->withCount('enrollments')
             ->when(! $user->hasRole('admin'), function ($query) use ($user) {
                 $query->whereHas('instructors', fn ($q) => $q->whereKey($user->id));
@@ -86,7 +87,40 @@ class CourseController extends Controller
             ? User::role('member')->whereNotIn('id', $course->enrollments->pluck('user_id'))->orderBy('name')->get()
             : collect();
 
-        return view('courses.show', compact('course', 'canManage', 'availableMembers'));
+        $fillPercent = $course->room->capacity > 0
+            ? min(100, round($course->enrollments->count() / $course->room->capacity * 100))
+            : 0;
+
+        $attendanceTrend = $this->weeklyAttendanceTrend($course);
+
+        return view('courses.show', compact('course', 'canManage', 'availableMembers', 'fillPercent', 'attendanceTrend'));
+    }
+
+    /**
+     * Weekly attendance rate for this course over the last 10 weeks, for
+     * the course-page chart — same shape/logic as the Palestra dashboard's
+     * chart, just scoped to a single course.
+     *
+     * @return array<string, int>
+     */
+    private function weeklyAttendanceTrend(Course $course): array
+    {
+        $trend = [];
+
+        for ($i = 9; $i >= 0; $i--) {
+            $start = now()->subWeeks($i)->startOfWeek();
+            $end = now()->subWeeks($i)->endOfWeek();
+
+            $weekSet = Attendance::query()
+                ->whereHas('lesson', fn ($q) => $q->where('course_id', $course->id)->whereBetween('date', [$start, $end]))
+                ->get();
+
+            $trend[$start->translatedFormat('d M')] = $weekSet->isEmpty()
+                ? 0
+                : (int) round($weekSet->where('present', true)->count() / $weekSet->count() * 100);
+        }
+
+        return $trend;
     }
 
     public function edit(Course $course): View
@@ -145,7 +179,7 @@ class CourseController extends Controller
             'room_id' => 'nullable|exists:rooms,id|required_without:new_room_name',
             'new_room_name' => 'nullable|string|max:255|required_without:room_id',
             'new_room_capacity' => 'nullable|integer|min:1|required_with:new_room_name',
-            'year' => 'required|string|max:20',
+            'year' => 'required|string|max:100',
             'description' => 'nullable|string',
             'annual_cost' => 'required|numeric|min:0',
             'monthly_cost' => 'required|numeric|min:0',

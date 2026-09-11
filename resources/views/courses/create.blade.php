@@ -1,8 +1,8 @@
 <x-app-layout>
     <x-slot name="header">Nuovo corso</x-slot>
 
-    <x-card class="max-w-xl">
-        <form method="POST" action="{{ route('courses.store') }}" class="space-y-5">
+    <x-card class="max-w-2xl">
+        <form method="POST" action="{{ route('courses.store') }}" class="space-y-6">
             @php $course = new App\Models\Course; @endphp
             @include('courses._form')
 

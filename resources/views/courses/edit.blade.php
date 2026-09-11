@@ -1,8 +1,8 @@
 <x-app-layout>
     <x-slot name="header">Modifica corso</x-slot>
 
-    <x-card class="max-w-xl">
-        <form method="POST" action="{{ route('courses.update', $course) }}" class="space-y-5">
+    <x-card class="max-w-2xl">
+        <form method="POST" action="{{ route('courses.update', $course) }}" class="space-y-6">
             @method('PUT')
             @include('courses._form')
 
