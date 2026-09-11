@@ -7,6 +7,7 @@ use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\MemberAreaController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingsController;
 use Illuminate\Support\Facades\Route;
@@ -52,6 +53,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/courses/{course}/lessons/{lesson}/attendance', [AttendanceController::class, 'edit'])->name('courses.lessons.attendance.edit');
         Route::patch('/courses/{course}/lessons/{lesson}/attendance', [AttendanceController::class, 'toggle'])->name('courses.lessons.attendance.toggle');
         Route::post('/courses/{course}/lessons/{lesson}/attendance/mark-all', [AttendanceController::class, 'markAllPresent'])->name('courses.lessons.attendance.mark-all');
+
+        Route::post('/enrollments/{enrollment}/payments', [PaymentController::class, 'store'])->name('enrollments.payments.store');
+        Route::delete('/payments/{payment}', [PaymentController::class, 'destroy'])->name('payments.destroy');
     });
 });
 

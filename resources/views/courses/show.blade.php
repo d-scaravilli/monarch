@@ -1,5 +1,6 @@
 @php
     $canManageAttendance = auth()->user()->can('manageAttendance', $course);
+    $payments = $course->enrollments->flatMap(fn ($e) => $e->payments->map(fn ($p) => tap($p, fn ($p) => $p->enrollment = $e)));
 @endphp
 
 <x-app-layout>
@@ -129,5 +130,65 @@
                 @endforelse
             </x-card>
         </div>
+
+        @if ($canManage)
+            <div>
+                <x-section-header>Pagamenti</x-section-header>
+                <x-card class="divide-y divide-gray-100 dark:divide-white/10 p-0">
+                    @forelse ($payments->sortByDesc('date') as $payment)
+                        <x-swipe-row :action="route('payments.destroy', $payment)">
+                            <div class="flex items-center justify-between px-5 py-3.5">
+                                <div>
+                                    <p class="font-medium text-gray-900 dark:text-gray-100">{{ $payment->enrollment->user->name }}</p>
+                                    <p class="text-xs text-gray-400">{{ $payment->date->translatedFormat('d M Y') }} &middot; {{ $payment->method }}</p>
+                                </div>
+                                <span class="font-semibold text-gray-900 dark:text-gray-100">&euro;{{ number_format($payment->amount, 2) }}</span>
+                            </div>
+                        </x-swipe-row>
+                    @empty
+                        <p class="px-5 py-6 text-sm text-gray-500">Nessun pagamento registrato.</p>
+                    @endforelse
+                </x-card>
+
+                @if ($course->enrollments->isNotEmpty() && ! $course->trashed())
+                    <div class="mt-3" x-data="{ open: false, url: '' }">
+                        <button type="button" @click="open = !open" class="text-sm font-medium text-gray-600 dark:text-gray-300 flex items-center gap-1">
+                            <x-heroicon-o-plus class="h-4 w-4" /> Registra pagamento
+                        </button>
+                        <x-card x-show="open" x-cloak class="mt-3">
+                            <form method="POST" :action="url" class="flex flex-wrap items-end gap-3">
+                                @csrf
+                                <div class="flex-1 min-w-[10rem] space-y-1.5">
+                                    <x-input-label value="Iscritto" />
+                                    <select @change="url = $event.target.value" class="w-full rounded-xl border-gray-200 bg-gray-50 dark:border-white/10 dark:bg-white/5 dark:text-gray-100">
+                                        <option value="">Seleziona...</option>
+                                        @foreach ($course->enrollments as $enrollment)
+                                            <option value="{{ route('enrollments.payments.store', $enrollment) }}">{{ $enrollment->user->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="w-24 space-y-1.5">
+                                    <x-input-label value="Importo &euro;" />
+                                    <x-text-input type="number" step="0.01" min="0" name="amount" class="w-full" />
+                                </div>
+                                <div class="w-32 space-y-1.5">
+                                    <x-input-label value="Metodo" />
+                                    <select name="method" class="w-full rounded-xl border-gray-200 bg-gray-50 dark:border-white/10 dark:bg-white/5 dark:text-gray-100">
+                                        <option value="contanti">Contanti</option>
+                                        <option value="bonifico">Bonifico</option>
+                                        <option value="carta">Carta</option>
+                                    </select>
+                                </div>
+                                <div class="w-36 space-y-1.5">
+                                    <x-input-label value="Data" />
+                                    <x-text-input type="date" name="date" value="{{ now()->toDateString() }}" class="w-full" />
+                                </div>
+                                <x-primary-button>Registra</x-primary-button>
+                            </form>
+                        </x-card>
+                    </div>
+                @endif
+            </div>
+        @endif
     </div>
 </x-app-layout>

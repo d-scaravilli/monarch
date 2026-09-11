@@ -15,6 +15,7 @@
     }
 
     $attendances = $member->enrollments->flatMap(fn ($e) => $e->attendances->map(fn ($a) => tap($a, fn ($a) => $a->enrollment = $e)));
+    $payments = $member->enrollments->flatMap(fn ($e) => $e->payments->map(fn ($p) => tap($p, fn ($p) => $p->enrollment = $e)));
 @endphp
 
 <x-app-layout>
@@ -94,22 +95,38 @@
             </x-card>
         </div>
 
-        <div>
-            <x-section-header>Presenze</x-section-header>
-            <x-card class="divide-y divide-gray-100 dark:divide-white/10 p-0">
-                @forelse ($attendances->sortByDesc(fn ($a) => $a->lesson->date)->take(15) as $attendance)
-                    <div class="flex items-center justify-between px-5 py-3">
-                        <span class="text-sm text-gray-600 dark:text-gray-400">{{ $attendance->lesson->date->translatedFormat('d M Y') }}</span>
-                        @if ($attendance->present)
-                            <x-heroicon-o-check-circle class="h-4 w-4 text-green-600" />
-                        @else
-                            <x-heroicon-o-x-circle class="h-4 w-4 text-red-400" />
-                        @endif
-                    </div>
-                @empty
-                    <p class="px-5 py-6 text-sm text-gray-500">Nessuna presenza registrata.</p>
-                @endforelse
-            </x-card>
+        <div class="grid gap-6 sm:grid-cols-2">
+            <div>
+                <x-section-header>Presenze</x-section-header>
+                <x-card class="divide-y divide-gray-100 dark:divide-white/10 p-0">
+                    @forelse ($attendances->sortByDesc(fn ($a) => $a->lesson->date)->take(15) as $attendance)
+                        <div class="flex items-center justify-between px-5 py-3">
+                            <span class="text-sm text-gray-600 dark:text-gray-400">{{ $attendance->lesson->date->translatedFormat('d M Y') }}</span>
+                            @if ($attendance->present)
+                                <x-heroicon-o-check-circle class="h-4 w-4 text-green-600" />
+                            @else
+                                <x-heroicon-o-x-circle class="h-4 w-4 text-red-400" />
+                            @endif
+                        </div>
+                    @empty
+                        <p class="px-5 py-6 text-sm text-gray-500">Nessuna presenza registrata.</p>
+                    @endforelse
+                </x-card>
+            </div>
+
+            <div>
+                <x-section-header>Pagamenti</x-section-header>
+                <x-card class="divide-y divide-gray-100 dark:divide-white/10 p-0">
+                    @forelse ($payments->sortByDesc('date') as $payment)
+                        <div class="flex items-center justify-between px-5 py-3">
+                            <span class="text-sm text-gray-600 dark:text-gray-400">{{ $payment->date->translatedFormat('d M Y') }} &middot; {{ $payment->method }}</span>
+                            <span class="text-sm font-semibold text-gray-900 dark:text-gray-100">&euro;{{ number_format($payment->amount, 2) }}</span>
+                        </div>
+                    @empty
+                        <p class="px-5 py-6 text-sm text-gray-500">Nessun pagamento registrato.</p>
+                    @endforelse
+                </x-card>
+            </div>
         </div>
     </div>
 </x-app-layout>
