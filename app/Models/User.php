@@ -16,7 +16,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Traits\HasRoles;
 
-#[Fillable(['name', 'email', 'password', 'theme', 'avatar_path'])]
+#[Fillable(['name', 'email', 'password', 'theme', 'avatar_path', 'disabled_at', 'last_login_at'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -33,6 +33,8 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'disabled_at' => 'datetime',
+            'last_login_at' => 'datetime',
         ];
     }
 
@@ -64,5 +66,10 @@ class User extends Authenticatable
     public function avatarUrl(): ?string
     {
         return $this->avatar_path ? Storage::disk('public')->url($this->avatar_path) : null;
+    }
+
+    public function isDisabled(): bool
+    {
+        return $this->disabled_at !== null;
     }
 }

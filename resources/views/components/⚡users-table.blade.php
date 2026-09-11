@@ -83,14 +83,24 @@ new class extends Component
                         </th>
                         <th class="px-5 py-3 text-left hidden sm:table-cell">Email</th>
                         <th class="px-5 py-3 text-left">Ruoli</th>
-                        <th class="px-5 py-3 text-left hidden md:table-cell">Moduli</th>
+                        <th class="px-5 py-3 text-left hidden lg:table-cell">
+                            <button wire:click="sortBy('last_login_at')" class="hover:text-gray-600 dark:hover:text-gray-200">Ultimo accesso</button>
+                        </th>
+                        <th class="px-5 py-3 text-left hidden lg:table-cell">
+                            <button wire:click="sortBy('created_at')" class="hover:text-gray-600 dark:hover:text-gray-200">Creato il</button>
+                        </th>
                         <th class="px-5 py-3 text-right">Azioni</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100 dark:divide-white/10">
                     @forelse ($users as $tableUser)
                         <tr wire:key="user-{{ $tableUser->id }}">
-                            <td class="px-5 py-3.5 text-gray-900 dark:text-gray-100 font-medium">{{ $tableUser->name }}</td>
+                            <td class="px-5 py-3.5 text-gray-900 dark:text-gray-100 font-medium">
+                                {{ $tableUser->name }}
+                                @if ($tableUser->isDisabled())
+                                    <x-badge color="red" class="ml-1.5">disabilitato</x-badge>
+                                @endif
+                            </td>
                             <td class="px-5 py-3.5 text-gray-500 dark:text-gray-400 hidden sm:table-cell">{{ $tableUser->email }}</td>
                             <td class="px-5 py-3.5">
                                 <div class="flex flex-wrap gap-1">
@@ -101,7 +111,12 @@ new class extends Component
                                     @endforelse
                                 </div>
                             </td>
-                            <td class="px-5 py-3.5 text-gray-500 dark:text-gray-400 hidden md:table-cell">{{ $tableUser->modules->pluck('name')->implode(', ') ?: '—' }}</td>
+                            <td class="px-5 py-3.5 text-gray-500 dark:text-gray-400 hidden lg:table-cell">
+                                {{ $tableUser->last_login_at?->translatedFormat('d M Y, H:i') ?? '—' }}
+                            </td>
+                            <td class="px-5 py-3.5 text-gray-500 dark:text-gray-400 hidden lg:table-cell">
+                                {{ $tableUser->created_at->translatedFormat('d M Y') }}
+                            </td>
                             <td class="px-5 py-3.5 text-right">
                                 <a href="{{ route('admin.users.edit', $tableUser) }}" class="text-gray-500 hover:text-gray-900 dark:hover:text-white">
                                     <x-heroicon-o-pencil class="h-4 w-4 inline" />
@@ -110,7 +125,7 @@ new class extends Component
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="px-5 py-8 text-center text-sm text-gray-500">Nessun utente trovato.</td>
+                            <td colspan="6" class="px-5 py-8 text-center text-sm text-gray-500">Nessun utente trovato.</td>
                         </tr>
                     @endforelse
                 </tbody>

@@ -50,6 +50,16 @@ class LoginRequest extends FormRequest
             ]);
         }
 
+        if (Auth::user()->isDisabled()) {
+            Auth::logout();
+
+            throw ValidationException::withMessages([
+                'email' => 'Account disabilitato.',
+            ]);
+        }
+
+        Auth::user()->forceFill(['last_login_at' => now()])->save();
+
         RateLimiter::clear($this->throttleKey());
     }
 

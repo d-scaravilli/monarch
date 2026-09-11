@@ -5,6 +5,23 @@
         I ruoli sono l'unico livello di permesso usato oggi dall'app. Attiva o disattiva un ruolo per utente: il cambiamento è salvato subito.
     </p>
 
+    <div class="mb-4 rounded-2xl bg-amber-50 dark:bg-amber-500/10 px-4 py-3 text-sm text-amber-700 dark:text-amber-400 ring-1 ring-amber-100 dark:ring-amber-500/20 flex items-start gap-2">
+        <x-heroicon-o-exclamation-triangle class="h-4 w-4 shrink-0 mt-0.5" />
+        <p>Il controllo di accesso per singola pagina (oltre al ruolo) sarà sviluppato in una fase successiva. Per ora l'accesso è determinato solo dal ruolo.</p>
+    </div>
+
+    <x-card class="mb-4">
+        <x-section-header>Cosa abilita ogni ruolo</x-section-header>
+        <div class="space-y-3">
+            @foreach ($roles as $role)
+                <div>
+                    <p class="text-sm font-medium text-gray-900 dark:text-gray-100 capitalize">{{ $role }}</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">{{ $roleDescriptions[$role] }}</p>
+                </div>
+            @endforeach
+        </div>
+    </x-card>
+
     <x-card class="p-0 overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-sm">

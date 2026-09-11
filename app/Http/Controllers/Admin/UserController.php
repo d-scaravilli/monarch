@@ -7,6 +7,7 @@ use App\Models\Module;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
@@ -70,6 +71,48 @@ class UserController extends Controller
         $user->modules()->sync($data['modules'] ?? []);
 
         return redirect()->route('admin.users.edit', $user)->with('status', 'Utente aggiornato.');
+    }
+
+    public function destroy(Request $request, User $user): RedirectResponse
+    {
+        abort_if($user->is($request->user()), 403, 'Non puoi eliminare il tuo stesso account da qui.');
+
+        $user->delete();
+
+        return redirect()->route('admin.users.index')->with('status', 'Utente eliminato.');
+    }
+
+    /**
+     * Disabling both blocks future logins (checked at auth time) and
+     * kills any session the user already has open (database sessions,
+     * so this is a plain delete keyed by user_id).
+     */
+    public function disable(Request $request, User $user): RedirectResponse
+    {
+        abort_if($user->is($request->user()), 403, 'Non puoi disabilitare il tuo stesso account.');
+
+        $user->update(['disabled_at' => now()]);
+        DB::table('sessions')->where('user_id', $user->id)->delete();
+
+        return back()->with('status', 'Utente disabilitato.');
+    }
+
+    public function enable(User $user): RedirectResponse
+    {
+        $user->update(['disabled_at' => null]);
+
+        return back()->with('status', 'Utente riabilitato.');
+    }
+
+    public function setPassword(Request $request, User $user): RedirectResponse
+    {
+        $data = $request->validate([
+            'password' => ['required', 'confirmed', 'min:8'],
+        ]);
+
+        $user->update(['password' => Hash::make($data['password'])]);
+
+        return back()->with('status', 'Password aggiornata.');
     }
 
     /**

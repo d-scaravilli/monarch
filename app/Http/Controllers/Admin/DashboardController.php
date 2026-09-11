@@ -12,6 +12,8 @@ class DashboardController extends Controller
     public function index(): View
     {
         $totalUsers = User::count();
+        $disabledUsers = User::whereNotNull('disabled_at')->count();
+        $activeUsers = $totalUsers - $disabledUsers;
 
         $roleDistribution = collect(['admin', 'instructor', 'member'])
             ->mapWithKeys(fn (string $role) => [$role => User::role($role)->count()]);
@@ -20,9 +22,10 @@ class DashboardController extends Controller
 
         return view('admin.dashboard', [
             'totalUsers' => $totalUsers,
+            'activeUsers' => $activeUsers,
+            'disabledUsers' => $disabledUsers,
             'roleDistribution' => $roleDistribution,
             'activeModules' => $activeModules,
-            'recentUsers' => User::latest()->take(5)->get(),
         ]);
     }
 }

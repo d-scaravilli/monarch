@@ -15,6 +15,7 @@ use App\Http\Controllers\ModuleSettingsController;
 use App\Http\Controllers\PalestraDashboardController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RoomController;
 use App\Http\Controllers\SettingsController;
 use Illuminate\Support\Facades\Route;
 
@@ -66,9 +67,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/courses/{course}/lessons/{lesson}/attendance', [AttendanceController::class, 'edit'])->name('courses.lessons.attendance.edit');
         Route::patch('/courses/{course}/lessons/{lesson}/attendance', [AttendanceController::class, 'toggle'])->name('courses.lessons.attendance.toggle');
         Route::post('/courses/{course}/lessons/{lesson}/attendance/mark-all', [AttendanceController::class, 'markAllPresent'])->name('courses.lessons.attendance.mark-all');
+        Route::patch('/courses/{course}/lessons/{lesson}/description', [AttendanceController::class, 'updateDescription'])->name('courses.lessons.description.update');
 
         Route::post('/enrollments/{enrollment}/payments', [PaymentController::class, 'store'])->name('enrollments.payments.store');
         Route::delete('/payments/{payment}', [PaymentController::class, 'destroy'])->name('payments.destroy');
+
+        Route::get('/rooms', [RoomController::class, 'index'])->name('rooms.index');
+        Route::post('/rooms', [RoomController::class, 'store'])->name('rooms.store');
+        Route::put('/rooms/{room}', [RoomController::class, 'update'])->name('rooms.update');
     });
 
     Route::prefix('admin')->name('admin.')->middleware('module:amministrazione')->group(function () {
@@ -79,6 +85,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/users', [AdminUserController::class, 'store'])->name('users.store');
         Route::get('/users/{user}/edit', [AdminUserController::class, 'edit'])->name('users.edit');
         Route::put('/users/{user}', [AdminUserController::class, 'update'])->name('users.update');
+        Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
+        Route::post('/users/{user}/disable', [AdminUserController::class, 'disable'])->name('users.disable');
+        Route::post('/users/{user}/enable', [AdminUserController::class, 'enable'])->name('users.enable');
+        Route::put('/users/{user}/password', [AdminUserController::class, 'setPassword'])->name('users.password');
 
         Route::get('/permissions', [AdminPermissionController::class, 'index'])->name('permissions.index');
         Route::post('/permissions', [AdminPermissionController::class, 'update'])->name('permissions.update');
