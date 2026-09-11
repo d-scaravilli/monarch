@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Course;
 use App\Models\Module;
+use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
@@ -34,8 +35,9 @@ class AppServiceProvider extends ServiceProvider
     {
         Gate::before(fn ($user) => $user->hasRole('admin') ? true : null);
 
-        // A soft-deleted course's history must stay reachable by the
-        // admin, even though it vanishes from the active list/queries.
+        // A soft-deleted member/course's history must stay reachable by
+        // the admin, even though they vanish from the active list/queries.
+        Route::bind('member', fn ($value) => User::withTrashed()->findOrFail($value));
         Route::bind('course', fn ($value) => Course::withTrashed()->findOrFail($value));
 
         // The header icon and accent color shift to match whichever
