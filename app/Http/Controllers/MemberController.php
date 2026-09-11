@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
 use App\Models\MemberProfile;
 use App\Models\Module;
 use App\Models\User;
@@ -30,6 +31,34 @@ class MemberController extends Controller
             ->withQueryString();
 
         return view('members.index', compact('members'));
+    }
+
+    /**
+     * Quick card view of members, filterable by course/year — a faster
+     * visual complement to the searchable index above, not a replacement.
+     */
+    public function team(Request $request): View
+    {
+        $this->authorize('viewAny', User::class);
+
+        $members = User::role('member')
+            ->with(['memberProfile', 'enrollments.course.discipline'])
+            ->when($request->filled('course_id'), fn ($q) => $q->whereHas(
+                'enrollments',
+                fn ($q2) => $q2->where('course_id', $request->input('course_id')),
+            ))
+            ->when($request->filled('year'), fn ($q) => $q->whereHas(
+                'enrollments.course',
+                fn ($q2) => $q2->where('year', $request->input('year')),
+            ))
+            ->orderBy('name')
+            ->get();
+
+        return view('members.team', [
+            'members' => $members,
+            'courses' => Course::with('discipline')->orderBy('year')->get(),
+            'years' => Course::query()->distinct()->orderByDesc('year')->pluck('year'),
+        ]);
     }
 
     public function create(): View
