@@ -61,4 +61,22 @@ class AttendanceController extends Controller
             ->route('courses.lessons.attendance.edit', [$course, $lesson])
             ->with('status', 'Tutti segnati presenti.');
     }
+
+    /**
+     * What happened during the lesson, editable by the same people who
+     * can manage its attendance (admin, or an instructor assigned to
+     * this course).
+     */
+    public function updateDescription(Request $request, Course $course, Lesson $lesson): JsonResponse
+    {
+        $this->authorize('manageAttendance', $course);
+
+        $data = $request->validate([
+            'description' => 'nullable|string',
+        ]);
+
+        $lesson->update($data);
+
+        return response()->json(['description' => $lesson->description]);
+    }
 }

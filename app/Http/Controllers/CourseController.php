@@ -51,16 +51,19 @@ class CourseController extends Controller
         $data = $this->validateCourse($request);
 
         $discipline = $this->resolveDiscipline($request);
+        $room = $this->resolveRoom($request);
 
         $course = Course::create([
             'discipline_id' => $discipline->id,
-            'room_id' => $data['room_id'],
+            'room_id' => $room->id,
             'year' => $data['year'],
+            'description' => $data['description'] ?? null,
             'annual_cost' => $data['annual_cost'],
             'monthly_cost' => $data['monthly_cost'],
         ]);
 
         $course->instructors()->sync($data['instructors'] ?? []);
+        $this->syncSchedules($course, $data['schedules'] ?? []);
 
         return redirect()->route('courses.show', $course)->with('status', 'Corso creato.');
     }
@@ -73,8 +76,8 @@ class CourseController extends Controller
             'discipline',
             'room',
             'instructors',
+            'schedules',
             'enrollments' => fn ($query) => $query->with('user')->orderBy('enrollment_date', 'desc'),
-            'lessons' => fn ($query) => $query->orderBy('date'),
         ]);
 
         $canManage = Auth::user()->hasRole('admin');
@@ -93,7 +96,7 @@ class CourseController extends Controller
         $disciplines = Discipline::orderBy('name')->get();
         $rooms = Room::orderBy('name')->get();
         $instructors = User::role('instructor')->orderBy('name')->get();
-        $course->load('instructors');
+        $course->load(['instructors', 'schedules']);
 
         return view('courses.edit', compact('course', 'disciplines', 'rooms', 'instructors'));
     }
@@ -105,16 +108,19 @@ class CourseController extends Controller
         $data = $this->validateCourse($request);
 
         $discipline = $this->resolveDiscipline($request);
+        $room = $this->resolveRoom($request);
 
         $course->update([
             'discipline_id' => $discipline->id,
-            'room_id' => $data['room_id'],
+            'room_id' => $room->id,
             'year' => $data['year'],
+            'description' => $data['description'] ?? null,
             'annual_cost' => $data['annual_cost'],
             'monthly_cost' => $data['monthly_cost'],
         ]);
 
         $course->instructors()->sync($data['instructors'] ?? []);
+        $this->syncSchedules($course, $data['schedules'] ?? []);
 
         return redirect()->route('courses.show', $course)->with('status', 'Corso aggiornato.');
     }
@@ -129,19 +135,26 @@ class CourseController extends Controller
     }
 
     /**
-     * @return array{room_id: int, year: string, annual_cost: float, monthly_cost: float, instructors: array<int>}
+     * @return array{room_id: ?int, year: string, description: ?string, annual_cost: float, monthly_cost: float, instructors: array<int>, schedules: array<int, array{weekday: int, start_time: string, end_time: string}>}
      */
     private function validateCourse(Request $request): array
     {
         return $request->validate([
             'discipline_id' => 'nullable|exists:disciplines,id|required_without:new_discipline',
             'new_discipline' => 'nullable|string|max:255|required_without:discipline_id',
-            'room_id' => 'required|exists:rooms,id',
+            'room_id' => 'nullable|exists:rooms,id|required_without:new_room_name',
+            'new_room_name' => 'nullable|string|max:255|required_without:room_id',
+            'new_room_capacity' => 'nullable|integer|min:1|required_with:new_room_name',
             'year' => 'required|string|max:20',
+            'description' => 'nullable|string',
             'annual_cost' => 'required|numeric|min:0',
             'monthly_cost' => 'required|numeric|min:0',
             'instructors' => 'nullable|array',
             'instructors.*' => 'exists:users,id',
+            'schedules' => 'nullable|array',
+            'schedules.*.weekday' => 'required|integer|between:0,6',
+            'schedules.*.start_time' => 'required',
+            'schedules.*.end_time' => 'required|after:schedules.*.start_time',
         ]);
     }
 
@@ -152,5 +165,29 @@ class CourseController extends Controller
         }
 
         return Discipline::findOrFail($request->input('discipline_id'));
+    }
+
+    private function resolveRoom(Request $request): Room
+    {
+        if ($request->filled('new_room_name')) {
+            return Room::create([
+                'name' => trim($request->string('new_room_name')),
+                'capacity' => $request->input('new_room_capacity'),
+            ]);
+        }
+
+        return Room::findOrFail($request->input('room_id'));
+    }
+
+    /**
+     * @param  array<int, array{weekday: int, start_time: string, end_time: string}>  $schedules
+     */
+    private function syncSchedules(Course $course, array $schedules): void
+    {
+        $course->schedules()->delete();
+
+        foreach ($schedules as $schedule) {
+            $course->schedules()->create($schedule);
+        }
     }
 }

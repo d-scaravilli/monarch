@@ -31,9 +31,18 @@ new class extends Component
 
     public string $sortDirection = 'asc';
 
+    /**
+     * True when embedded on a single course's page: the course/room
+     * filters are hidden (redundant) and the month filter starts open
+     * to "all dates" so the course's full lesson history shows by default.
+     */
+    public bool $scoped = false;
+
     public function mount(?int $courseId = null): void
     {
         $this->courseId = $courseId;
+        $this->scoped = $courseId !== null;
+        $this->allDates = $this->scoped;
         $this->month = now()->format('Y-m');
     }
 
@@ -64,7 +73,11 @@ new class extends Component
 
     public function resetFilters(): void
     {
-        $this->reset(['search', 'courseId', 'roomId', 'allDates']);
+        $this->reset(['search', 'roomId']);
+        if (! $this->scoped) {
+            $this->courseId = null;
+        }
+        $this->allDates = $this->scoped;
         $this->month = now()->format('Y-m');
         $this->resetPage();
     }
@@ -108,29 +121,31 @@ new class extends Component
             <div class="relative flex-1 min-w-[10rem]">
                 <x-input-label value="Cerca" class="mb-1.5" />
                 <x-heroicon-o-magnifying-glass class="absolute left-3 top-[2.35rem] h-4 w-4 text-gray-400" />
-                <input type="text" wire:model.live.debounce.300ms="search" placeholder="Disciplina..."
+                <input type="text" wire:model.live.debounce.300ms="search" placeholder="Cerca..."
                        class="w-full rounded-xl border-gray-200 bg-gray-50 pl-9 focus:bg-white focus:border-gray-900 focus:ring-gray-900 dark:border-white/10 dark:bg-white/5 dark:text-gray-100" />
             </div>
 
-            <div>
-                <x-input-label value="Corso" class="mb-1.5" />
-                <select wire:model.live="courseId" class="rounded-xl border-gray-200 bg-gray-50 dark:border-white/10 dark:bg-white/5 dark:text-gray-100">
-                    <option value="">Tutti</option>
-                    @foreach ($courses as $course)
-                        <option value="{{ $course->id }}">{{ $course->discipline->name }} ({{ $course->year }})</option>
-                    @endforeach
-                </select>
-            </div>
+            @unless ($scoped)
+                <div>
+                    <x-input-label value="Corso" class="mb-1.5" />
+                    <select wire:model.live="courseId" class="rounded-xl border-gray-200 bg-gray-50 dark:border-white/10 dark:bg-white/5 dark:text-gray-100">
+                        <option value="">Tutti</option>
+                        @foreach ($courses as $course)
+                            <option value="{{ $course->id }}">{{ $course->discipline->name }} ({{ $course->year }})</option>
+                        @endforeach
+                    </select>
+                </div>
 
-            <div>
-                <x-input-label value="Sala" class="mb-1.5" />
-                <select wire:model.live="roomId" class="rounded-xl border-gray-200 bg-gray-50 dark:border-white/10 dark:bg-white/5 dark:text-gray-100">
-                    <option value="">Tutte</option>
-                    @foreach ($rooms as $room)
-                        <option value="{{ $room->id }}">{{ $room->name }}</option>
-                    @endforeach
-                </select>
-            </div>
+                <div>
+                    <x-input-label value="Sala" class="mb-1.5" />
+                    <select wire:model.live="roomId" class="rounded-xl border-gray-200 bg-gray-50 dark:border-white/10 dark:bg-white/5 dark:text-gray-100">
+                        <option value="">Tutte</option>
+                        @foreach ($rooms as $room)
+                            <option value="{{ $room->id }}">{{ $room->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            @endunless
 
             <div wire:show="! allDates">
                 <x-input-label value="Mese" class="mb-1.5" />

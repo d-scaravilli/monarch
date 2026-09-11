@@ -19,6 +19,7 @@ class Course extends Model
         'discipline_id',
         'room_id',
         'year',
+        'description',
         'annual_cost',
         'monthly_cost',
     ];
@@ -54,5 +55,10 @@ class Course extends Model
     public function lessons(): HasMany
     {
         return $this->hasMany(Lesson::class);
+    }
+
+    public function schedules(): HasMany
+    {
+        return $this->hasMany(CourseSchedule::class);
     }
 }

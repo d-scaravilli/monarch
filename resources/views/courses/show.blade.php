@@ -1,15 +1,35 @@
 @php
     $canManageAttendance = auth()->user()->can('manageAttendance', $course);
-    $payments = $course->enrollments->flatMap(fn ($e) => $e->payments->map(fn ($p) => tap($p, fn ($p) => $p->enrollment = $e)));
 @endphp
 
 <x-app-layout>
     <x-slot name="header">{{ $course->discipline->name }}</x-slot>
 
-    <div class="space-y-6">
+    <div class="space-y-6" x-data="{ openEnroll: false, openPayment: false }">
         @if ($course->trashed())
             <div class="rounded-2xl bg-amber-50 dark:bg-amber-500/10 px-4 py-3 text-sm font-medium text-amber-700 dark:text-amber-400 ring-1 ring-amber-100 dark:ring-amber-500/20">
                 Questo corso è stato eliminato. Stai consultando lo storico.
+            </div>
+        @endif
+
+        @if ($canManage && ! $course->trashed())
+            <div class="flex flex-wrap gap-2">
+                <button type="button" @click="openPayment = true; $refs.paymentsSection.scrollIntoView({ behavior: 'smooth' })"
+                        class="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 dark:border-white/10 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200">
+                    <x-heroicon-o-plus class="h-4 w-4" /> Registra pagamento
+                </button>
+                <button type="button" @click="openEnroll = true; $refs.enrollSection.scrollIntoView({ behavior: 'smooth' })"
+                        class="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 dark:border-white/10 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200">
+                    <x-heroicon-o-plus class="h-4 w-4" /> Aggiungi iscritto
+                </button>
+                <a href="{{ route('lessons.generate', ['course_id' => $course->id]) }}"
+                   class="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 dark:border-white/10 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200">
+                    <x-heroicon-o-square-3-stack-3d class="h-4 w-4" /> Genera lezioni
+                </a>
+                <a href="{{ route('lessons.create', ['course_id' => $course->id]) }}"
+                   class="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 dark:border-white/10 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200">
+                    <x-heroicon-o-plus class="h-4 w-4" /> Nuova lezione singola
+                </a>
             </div>
         @endif
 
@@ -35,10 +55,18 @@
                     </div>
                 @endif
             </div>
-            @if ($course->instructors->isNotEmpty())
+
+            @if ($course->description)
+                <p class="mt-3 text-sm text-gray-600 dark:text-gray-400">{{ $course->description }}</p>
+            @endif
+
+            @if ($course->instructors->isNotEmpty() || $course->schedules->isNotEmpty())
                 <div class="mt-3 flex flex-wrap gap-2">
                     @foreach ($course->instructors as $instructor)
                         <x-badge>{{ $instructor->name }}</x-badge>
+                    @endforeach
+                    @foreach ($course->schedules as $schedule)
+                        <x-badge color="amber">{{ $schedule->weekdayLabel() }} {{ substr($schedule->start_time, 0, 5) }}-{{ substr($schedule->end_time, 0, 5) }}</x-badge>
                     @endforeach
                 </div>
             @endif
@@ -68,11 +96,11 @@
             </x-card>
 
             @if ($canManage && ! $course->trashed())
-                <div class="mt-3" x-data="{ open: false }">
-                    <button type="button" @click="open = !open" class="text-sm font-medium text-gray-600 dark:text-gray-300 flex items-center gap-1">
+                <div class="mt-3" x-ref="enrollSection">
+                    <button type="button" @click="openEnroll = !openEnroll" class="text-sm font-medium text-gray-600 dark:text-gray-300 flex items-center gap-1">
                         <x-heroicon-o-plus class="h-4 w-4" /> Aggiungi iscritto
                     </button>
-                    <x-card x-show="open" x-cloak class="mt-3">
+                    <x-card x-show="openEnroll" x-cloak class="mt-3">
                         <form method="POST" action="{{ route('courses.enrollments.store', $course) }}" class="flex flex-wrap items-end gap-3">
                             @csrf
                             <div class="flex-1 min-w-[10rem] space-y-1.5">
@@ -97,66 +125,22 @@
         </div>
 
         <div>
-            <div class="flex items-center justify-between mb-2">
-                <x-section-header class="mb-0">Lezioni</x-section-header>
-                @if ($canManage && ! $course->trashed())
-                    <div class="flex items-center gap-3 text-sm font-medium text-gray-600 dark:text-gray-300">
-                        <a href="{{ route('lessons.create', ['course_id' => $course->id]) }}" class="flex items-center gap-1"><x-heroicon-o-plus class="h-4 w-4" /> Lezione</a>
-                        <a href="{{ route('lessons.generate') }}" class="flex items-center gap-1"><x-heroicon-o-square-3-stack-3d class="h-4 w-4" /> Genera</a>
-                    </div>
-                @endif
-            </div>
-            <x-card class="divide-y divide-gray-100 dark:divide-white/10 p-0">
-                @forelse ($course->lessons as $lesson)
-                    <div class="flex items-center justify-between px-5 py-3.5">
-                        <div class="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
-                            <x-heroicon-o-calendar-days class="h-4 w-4 text-gray-400" />
-                            {{ $lesson->date->translatedFormat('d M Y') }}
-                            @if ($lesson->date->isFuture())
-                                <x-badge color="amber">in programma</x-badge>
-                            @endif
-                        </div>
-
-                        @if ($canManageAttendance)
-                            <a href="{{ route('courses.lessons.attendance.edit', [$course, $lesson]) }}"
-                               class="flex items-center gap-1.5 text-sm font-medium text-gray-900 dark:text-gray-100 hover:underline">
-                                <x-heroicon-o-clipboard-document-check class="h-4 w-4" />
-                                Presenze
-                            </a>
-                        @endif
-                    </div>
-                @empty
-                    <p class="px-5 py-6 text-sm text-gray-500">Nessuna lezione programmata.</p>
-                @endforelse
-            </x-card>
+            <x-section-header>Lezioni</x-section-header>
+            <livewire:lessons-table :course-id="$course->id" />
         </div>
 
         @if ($canManage)
-            <div>
+            <div x-ref="paymentsSection">
                 <x-section-header>Pagamenti</x-section-header>
-                <x-card class="divide-y divide-gray-100 dark:divide-white/10 p-0">
-                    @forelse ($payments->sortByDesc('date') as $payment)
-                        <x-swipe-row :action="route('payments.destroy', $payment)">
-                            <div class="flex items-center justify-between px-5 py-3.5">
-                                <div>
-                                    <p class="font-medium text-gray-900 dark:text-gray-100">{{ $payment->enrollment->user->name }}</p>
-                                    <p class="text-xs text-gray-400">{{ $payment->date->translatedFormat('d M Y') }} &middot; {{ $payment->method }}</p>
-                                </div>
-                                <span class="font-semibold text-gray-900 dark:text-gray-100">€{{ number_format($payment->amount, 2) }}</span>
-                            </div>
-                        </x-swipe-row>
-                    @empty
-                        <p class="px-5 py-6 text-sm text-gray-500">Nessun pagamento registrato.</p>
-                    @endforelse
-                </x-card>
+                <livewire:course-payments-table :course-id="$course->id" />
 
                 @if ($course->enrollments->isNotEmpty() && ! $course->trashed())
-                    <div class="mt-3" x-data="{ open: false, url: '' }">
-                        <button type="button" @click="open = !open" class="text-sm font-medium text-gray-600 dark:text-gray-300 flex items-center gap-1">
+                    <div class="mt-3">
+                        <button type="button" @click="openPayment = !openPayment" class="text-sm font-medium text-gray-600 dark:text-gray-300 flex items-center gap-1">
                             <x-heroicon-o-plus class="h-4 w-4" /> Registra pagamento
                         </button>
-                        <x-card x-show="open" x-cloak class="mt-3">
-                            <form method="POST" :action="url" class="flex flex-wrap items-end gap-3">
+                        <x-card x-show="openPayment" x-cloak class="mt-3">
+                            <form method="POST" :action="url" x-data="{ url: '' }" class="flex flex-wrap items-end gap-3">
                                 @csrf
                                 <div class="flex-1 min-w-[10rem] space-y-1.5">
                                     <x-input-label value="Iscritto" />

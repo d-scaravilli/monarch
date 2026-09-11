@@ -69,5 +69,28 @@
         </x-card>
     </div>
 
+    <div class="mt-4" x-data="{
+        value: {{ Illuminate\Support\Js::from($lesson->description ?? '') }},
+        saved: false,
+        async save() {
+            await fetch('{{ route('courses.lessons.description.update', [$course, $lesson]) }}', {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}', Accept: 'application/json' },
+                body: JSON.stringify({ description: this.value }),
+            });
+            this.saved = true;
+            setTimeout(() => (this.saved = false), 1200);
+        },
+    }">
+        <div class="flex items-center gap-2 mb-2">
+            <x-section-header class="mb-0">Descrizione lezione</x-section-header>
+            <x-heroicon-o-check-circle class="h-4 w-4 text-green-600" x-show="saved" x-cloak />
+        </div>
+        <x-card>
+            <textarea x-model="value" @blur="save()" rows="4" placeholder="Cosa si è fatto durante la lezione..."
+                      class="w-full rounded-xl border-gray-200 bg-gray-50 focus:bg-white focus:border-gray-900 focus:ring-gray-900 dark:border-white/10 dark:bg-white/5 dark:text-gray-100"></textarea>
+        </x-card>
+    </div>
+
     <a href="{{ route('courses.show', $course) }}" class="mt-4 inline-block text-sm font-medium text-gray-500 hover:text-gray-700">&larr; Torna al corso</a>
 </x-app-layout>

@@ -17,7 +17,7 @@ class AppServiceProvider extends ServiceProvider
      * today is Palestra; a future module adds its own line here.
      */
     private const MODULE_ROUTES = [
-        'palestra' => ['palestra.', 'courses.', 'members.', 'lessons.', 'enrollments.', 'payments.', 'member.area'],
+        'palestra' => ['palestra.', 'courses.', 'members.', 'lessons.', 'enrollments.', 'payments.', 'member.area', 'rooms.'],
         'amministrazione' => ['admin.'],
     ];
 

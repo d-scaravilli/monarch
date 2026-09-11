@@ -17,6 +17,7 @@ class Lesson extends Model
         'course_id',
         'date',
         'note',
+        'description',
     ];
 
     protected function casts(): array
