@@ -19,6 +19,7 @@ class EnrollmentController extends Controller
         $data = $request->validate([
             'user_id' => 'required|exists:users,id|unique:enrollments,user_id,NULL,id,course_id,'.$course->id,
             'discount' => 'nullable|numeric|min:0',
+            'billing_frequency' => 'nullable|in:annual,monthly',
         ]);
 
         $course->enrollments()->create([
@@ -26,6 +27,7 @@ class EnrollmentController extends Controller
             'enrollment_date' => now(),
             'discount' => $data['discount'] ?? 0,
             'status' => 'active',
+            'billing_frequency' => $data['billing_frequency'] ?? 'annual',
         ]);
 
         return redirect()->route('courses.show', $course)->with('status', 'Iscrizione aggiunta.');

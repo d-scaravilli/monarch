@@ -64,8 +64,8 @@
             </x-card>
         </div>
 
-        {{-- Top absences + upcoming lessons --}}
-        <div class="grid gap-4 lg:grid-cols-2">
+        {{-- Top absences + expiring renewals + upcoming lessons --}}
+        <div class="grid gap-4 lg:grid-cols-3">
             <x-card>
                 <x-section-header>Iscritti con più assenze</x-section-header>
                 <div class="divide-y divide-gray-100 dark:divide-white/10 -mx-5">
@@ -79,6 +79,25 @@
                         </a>
                     @empty
                         <p class="px-5 py-6 text-sm text-gray-500">Nessuna assenza registrata.</p>
+                    @endforelse
+                </div>
+            </x-card>
+
+            <x-card>
+                <x-section-header>Iscrizioni in scadenza (30 giorni)</x-section-header>
+                <div class="divide-y divide-gray-100 dark:divide-white/10 -mx-5 max-h-96 overflow-y-auto">
+                    @forelse ($expiringEnrollments as $enrollment)
+                        <a href="{{ route('members.show', $enrollment->user) }}" class="flex items-center justify-between gap-3 px-5 py-3">
+                            <div class="min-w-0">
+                                <p class="font-medium text-gray-900 dark:text-gray-100 truncate">{{ $enrollment->user->name }}</p>
+                                <p class="text-xs text-gray-400">{{ $enrollment->course->discipline->name }} &middot; {{ $enrollment->billing_frequency === 'monthly' ? 'mensile' : 'annuale' }}</p>
+                            </div>
+                            <x-badge :color="$enrollment->days_until_renewal <= 7 ? 'amber' : 'gray'" class="shrink-0">
+                                {{ $enrollment->days_until_renewal === 0 ? 'oggi' : $enrollment->days_until_renewal.'g' }}
+                            </x-badge>
+                        </a>
+                    @empty
+                        <p class="px-5 py-6 text-sm text-gray-500">Nessuna scadenza nei prossimi 30 giorni.</p>
                     @endforelse
                 </div>
             </x-card>

@@ -79,6 +79,7 @@ class PalestraDashboardController extends Controller
 
         $topPresent = $this->topByAttendance($courseIds, present: true);
         $topAbsent = $this->topByAttendance($courseIds, present: false);
+        $expiringEnrollments = $this->expiringEnrollments($courseIds);
 
         return view('palestra.dashboard', [
             'activeEnrollments' => $activeEnrollments,
@@ -88,8 +89,31 @@ class PalestraDashboardController extends Controller
             'upcomingLessons' => $upcomingLessons,
             'topPresent' => $topPresent,
             'topAbsent' => $topAbsent,
+            'expiringEnrollments' => $expiringEnrollments,
             'isAdmin' => $isAdmin,
         ]);
+    }
+
+    /**
+     * Active enrollments whose renewal (annual or monthly, per
+     * Enrollment::renewalDate()) falls within the next 30 days — the
+     * same calculation the scheda iscritto uses for its progress bar.
+     *
+     * @param  Collection<int, int>|null  $courseIds
+     * @return Collection<int, Enrollment>
+     */
+    private function expiringEnrollments(?Collection $courseIds): Collection
+    {
+        return Enrollment::query()
+            ->where('status', 'active')
+            ->when($courseIds, fn ($q) => $q->whereIn('course_id', $courseIds))
+            ->with(['user', 'course.discipline'])
+            ->get()
+            ->map(fn (Enrollment $enrollment) => tap($enrollment, fn ($e) => $e->days_until_renewal = $e->daysUntilRenewal()))
+            ->filter(fn (Enrollment $enrollment) => $enrollment->days_until_renewal >= 0 && $enrollment->days_until_renewal <= 30)
+            ->sortBy('days_until_renewal')
+            ->take(8)
+            ->values();
     }
 
     /**
