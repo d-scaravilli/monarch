@@ -18,6 +18,7 @@ class AppServiceProvider extends ServiceProvider
      */
     private const MODULE_ROUTES = [
         'palestra' => ['palestra.', 'courses.', 'members.', 'lessons.', 'enrollments.', 'payments.', 'member.area'],
+        'amministrazione' => ['admin.'],
     ];
 
     /**
@@ -51,7 +52,17 @@ class AppServiceProvider extends ServiceProvider
 
     private function resolveCurrentModule(): ?Module
     {
-        $routeName = optional(request()->route())->getName() ?? '';
+        $route = request()->route();
+
+        // Routes that already bind a {module} parameter (e.g. the generic
+        // module-settings page) know their module directly — no need to
+        // guess from the route name.
+        $boundModule = $route?->parameter('module');
+        if ($boundModule instanceof Module) {
+            return $boundModule;
+        }
+
+        $routeName = optional($route)->getName() ?? '';
 
         foreach (self::MODULE_ROUTES as $slug => $prefixes) {
             foreach ($prefixes as $prefix) {

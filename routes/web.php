@@ -1,12 +1,17 @@
 <?php
 
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\PermissionController as AdminPermissionController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\MemberAreaController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\ModuleSettingsController;
 use App\Http\Controllers\PalestraDashboardController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
@@ -20,16 +25,21 @@ Route::get('/', function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/modules/{module}', [DashboardController::class, 'enter'])->name('modules.enter');
+    Route::get('/modules/{module}/settings', [ModuleSettingsController::class, 'edit'])->name('modules.settings.edit');
+    Route::put('/modules/{module}/settings', [ModuleSettingsController::class, 'update'])->name('modules.settings.update');
+    Route::post('/modules/{module}/settings/access', [ModuleSettingsController::class, 'grantAccess'])->name('modules.settings.access.store');
+    Route::delete('/modules/{module}/settings/access/{user}', [ModuleSettingsController::class, 'revokeAccess'])->name('modules.settings.access.destroy');
 
     Route::get('/settings', [SettingsController::class, 'edit'])->name('settings.edit');
+    Route::patch('/settings/account', [ProfileController::class, 'update'])->name('settings.account.update');
+    Route::delete('/settings/account', [ProfileController::class, 'destroy'])->name('settings.account.destroy');
+    Route::post('/settings/avatar', [SettingsController::class, 'updateAvatar'])->name('settings.avatar.update');
     Route::patch('/settings/theme', [SettingsController::class, 'updateTheme'])->name('settings.theme');
-
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::middleware('module:palestra')->group(function () {
         Route::get('/palestra/dashboard', [PalestraDashboardController::class, 'index'])->name('palestra.dashboard');
+        Route::get('/calendar', [CalendarController::class, 'index'])->name('palestra.calendar');
+        Route::get('/team', [MemberController::class, 'team'])->name('members.team');
 
         Route::get('/area', [MemberAreaController::class, 'index'])->name('member.area');
 
@@ -59,6 +69,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::post('/enrollments/{enrollment}/payments', [PaymentController::class, 'store'])->name('enrollments.payments.store');
         Route::delete('/payments/{payment}', [PaymentController::class, 'destroy'])->name('payments.destroy');
+    });
+
+    Route::prefix('admin')->name('admin.')->middleware('module:amministrazione')->group(function () {
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+
+        Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
+        Route::get('/users/create', [AdminUserController::class, 'create'])->name('users.create');
+        Route::post('/users', [AdminUserController::class, 'store'])->name('users.store');
+        Route::get('/users/{user}/edit', [AdminUserController::class, 'edit'])->name('users.edit');
+        Route::put('/users/{user}', [AdminUserController::class, 'update'])->name('users.update');
+
+        Route::get('/permissions', [AdminPermissionController::class, 'index'])->name('permissions.index');
+        Route::post('/permissions', [AdminPermissionController::class, 'update'])->name('permissions.update');
     });
 });
 

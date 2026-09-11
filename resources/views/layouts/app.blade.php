@@ -1,10 +1,36 @@
 @php
     $user = auth()->user();
+    $isAdmin = $user->hasRole('admin');
     $isStaff = $user->hasAnyRole(['admin', 'instructor']);
     $isMember = $user->hasRole('member');
     $accentColor = $currentModule->color ?? 'gray';
     $accentIcon = $currentModule->icon ?? 'squares-2x2';
+    $accentImage = $currentModule?->imageUrl();
     $accent = \App\Support\ModuleTheme::classes($accentColor);
+
+    // The nav shows only the current context's items: just "Impostazioni"
+    // on the launcher, or only the active module's own pages once inside one.
+    $navItems = [];
+
+    if (! $currentModule) {
+        $navItems[] = ['label' => 'Impostazioni', 'route' => 'settings.edit', 'icon' => 'cog-6-tooth', 'active' => request()->routeIs('settings.*'), 'mobile' => true];
+    } elseif ($currentModule->slug === 'palestra' && $isMember) {
+        $navItems[] = ['label' => 'La mia area', 'route' => 'member.area', 'icon' => 'user-circle', 'active' => request()->routeIs('member.area'), 'mobile' => true];
+    } elseif ($currentModule->slug === 'palestra' && $isStaff) {
+        $navItems[] = ['label' => 'Dashboard', 'route' => 'palestra.dashboard', 'icon' => 'home', 'active' => request()->routeIs('palestra.dashboard'), 'mobile' => true];
+        $navItems[] = ['label' => 'Corsi', 'route' => 'courses.index', 'icon' => 'academic-cap', 'active' => request()->routeIs('courses.*'), 'mobile' => true];
+        $navItems[] = ['label' => 'Iscritti', 'route' => 'members.index', 'icon' => 'users', 'active' => request()->routeIs('members.*') && ! request()->routeIs('members.team'), 'mobile' => true];
+        $navItems[] = ['label' => 'Lezioni', 'route' => 'lessons.index', 'icon' => 'calendar-days', 'active' => request()->routeIs('lessons.*'), 'mobile' => true];
+        $navItems[] = ['label' => 'Calendario', 'route' => 'palestra.calendar', 'icon' => 'calendar', 'active' => request()->routeIs('palestra.calendar'), 'mobile' => true];
+        $navItems[] = ['label' => 'Team', 'route' => 'members.team', 'icon' => 'user-group', 'active' => request()->routeIs('members.team'), 'mobile' => false];
+        if ($isAdmin) {
+            $navItems[] = ['label' => 'Gestione modulo', 'route' => 'modules.settings.edit', 'params' => [$currentModule], 'icon' => 'wrench-screwdriver', 'active' => request()->routeIs('modules.settings.*'), 'mobile' => false];
+        }
+    } elseif ($currentModule->slug === 'amministrazione') {
+        $navItems[] = ['label' => 'Dashboard', 'route' => 'admin.dashboard', 'icon' => 'home', 'active' => request()->routeIs('admin.dashboard'), 'mobile' => true];
+        $navItems[] = ['label' => 'Utenti', 'route' => 'admin.users.index', 'icon' => 'users', 'active' => request()->routeIs('admin.users.*'), 'mobile' => true];
+        $navItems[] = ['label' => 'Permessi', 'route' => 'admin.permissions.index', 'icon' => 'shield-check', 'active' => request()->routeIs('admin.permissions.*'), 'mobile' => true];
+    }
 @endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}"
@@ -43,39 +69,23 @@
             {{-- Desktop / tablet sidebar --}}
             <aside class="hidden lg:flex lg:w-64 lg:shrink-0 lg:flex-col lg:h-screen lg:sticky lg:top-0 border-r border-gray-100 dark:border-white/10 px-5 py-8">
                 <a href="{{ route('dashboard') }}" class="flex items-center gap-2 px-2 mb-8">
-                    <x-module-badge :icon="$accentIcon" :color="$accentColor" size="h-9 w-9" />
+                    <x-module-badge :icon="$accentIcon" :color="$accentColor" :image="$accentImage" size="h-9 w-9" />
                     <span class="text-lg font-semibold tracking-tight">{{ $currentModule->name ?? 'Beru' }}</span>
                 </a>
 
                 <nav class="flex-1 space-y-1">
-                    <x-sidebar-link :href="route('dashboard')" icon="squares-2x2" :active="request()->routeIs('dashboard')">
-                        Moduli
-                    </x-sidebar-link>
-
-                    @if ($isStaff)
-                        <x-sidebar-link :href="route('palestra.dashboard')" icon="home" :color="$accentColor" :active="request()->routeIs('palestra.dashboard')">
-                            Dashboard
+                    @if ($currentModule)
+                        <x-sidebar-link :href="route('dashboard')" icon="arrow-left" :active="false">
+                            Torna ai moduli
                         </x-sidebar-link>
-                        <x-sidebar-link :href="route('courses.index')" icon="academic-cap" :color="$accentColor" :active="request()->routeIs('courses.*')">
-                            Corsi
-                        </x-sidebar-link>
-                        <x-sidebar-link :href="route('members.index')" icon="users" :color="$accentColor" :active="request()->routeIs('members.*')">
-                            Iscritti
-                        </x-sidebar-link>
-                        <x-sidebar-link :href="route('lessons.index')" icon="calendar-days" :color="$accentColor" :active="request()->routeIs('lessons.*')">
-                            Lezioni
-                        </x-sidebar-link>
+                        <div class="!my-3 border-t border-gray-100 dark:border-white/10"></div>
                     @endif
 
-                    @if ($isMember)
-                        <x-sidebar-link :href="route('member.area')" icon="user-circle" :color="$accentColor" :active="request()->routeIs('member.area')">
-                            La mia area
+                    @foreach ($navItems as $item)
+                        <x-sidebar-link :href="route($item['route'], $item['params'] ?? [])" :icon="$item['icon']" :color="$accentColor" :active="$item['active']">
+                            {{ $item['label'] }}
                         </x-sidebar-link>
-                    @endif
-
-                    <x-sidebar-link :href="route('profile.edit')" icon="identification" :active="request()->routeIs('profile.*')">
-                        Profilo
-                    </x-sidebar-link>
+                    @endforeach
                 </nav>
 
                 <div class="mt-auto pt-4 border-t border-gray-100 dark:border-white/10">
@@ -95,11 +105,15 @@
                 {{-- Mobile top bar --}}
                 <header class="lg:hidden sticky top-0 z-20 flex items-center justify-between bg-gray-50/90 dark:bg-gray-950/90 backdrop-blur px-4 pt-[max(1rem,env(safe-area-inset-top))] pb-3">
                     <a href="{{ route('dashboard') }}" class="flex items-center gap-2">
-                        <x-module-badge :icon="$accentIcon" :color="$accentColor" size="h-8 w-8" />
+                        <x-module-badge :icon="$accentIcon" :color="$accentColor" :image="$accentImage" size="h-8 w-8" />
                         <span class="text-lg font-semibold tracking-tight">{{ $header ?? ($currentModule->name ?? 'Beru') }}</span>
                     </a>
-                    <a href="{{ route('profile.edit') }}" class="flex h-9 w-9 items-center justify-center rounded-full bg-gray-900 dark:bg-white/10 text-white text-sm font-semibold">
-                        {{ Str::of($user->name)->substr(0, 1)->upper() }}
+                    <a href="{{ route('settings.edit') }}" class="flex h-9 w-9 items-center justify-center rounded-full bg-gray-900 dark:bg-white/10 text-white text-sm font-semibold overflow-hidden">
+                        @if ($user->avatarUrl())
+                            <img src="{{ $user->avatarUrl() }}" alt="" class="h-full w-full object-cover">
+                        @else
+                            {{ Str::of($user->name)->substr(0, 1)->upper() }}
+                        @endif
                     </a>
                 </header>
 
@@ -125,34 +139,11 @@
 
         {{-- Mobile bottom tab bar --}}
         <nav class="lg:hidden fixed inset-x-0 bottom-0 z-20 flex border-t border-gray-100 dark:border-white/10 bg-white/95 dark:bg-gray-900/95 backdrop-blur pb-[env(safe-area-inset-bottom)]">
-            @if ($isStaff)
-                <x-tab-link :href="route('palestra.dashboard')" icon="home" :color="$accentColor" :active="request()->routeIs('palestra.dashboard')">
-                    Dashboard
+            @foreach (collect($navItems)->where('mobile', true) as $item)
+                <x-tab-link :href="route($item['route'], $item['params'] ?? [])" :icon="$item['icon']" :color="$accentColor" :active="$item['active']">
+                    {{ $item['label'] }}
                 </x-tab-link>
-                <x-tab-link :href="route('courses.index')" icon="academic-cap" :color="$accentColor" :active="request()->routeIs('courses.*')">
-                    Corsi
-                </x-tab-link>
-                <x-tab-link :href="route('members.index')" icon="users" :color="$accentColor" :active="request()->routeIs('members.*')">
-                    Iscritti
-                </x-tab-link>
-                <x-tab-link :href="route('lessons.index')" icon="calendar-days" :color="$accentColor" :active="request()->routeIs('lessons.*')">
-                    Lezioni
-                </x-tab-link>
-            @else
-                <x-tab-link :href="route('dashboard')" icon="squares-2x2" :active="request()->routeIs('dashboard')">
-                    Moduli
-                </x-tab-link>
-            @endif
-
-            @if ($isMember)
-                <x-tab-link :href="route('member.area')" icon="user-circle" :color="$accentColor" :active="request()->routeIs('member.area')">
-                    La mia area
-                </x-tab-link>
-            @endif
-
-            <x-tab-link :href="route('profile.edit')" icon="identification" :active="request()->routeIs('profile.*')">
-                Profilo
-            </x-tab-link>
+            @endforeach
         </nav>
 
         @livewireScripts

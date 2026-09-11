@@ -64,6 +64,7 @@ class DashboardController extends Controller
 
         return match ($module->slug) {
             'palestra' => $user->hasRole('member') ? redirect()->route('member.area') : redirect()->route('palestra.dashboard'),
+            'amministrazione' => redirect()->route('admin.dashboard'),
             default => redirect()->route('dashboard'),
         };
     }
