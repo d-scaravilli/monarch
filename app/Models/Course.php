@@ -2,20 +2,21 @@
 
 namespace App\Models;
 
-use Database\Factories\CourseEditionFactory;
+use Database\Factories\CourseFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class CourseEdition extends Model
+class Course extends Model
 {
-    /** @use HasFactory<CourseEditionFactory> */
-    use HasFactory;
+    /** @use HasFactory<CourseFactory> */
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'course_id',
+        'discipline_id',
         'room_id',
         'year',
         'annual_cost',
@@ -30,9 +31,9 @@ class CourseEdition extends Model
         ];
     }
 
-    public function course(): BelongsTo
+    public function discipline(): BelongsTo
     {
-        return $this->belongsTo(Course::class);
+        return $this->belongsTo(Discipline::class);
     }
 
     public function room(): BelongsTo
@@ -42,7 +43,7 @@ class CourseEdition extends Model
 
     public function instructors(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'course_edition_instructor');
+        return $this->belongsToMany(User::class, 'course_instructor');
     }
 
     public function enrollments(): HasMany

@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use Database\Factories\CourseFactory;
+use Database\Factories\DisciplineFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Course extends Model
+class Discipline extends Model
 {
-    /** @use HasFactory<CourseFactory> */
+    /** @use HasFactory<DisciplineFactory> */
     use HasFactory;
 
     protected $fillable = [
@@ -17,8 +17,8 @@ class Course extends Model
         'description',
     ];
 
-    public function courseEditions(): HasMany
+    public function courses(): HasMany
     {
-        return $this->hasMany(CourseEdition::class);
+        return $this->hasMany(Course::class);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\CourseEdition;
+use App\Models\Course;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class LessonFactory extends Factory
@@ -10,7 +10,7 @@ class LessonFactory extends Factory
     public function definition(): array
     {
         return [
-            'course_edition_id' => CourseEdition::factory(),
+            'course_id' => Course::factory(),
             'date' => fake()->dateTimeBetween('-1 month', '+1 month'),
         ];
     }

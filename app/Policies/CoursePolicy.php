@@ -2,10 +2,10 @@
 
 namespace App\Policies;
 
-use App\Models\CourseEdition;
+use App\Models\Course;
 use App\Models\User;
 
-class CourseEditionPolicy
+class CoursePolicy
 {
     /**
      * Instructors and members list only what's relevant to them; the
@@ -17,24 +17,24 @@ class CourseEditionPolicy
     }
 
     /**
-     * View an edition's detail page (roster, lessons).
+     * View a course's detail page (roster, lessons).
      */
-    public function view(User $user, CourseEdition $courseEdition): bool
+    public function view(User $user, Course $course): bool
     {
         if ($user->hasRole('instructor')) {
-            return $courseEdition->instructors()->whereKey($user->id)->exists();
+            return $course->instructors()->whereKey($user->id)->exists();
         }
 
-        return $courseEdition->enrollments()->where('user_id', $user->id)->exists();
+        return $course->enrollments()->where('user_id', $user->id)->exists();
     }
 
     /**
-     * Register attendance for one of the edition's lessons.
+     * Register attendance for one of the course's lessons.
      */
-    public function manageAttendance(User $user, CourseEdition $courseEdition): bool
+    public function manageAttendance(User $user, Course $course): bool
     {
         return $user->hasRole('instructor')
-            && $courseEdition->instructors()->whereKey($user->id)->exists();
+            && $course->instructors()->whereKey($user->id)->exists();
     }
 
     public function create(User $user): bool
@@ -42,12 +42,12 @@ class CourseEditionPolicy
         return false;
     }
 
-    public function update(User $user, CourseEdition $courseEdition): bool
+    public function update(User $user, Course $course): bool
     {
         return false;
     }
 
-    public function delete(User $user, CourseEdition $courseEdition): bool
+    public function delete(User $user, Course $course): bool
     {
         return false;
     }

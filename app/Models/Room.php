@@ -17,8 +17,8 @@ class Room extends Model
         'capacity',
     ];
 
-    public function courseEditions(): HasMany
+    public function courses(): HasMany
     {
-        return $this->hasMany(CourseEdition::class);
+        return $this->hasMany(Course::class);
     }
 }

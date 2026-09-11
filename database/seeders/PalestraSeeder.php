@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Attendance;
 use App\Models\Course;
-use App\Models\CourseEdition;
+use App\Models\Discipline;
 use App\Models\Enrollment;
 use App\Models\Lesson;
 use App\Models\MedicalCertificate;
@@ -22,9 +22,9 @@ class PalestraSeeder extends Seeder
      */
     public function run(): void
     {
-        Module::firstOrCreate(
+        $module = Module::firstOrCreate(
             ['slug' => 'palestra'],
-            ['name' => 'Palestra', 'is_active' => true],
+            ['name' => 'Palestra', 'icon' => 'fire', 'color' => 'orange', 'is_active' => true],
         );
 
         $admin = User::firstOrCreate(
@@ -68,35 +68,39 @@ class PalestraSeeder extends Seeder
         // The test account is always enrolled, so the member views have real data to show.
         $members->push($testMember);
 
+        $module->users()->syncWithoutDetaching(
+            $instructors->merge($members)->push($admin)->pluck('id'),
+        );
+
         $rooms = Room::factory(3)->create();
 
-        $courses = collect(['Yoga', 'Pilates', 'Karate', 'Nuoto'])
-            ->map(fn (string $name) => Course::factory()->create(['name' => $name]));
+        $disciplines = collect(['Yoga', 'Pilates', 'Karate', 'Nuoto'])
+            ->map(fn (string $name) => Discipline::factory()->create(['name' => $name]));
 
-        $courses->each(function (Course $course, int $courseIndex) use ($rooms, $instructors, $members, $testMember) {
-            $edition = CourseEdition::factory()->create([
-                'course_id' => $course->id,
+        $disciplines->each(function (Discipline $discipline, int $disciplineIndex) use ($rooms, $instructors, $members, $testMember) {
+            $course = Course::factory()->create([
+                'discipline_id' => $discipline->id,
                 'room_id' => $rooms->random()->id,
             ]);
 
-            $edition->instructors()->attach($instructors->random(1)->pluck('id'));
+            $course->instructors()->attach($instructors->random(1)->pluck('id'));
 
             $lessons = collect(range(-4, 4))->map(
                 fn (int $week) => Lesson::factory()->create([
-                    'course_edition_id' => $edition->id,
+                    'course_id' => $course->id,
                     'date' => now()->addWeeks($week),
                 ])
             );
 
             $enrolledMembers = $members->random(3);
-            if ($courseIndex === 0) {
+            if ($disciplineIndex === 0) {
                 $enrolledMembers->push($testMember);
             }
 
-            $enrolledMembers->unique('id')->each(function (User $member) use ($edition, $lessons) {
+            $enrolledMembers->unique('id')->each(function (User $member) use ($course, $lessons) {
                 $enrollment = Enrollment::factory()->create([
                     'user_id' => $member->id,
-                    'course_edition_id' => $edition->id,
+                    'course_id' => $course->id,
                 ]);
 
                 $lessons->filter(fn (Lesson $lesson) => $lesson->date->isPast())
@@ -107,7 +111,7 @@ class PalestraSeeder extends Seeder
 
                 Payment::factory()->create([
                     'enrollment_id' => $enrollment->id,
-                    'amount' => $edition->monthly_cost,
+                    'amount' => $course->monthly_cost,
                 ]);
             });
         });

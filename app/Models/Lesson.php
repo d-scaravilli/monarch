@@ -14,8 +14,9 @@ class Lesson extends Model
     use HasFactory;
 
     protected $fillable = [
-        'course_edition_id',
+        'course_id',
         'date',
+        'note',
     ];
 
     protected function casts(): array
@@ -25,9 +26,9 @@ class Lesson extends Model
         ];
     }
 
-    public function courseEdition(): BelongsTo
+    public function course(): BelongsTo
     {
-        return $this->belongsTo(CourseEdition::class);
+        return $this->belongsTo(Course::class);
     }
 
     public function attendances(): HasMany

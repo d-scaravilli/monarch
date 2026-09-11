@@ -9,7 +9,7 @@ class EnrollmentPolicy
 {
     /**
      * View a single enrollment: the member it belongs to, or an
-     * instructor assigned to its course edition. No payment data here.
+     * instructor assigned to its course. No payment data here.
      */
     public function view(User $user, Enrollment $enrollment): bool
     {
@@ -18,7 +18,7 @@ class EnrollmentPolicy
         }
 
         if ($user->hasRole('instructor')) {
-            return $enrollment->courseEdition->instructors()->whereKey($user->id)->exists();
+            return $enrollment->course->instructors()->whereKey($user->id)->exists();
         }
 
         return false;
