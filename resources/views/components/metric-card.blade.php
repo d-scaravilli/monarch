@@ -9,11 +9,16 @@
 
         @if ($trend)
             @php
+                $neutral = $trend['direction'] === 'neutral';
                 $up = $trend['direction'] === 'up';
-                $trendColor = $up ? 'text-green-600 bg-green-50 dark:bg-green-500/10' : 'text-red-500 bg-red-50 dark:bg-red-500/10';
+                $trendColor = $neutral
+                    ? 'text-gray-500 bg-gray-100 dark:bg-white/10 dark:text-gray-400'
+                    : ($up ? 'text-green-600 bg-green-50 dark:bg-green-500/10' : 'text-red-500 bg-red-50 dark:bg-red-500/10');
             @endphp
             <span class="inline-flex items-center gap-0.5 rounded-full px-2 py-0.5 text-xs font-medium {{ $trendColor }}">
-                <x-dynamic-component :component="'heroicon-o-arrow-trending-'.($up ? 'up' : 'down')" class="h-3 w-3" />
+                @unless ($neutral)
+                    <x-dynamic-component :component="'heroicon-o-arrow-trending-'.($up ? 'up' : 'down')" class="h-3 w-3" />
+                @endunless
                 {{ $trend['label'] }}
             </span>
         @endif
