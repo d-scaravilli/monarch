@@ -21,6 +21,14 @@ class ModuleTheme
         'teal' => ['badge' => 'bg-teal-500', 'text' => 'text-teal-600', 'soft' => 'bg-teal-50', 'ring' => 'ring-teal-100'],
         'red' => ['badge' => 'bg-red-500', 'text' => 'text-red-600', 'soft' => 'bg-red-50', 'ring' => 'ring-red-100'],
         'gray' => ['badge' => 'bg-gray-900', 'text' => 'text-gray-900', 'soft' => 'bg-gray-100', 'ring' => 'ring-gray-100'],
+        'gold' => ['badge' => 'bg-amber-500', 'text' => 'text-amber-600', 'soft' => 'bg-amber-50', 'ring' => 'ring-amber-100'],
+        'indigo' => ['badge' => 'bg-indigo-500', 'text' => 'text-indigo-600', 'soft' => 'bg-indigo-50', 'ring' => 'ring-indigo-100'],
+        'cyan' => ['badge' => 'bg-cyan-500', 'text' => 'text-cyan-600', 'soft' => 'bg-cyan-50', 'ring' => 'ring-cyan-100'],
+        'lime' => ['badge' => 'bg-lime-500', 'text' => 'text-lime-600', 'soft' => 'bg-lime-50', 'ring' => 'ring-lime-100'],
+        'rose' => ['badge' => 'bg-rose-500', 'text' => 'text-rose-600', 'soft' => 'bg-rose-50', 'ring' => 'ring-rose-100'],
+        'fuchsia' => ['badge' => 'bg-fuchsia-500', 'text' => 'text-fuchsia-600', 'soft' => 'bg-fuchsia-50', 'ring' => 'ring-fuchsia-100'],
+        'sky' => ['badge' => 'bg-sky-500', 'text' => 'text-sky-600', 'soft' => 'bg-sky-50', 'ring' => 'ring-sky-100'],
+        'slate' => ['badge' => 'bg-slate-500', 'text' => 'text-slate-600', 'soft' => 'bg-slate-50', 'ring' => 'ring-slate-100'],
     ];
 
     /**
@@ -36,6 +44,14 @@ class ModuleTheme
         'teal' => '#14b8a6',
         'red' => '#ef4444',
         'gray' => '#111827',
+        'gold' => '#f59e0b',
+        'indigo' => '#6366f1',
+        'cyan' => '#06b6d4',
+        'lime' => '#84cc16',
+        'rose' => '#f43f5e',
+        'fuchsia' => '#d946ef',
+        'sky' => '#0ea5e9',
+        'slate' => '#64748b',
     ];
 
     /**

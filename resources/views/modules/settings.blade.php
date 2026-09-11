@@ -66,26 +66,26 @@
             </x-card>
         </div>
 
+        @if ($module->slug === 'palestra')
+            <div>
+                <x-section-header>Sale</x-section-header>
+                <a href="{{ route('rooms.index') }}">
+                    <x-card class="flex items-center justify-between hover:ring-gray-300 dark:hover:ring-white/20 transition">
+                        <span class="flex items-center gap-3">
+                            <x-heroicon-o-building-office-2 class="h-5 w-5 text-gray-400" />
+                            <span class="font-medium text-gray-900 dark:text-gray-100">Gestisci sale</span>
+                        </span>
+                        <x-heroicon-o-chevron-right class="h-5 w-5 text-gray-300" />
+                    </x-card>
+                </a>
+            </div>
+        @endif
+
         <div>
             <x-section-header>Chi ha accesso</x-section-header>
-            <x-card class="divide-y divide-gray-100 dark:divide-white/10 p-0">
-                @forelse ($module->users as $moduleUser)
-                    <div class="flex items-center justify-between px-5 py-3.5">
-                        <div>
-                            <p class="font-medium text-gray-900 dark:text-gray-100">{{ $moduleUser->name }}</p>
-                            <p class="text-xs text-gray-400">{{ $moduleUser->email }}</p>
-                        </div>
-                        <form method="POST" action="{{ route('modules.settings.access.destroy', [$module, $moduleUser]) }}">
-                            @csrf @method('DELETE')
-                            <button type="submit" class="text-gray-400 hover:text-red-600">
-                                <x-heroicon-o-trash class="h-4 w-4" />
-                            </button>
-                        </form>
-                    </div>
-                @empty
-                    <p class="px-5 py-6 text-sm text-gray-500">Nessun utente con accesso diretto (gli admin vedono sempre tutto).</p>
-                @endforelse
-            </x-card>
+            <p class="text-xs text-gray-400 mb-2">Gli admin vedono sempre tutto, indipendentemente da questo elenco.</p>
+
+            <livewire:module-access-table :module-id="$module->id" />
 
             <x-card class="mt-3">
                 <form method="POST" action="{{ route('modules.settings.access.store', $module) }}" class="flex items-end gap-3">
