@@ -2,6 +2,16 @@
     <x-slot name="header">{{ __('Profilo') }}</x-slot>
 
     <div class="max-w-xl space-y-4">
+        <a href="{{ route('settings.edit') }}" class="block">
+            <x-card class="flex items-center justify-between hover:ring-gray-300 dark:hover:ring-white/20 transition">
+                <span class="flex items-center gap-3">
+                    <x-heroicon-o-cog-6-tooth class="h-5 w-5 text-gray-400" />
+                    <span class="font-medium text-gray-900 dark:text-gray-100">Impostazioni</span>
+                </span>
+                <x-heroicon-o-chevron-right class="h-5 w-5 text-gray-300" />
+            </x-card>
+        </a>
+
         <x-card>
             @include('profile.partials.update-profile-information-form')
         </x-card>

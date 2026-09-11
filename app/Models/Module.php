@@ -3,12 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Module extends Model
 {
     protected $fillable = [
         'name',
         'slug',
+        'icon',
+        'color',
         'is_active',
     ];
 
@@ -17,5 +20,10 @@ class Module extends Model
         return [
             'is_active' => 'boolean',
         ];
+    }
+
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class);
     }
 }
