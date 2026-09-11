@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Attendance;
 use App\Models\Course;
+use App\Models\CourseSchedule;
 use App\Models\Discipline;
 use App\Models\Enrollment;
 use App\Models\Lesson;
@@ -84,6 +85,15 @@ class PalestraSeeder extends Seeder
             ]);
 
             $course->instructors()->attach($instructors->random(1)->pluck('id'));
+
+            // Matches the weekday the sample lessons below land on, so
+            // "genera lezioni" produces sensible results out of the box.
+            CourseSchedule::create([
+                'course_id' => $course->id,
+                'weekday' => now()->dayOfWeek,
+                'start_time' => '18:00',
+                'end_time' => '19:00',
+            ]);
 
             $lessons = collect(range(-4, 4))->map(
                 fn (int $week) => Lesson::factory()->create([
