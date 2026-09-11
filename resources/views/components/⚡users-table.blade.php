@@ -15,13 +15,16 @@ new class extends Component
     #[Url]
     public string $role = '';
 
+    #[Url]
+    public string $status = '';
+
     public string $sortField = 'name';
 
     public string $sortDirection = 'asc';
 
     public function updated($property): void
     {
-        if (in_array($property, ['search', 'role'])) {
+        if (in_array($property, ['search', 'role', 'status'])) {
             $this->resetPage();
         }
     }
@@ -44,6 +47,8 @@ new class extends Component
                 $q->where(fn ($q2) => $q2->where('name', 'like', "%{$this->search}%")->orWhere('email', 'like', "%{$this->search}%"));
             })
             ->when($this->role, fn ($q) => $q->role($this->role))
+            ->when($this->status === 'enabled', fn ($q) => $q->whereNull('disabled_at'))
+            ->when($this->status === 'disabled', fn ($q) => $q->whereNotNull('disabled_at'))
             ->orderBy($this->sortField, $this->sortDirection)
             ->paginate(15);
 
@@ -68,6 +73,14 @@ new class extends Component
                     <option value="admin">Admin</option>
                     <option value="instructor">Instructor</option>
                     <option value="member">Member</option>
+                </select>
+            </div>
+            <div>
+                <x-input-label value="Stato" class="mb-1.5" />
+                <select wire:model.live="status" class="rounded-xl border-gray-200 bg-gray-50 dark:border-white/10 dark:bg-white/5 dark:text-gray-100">
+                    <option value="">Tutti</option>
+                    <option value="enabled">Abilitato</option>
+                    <option value="disabled">Disabilitato</option>
                 </select>
             </div>
         </div>
