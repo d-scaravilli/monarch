@@ -30,6 +30,10 @@
                     headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', Accept: 'application/json' },
                 });
             },
+            openNotesFor: null,
+            toggleNotes(userId) {
+                this.openNotesFor = this.openNotesFor === userId ? null : userId;
+            },
         }"
         class="space-y-4"
     >
@@ -44,24 +48,74 @@
 
         <x-card class="p-0 divide-y divide-gray-100 dark:divide-white/10">
             @forelse ($course->enrollments as $enrollment)
-                <div class="flex items-center justify-between px-5 py-4">
-                    <div class="flex items-center gap-2">
-                        <div>
-                            <p class="font-medium text-gray-900 dark:text-gray-100">{{ $enrollment->user->name }}</p>
-                            <p class="text-xs text-gray-400">{{ $enrollment->user->email }}</p>
+                <div class="px-5 py-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <div>
+                                <p class="font-medium text-gray-900 dark:text-gray-100 flex items-center gap-1.5">
+                                    {{ $enrollment->user->name }}
+                                    @if ($enrollment->user->notes->where('type', 'infortunio')->isNotEmpty())
+                                        <x-badge color="red">infortunio</x-badge>
+                                    @endif
+                                </p>
+                                <p class="text-xs text-gray-400">{{ $enrollment->user->email }}</p>
+                            </div>
+                            <x-heroicon-o-check-circle class="h-4 w-4 text-green-600" x-show="saved === {{ $enrollment->id }}" x-cloak />
                         </div>
-                        <x-heroicon-o-check-circle class="h-4 w-4 text-green-600" x-show="saved === {{ $enrollment->id }}" x-cloak />
+
+                        <div class="flex items-center gap-3">
+                            <button type="button" @click="toggleNotes({{ $enrollment->user->id }})"
+                                    class="flex items-center gap-1 text-xs font-medium text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                                <x-heroicon-o-pencil-square class="h-4 w-4" />
+                                Note ({{ $enrollment->user->notes->count() }})
+                            </button>
+
+                            <button
+                                type="button"
+                                @click="toggle({{ $enrollment->id }})"
+                                :class="state[{{ $enrollment->id }}] ? 'bg-gray-900 dark:bg-white' : 'bg-gray-200 dark:bg-white/10'"
+                                class="relative inline-flex h-7 w-12 items-center rounded-full transition-colors"
+                            >
+                                <span :class="state[{{ $enrollment->id }}] ? 'translate-x-6' : 'translate-x-1'"
+                                      class="inline-block h-5 w-5 transform rounded-full bg-white dark:bg-gray-900 transition-transform"></span>
+                            </button>
+                        </div>
                     </div>
 
-                    <button
-                        type="button"
-                        @click="toggle({{ $enrollment->id }})"
-                        :class="state[{{ $enrollment->id }}] ? 'bg-gray-900 dark:bg-white' : 'bg-gray-200 dark:bg-white/10'"
-                        class="relative inline-flex h-7 w-12 items-center rounded-full transition-colors"
-                    >
-                        <span :class="state[{{ $enrollment->id }}] ? 'translate-x-6' : 'translate-x-1'"
-                              class="inline-block h-5 w-5 transform rounded-full bg-white dark:bg-gray-900 transition-transform"></span>
-                    </button>
+                    <div x-show="openNotesFor === {{ $enrollment->user->id }}" x-cloak class="mt-4 space-y-3 rounded-xl bg-gray-50 dark:bg-white/5 p-4">
+                        @if ($enrollment->user->notes->isNotEmpty())
+                            <div class="space-y-2.5 max-h-56 overflow-y-auto">
+                                @foreach ($enrollment->user->notes as $note)
+                                    <div class="text-sm">
+                                        <div class="flex items-center gap-2">
+                                            <x-badge :color="$note->type === 'infortunio' ? 'red' : 'gray'">{{ $note->typeLabel() }}</x-badge>
+                                            <span class="text-xs text-gray-400">{{ $note->created_at->translatedFormat('d M Y') }} &middot; {{ $note->author->name }}</span>
+                                        </div>
+                                        <p class="mt-1 text-gray-700 dark:text-gray-300">{{ $note->description }}</p>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endif
+
+                        <form method="POST" action="{{ route('courses.lessons.notes.store', [$course, $lesson]) }}" class="flex flex-wrap items-end gap-2">
+                            @csrf
+                            <input type="hidden" name="user_id" value="{{ $enrollment->user->id }}">
+                            <div class="w-40 space-y-1">
+                                <x-input-label value="Tipo" class="text-xs" />
+                                <select name="type" class="w-full rounded-xl border-gray-200 bg-white text-sm dark:border-white/10 dark:bg-white/5 dark:text-gray-100">
+                                    @foreach (\App\Models\MemberNote::TYPES as $value => $label)
+                                        <option value="{{ $value }}">{{ $label }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="flex-1 min-w-[10rem] space-y-1">
+                                <x-input-label value="Descrizione" class="text-xs" />
+                                <textarea name="description" rows="2" required
+                                          class="w-full rounded-xl border-gray-200 bg-white text-sm dark:border-white/10 dark:bg-white/5 dark:text-gray-100"></textarea>
+                            </div>
+                            <x-secondary-button type="submit">Aggiungi</x-secondary-button>
+                        </form>
+                    </div>
                 </div>
             @empty
                 <p class="px-5 py-6 text-sm text-gray-500">Nessun iscritto per questo corso.</p>

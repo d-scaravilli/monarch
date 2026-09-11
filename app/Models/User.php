@@ -53,6 +53,15 @@ class User extends Authenticatable
         return $this->hasMany(MedicalCertificate::class);
     }
 
+    /**
+     * Instructor-authored progress/injury notes about this member,
+     * added from a lesson's attendance page.
+     */
+    public function notes(): HasMany
+    {
+        return $this->hasMany(MemberNote::class)->latest();
+    }
+
     public function instructedCourses(): BelongsToMany
     {
         return $this->belongsToMany(Course::class, 'course_instructor');

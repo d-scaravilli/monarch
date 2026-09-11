@@ -16,7 +16,7 @@ class AttendanceController extends Controller
     {
         $this->authorize('manageAttendance', $course);
 
-        $course->load(['enrollments.user']);
+        $course->load(['enrollments.user.notes.author']);
 
         $attendances = Attendance::query()
             ->where('lesson_id', $lesson->id)

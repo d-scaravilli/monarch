@@ -13,9 +13,6 @@ new class extends Component
     use WithPagination;
 
     #[Url]
-    public string $search = '';
-
-    #[Url]
     public ?int $courseId = null;
 
     #[Url]
@@ -48,7 +45,7 @@ new class extends Component
 
     public function updated($property): void
     {
-        if (in_array($property, ['search', 'courseId', 'roomId', 'month', 'allDates'])) {
+        if (in_array($property, ['courseId', 'roomId', 'month', 'allDates'])) {
             $this->resetPage();
         }
     }
@@ -73,7 +70,7 @@ new class extends Component
 
     public function resetFilters(): void
     {
-        $this->reset(['search', 'roomId']);
+        $this->reset(['roomId']);
         if (! $this->scoped) {
             $this->courseId = null;
         }
@@ -91,9 +88,6 @@ new class extends Component
         $lessons = Lesson::query()
             ->with(['course.discipline', 'course.room', 'attendances'])
             ->when($courseIds, fn ($q) => $q->whereIn('course_id', $courseIds))
-            ->when($this->search, function ($q) {
-                $q->whereHas('course.discipline', fn ($q2) => $q2->where('name', 'like', "%{$this->search}%"));
-            })
             ->when($this->courseId, fn ($q) => $q->where('course_id', $this->courseId))
             ->when($this->roomId, fn ($q) => $q->whereHas('course', fn ($q2) => $q2->where('room_id', $this->roomId)))
             ->when(! $this->allDates && $this->month, function ($q) {
@@ -118,13 +112,6 @@ new class extends Component
 <div class="space-y-4">
     <x-card>
         <div class="flex flex-wrap items-end gap-3">
-            <div class="relative flex-1 min-w-[10rem]">
-                <x-input-label value="Cerca" class="mb-1.5" />
-                <x-heroicon-o-magnifying-glass class="absolute left-3 top-[2.35rem] h-4 w-4 text-gray-400" />
-                <input type="text" wire:model.live.debounce.300ms="search" placeholder="Cerca..."
-                       class="w-full rounded-xl border-gray-200 bg-gray-50 pl-9 focus:bg-white focus:border-gray-900 focus:ring-gray-900 dark:border-white/10 dark:bg-white/5 dark:text-gray-100" />
-            </div>
-
             @unless ($scoped)
                 <div>
                     <x-input-label value="Corso" class="mb-1.5" />
