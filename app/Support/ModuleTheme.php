@@ -50,4 +50,26 @@ class ModuleTheme
     {
         return self::HEX[$color] ?? self::HEX['gray'];
     }
+
+    /**
+     * @return array<int, string>
+     */
+    public static function colorKeys(): array
+    {
+        return array_keys(self::PALETTE);
+    }
+
+    /**
+     * A curated set of heroicon names offered when picking a module's icon.
+     *
+     * @return array<int, string>
+     */
+    public static function iconChoices(): array
+    {
+        return [
+            'fire', 'academic-cap', 'shield-check', 'calendar-days', 'users',
+            'home', 'cube', 'trophy', 'sparkles', 'bolt', 'book-open',
+            'wrench-screwdriver', 'banknotes', 'heart', 'beaker', 'puzzle-piece',
+        ];
+    }
 }

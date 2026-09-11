@@ -1,0 +1,108 @@
+<x-app-layout>
+    <x-slot name="header">Gestione modulo</x-slot>
+
+    <div class="max-w-2xl space-y-6">
+        <div>
+            <x-section-header>Aspetto</x-section-header>
+            <x-card>
+                <form method="POST" action="{{ route('modules.settings.update', $module) }}" enctype="multipart/form-data" class="space-y-5">
+                    @csrf
+                    @method('PUT')
+
+                    <div class="flex items-center gap-4">
+                        <x-module-badge :icon="$module->icon" :color="$module->color" :image="$module->imageUrl()" size="h-14 w-14" />
+                        <label class="inline-flex cursor-pointer items-center gap-1.5 rounded-xl border border-gray-200 dark:border-white/10 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200">
+                            <x-heroicon-o-photo class="h-4 w-4" />
+                            Carica immagine
+                            <input type="file" name="image" accept="image/*" class="hidden">
+                        </label>
+                    </div>
+                    <x-input-error :messages="$errors->get('image')" class="mt-1" />
+
+                    <div class="space-y-1.5">
+                        <x-input-label for="name" value="Nome" />
+                        <x-text-input id="name" name="name" value="{{ old('name', $module->name) }}" class="w-full" />
+                        <x-input-error :messages="$errors->get('name')" class="mt-1" />
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <x-input-label for="description" value="Descrizione (mostrata nel launcher)" />
+                        <x-text-input id="description" name="description" value="{{ old('description', $module->description) }}" class="w-full" />
+                        <x-input-error :messages="$errors->get('description')" class="mt-1" />
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <x-input-label value="Icona" />
+                        <div class="grid grid-cols-8 gap-2">
+                            @foreach ($iconChoices as $icon)
+                                <label class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl border border-gray-200 dark:border-white/10 has-[:checked]:border-gray-900 has-[:checked]:bg-gray-100 dark:has-[:checked]:border-white dark:has-[:checked]:bg-white/10">
+                                    <input type="radio" name="icon" value="{{ $icon }}" class="hidden" @checked(old('icon', $module->icon) === $icon)>
+                                    <x-dynamic-component :component="'heroicon-o-'.$icon" class="h-5 w-5 text-gray-600 dark:text-gray-300" />
+                                </label>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <x-input-label value="Colore d'accento" />
+                        <div class="flex flex-wrap gap-2">
+                            @foreach ($colorChoices as $color)
+                                @php $c = \App\Support\ModuleTheme::classes($color); @endphp
+                                <label class="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full ring-2 ring-transparent has-[:checked]:ring-gray-900 dark:has-[:checked]:ring-white">
+                                    <input type="radio" name="color" value="{{ $color }}" class="hidden" @checked(old('color', $module->color) === $color)>
+                                    <span class="h-7 w-7 rounded-full {{ $c['badge'] }}"></span>
+                                </label>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <label class="flex items-center justify-between rounded-xl bg-gray-50 dark:bg-white/5 px-4 py-3">
+                        <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Modulo attivo</span>
+                        <input type="checkbox" name="is_active" value="1" class="rounded-md border-gray-300 text-gray-900 focus:ring-gray-900" @checked(old('is_active', $module->is_active))>
+                    </label>
+
+                    <x-primary-button>Salva</x-primary-button>
+                </form>
+            </x-card>
+        </div>
+
+        <div>
+            <x-section-header>Chi ha accesso</x-section-header>
+            <x-card class="divide-y divide-gray-100 dark:divide-white/10 p-0">
+                @forelse ($module->users as $moduleUser)
+                    <div class="flex items-center justify-between px-5 py-3.5">
+                        <div>
+                            <p class="font-medium text-gray-900 dark:text-gray-100">{{ $moduleUser->name }}</p>
+                            <p class="text-xs text-gray-400">{{ $moduleUser->email }}</p>
+                        </div>
+                        <form method="POST" action="{{ route('modules.settings.access.destroy', [$module, $moduleUser]) }}">
+                            @csrf @method('DELETE')
+                            <button type="submit" class="text-gray-400 hover:text-red-600">
+                                <x-heroicon-o-trash class="h-4 w-4" />
+                            </button>
+                        </form>
+                    </div>
+                @empty
+                    <p class="px-5 py-6 text-sm text-gray-500">Nessun utente con accesso diretto (gli admin vedono sempre tutto).</p>
+                @endforelse
+            </x-card>
+
+            <x-card class="mt-3">
+                <form method="POST" action="{{ route('modules.settings.access.store', $module) }}" class="flex items-end gap-3">
+                    @csrf
+                    <div class="flex-1 space-y-1.5">
+                        <x-input-label value="Concedi accesso a" />
+                        <select name="user_id" class="w-full rounded-xl border-gray-200 bg-gray-50 dark:border-white/10 dark:bg-white/5 dark:text-gray-100">
+                            @forelse ($availableUsers as $availableUser)
+                                <option value="{{ $availableUser->id }}">{{ $availableUser->name }} ({{ $availableUser->email }})</option>
+                            @empty
+                                <option value="">Tutti gli utenti hanno già accesso</option>
+                            @endforelse
+                        </select>
+                    </div>
+                    <x-primary-button>Aggiungi</x-primary-button>
+                </form>
+            </x-card>
+        </div>
+    </div>
+</x-app-layout>
