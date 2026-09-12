@@ -64,7 +64,7 @@
             </x-card>
         </div>
 
-        {{-- Top absences + expiring renewals + upcoming lessons --}}
+        {{-- Top absences + monthly/financial snapshot --}}
         <div class="grid gap-4 lg:grid-cols-3">
             <x-card>
                 <x-section-header>Iscritti con più assenze</x-section-header>
@@ -83,41 +83,9 @@
                 </div>
             </x-card>
 
-            <x-card>
-                <x-section-header>Iscrizioni in scadenza (30 giorni)</x-section-header>
-                <div class="divide-y divide-gray-100 dark:divide-white/10 -mx-5 max-h-96 overflow-y-auto">
-                    @forelse ($expiringEnrollments as $enrollment)
-                        <a href="{{ route('members.show', $enrollment->user) }}" class="flex items-center justify-between gap-3 px-5 py-3">
-                            <div class="min-w-0">
-                                <p class="font-medium text-gray-900 dark:text-gray-100 truncate">{{ $enrollment->user->name }}</p>
-                                <p class="text-xs text-gray-400">{{ $enrollment->course->discipline->name }} &middot; {{ $enrollment->billing_frequency === 'monthly' ? 'mensile' : 'annuale' }}</p>
-                            </div>
-                            <x-badge :color="$enrollment->days_until_renewal <= 7 ? 'amber' : 'gray'" class="shrink-0">
-                                {{ $enrollment->days_until_renewal === 0 ? 'oggi' : $enrollment->days_until_renewal.'g' }}
-                            </x-badge>
-                        </a>
-                    @empty
-                        <p class="px-5 py-6 text-sm text-gray-500">Nessuna scadenza nei prossimi 30 giorni.</p>
-                    @endforelse
-                </div>
-            </x-card>
+            <x-metric-card icon="user-plus" label="Nuovi iscritti questo mese" :value="$newMembersThisMonth" :color="$accentColor" />
 
-            <x-card>
-                <x-section-header>Prossime lezioni ed eventi (30 giorni)</x-section-header>
-                <div class="divide-y divide-gray-100 dark:divide-white/10 -mx-5 max-h-96 overflow-y-auto">
-                    @forelse ($upcomingLessons as $lesson)
-                        <a href="{{ route('courses.lessons.attendance.edit', [$lesson->course, $lesson]) }}" class="flex items-center justify-between px-5 py-3">
-                            <div>
-                                <p class="font-medium text-gray-900 dark:text-gray-100">{{ $lesson->course->discipline->name }}</p>
-                                <p class="text-xs text-gray-400">{{ $lesson->course->room->name }}</p>
-                            </div>
-                            <span class="text-sm text-gray-500 dark:text-gray-400">{{ $lesson->date->translatedFormat('D d M') }}</span>
-                        </a>
-                    @empty
-                        <p class="px-5 py-6 text-sm text-gray-500">Nessuna lezione in programma.</p>
-                    @endforelse
-                </div>
-            </x-card>
+            <x-metric-card icon="banknotes" label="Da incassare" value="€{{ number_format($outstanding, 2) }}" :color="$accentColor" />
         </div>
     </div>
 </x-app-layout>

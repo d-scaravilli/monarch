@@ -6,6 +6,8 @@ use App\Models\Attendance;
 use App\Models\Enrollment;
 use App\Models\Lesson;
 use App\Models\User;
+use App\Services\AccountingService;
+use App\Support\CourseYear;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
@@ -16,7 +18,7 @@ class PalestraDashboardController extends Controller
      * Overview for admins/instructors entering the Palestra module.
      * Instructors only ever see their own courses' data.
      */
-    public function index(): View
+    public function index(AccountingService $accounting): View
     {
         $user = Auth::user();
         abort_unless($user->hasAnyRole(['admin', 'instructor']), 403);
@@ -69,51 +71,28 @@ class PalestraDashboardController extends Controller
                 : round($weekSet->where('present', true)->count() / $weekSet->count() * 100);
         }
 
-        $upcomingLessons = Lesson::query()
-            ->whereBetween('date', [today(), today()->addDays(30)])
-            ->when($courseIds, fn ($q) => $q->whereIn('course_id', $courseIds))
-            ->with(['course.discipline', 'course.room'])
-            ->orderBy('date')
-            ->take(20)
-            ->get();
-
         $topPresent = $this->topByAttendance($courseIds, present: true);
         $topAbsent = $this->topByAttendance($courseIds, present: false);
-        $expiringEnrollments = $this->expiringEnrollments($courseIds);
+
+        $newMembersThisMonth = User::role('member')
+            ->whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()])
+            ->count();
+
+        $outstanding = $accounting->totals(
+            $accounting->enrollmentsForYear(CourseYear::default(), $courseIds)
+        )['missing'];
 
         return view('palestra.dashboard', [
             'activeEnrollments' => $activeEnrollments,
             'lessonsThisWeek' => $lessonsThisWeek,
             'weekAttendanceRate' => $weekAttendanceRate,
             'weeklyAttendanceTrend' => $weeklyAttendanceTrend,
-            'upcomingLessons' => $upcomingLessons,
             'topPresent' => $topPresent,
             'topAbsent' => $topAbsent,
-            'expiringEnrollments' => $expiringEnrollments,
+            'newMembersThisMonth' => $newMembersThisMonth,
+            'outstanding' => $outstanding,
             'isAdmin' => $isAdmin,
         ]);
-    }
-
-    /**
-     * Active enrollments whose renewal (annual or monthly, per
-     * Enrollment::renewalDate()) falls within the next 30 days — the
-     * same calculation the scheda iscritto uses for its progress bar.
-     *
-     * @param  Collection<int, int>|null  $courseIds
-     * @return Collection<int, Enrollment>
-     */
-    private function expiringEnrollments(?Collection $courseIds): Collection
-    {
-        return Enrollment::query()
-            ->where('status', 'active')
-            ->when($courseIds, fn ($q) => $q->whereIn('course_id', $courseIds))
-            ->with(['user', 'course.discipline'])
-            ->get()
-            ->map(fn (Enrollment $enrollment) => tap($enrollment, fn ($e) => $e->days_until_renewal = $e->daysUntilRenewal()))
-            ->filter(fn (Enrollment $enrollment) => $enrollment->days_until_renewal >= 0 && $enrollment->days_until_renewal <= 30)
-            ->sortBy('days_until_renewal')
-            ->take(8)
-            ->values();
     }
 
     /**
