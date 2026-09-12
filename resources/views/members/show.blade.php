@@ -211,79 +211,64 @@
                     </x-card>
                 </div>
 
-                <div class="grid gap-6 sm:grid-cols-2">
-                    <div>
-                        <x-section-header>Presenze</x-section-header>
-                        <x-card class="divide-y divide-gray-100 dark:divide-white/10 p-0">
-                            @forelse ($attendances->sortByDesc(fn ($a) => $a->lesson->date)->take(15) as $attendance)
-                                <div class="flex items-center justify-between px-5 py-3">
-                                    <span class="text-sm text-gray-600 dark:text-gray-400">{{ $attendance->lesson->date->translatedFormat('d M Y') }}</span>
-                                    @if ($attendance->present)
-                                        <x-heroicon-o-check-circle class="h-4 w-4 text-green-600" />
-                                    @else
-                                        <x-heroicon-o-x-circle class="h-4 w-4 text-red-400" />
-                                    @endif
-                                </div>
-                            @empty
-                                <p class="px-5 py-6 text-sm text-gray-500">Nessuna presenza registrata.</p>
-                            @endforelse
-                        </x-card>
-                    </div>
+                <div>
+                    <x-section-header>Presenze</x-section-header>
+                    <livewire:member-attendance-table :member-id="$member->id" />
+                </div>
 
-                    <div>
-                        <x-section-header>Pagamenti</x-section-header>
-                        <x-card class="divide-y divide-gray-100 dark:divide-white/10 p-0">
-                            @forelse ($payments->sortByDesc('date') as $payment)
-                                <div class="flex items-center justify-between px-5 py-3">
-                                    <span class="text-sm text-gray-600 dark:text-gray-400">{{ $payment->date->translatedFormat('d M Y') }} &middot; {{ $payment->method }}</span>
-                                    <span class="text-sm font-semibold text-gray-900 dark:text-gray-100">&euro;{{ number_format($payment->amount, 2) }}</span>
-                                </div>
-                            @empty
-                                <p class="px-5 py-6 text-sm text-gray-500">Nessun pagamento registrato.</p>
-                            @endforelse
-                        </x-card>
+                <div>
+                    <x-section-header>Pagamenti</x-section-header>
+                    <x-card class="divide-y divide-gray-100 dark:divide-white/10 p-0">
+                        @forelse ($payments->sortByDesc('date') as $payment)
+                            <div class="flex items-center justify-between px-5 py-3">
+                                <span class="text-sm text-gray-600 dark:text-gray-400">{{ $payment->date->translatedFormat('d M Y') }} &middot; {{ $payment->method }}</span>
+                                <span class="text-sm font-semibold text-gray-900 dark:text-gray-100">&euro;{{ number_format($payment->amount, 2) }}</span>
+                            </div>
+                        @empty
+                            <p class="px-5 py-6 text-sm text-gray-500">Nessun pagamento registrato.</p>
+                        @endforelse
+                    </x-card>
 
-                        @if (! $member->trashed() && $member->enrollments->isNotEmpty())
-                            <div class="mt-3" x-data="{ open: false, url: '' }">
-                                <button type="button" @click="open = !open" class="text-sm font-medium text-gray-600 dark:text-gray-300 flex items-center gap-1">
-                                    <x-heroicon-o-plus class="h-4 w-4" /> Registra pagamento
-                                </button>
-                                <x-card x-show="open" x-cloak class="mt-3">
-                                    <form method="POST" :action="url" class="space-y-3">
-                                        @csrf
-                                        <div class="space-y-1.5">
-                                            <x-input-label value="Corso" />
-                                            <select @change="url = $event.target.value" class="w-full rounded-xl border-gray-200 bg-gray-50 dark:border-white/10 dark:bg-white/5 dark:text-gray-100">
-                                                <option value="">Seleziona...</option>
-                                                @foreach ($member->enrollments as $enrollment)
-                                                    <option value="{{ route('enrollments.payments.store', $enrollment) }}">{{ $enrollment->course->discipline->name }} ({{ $enrollment->course->year }})</option>
-                                                @endforeach
+                    @if (! $member->trashed() && $member->enrollments->isNotEmpty())
+                        <div class="mt-3" x-data="{ open: false, url: '' }">
+                            <button type="button" @click="open = !open" class="text-sm font-medium text-gray-600 dark:text-gray-300 flex items-center gap-1">
+                                <x-heroicon-o-plus class="h-4 w-4" /> Registra pagamento
+                            </button>
+                            <x-card x-show="open" x-cloak class="mt-3">
+                                <form method="POST" :action="url" class="space-y-3">
+                                    @csrf
+                                    <div class="space-y-1.5">
+                                        <x-input-label value="Corso" />
+                                        <select @change="url = $event.target.value" class="w-full rounded-xl border-gray-200 bg-gray-50 dark:border-white/10 dark:bg-white/5 dark:text-gray-100">
+                                            <option value="">Seleziona...</option>
+                                            @foreach ($member->enrollments as $enrollment)
+                                                <option value="{{ route('enrollments.payments.store', $enrollment) }}">{{ $enrollment->course->discipline->name }} ({{ $enrollment->course->year }})</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="flex flex-wrap items-end gap-3">
+                                        <div class="w-28 space-y-1.5">
+                                            <x-input-label value="Importo €" />
+                                            <x-text-input type="number" step="0.01" min="0" name="amount" class="w-full" />
+                                        </div>
+                                        <div class="w-32 space-y-1.5">
+                                            <x-input-label value="Metodo" />
+                                            <select name="method" class="w-full rounded-xl border-gray-200 bg-gray-50 dark:border-white/10 dark:bg-white/5 dark:text-gray-100">
+                                                <option value="contanti">Contanti</option>
+                                                <option value="bonifico">Bonifico</option>
+                                                <option value="carta">Carta</option>
                                             </select>
                                         </div>
-                                        <div class="flex flex-wrap items-end gap-3">
-                                            <div class="w-28 space-y-1.5">
-                                                <x-input-label value="Importo €" />
-                                                <x-text-input type="number" step="0.01" min="0" name="amount" class="w-full" />
-                                            </div>
-                                            <div class="w-32 space-y-1.5">
-                                                <x-input-label value="Metodo" />
-                                                <select name="method" class="w-full rounded-xl border-gray-200 bg-gray-50 dark:border-white/10 dark:bg-white/5 dark:text-gray-100">
-                                                    <option value="contanti">Contanti</option>
-                                                    <option value="bonifico">Bonifico</option>
-                                                    <option value="carta">Carta</option>
-                                                </select>
-                                            </div>
-                                            <div class="w-36 space-y-1.5">
-                                                <x-input-label value="Data" />
-                                                <x-text-input type="date" name="date" value="{{ now()->toDateString() }}" class="w-full" />
-                                            </div>
-                                            <x-primary-button>Registra</x-primary-button>
+                                        <div class="w-36 space-y-1.5">
+                                            <x-input-label value="Data" />
+                                            <x-text-input type="date" name="date" value="{{ now()->toDateString() }}" class="w-full" />
                                         </div>
-                                    </form>
-                                </x-card>
-                            </div>
-                        @endif
-                    </div>
+                                        <x-primary-button>Registra</x-primary-button>
+                                    </div>
+                                </form>
+                            </x-card>
+                        </div>
+                    @endif
                 </div>
 
                 <div>
