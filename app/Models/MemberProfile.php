@@ -17,7 +17,20 @@ class MemberProfile extends Model
         'fiscal_code',
         'emergency_contact',
         'notes',
+        'owns_sword',
+        'shirt_given',
+        'has_borrowed_equipment',
+        'borrowed_equipment_notes',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'owns_sword' => 'boolean',
+            'shirt_given' => 'boolean',
+            'has_borrowed_equipment' => 'boolean',
+        ];
+    }
 
     public function user(): BelongsTo
     {

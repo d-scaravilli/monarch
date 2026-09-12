@@ -22,6 +22,7 @@
     $totalPaid = $payments->sum('amount');
 
     $accentColor = $currentModule->color ?? 'gray';
+    $accentHex = \App\Support\ModuleTheme::hex($accentColor);
     $accent = \App\Support\ModuleTheme::classes($accentColor);
     $initials = collect(explode(' ', $member->name))->map(fn ($p) => mb_substr($p, 0, 1))->take(2)->implode('');
 @endphp
@@ -112,9 +113,75 @@
         </div>
 
         <div>
+            <x-section-header>Equipaggiamento</x-section-header>
+            <x-card class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
+                <div class="flex items-center justify-between rounded-xl bg-gray-50 dark:bg-white/5 px-4 py-3">
+                    <span class="text-gray-700 dark:text-gray-300">Spada propria</span>
+                    <x-badge :color="$member->memberProfile?->owns_sword ? 'green' : 'gray'">{{ $member->memberProfile?->owns_sword ? 'Sì' : 'No' }}</x-badge>
+                </div>
+                <div class="flex items-center justify-between rounded-xl bg-gray-50 dark:bg-white/5 px-4 py-3">
+                    <span class="text-gray-700 dark:text-gray-300">Maglietta consegnata</span>
+                    <x-badge :color="$member->memberProfile?->shirt_given ? 'green' : 'gray'">{{ $member->memberProfile?->shirt_given ? 'Sì' : 'No' }}</x-badge>
+                </div>
+                <div class="rounded-xl bg-gray-50 dark:bg-white/5 px-4 py-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-gray-700 dark:text-gray-300">Attrezzatura in prestito</span>
+                        <x-badge :color="$member->memberProfile?->has_borrowed_equipment ? 'amber' : 'gray'">{{ $member->memberProfile?->has_borrowed_equipment ? 'Sì' : 'No' }}</x-badge>
+                    </div>
+                    @if ($member->memberProfile?->has_borrowed_equipment && $member->memberProfile?->borrowed_equipment_notes)
+                        <p class="mt-1.5 text-xs text-gray-500">{{ $member->memberProfile->borrowed_equipment_notes }}</p>
+                    @endif
+                </div>
+            </x-card>
+        </div>
+
+        <div class="grid gap-4 sm:grid-cols-2">
+            <x-card class="flex flex-col items-center">
+                <x-section-header class="self-start">Livello di presenze</x-section-header>
+                <div class="w-full" x-data="{
+                    async init() {
+                        const ApexCharts = await window.loadApexCharts();
+                        const isDark = document.documentElement.classList.contains('dark');
+                        const chart = new ApexCharts(this.$refs.gauge, {
+                            chart: { type: 'radialBar', height: 200, fontFamily: 'inherit' },
+                            series: [{{ $attendanceRate ?? 0 }}],
+                            labels: ['Presenze'],
+                            colors: ['{{ $accentHex }}'],
+                            plotOptions: { radialBar: { hollow: { size: '60%' }, dataLabels: { value: { fontSize: '1.4rem', fontWeight: 700, color: isDark ? '#f3f4f6' : '#111827', formatter: (v) => v + '%' } } } },
+                        });
+                        chart.render();
+                    },
+                }">
+                    <div x-ref="gauge"></div>
+                </div>
+            </x-card>
+
+            <x-card class="flex flex-col items-center">
+                <x-section-header class="self-start">Completamento pagamenti</x-section-header>
+                <div class="w-full" x-data="{
+                    async init() {
+                        const ApexCharts = await window.loadApexCharts();
+                        const isDark = document.documentElement.classList.contains('dark');
+                        const chart = new ApexCharts(this.$refs.gauge, {
+                            chart: { type: 'radialBar', height: 200, fontFamily: 'inherit' },
+                            series: [{{ $paymentCompletionPercent }}],
+                            labels: ['Pagato'],
+                            colors: ['{{ $accentHex }}'],
+                            plotOptions: { radialBar: { hollow: { size: '60%' }, dataLabels: { value: { fontSize: '1.4rem', fontWeight: 700, color: isDark ? '#f3f4f6' : '#111827', formatter: (v) => v + '%' } } } },
+                        });
+                        chart.render();
+                    },
+                }">
+                    <div x-ref="gauge"></div>
+                </div>
+            </x-card>
+        </div>
+
+        <div>
             <x-section-header>Iscrizioni</x-section-header>
             <x-card class="divide-y divide-gray-100 dark:divide-white/10 p-0">
                 @forelse ($member->enrollments as $enrollment)
+                    @php $status = $enrollment->balanceStatus(); @endphp
                     <a href="{{ route('courses.show', $enrollment->course) }}" class="block px-5 py-3.5">
                         <div class="flex items-center justify-between">
                             <div>
@@ -135,6 +202,19 @@
                                 </p>
                             </div>
                         @endif
+
+                        <div class="mt-3 flex items-center justify-between rounded-xl bg-gray-50 dark:bg-white/5 px-3 py-2">
+                            <span class="text-xs text-gray-500 dark:text-gray-400">
+                                Pagato €{{ number_format($enrollment->paidAmount(), 2) }} di €{{ number_format($enrollment->dueAmount(), 2) }}
+                            </span>
+                            @if ($status === 'missing')
+                                <x-badge color="amber">Mancano €{{ number_format(abs($enrollment->balance()), 2) }}</x-badge>
+                            @elseif ($status === 'overpaid')
+                                <x-badge color="green">Pagato +€{{ number_format($enrollment->balance(), 2) }}</x-badge>
+                            @else
+                                <x-badge color="green">In pari</x-badge>
+                            @endif
+                        </div>
                     </a>
                 @empty
                     <p class="px-5 py-6 text-sm text-gray-500">Nessuna iscrizione.</p>

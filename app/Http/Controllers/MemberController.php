@@ -7,6 +7,7 @@ use App\Models\Course;
 use App\Models\MemberProfile;
 use App\Models\Module;
 use App\Models\User;
+use App\Support\CourseYear;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -43,8 +44,7 @@ class MemberController extends Controller
     {
         $this->authorize('viewAny', User::class);
 
-        $defaultYear = Course::query()->latest('created_at')->value('year');
-        $year = $request->has('year') ? $request->input('year') : $defaultYear;
+        $year = $request->has('year') ? $request->input('year') : CourseYear::default();
 
         $members = User::role('member')
             ->with(['memberProfile', 'enrollments.course.discipline'])
@@ -63,7 +63,7 @@ class MemberController extends Controller
             'members' => $members,
             'selectedYear' => $year,
             'courses' => Course::with('discipline')->orderBy('year')->get(),
-            'years' => Course::query()->distinct()->orderByDesc('year')->pluck('year'),
+            'years' => CourseYear::options(),
         ]);
     }
 
@@ -153,10 +153,18 @@ class MemberController extends Controller
             ->where('type', 'infortunio')
             ->first(fn ($note) => $note->created_at->diffInDays(now()) <= 30);
 
+        $activeEnrollments = $member->enrollments->where('status', 'active');
+        $totalDue = round($activeEnrollments->sum(fn ($e) => $e->dueAmount()), 2);
+        $totalPaidForDue = round($activeEnrollments->sum(fn ($e) => $e->paidAmount()), 2);
+        $paymentCompletionPercent = $totalDue > 0
+            ? (int) min(100, round($totalPaidForDue / $totalDue * 100))
+            : ($totalPaidForDue > 0 ? 100 : 0);
+
         return view('members.show', [
             'member' => $member,
             'latestCertificate' => $member->medicalCertificates->first(),
             'recentInjury' => $recentInjury,
+            'paymentCompletionPercent' => $paymentCompletionPercent,
         ]);
     }
 
@@ -184,6 +192,10 @@ class MemberController extends Controller
             'fiscal_code' => $data['fiscal_code'] ?? null,
             'emergency_contact' => $data['emergency_contact'] ?? null,
             'notes' => $data['notes'] ?? null,
+            'owns_sword' => $data['owns_sword'] ?? false,
+            'shirt_given' => $data['shirt_given'] ?? false,
+            'has_borrowed_equipment' => $data['has_borrowed_equipment'] ?? false,
+            'borrowed_equipment_notes' => ($data['has_borrowed_equipment'] ?? false) ? $data['borrowed_equipment_notes'] ?? null : null,
         ]);
 
         return redirect()->route('members.show', $member)->with('status', 'Anagrafica aggiornata.');
@@ -206,6 +218,10 @@ class MemberController extends Controller
             'fiscal_code' => 'nullable|string|max:32',
             'emergency_contact' => 'nullable|string|max:255',
             'notes' => 'nullable|string',
+            'owns_sword' => 'nullable|boolean',
+            'shirt_given' => 'nullable|boolean',
+            'has_borrowed_equipment' => 'nullable|boolean',
+            'borrowed_equipment_notes' => 'nullable|string|max:255',
         ]);
     }
 }
