@@ -101,4 +101,45 @@ class Enrollment extends Model
 
         return (int) min(100, max(0, round($elapsed / $total * 100)));
     }
+
+    /**
+     * What's owed for this specific enrollment: the course's per-cycle
+     * cost (monthly or annual, matching how this enrollment was
+     * registered) plus the course's one-time enrollment fee if any,
+     * minus this enrollment's discount. Never negative. This is the one
+     * place course-cost math happens — the Palestra dashboard, the
+     * Contabilità page and the scheda iscritto all read it from here so
+     * the numbers can never drift apart.
+     */
+    public function dueAmount(): float
+    {
+        $course = $this->course;
+        $cycleCost = $this->billing_frequency === 'monthly' ? $course->monthly_cost : $course->annual_cost;
+        $due = (float) $cycleCost + (float) ($course->enrollment_cost ?? 0) - (float) $this->discount;
+
+        return max(0.0, round($due, 2));
+    }
+
+    public function paidAmount(): float
+    {
+        return (float) $this->payments->sum('amount');
+    }
+
+    public function balance(): float
+    {
+        return round($this->paidAmount() - $this->dueAmount(), 2);
+    }
+
+    /**
+     * 'missing', 'even' or 'overpaid' — a small tolerance absorbs float
+     * rounding so a balance of e.g. 0.001 still reads as "even".
+     */
+    public function balanceStatus(): string
+    {
+        return match (true) {
+            $this->balance() < -0.005 => 'missing',
+            $this->balance() > 0.005 => 'overpaid',
+            default => 'even',
+        };
+    }
 }

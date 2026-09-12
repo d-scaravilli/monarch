@@ -25,10 +25,12 @@
                         class="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 dark:border-white/10 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200">
                     <x-heroicon-o-plus class="h-4 w-4" /> Aggiungi iscritto
                 </button>
-                <a href="{{ route('lessons.generate', ['course_id' => $course->id]) }}"
-                   class="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 dark:border-white/10 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200">
-                    <x-heroicon-o-square-3-stack-3d class="h-4 w-4" /> Genera lezioni
-                </a>
+                @if (! $course->isEvento())
+                    <a href="{{ route('lessons.generate', ['course_id' => $course->id]) }}"
+                       class="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 dark:border-white/10 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200">
+                        <x-heroicon-o-square-3-stack-3d class="h-4 w-4" /> Genera lezioni
+                    </a>
+                @endif
                 <a href="{{ route('lessons.create', ['course_id' => $course->id]) }}"
                    class="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 dark:border-white/10 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200">
                     <x-heroicon-o-plus class="h-4 w-4" /> Nuova lezione singola
@@ -43,7 +45,10 @@
                         <x-heroicon-o-sparkles class="h-6 w-6" />
                     </span>
                     <div>
-                        <p class="text-lg font-bold text-gray-900 dark:text-gray-100">{{ $course->discipline->name }}</p>
+                        <p class="text-lg font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                            {{ $course->discipline->name }}
+                            <x-badge :color="$course->isEvento() ? 'purple' : 'gray'">{{ $course->isEvento() ? 'Evento' : 'Corso' }}</x-badge>
+                        </p>
                         <p class="text-sm text-gray-500 dark:text-gray-400">{{ $course->room->name }} &middot; {{ $course->year }}</p>
                     </div>
                 </div>
@@ -68,7 +73,12 @@
             @endif
 
             <div class="mt-4 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-gray-600 dark:text-gray-400 border-t border-gray-100 dark:border-white/10 pt-4">
-                <span class="flex items-center gap-1.5"><x-heroicon-o-credit-card class="h-4 w-4" /> €{{ number_format($course->monthly_cost, 2) }}/mese &middot; €{{ number_format($course->annual_cost, 2) }}/anno</span>
+                <span class="flex items-center gap-1.5">
+                    <x-heroicon-o-credit-card class="h-4 w-4" /> €{{ number_format($course->monthly_cost, 2) }}/mese &middot; €{{ number_format($course->annual_cost, 2) }}/anno
+                    @if ($course->enrollment_cost)
+                        &middot; €{{ number_format($course->enrollment_cost, 2) }} iscrizione
+                    @endif
+                </span>
             </div>
 
             @if ($course->instructors->isNotEmpty() || $course->schedules->isNotEmpty())
@@ -138,26 +148,7 @@
 
         <div>
             <x-section-header>Iscritti ({{ $course->enrollments->count() }})</x-section-header>
-            <x-card class="divide-y divide-gray-100 dark:divide-white/10 p-0">
-                @forelse ($course->enrollments as $enrollment)
-                    <x-swipe-row :action="route('enrollments.destroy', $enrollment)">
-                        <a href="{{ route('members.show', $enrollment->user) }}" class="flex items-center justify-between px-5 py-3.5">
-                            <div>
-                                <p class="font-medium text-gray-900 dark:text-gray-100">{{ $enrollment->user->name }}</p>
-                                <p class="text-xs text-gray-400">{{ $enrollment->user->email }}</p>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                @if ($enrollment->discount > 0)
-                                    <x-badge color="amber">-€{{ number_format($enrollment->discount, 2) }}</x-badge>
-                                @endif
-                                <x-badge :color="$enrollment->status === 'active' ? 'green' : 'gray'">{{ $enrollment->status }}</x-badge>
-                            </div>
-                        </a>
-                    </x-swipe-row>
-                @empty
-                    <p class="px-5 py-6 text-sm text-gray-500">Nessun iscritto.</p>
-                @endforelse
-            </x-card>
+            <livewire:course-enrollments-table :course-id="$course->id" :accent-color="$accentColor" />
 
             @if ($canManage && ! $course->trashed())
                 <div class="mt-3" x-ref="enrollSection">
