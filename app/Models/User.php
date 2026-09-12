@@ -54,6 +54,16 @@ class User extends Authenticatable
     }
 
     /**
+     * Admin-managed documents (scheda iscritto): the generalized
+     * replacement for medicalCertificates() above, which stays in place
+     * only for the member-facing "La mia area" page.
+     */
+    public function documents(): HasMany
+    {
+        return $this->hasMany(Document::class)->latest('uploaded_at');
+    }
+
+    /**
      * Instructor-authored progress/injury notes about this member,
      * added from a lesson's attendance page.
      */

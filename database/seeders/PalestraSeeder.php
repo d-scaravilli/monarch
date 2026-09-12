@@ -6,6 +6,7 @@ use App\Models\Attendance;
 use App\Models\Course;
 use App\Models\CourseSchedule;
 use App\Models\Discipline;
+use App\Models\Document;
 use App\Models\Enrollment;
 use App\Models\Lesson;
 use App\Models\MedicalCertificate;
@@ -52,6 +53,17 @@ class PalestraSeeder extends Seeder
             ['user_id' => $testMember->id],
             ['issue_date' => now()->subMonths(3), 'expiry_date' => now()->addMonths(9)],
         );
+        // Mirrors the legacy certificate above into the new admin-facing
+        // Documenti section (see the documents migration for how real
+        // historical data gets carried over the same way).
+        Document::firstOrCreate(
+            ['user_id' => $testMember->id, 'type' => 'certificato_medico'],
+            ['uploaded_at' => now()->subMonths(3), 'expiry_date' => now()->addMonths(9)],
+        );
+        Document::firstOrCreate(
+            ['user_id' => $testMember->id, 'type' => 'modulo_iscrizione'],
+            ['uploaded_at' => now()->subMonths(3)],
+        );
 
         $members = User::factory(8)->create()->each(function (User $user, int $i) {
             $user->forceFill(['name' => 'Iscritto '.($i + 1)])->save();
@@ -59,10 +71,19 @@ class PalestraSeeder extends Seeder
 
             MemberProfile::factory()->create(['user_id' => $user->id]);
 
+            $issueDate = $i === 0 ? now()->subMonths(13) : now()->subMonths(3);
+            $expiryDate = $i === 0 ? now()->subMonth() : now()->addMonths(9);
+
             MedicalCertificate::factory()->create([
                 'user_id' => $user->id,
-                'issue_date' => $i === 0 ? now()->subMonths(13) : now()->subMonths(3),
-                'expiry_date' => $i === 0 ? now()->subMonth() : now()->addMonths(9),
+                'issue_date' => $issueDate,
+                'expiry_date' => $expiryDate,
+            ]);
+            Document::create([
+                'user_id' => $user->id,
+                'type' => 'certificato_medico',
+                'uploaded_at' => $issueDate,
+                'expiry_date' => $expiryDate,
             ]);
         });
 

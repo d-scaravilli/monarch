@@ -144,7 +144,7 @@ class MemberController extends Controller
 
         $member->load([
             'memberProfile',
-            'medicalCertificates' => fn ($q) => $q->orderByDesc('expiry_date'),
+            'documents',
             'enrollments' => fn ($q) => $q->with(['course.discipline', 'payments', 'attendances.lesson'])->orderByDesc('enrollment_date'),
             'notes' => fn ($q) => $q->with(['author', 'lesson.course.discipline']),
         ]);
@@ -162,7 +162,6 @@ class MemberController extends Controller
 
         return view('members.show', [
             'member' => $member,
-            'latestCertificate' => $member->medicalCertificates->first(),
             'recentInjury' => $recentInjury,
             'paymentCompletionPercent' => $paymentCompletionPercent,
         ]);

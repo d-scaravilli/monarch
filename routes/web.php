@@ -8,6 +8,7 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\MemberAreaController;
@@ -48,6 +49,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/area', [MemberAreaController::class, 'index'])->name('member.area');
 
         Route::resource('members', MemberController::class);
+        Route::post('/members/{member}/documents', [DocumentController::class, 'store'])->name('members.documents.store');
+        Route::delete('/documents/{document}', [DocumentController::class, 'destroy'])->name('documents.destroy');
 
         Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');
         Route::get('/courses/create', [CourseController::class, 'create'])->name('courses.create');

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\MedicalCertificate;
+use App\Models\Document;
 use App\Models\Module;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
@@ -44,7 +44,7 @@ class DashboardController extends Controller
         foreach ($modules as $module) {
             $alerts[$module->id] = match ($module->slug) {
                 'palestra' => $user->hasRole('admin')
-                    ? MedicalCertificate::whereBetween('expiry_date', [today(), today()->addDays(30)])->count()
+                    ? Document::where('type', 'certificato_medico')->whereBetween('expiry_date', [today(), today()->addDays(30)])->count()
                     : 0,
                 default => 0,
             };

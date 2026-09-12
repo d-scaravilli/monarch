@@ -1,19 +1,4 @@
 @php
-    $certStatus = 'red';
-    $certLabel = 'Nessun certificato';
-    if ($latestCertificate) {
-        if ($latestCertificate->expiry_date->isPast()) {
-            $certStatus = 'red';
-            $certLabel = 'Scaduto il '.$latestCertificate->expiry_date->translatedFormat('d M Y');
-        } elseif ($latestCertificate->expiry_date->diffInDays(now()) <= 30) {
-            $certStatus = 'amber';
-            $certLabel = 'In scadenza il '.$latestCertificate->expiry_date->translatedFormat('d M Y');
-        } else {
-            $certStatus = 'green';
-            $certLabel = 'Valido fino al '.$latestCertificate->expiry_date->translatedFormat('d M Y');
-        }
-    }
-
     $attendances = $member->enrollments->flatMap(fn ($e) => $e->validAttendances()->map(fn ($a) => tap($a, fn ($a) => $a->enrollment = $e)));
     $payments = $member->enrollments->flatMap(fn ($e) => $e->payments->map(fn ($p) => tap($p, fn ($p) => $p->enrollment = $e)));
 
@@ -87,13 +72,6 @@
                     </div>
                 </div>
 
-                <div class="mt-4 flex items-center justify-between rounded-xl bg-gray-50 dark:bg-white/5 px-4 py-3">
-                    <span class="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
-                        <x-heroicon-o-identification class="h-5 w-5 text-gray-400" />
-                        Certificato medico
-                    </span>
-                    <x-badge :color="$certStatus">{{ $certLabel }}</x-badge>
-                </div>
             </div>
         </div>
 
@@ -329,6 +307,96 @@
                             <p class="px-5 py-6 text-sm text-gray-500">Nessuna nota registrata.</p>
                         @endforelse
                     </x-card>
+                </div>
+
+                <div>
+                    <x-section-header>Documenti</x-section-header>
+                    <x-card class="divide-y divide-gray-100 dark:divide-white/10 p-0">
+                        @forelse ($member->documents as $document)
+                            <div class="flex items-center justify-between gap-3 px-5 py-3.5">
+                                <div class="min-w-0">
+                                    <p class="font-medium text-gray-900 dark:text-gray-100">{{ $document->typeLabel() }}</p>
+                                    <p class="text-xs text-gray-400">
+                                        Caricato il {{ $document->uploaded_at->translatedFormat('d M Y') }}
+                                        @if ($document->expiry_date)
+                                            &middot; Scade il {{ $document->expiry_date->translatedFormat('d M Y') }}
+                                        @endif
+                                    </p>
+                                </div>
+                                <div class="flex items-center gap-2 shrink-0">
+                                    @if ($document->expiry_date)
+                                        @if ($document->isExpired())
+                                            <x-badge color="red">Scaduto</x-badge>
+                                        @elseif ($document->isExpiringSoon())
+                                            <x-badge color="amber">In scadenza</x-badge>
+                                        @else
+                                            <x-badge color="green">Valido</x-badge>
+                                        @endif
+                                    @endif
+                                    @if ($document->fileUrl())
+                                        <a href="{{ $document->fileUrl() }}" target="_blank" class="flex h-8 w-8 items-center justify-center rounded-full text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5">
+                                            <x-heroicon-o-arrow-down-tray class="h-4 w-4" />
+                                        </a>
+                                    @endif
+                                    @if (! $member->trashed())
+                                        <form method="POST" action="{{ route('documents.destroy', $document) }}" onsubmit="return confirm('Eliminare questo documento?')">
+                                            @csrf @method('DELETE')
+                                            <button type="submit" class="flex h-8 w-8 items-center justify-center rounded-full text-gray-400 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-500/10">
+                                                <x-heroicon-o-trash class="h-4 w-4" />
+                                            </button>
+                                        </form>
+                                    @endif
+                                </div>
+                            </div>
+                        @empty
+                            <p class="px-5 py-6 text-sm text-gray-500">Nessun documento caricato.</p>
+                        @endforelse
+                    </x-card>
+
+                    @if (! $member->trashed())
+                        <div class="mt-3" x-data="{ open: false, type: 'certificato_medico' }">
+                            <button type="button" @click="open = !open" class="text-sm font-medium text-gray-600 dark:text-gray-300 flex items-center gap-1">
+                                <x-heroicon-o-plus class="h-4 w-4" /> Carica documento
+                            </button>
+                            <x-card x-show="open" x-cloak class="mt-3">
+                                <form method="POST" action="{{ route('members.documents.store', $member) }}" enctype="multipart/form-data" class="space-y-3">
+                                    @csrf
+                                    <div class="grid sm:grid-cols-2 gap-3">
+                                        <div class="space-y-1.5">
+                                            <x-input-label value="Tipo" />
+                                            <select name="type" x-model="type" class="w-full rounded-xl border-gray-200 bg-gray-50 dark:border-white/10 dark:bg-white/5 dark:text-gray-100">
+                                                @foreach (\App\Models\Document::TYPES as $value => $label)
+                                                    <option value="{{ $value }}">{{ $label }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="space-y-1.5" x-show="type === 'altro'" x-cloak>
+                                            <x-input-label value="Etichetta" />
+                                            <x-text-input name="custom_label" class="w-full" placeholder="Es. Referto medico" />
+                                        </div>
+                                    </div>
+                                    <div class="space-y-1.5">
+                                        <x-input-label value="File" />
+                                        <input type="file" name="file" required
+                                               class="block w-full text-sm text-gray-600 dark:text-gray-300 file:mr-3 file:rounded-xl file:border-0 file:bg-gray-100 file:px-3 file:py-2 file:text-sm dark:file:bg-white/10 dark:file:text-gray-200" />
+                                    </div>
+                                    <div class="grid sm:grid-cols-2 gap-3">
+                                        <div class="space-y-1.5">
+                                            <x-input-label value="Data caricamento" />
+                                            <x-text-input type="date" name="uploaded_at" value="{{ now()->toDateString() }}" class="w-full" />
+                                        </div>
+                                        <div class="space-y-1.5">
+                                            <x-input-label value="Scadenza (facoltativa)" />
+                                            <x-text-input type="date" name="expiry_date" class="w-full" />
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-end">
+                                        <x-primary-button>Carica</x-primary-button>
+                                    </div>
+                                </form>
+                            </x-card>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
