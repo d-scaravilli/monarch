@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Course;
 use App\Models\Enrollment;
+use App\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
@@ -64,16 +65,25 @@ class AccountingService
     }
 
     /**
-     * Enrollments still owing money, worst balance first.
+     * People who still owe money, one row per person with totals summed
+     * across every course they're enrolled in — never a single course
+     * picked at random when someone has more than one.
      *
      * @param  Collection<int, Enrollment>  $enrollments
-     * @return Collection<int, Enrollment>
+     * @return Collection<int, array{user: User, enrollments: Collection<int, Enrollment>, paid: float, missing: float}>
      */
     public function whoOwes(Collection $enrollments): Collection
     {
         return $enrollments
-            ->filter(fn (Enrollment $e) => $e->balanceStatus() === 'missing')
-            ->sortBy(fn (Enrollment $e) => $e->balance())
+            ->groupBy('user_id')
+            ->map(fn (Collection $group) => [
+                'user' => $group->first()->user,
+                'enrollments' => $group->values(),
+                'paid' => round($group->sum(fn (Enrollment $e) => $e->paidAmount()), 2),
+                'missing' => round($group->sum(fn (Enrollment $e) => max(0, $e->dueAmount() - $e->paidAmount())), 2),
+            ])
+            ->filter(fn (array $row) => $row['missing'] > 0.005)
+            ->sortByDesc('missing')
             ->values();
     }
 

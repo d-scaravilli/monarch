@@ -97,14 +97,24 @@
             <div>
                 <x-section-header>Chi deve ancora pagare</x-section-header>
                 <x-card class="divide-y divide-gray-100 dark:divide-white/10 p-0 max-h-96 overflow-y-auto">
-                    @forelse ($whoOwes as $enrollment)
-                        <a href="{{ route('members.show', $enrollment->user) }}" class="flex items-center justify-between gap-3 px-5 py-3.5">
-                            <div class="min-w-0">
-                                <p class="font-medium text-gray-900 dark:text-gray-100 truncate">{{ $enrollment->user->name }}</p>
-                                <p class="text-xs text-gray-400">{{ $enrollment->course->discipline->name }}</p>
-                            </div>
-                            <span class="text-sm font-semibold text-amber-600 dark:text-amber-400 shrink-0">€{{ number_format(abs($enrollment->balance()), 2) }}</span>
-                        </a>
+                    @forelse ($whoOwes as $row)
+                        <div class="flex items-center justify-between gap-3 px-5 py-3.5">
+                            <a href="{{ route('members.show', $row['user']) }}" class="min-w-0 flex-1">
+                                <p class="font-medium text-gray-900 dark:text-gray-100 truncate">{{ $row['user']->name }}</p>
+                                <p class="text-xs text-gray-400">
+                                    Versato €{{ number_format($row['paid'], 2) }}
+                                    @if ($row['enrollments']->count() > 1)
+                                        &middot; {{ $row['enrollments']->count() }} corsi
+                                    @endif
+                                </p>
+                            </a>
+                            <span class="text-sm font-semibold text-amber-600 dark:text-amber-400 shrink-0">€{{ number_format($row['missing'], 2) }}</span>
+                            <button type="button" x-data="" x-on:click="$dispatch('open-modal', 'accounting-pay-{{ $row['user']->id }}')"
+                                    class="shrink-0 flex h-8 w-8 items-center justify-center rounded-full text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5">
+                                <x-heroicon-o-banknotes class="h-4 w-4" />
+                            </button>
+                        </div>
+                        <x-payment-modal :name="'accounting-pay-'.$row['user']->id" :enrollments="$row['enrollments']" />
                     @empty
                         <p class="px-5 py-6 text-sm text-gray-500">Nessuno risulta in debito.</p>
                     @endforelse
