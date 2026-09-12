@@ -30,8 +30,8 @@ new class extends Component
 
     /**
      * True when embedded on a single course's page: the course/room
-     * filters are hidden (redundant) and the month filter starts open
-     * to "all dates" so the course's full lesson history shows by default.
+     * filters are hidden (redundant). The current-month filter still
+     * applies by default, same as the general lessons page.
      */
     public bool $scoped = false;
 
@@ -39,7 +39,6 @@ new class extends Component
     {
         $this->courseId = $courseId;
         $this->scoped = $courseId !== null;
-        $this->allDates = $this->scoped;
         $this->month = now()->format('Y-m');
     }
 
@@ -70,11 +69,10 @@ new class extends Component
 
     public function resetFilters(): void
     {
-        $this->reset(['roomId']);
+        $this->reset(['roomId', 'allDates']);
         if (! $this->scoped) {
             $this->courseId = null;
         }
-        $this->allDates = $this->scoped;
         $this->month = now()->format('Y-m');
         $this->resetPage();
     }

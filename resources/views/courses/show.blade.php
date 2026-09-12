@@ -8,7 +8,7 @@
 <x-app-layout>
     <x-slot name="header">{{ $course->discipline->name }}</x-slot>
 
-    <div class="space-y-6" x-data="{ openEnroll: false, openPayment: false }">
+    <div class="space-y-6" x-data="{ showPayments: false }">
         @if ($course->trashed())
             <div class="rounded-2xl bg-amber-50 dark:bg-amber-500/10 px-4 py-3 text-sm font-medium text-amber-700 dark:text-amber-400 ring-1 ring-amber-100 dark:ring-amber-500/20">
                 Questo corso è stato eliminato. Stai consultando lo storico.
@@ -16,26 +16,31 @@
         @endif
 
         @if ($canManage && ! $course->trashed())
-            <div class="flex flex-wrap gap-2">
-                <button type="button" @click="openPayment = true; $refs.paymentsSection.scrollIntoView({ behavior: 'smooth' })"
-                        class="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 dark:border-white/10 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200">
-                    <x-heroicon-o-plus class="h-4 w-4" /> Registra pagamento
-                </button>
-                <button type="button" @click="openEnroll = true; $refs.enrollSection.scrollIntoView({ behavior: 'smooth' })"
-                        class="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 dark:border-white/10 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200">
-                    <x-heroicon-o-plus class="h-4 w-4" /> Aggiungi iscritto
-                </button>
-                @if (! $course->isEvento())
-                    <a href="{{ route('lessons.generate', ['course_id' => $course->id]) }}"
-                       class="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 dark:border-white/10 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200">
-                        <x-heroicon-o-square-3-stack-3d class="h-4 w-4" /> Genera lezioni
+            <x-card class="!p-3">
+                <div class="flex flex-wrap items-center gap-2">
+                    <button type="button" x-data="" x-on:click="$dispatch('open-modal', 'register-payment')"
+                            class="inline-flex items-center gap-1.5 rounded-xl bg-gray-900 dark:bg-white dark:text-gray-900 px-4 py-2.5 text-sm font-semibold text-white">
+                        <x-heroicon-o-banknotes class="h-4 w-4" /> Registra pagamento
+                    </button>
+                    <button type="button" x-data="" x-on:click="$dispatch('open-modal', 'add-enrollment')"
+                            class="inline-flex items-center gap-1.5 rounded-xl bg-gray-900 dark:bg-white dark:text-gray-900 px-4 py-2.5 text-sm font-semibold text-white">
+                        <x-heroicon-o-user-plus class="h-4 w-4" /> Aggiungi iscritto
+                    </button>
+
+                    <div class="hidden sm:block w-px h-6 bg-gray-200 dark:bg-white/10"></div>
+
+                    @if (! $course->isEvento())
+                        <a href="{{ route('lessons.generate', ['course_id' => $course->id]) }}"
+                           class="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 dark:border-white/10 px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-white/5">
+                            <x-heroicon-o-square-3-stack-3d class="h-4 w-4" /> Genera lezioni
+                        </a>
+                    @endif
+                    <a href="{{ route('lessons.create', ['course_id' => $course->id]) }}"
+                       class="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 dark:border-white/10 px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-white/5">
+                        <x-heroicon-o-plus class="h-4 w-4" /> Nuova lezione
                     </a>
-                @endif
-                <a href="{{ route('lessons.create', ['course_id' => $course->id]) }}"
-                   class="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 dark:border-white/10 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200">
-                    <x-heroicon-o-plus class="h-4 w-4" /> Nuova lezione singola
-                </a>
-            </div>
+                </div>
+            </x-card>
         @endif
 
         <x-card class="overflow-hidden">
@@ -149,42 +154,46 @@
         <div>
             <x-section-header>Iscritti ({{ $course->enrollments->count() }})</x-section-header>
             <livewire:course-enrollments-table :course-id="$course->id" :accent-color="$accentColor" />
+        </div>
 
-            @if ($canManage && ! $course->trashed())
-                <div class="mt-3" x-ref="enrollSection">
-                    <button type="button" @click="openEnroll = !openEnroll" class="text-sm font-medium text-gray-600 dark:text-gray-300 flex items-center gap-1">
-                        <x-heroicon-o-plus class="h-4 w-4" /> Aggiungi iscritto
-                    </button>
-                    <x-card x-show="openEnroll" x-cloak class="mt-3">
-                        <form method="POST" action="{{ route('courses.enrollments.store', $course) }}" class="flex flex-wrap items-end gap-3">
-                            @csrf
-                            <div class="flex-1 min-w-[10rem] space-y-1.5">
-                                <x-input-label value="Iscritto" />
-                                <select name="user_id" class="w-full rounded-xl border-gray-200 bg-gray-50 dark:border-white/10 dark:bg-white/5 dark:text-gray-100">
-                                    @forelse ($availableMembers as $member)
-                                        <option value="{{ $member->id }}">{{ $member->name }}</option>
-                                    @empty
-                                        <option value="">Nessun iscritto disponibile</option>
-                                    @endforelse
-                                </select>
-                            </div>
-                            <div class="w-28 space-y-1.5">
+        @if ($canManage && ! $course->trashed())
+            <x-modal name="add-enrollment" max-width="lg">
+                <div class="p-6">
+                    <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Aggiungi iscritto</h2>
+
+                    <form method="POST" action="{{ route('courses.enrollments.store', $course) }}" class="mt-5 space-y-4">
+                        @csrf
+                        <div class="space-y-1.5">
+                            <x-input-label value="Iscritto" />
+                            <select name="user_id" class="w-full rounded-xl border-gray-200 bg-gray-50 py-3 dark:border-white/10 dark:bg-white/5 dark:text-gray-100">
+                                @forelse ($availableMembers as $member)
+                                    <option value="{{ $member->id }}">{{ $member->name }}</option>
+                                @empty
+                                    <option value="">Nessun iscritto disponibile</option>
+                                @endforelse
+                            </select>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="space-y-1.5">
                                 <x-input-label value="Sconto €" />
                                 <x-text-input type="number" step="0.01" min="0" name="discount" value="0" class="w-full" />
                             </div>
-                            <div class="w-32 space-y-1.5">
+                            <div class="space-y-1.5">
                                 <x-input-label value="Tipo" />
                                 <select name="billing_frequency" class="w-full rounded-xl border-gray-200 bg-gray-50 dark:border-white/10 dark:bg-white/5 dark:text-gray-100">
                                     <option value="annual">Annuale</option>
                                     <option value="monthly">Mensile</option>
                                 </select>
                             </div>
+                        </div>
+                        <div class="flex items-center justify-end gap-3 pt-2">
+                            <x-secondary-button type="button" x-on:click="$dispatch('close')">Annulla</x-secondary-button>
                             <x-primary-button>Iscrivi</x-primary-button>
-                        </form>
-                    </x-card>
+                        </div>
+                    </form>
                 </div>
-            @endif
-        </div>
+            </x-modal>
+        @endif
 
         <div>
             <x-section-header>Lezioni</x-section-header>
@@ -192,49 +201,24 @@
         </div>
 
         @if ($canManage)
-            <div x-ref="paymentsSection">
-                <x-section-header>Pagamenti</x-section-header>
-                <livewire:course-payments-table :course-id="$course->id" />
-
-                @if ($course->enrollments->isNotEmpty() && ! $course->trashed())
-                    <div class="mt-3">
-                        <button type="button" @click="openPayment = !openPayment" class="text-sm font-medium text-gray-600 dark:text-gray-300 flex items-center gap-1">
-                            <x-heroicon-o-plus class="h-4 w-4" /> Registra pagamento
-                        </button>
-                        <x-card x-show="openPayment" x-cloak class="mt-3">
-                            <form method="POST" :action="url" x-data="{ url: '' }" class="flex flex-wrap items-end gap-3">
-                                @csrf
-                                <div class="flex-1 min-w-[10rem] space-y-1.5">
-                                    <x-input-label value="Iscritto" />
-                                    <select @change="url = $event.target.value" class="w-full rounded-xl border-gray-200 bg-gray-50 dark:border-white/10 dark:bg-white/5 dark:text-gray-100">
-                                        <option value="">Seleziona...</option>
-                                        @foreach ($course->enrollments as $enrollment)
-                                            <option value="{{ route('enrollments.payments.store', $enrollment) }}">{{ $enrollment->user->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="w-24 space-y-1.5">
-                                    <x-input-label value="Importo €" />
-                                    <x-text-input type="number" step="0.01" min="0" name="amount" class="w-full" />
-                                </div>
-                                <div class="w-32 space-y-1.5">
-                                    <x-input-label value="Metodo" />
-                                    <select name="method" class="w-full rounded-xl border-gray-200 bg-gray-50 dark:border-white/10 dark:bg-white/5 dark:text-gray-100">
-                                        <option value="contanti">Contanti</option>
-                                        <option value="bonifico">Bonifico</option>
-                                        <option value="carta">Carta</option>
-                                    </select>
-                                </div>
-                                <div class="w-36 space-y-1.5">
-                                    <x-input-label value="Data" />
-                                    <x-text-input type="date" name="date" value="{{ now()->toDateString() }}" class="w-full" />
-                                </div>
-                                <x-primary-button>Registra</x-primary-button>
-                            </form>
-                        </x-card>
-                    </div>
-                @endif
+            <div>
+                <div class="flex items-center justify-between">
+                    <x-section-header class="mb-0">Pagamenti</x-section-header>
+                    <button type="button" @click="showPayments = !showPayments"
+                            class="flex items-center gap-1.5 text-sm font-medium text-gray-600 dark:text-gray-300">
+                        <x-heroicon-o-eye class="h-4 w-4" x-show="! showPayments" />
+                        <x-heroicon-o-eye-slash class="h-4 w-4" x-show="showPayments" x-cloak />
+                        <span x-text="showPayments ? 'Nascondi pagamenti' : 'Mostra pagamenti'"></span>
+                    </button>
+                </div>
+                <div x-show="showPayments" x-cloak class="mt-3">
+                    <livewire:course-payments-table :course-id="$course->id" />
+                </div>
             </div>
+
+            @if ($course->enrollments->isNotEmpty() && ! $course->trashed())
+                <x-payment-modal name="register-payment" :enrollments="$course->enrollments" />
+            @endif
         @endif
     </div>
 </x-app-layout>
