@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
 
 class Enrollment extends Model
 {
@@ -49,6 +50,21 @@ class Enrollment extends Model
     public function payments(): HasMany
     {
         return $this->hasMany(Payment::class);
+    }
+
+    /**
+     * Attendances for lessons that happened on or after this enrollment
+     * started. A lesson before the member joined the course is one they
+     * couldn't possibly have attended, so it must never count toward
+     * their presence/absence stats — everywhere those are shown reads
+     * this instead of the raw `attendances` relation. Expects
+     * `attendances.lesson` to already be eager-loaded.
+     *
+     * @return Collection<int, Attendance>
+     */
+    public function validAttendances(): Collection
+    {
+        return $this->attendances->filter(fn (Attendance $a) => $a->lesson->date->gte($this->enrollment_date));
     }
 
     /**

@@ -8,6 +8,7 @@ use App\Models\Lesson;
 use App\Models\User;
 use App\Services\AccountingService;
 use App\Support\CourseYear;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
@@ -39,13 +40,8 @@ class PalestraDashboardController extends Controller
             ->when($courseIds, fn ($q) => $q->whereIn('course_id', $courseIds))
             ->count();
 
-        $weekAttendances = Attendance::query()
-            ->whereHas('lesson', function ($q) use ($weekStart, $weekEnd, $courseIds) {
-                $q->whereBetween('date', [$weekStart, $weekEnd]);
-                if ($courseIds) {
-                    $q->whereIn('course_id', $courseIds);
-                }
-            })
+        $weekAttendances = $this->validAttendancesQuery($courseIds)
+            ->whereBetween('lessons.date', [$weekStart, $weekEnd])
             ->get();
         $weekAttendanceRate = $weekAttendances->isEmpty()
             ? null
@@ -57,13 +53,8 @@ class PalestraDashboardController extends Controller
             $start = now()->subWeeks($i)->startOfWeek();
             $end = now()->subWeeks($i)->endOfWeek();
 
-            $weekSet = Attendance::query()
-                ->whereHas('lesson', function ($q) use ($start, $end, $courseIds) {
-                    $q->whereBetween('date', [$start, $end]);
-                    if ($courseIds) {
-                        $q->whereIn('course_id', $courseIds);
-                    }
-                })
+            $weekSet = $this->validAttendancesQuery($courseIds)
+                ->whereBetween('lessons.date', [$start, $end])
                 ->get();
 
             $weeklyAttendanceTrend[$start->translatedFormat('d M')] = $weekSet->isEmpty()
@@ -101,12 +92,10 @@ class PalestraDashboardController extends Controller
      */
     private function topByAttendance(?Collection $courseIds, bool $present): Collection
     {
-        $rows = Attendance::query()
-            ->join('enrollments', 'attendances.enrollment_id', '=', 'enrollments.id')
-            ->join('lessons', 'attendances.lesson_id', '=', 'lessons.id')
-            ->when($courseIds, fn ($q) => $q->whereIn('lessons.course_id', $courseIds))
+        $rows = $this->validAttendancesQuery($courseIds)
             ->where('attendances.present', $present)
-            ->selectRaw('enrollments.user_id, count(*) as attendance_count')
+            ->select('enrollments.user_id')
+            ->selectRaw('count(*) as attendance_count')
             ->groupBy('enrollments.user_id')
             ->orderByDesc('attendance_count')
             ->take(5)
@@ -118,5 +107,24 @@ class PalestraDashboardController extends Controller
             'user' => $users->get($row->user_id),
             'count' => $row->attendance_count,
         ])->filter(fn ($row) => $row->user !== null)->values();
+    }
+
+    /**
+     * Base query for attendance stats: joins in enrollments/lessons and
+     * excludes any attendance row for a lesson that happened before the
+     * member's enrollment_date (they couldn't have attended it, so it
+     * must never inflate an absence count). Every attendance aggregate
+     * on this dashboard builds on this one query.
+     *
+     * @param  Collection<int, int>|null  $courseIds
+     */
+    private function validAttendancesQuery(?Collection $courseIds): Builder
+    {
+        return Attendance::query()
+            ->join('enrollments', 'attendances.enrollment_id', '=', 'enrollments.id')
+            ->join('lessons', 'attendances.lesson_id', '=', 'lessons.id')
+            ->whereColumn('lessons.date', '>=', 'enrollments.enrollment_date')
+            ->when($courseIds, fn ($q) => $q->whereIn('lessons.course_id', $courseIds))
+            ->select('attendances.*');
     }
 }

@@ -14,7 +14,7 @@
         }
     }
 
-    $attendances = $member->enrollments->flatMap(fn ($e) => $e->attendances->map(fn ($a) => tap($a, fn ($a) => $a->enrollment = $e)));
+    $attendances = $member->enrollments->flatMap(fn ($e) => $e->validAttendances()->map(fn ($a) => tap($a, fn ($a) => $a->enrollment = $e)));
     $payments = $member->enrollments->flatMap(fn ($e) => $e->payments->map(fn ($p) => tap($p, fn ($p) => $p->enrollment = $e)));
 
     $activeEnrollmentsCount = $member->enrollments->where('status', 'active')->count();

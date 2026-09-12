@@ -1,5 +1,5 @@
 @php
-    $initial = $course->enrollments->mapWithKeys(fn ($e) => [$e->id => (bool) ($attendances[$e->id] ?? false)]);
+    $initial = $enrollments->mapWithKeys(fn ($e) => [$e->id => (bool) ($attendances[$e->id] ?? false)]);
     $accentColor = $currentModule->color ?? 'gray';
     $accentHex = \App\Support\ModuleTheme::hex($accentColor);
 @endphp
@@ -85,7 +85,7 @@
         </button>
 
         <x-card class="p-0 divide-y divide-gray-100 dark:divide-white/10">
-            @forelse ($course->enrollments as $enrollment)
+            @forelse ($enrollments as $enrollment)
                 <div class="px-5 py-4">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2">

@@ -18,19 +18,23 @@ class AttendanceController extends Controller
 
         $course->load(['enrollments.user.notes.author']);
 
+        // Someone who joined after this lesson took place couldn't have
+        // attended it, so they don't belong on its roster at all.
+        $enrollments = $course->enrollments->filter(fn ($e) => $e->enrollment_date->lte($lesson->date))->values();
+
         $attendances = Attendance::query()
             ->where('lesson_id', $lesson->id)
             ->pluck('present', 'enrollment_id');
 
-        $totalEnrolled = $course->enrollments->count();
-        $presentCount = $course->enrollments->filter(fn ($e) => (bool) ($attendances[$e->id] ?? false))->count();
+        $totalEnrolled = $enrollments->count();
+        $presentCount = $enrollments->filter(fn ($e) => (bool) ($attendances[$e->id] ?? false))->count();
         $attendanceRate = $totalEnrolled > 0 ? (int) round($presentCount / $totalEnrolled * 100) : 0;
 
-        $absentees = $course->enrollments
+        $absentees = $enrollments
             ->reject(fn ($e) => (bool) ($attendances[$e->id] ?? false))
             ->map(fn ($e) => $e->user);
 
-        return view('courses.attendance', compact('course', 'lesson', 'attendances', 'presentCount', 'totalEnrolled', 'attendanceRate', 'absentees'));
+        return view('courses.attendance', compact('course', 'lesson', 'enrollments', 'attendances', 'presentCount', 'totalEnrolled', 'attendanceRate', 'absentees'));
     }
 
     /**
@@ -58,7 +62,9 @@ class AttendanceController extends Controller
     {
         $this->authorize('manageAttendance', $course);
 
-        foreach ($course->enrollments as $enrollment) {
+        $eligible = $course->enrollments->filter(fn ($e) => $e->enrollment_date->lte($lesson->date));
+
+        foreach ($eligible as $enrollment) {
             Attendance::updateOrCreate(
                 ['enrollment_id' => $enrollment->id, 'lesson_id' => $lesson->id],
                 ['present' => true],

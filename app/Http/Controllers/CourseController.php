@@ -114,8 +114,15 @@ class CourseController extends Controller
             $start = now()->subWeeks($i)->startOfWeek();
             $end = now()->subWeeks($i)->endOfWeek();
 
+            // A lesson before the member's enrollment_date is one they
+            // couldn't have attended, so it must not count as an absence.
             $weekSet = Attendance::query()
-                ->whereHas('lesson', fn ($q) => $q->where('course_id', $course->id)->whereBetween('date', [$start, $end]))
+                ->join('enrollments', 'attendances.enrollment_id', '=', 'enrollments.id')
+                ->join('lessons', 'attendances.lesson_id', '=', 'lessons.id')
+                ->where('lessons.course_id', $course->id)
+                ->whereBetween('lessons.date', [$start, $end])
+                ->whereColumn('lessons.date', '>=', 'enrollments.enrollment_date')
+                ->select('attendances.*')
                 ->get();
 
             $trend[$start->translatedFormat('d M')] = $weekSet->isEmpty()

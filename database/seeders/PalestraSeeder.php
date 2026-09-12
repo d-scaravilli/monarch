@@ -113,7 +113,7 @@ class PalestraSeeder extends Seeder
                     'course_id' => $course->id,
                 ]);
 
-                $lessons->filter(fn (Lesson $lesson) => $lesson->date->isPast())
+                $lessons->filter(fn (Lesson $lesson) => $lesson->date->isPast() && $lesson->date->gte($enrollment->enrollment_date))
                     ->each(fn (Lesson $lesson) => Attendance::factory()->create([
                         'enrollment_id' => $enrollment->id,
                         'lesson_id' => $lesson->id,

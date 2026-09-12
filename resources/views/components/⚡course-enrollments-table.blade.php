@@ -37,7 +37,7 @@ new class extends Component
     {
         $enrollments = Enrollment::query()
             ->where('course_id', $this->courseId)
-            ->with(['user', 'course', 'attendances', 'payments'])
+            ->with(['user', 'course', 'attendances.lesson', 'payments'])
             ->orderBy($this->sortField, $this->sortDirection)
             ->paginate(5);
 
@@ -83,10 +83,11 @@ new class extends Component
                             </td>
                             <td class="px-5 py-3.5 text-gray-500 dark:text-gray-400 hidden sm:table-cell">{{ $enrollment->user->email }}</td>
                             <td class="px-5 py-3.5 text-gray-500 dark:text-gray-400 hidden md:table-cell whitespace-nowrap">{{ $enrollment->enrollment_date->translatedFormat('d M Y') }}</td>
+                            @php $validAttendances = $enrollment->validAttendances(); @endphp
                             <td class="px-5 py-3.5">
                                 <span class="inline-flex items-center gap-2">
-                                    <x-badge color="green">{{ $enrollment->attendances->where('present', true)->count() }}</x-badge>
-                                    <x-badge color="red">{{ $enrollment->attendances->where('present', false)->count() }}</x-badge>
+                                    <x-badge color="green">{{ $validAttendances->where('present', true)->count() }}</x-badge>
+                                    <x-badge color="red">{{ $validAttendances->where('present', false)->count() }}</x-badge>
                                 </span>
                             </td>
                             <td class="px-5 py-3.5 whitespace-nowrap">
