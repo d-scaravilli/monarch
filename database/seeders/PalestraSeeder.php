@@ -125,5 +125,29 @@ class PalestraSeeder extends Seeder
                 ]);
             });
         });
+
+        // One "evento" course, so the corso/evento distinction has
+        // something real to show out of the box: specific dates instead
+        // of a recurring schedule, plus a one-time enrollment fee.
+        $eventDiscipline = Discipline::factory()->create(['name' => 'Seminario Autunnale']);
+        $eventCourse = Course::create([
+            'discipline_id' => $eventDiscipline->id,
+            'room_id' => $rooms->random()->id,
+            'type' => 'evento',
+            'year' => now()->addMonths(2)->translatedFormat('d').'-'.now()->addMonths(2)->addDay()->translatedFormat('d M Y'),
+            'annual_cost' => 0,
+            'monthly_cost' => 0,
+            'enrollment_cost' => 25,
+        ]);
+        $eventCourse->instructors()->attach($instructors->random(1)->pluck('id'));
+
+        foreach ([now()->addMonths(2), now()->addMonths(2)->addDay()] as $date) {
+            Lesson::create(['course_id' => $eventCourse->id, 'date' => $date->toDateString()]);
+        }
+
+        $members->random(2)->each(fn (User $member) => Enrollment::factory()->create([
+            'user_id' => $member->id,
+            'course_id' => $eventCourse->id,
+        ]));
     }
 }

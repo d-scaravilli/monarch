@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Attendance;
 use App\Models\Course;
 use App\Models\Discipline;
+use App\Models\Lesson;
 use App\Models\Room;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -57,14 +58,16 @@ class CourseController extends Controller
         $course = Course::create([
             'discipline_id' => $discipline->id,
             'room_id' => $room->id,
+            'type' => $data['type'],
             'year' => $data['year'],
             'description' => $data['description'] ?? null,
             'annual_cost' => $data['annual_cost'],
             'monthly_cost' => $data['monthly_cost'],
+            'enrollment_cost' => $data['enrollment_cost'] ?? null,
         ]);
 
         $course->instructors()->sync($data['instructors'] ?? []);
-        $this->syncSchedules($course, $data['schedules'] ?? []);
+        $this->syncScheduleOrDates($course, $data);
 
         return redirect()->route('courses.show', $course)->with('status', 'Corso creato.');
     }
@@ -147,14 +150,16 @@ class CourseController extends Controller
         $course->update([
             'discipline_id' => $discipline->id,
             'room_id' => $room->id,
+            'type' => $data['type'],
             'year' => $data['year'],
             'description' => $data['description'] ?? null,
             'annual_cost' => $data['annual_cost'],
             'monthly_cost' => $data['monthly_cost'],
+            'enrollment_cost' => $data['enrollment_cost'] ?? null,
         ]);
 
         $course->instructors()->sync($data['instructors'] ?? []);
-        $this->syncSchedules($course, $data['schedules'] ?? []);
+        $this->syncScheduleOrDates($course, $data);
 
         return redirect()->route('courses.show', $course)->with('status', 'Corso aggiornato.');
     }
@@ -169,7 +174,7 @@ class CourseController extends Controller
     }
 
     /**
-     * @return array{room_id: ?int, year: string, description: ?string, annual_cost: float, monthly_cost: float, instructors: array<int>, schedules: array<int, array{weekday: int, start_time: string, end_time: string}>}
+     * @return array{room_id: ?int, type: string, year: string, description: ?string, annual_cost: float, monthly_cost: float, enrollment_cost: ?float, instructors: array<int>, schedules: array<int, array{weekday: int, start_time: string, end_time: string}>, event_dates: array<int, string>}
      */
     private function validateCourse(Request $request): array
     {
@@ -179,16 +184,20 @@ class CourseController extends Controller
             'room_id' => 'nullable|exists:rooms,id|required_without:new_room_name',
             'new_room_name' => 'nullable|string|max:255|required_without:room_id',
             'new_room_capacity' => 'nullable|integer|min:1|required_with:new_room_name',
+            'type' => 'required|in:corso,evento',
             'year' => 'required|string|max:100',
             'description' => 'nullable|string',
             'annual_cost' => 'required|numeric|min:0',
             'monthly_cost' => 'required|numeric|min:0',
+            'enrollment_cost' => 'nullable|numeric|min:0',
             'instructors' => 'nullable|array',
             'instructors.*' => 'exists:users,id',
             'schedules' => 'nullable|array',
             'schedules.*.weekday' => 'required|integer|between:0,6',
             'schedules.*.start_time' => 'required',
             'schedules.*.end_time' => 'required|after:schedules.*.start_time',
+            'event_dates' => 'nullable|array',
+            'event_dates.*' => 'date',
         ]);
     }
 
@@ -214,14 +223,28 @@ class CourseController extends Controller
     }
 
     /**
-     * @param  array<int, array{weekday: int, start_time: string, end_time: string}>  $schedules
+     * A "corso" keeps its recurring weekly schedule (used by "genera
+     * lezioni"); an "evento" has no recurring schedule at all — instead,
+     * the specific dates picked at creation become lessons directly.
+     * Switching a course's type clears whichever of the two no longer
+     * applies.
+     *
+     * @param  array{schedules?: array<int, array{weekday: int, start_time: string, end_time: string}>, event_dates?: array<int, string>}  $data
      */
-    private function syncSchedules(Course $course, array $schedules): void
+    private function syncScheduleOrDates(Course $course, array $data): void
     {
         $course->schedules()->delete();
 
-        foreach ($schedules as $schedule) {
-            $course->schedules()->create($schedule);
+        if ($data['type'] === 'corso') {
+            foreach ($data['schedules'] ?? [] as $schedule) {
+                $course->schedules()->create($schedule);
+            }
+
+            return;
+        }
+
+        foreach ($data['event_dates'] ?? [] as $date) {
+            Lesson::firstOrCreate(['course_id' => $course->id, 'date' => $date]);
         }
     }
 }

@@ -18,10 +18,12 @@ class Course extends Model
     protected $fillable = [
         'discipline_id',
         'room_id',
+        'type',
         'year',
         'description',
         'annual_cost',
         'monthly_cost',
+        'enrollment_cost',
     ];
 
     protected function casts(): array
@@ -29,7 +31,13 @@ class Course extends Model
         return [
             'annual_cost' => 'decimal:2',
             'monthly_cost' => 'decimal:2',
+            'enrollment_cost' => 'decimal:2',
         ];
+    }
+
+    public function isEvento(): bool
+    {
+        return $this->type === 'evento';
     }
 
     public function discipline(): BelongsTo

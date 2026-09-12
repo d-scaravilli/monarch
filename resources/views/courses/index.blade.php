@@ -23,7 +23,10 @@
                     <x-card class="h-full hover:ring-gray-300 dark:hover:ring-white/20 transition">
                         <div class="flex items-start justify-between gap-3">
                             <div class="min-w-0">
-                                <p class="font-semibold text-gray-900 dark:text-gray-100">{{ $course->discipline->name }}</p>
+                                <p class="font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-1.5">
+                                    {{ $course->discipline->name }}
+                                    <x-badge :color="$course->isEvento() ? 'purple' : 'gray'">{{ $course->isEvento() ? 'Evento' : 'Corso' }}</x-badge>
+                                </p>
                                 <p class="text-sm text-gray-500 dark:text-gray-400">{{ $course->room->name }} &middot; {{ $course->year }}</p>
                                 @if ($course->schedules->isNotEmpty())
                                     <p class="mt-1 text-xs text-gray-400 truncate">{{ $course->scheduleSummary() }}</p>
