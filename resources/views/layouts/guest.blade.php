@@ -6,7 +6,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name="theme-color" content="#f9fafb">
 
-        <title>{{ config('app.name', 'Beru') }}</title>
+        <title>{{ config('app.name', 'Monarch') }}</title>
 
         <link rel="manifest" href="/manifest.json">
         <link rel="apple-touch-icon" href="/icons/icon-192.png">
@@ -31,8 +31,8 @@
 
             <div class="relative flex flex-col items-center">
                 <a href="/" class="flex items-center gap-2.5 mb-10">
-                    <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-gray-900 dark:bg-white/10 text-white font-semibold text-xl">B</span>
-                    <span class="text-2xl font-semibold tracking-tight">Beru</span>
+                    <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-gray-900 dark:bg-white/10 text-white font-semibold text-xl">M</span>
+                    <span class="text-2xl font-semibold tracking-tight">Monarch</span>
                 </a>
 
                 <div class="w-full sm:max-w-md rounded-2xl bg-white dark:bg-gray-900 px-8 py-10 shadow-sm ring-1 ring-gray-100 dark:ring-white/10">

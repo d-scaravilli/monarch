@@ -43,7 +43,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name="theme-color" content="#f9fafb">
 
-        <title>{{ isset($header) ? $header.' - ' : '' }}{{ config('app.name', 'Beru') }}</title>
+        <title>{{ isset($header) ? $header.' - ' : '' }}{{ config('app.name', 'Monarch') }}</title>
 
         <link rel="manifest" href="/manifest.json">
         <link rel="apple-touch-icon" href="/icons/icon-192.png">
@@ -71,7 +71,7 @@
             <aside class="hidden lg:flex lg:w-64 lg:shrink-0 lg:flex-col lg:h-screen lg:sticky lg:top-0 border-r border-gray-100 dark:border-white/10 px-5 py-8">
                 <a href="{{ route('dashboard') }}" class="flex items-center gap-2 px-2 mb-8">
                     <x-module-badge :icon="$accentIcon" :color="$accentColor" :image="$accentImage" size="h-9 w-9" />
-                    <span class="text-lg font-semibold tracking-tight">{{ $currentModule->name ?? 'Beru' }}</span>
+                    <span class="text-lg font-semibold tracking-tight">{{ $currentModule->name ?? 'Monarch' }}</span>
                 </a>
 
                 <nav class="flex-1 space-y-1">
@@ -107,7 +107,7 @@
                 <header class="lg:hidden sticky top-0 z-20 flex items-center justify-between bg-gray-50/90 dark:bg-gray-950/90 backdrop-blur px-4 pt-[max(1rem,env(safe-area-inset-top))] pb-3">
                     <a href="{{ route('dashboard') }}" class="flex items-center gap-2">
                         <x-module-badge :icon="$accentIcon" :color="$accentColor" :image="$accentImage" size="h-8 w-8" />
-                        <span class="text-lg font-semibold tracking-tight">{{ $header ?? ($currentModule->name ?? 'Beru') }}</span>
+                        <span class="text-lg font-semibold tracking-tight">{{ $header ?? ($currentModule->name ?? 'Monarch') }}</span>
                     </a>
                     <a href="{{ route('settings.edit') }}" class="flex h-9 w-9 items-center justify-center rounded-full bg-gray-900 dark:bg-white/10 text-white text-sm font-semibold overflow-hidden">
                         @if ($user->avatarUrl())

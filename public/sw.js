@@ -1,4 +1,4 @@
-const CACHE_NAME = 'beru-shell-v1';
+const CACHE_NAME = 'monarch-shell-v1';
 
 self.addEventListener('install', (event) => {
     self.skipWaiting();

@@ -1,6 +1,6 @@
 {
-    "name": "Beru",
-    "short_name": "Beru",
+    "name": "Monarch",
+    "short_name": "Monarch",
     "description": "Gestionale personale a moduli - Palestra",
     "start_url": "/dashboard",
     "scope": "/",

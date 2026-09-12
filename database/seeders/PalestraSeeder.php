@@ -29,7 +29,7 @@ class PalestraSeeder extends Seeder
         );
 
         $admin = User::firstOrCreate(
-            ['email' => 'admin@beru.test'],
+            ['email' => 'admin@monarch.test'],
             ['name' => 'Amministratore', 'password' => bcrypt('password'), 'email_verified_at' => now()],
         );
         $admin->assignRole('admin');
