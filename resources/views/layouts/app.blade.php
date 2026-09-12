@@ -24,6 +24,7 @@
         $navItems[] = ['label' => 'Calendario', 'route' => 'palestra.calendar', 'icon' => 'calendar', 'active' => request()->routeIs('palestra.calendar'), 'mobile' => true];
         $navItems[] = ['label' => 'Team', 'route' => 'members.team', 'icon' => 'user-group', 'active' => request()->routeIs('members.team'), 'mobile' => false];
         if ($isAdmin) {
+            $navItems[] = ['label' => 'Contabilità', 'route' => 'accounting.index', 'icon' => 'banknotes', 'active' => request()->routeIs('accounting.*'), 'mobile' => false];
             $navItems[] = ['label' => 'Gestione modulo', 'route' => 'modules.settings.edit', 'params' => [$currentModule], 'icon' => 'wrench-screwdriver', 'active' => request()->routeIs('modules.settings.*'), 'mobile' => false];
         }
     } elseif ($currentModule->slug === 'amministrazione') {

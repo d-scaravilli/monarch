@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountingController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\PermissionController as AdminPermissionController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
@@ -42,6 +43,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/palestra/dashboard', [PalestraDashboardController::class, 'index'])->name('palestra.dashboard');
         Route::get('/calendar', [CalendarController::class, 'index'])->name('palestra.calendar');
         Route::get('/team', [MemberController::class, 'team'])->name('members.team');
+        Route::get('/accounting', [AccountingController::class, 'index'])->name('accounting.index');
 
         Route::get('/area', [MemberAreaController::class, 'index'])->name('member.area');
 
