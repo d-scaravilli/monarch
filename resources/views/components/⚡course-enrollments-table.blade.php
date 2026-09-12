@@ -62,7 +62,6 @@ new class extends Component
                         <th class="px-5 py-3 text-left hidden md:table-cell">Data iscrizione</th>
                         <th class="px-5 py-3 text-left">Presenze/Assenze</th>
                         <th class="px-5 py-3 text-left">Costi</th>
-                        <th class="px-5 py-3 text-left">Stato</th>
                         <th class="px-5 py-3 text-right">Azioni</th>
                     </tr>
                 </thead>
@@ -99,9 +98,6 @@ new class extends Component
                                     <x-badge color="green">In pari</x-badge>
                                 @endif
                             </td>
-                            <td class="px-5 py-3.5">
-                                <x-badge :color="$enrollment->status === 'active' ? 'green' : 'gray'">{{ $enrollment->status }}</x-badge>
-                            </td>
                             <td class="px-5 py-3.5 text-right">
                                 @if (auth()->user()->hasRole('admin'))
                                     <button type="button" wire:click="deleteEnrollment({{ $enrollment->id }})"
@@ -114,7 +110,7 @@ new class extends Component
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="px-5 py-8 text-center text-sm text-gray-500">Nessun iscritto.</td>
+                            <td colspan="6" class="px-5 py-8 text-center text-sm text-gray-500">Nessun iscritto.</td>
                         </tr>
                     @endforelse
                 </tbody>
