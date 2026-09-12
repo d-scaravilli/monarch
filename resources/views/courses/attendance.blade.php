@@ -1,9 +1,47 @@
 @php
     $initial = $course->enrollments->mapWithKeys(fn ($e) => [$e->id => (bool) ($attendances[$e->id] ?? false)]);
+    $accentColor = $currentModule->color ?? 'gray';
+    $accentHex = \App\Support\ModuleTheme::hex($accentColor);
 @endphp
 
 <x-app-layout>
     <x-slot name="header">Presenze &middot; {{ $lesson->date->translatedFormat('d M Y') }}</x-slot>
+
+    <div class="grid gap-4 sm:grid-cols-3 mb-6">
+        <x-card class="flex flex-col items-center justify-center">
+            <x-section-header class="self-start">Percentuale presenza</x-section-header>
+            <div class="w-full" x-data="{
+                async init() {
+                    const ApexCharts = await window.loadApexCharts();
+                    const isDark = document.documentElement.classList.contains('dark');
+                    const chart = new ApexCharts(this.$refs.gauge, {
+                        chart: { type: 'radialBar', height: 200, fontFamily: 'inherit' },
+                        series: [{{ $attendanceRate }}],
+                        labels: ['Presenti'],
+                        colors: ['{{ $accentHex }}'],
+                        plotOptions: { radialBar: { hollow: { size: '60%' }, dataLabels: { value: { fontSize: '1.4rem', fontWeight: 700, color: isDark ? '#f3f4f6' : '#111827', formatter: (v) => v + '%' } } } },
+                    });
+                    chart.render();
+                },
+            }">
+                <div x-ref="gauge"></div>
+            </div>
+            <p class="text-xs text-gray-400 -mt-2">{{ $presentCount }}/{{ $totalEnrolled }} presenti</p>
+        </x-card>
+
+        <x-card class="sm:col-span-2">
+            <x-section-header>Assenti ({{ $absentees->count() }})</x-section-header>
+            @if ($absentees->isEmpty())
+                <p class="text-sm text-gray-500 py-4">Nessun assente.</p>
+            @else
+                <div class="flex flex-wrap gap-2">
+                    @foreach ($absentees as $absentee)
+                        <x-badge color="red">{{ $absentee->name }}</x-badge>
+                    @endforeach
+                </div>
+            @endif
+        </x-card>
+    </div>
 
     <div
         x-data="{
@@ -82,39 +120,43 @@
                         </div>
                     </div>
 
-                    <div x-show="openNotesFor === {{ $enrollment->user->id }}" x-cloak class="mt-4 space-y-3 rounded-xl bg-gray-50 dark:bg-white/5 p-4">
+                    <div x-show="openNotesFor === {{ $enrollment->user->id }}" x-cloak class="mt-4 rounded-xl bg-gray-50 dark:bg-white/5 p-4 space-y-4">
                         @if ($enrollment->user->notes->isNotEmpty())
-                            <div class="space-y-2.5 max-h-56 overflow-y-auto">
-                                @foreach ($enrollment->user->notes as $note)
-                                    <div class="text-sm">
-                                        <div class="flex items-center gap-2">
-                                            <x-badge :color="$note->type === 'infortunio' ? 'red' : 'gray'">{{ $note->typeLabel() }}</x-badge>
-                                            <span class="text-xs text-gray-400">{{ $note->created_at->translatedFormat('d M Y') }} &middot; {{ $note->author->name }}</span>
+                            <div>
+                                <p class="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-2">Note precedenti</p>
+                                <div class="space-y-2.5 max-h-56 overflow-y-auto">
+                                    @foreach ($enrollment->user->notes as $note)
+                                        <div class="text-sm rounded-lg bg-white dark:bg-white/5 px-3 py-2.5">
+                                            <div class="flex items-center gap-2">
+                                                <x-badge :color="$note->type === 'infortunio' ? 'red' : 'gray'">{{ $note->typeLabel() }}</x-badge>
+                                                <span class="text-xs text-gray-400">{{ $note->created_at->translatedFormat('d M Y') }} &middot; {{ $note->author->name }}</span>
+                                            </div>
+                                            <p class="mt-1 text-gray-700 dark:text-gray-300">{{ $note->description }}</p>
                                         </div>
-                                        <p class="mt-1 text-gray-700 dark:text-gray-300">{{ $note->description }}</p>
-                                    </div>
-                                @endforeach
+                                    @endforeach
+                                </div>
                             </div>
                         @endif
 
-                        <form method="POST" action="{{ route('courses.lessons.notes.store', [$course, $lesson]) }}" class="flex flex-wrap items-end gap-2">
-                            @csrf
-                            <input type="hidden" name="user_id" value="{{ $enrollment->user->id }}">
-                            <div class="w-40 space-y-1">
-                                <x-input-label value="Tipo" class="text-xs" />
-                                <select name="type" class="w-full rounded-xl border-gray-200 bg-white text-sm dark:border-white/10 dark:bg-white/5 dark:text-gray-100">
-                                    @foreach (\App\Models\MemberNote::TYPES as $value => $label)
-                                        <option value="{{ $value }}">{{ $label }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="flex-1 min-w-[10rem] space-y-1">
-                                <x-input-label value="Descrizione" class="text-xs" />
-                                <textarea name="description" rows="2" required
-                                          class="w-full rounded-xl border-gray-200 bg-white text-sm dark:border-white/10 dark:bg-white/5 dark:text-gray-100"></textarea>
-                            </div>
-                            <x-secondary-button type="submit">Aggiungi</x-secondary-button>
-                        </form>
+                        <div>
+                            <p class="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-2">Aggiungi nota</p>
+                            <form method="POST" action="{{ route('courses.lessons.notes.store', [$course, $lesson]) }}" class="space-y-2.5">
+                                @csrf
+                                <input type="hidden" name="user_id" value="{{ $enrollment->user->id }}">
+                                <div class="flex flex-col sm:flex-row gap-2.5">
+                                    <select name="type" class="sm:w-44 shrink-0 rounded-xl border-gray-200 bg-white text-sm dark:border-white/10 dark:bg-white/5 dark:text-gray-100">
+                                        @foreach (\App\Models\MemberNote::TYPES as $value => $label)
+                                            <option value="{{ $value }}">{{ $label }}</option>
+                                        @endforeach
+                                    </select>
+                                    <textarea name="description" rows="2" required placeholder="Descrizione..."
+                                              class="flex-1 rounded-xl border-gray-200 bg-white text-sm dark:border-white/10 dark:bg-white/5 dark:text-gray-100"></textarea>
+                                </div>
+                                <div class="flex justify-end">
+                                    <x-secondary-button type="submit">Aggiungi</x-secondary-button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             @empty

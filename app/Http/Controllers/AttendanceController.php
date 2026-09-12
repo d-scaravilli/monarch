@@ -22,7 +22,15 @@ class AttendanceController extends Controller
             ->where('lesson_id', $lesson->id)
             ->pluck('present', 'enrollment_id');
 
-        return view('courses.attendance', compact('course', 'lesson', 'attendances'));
+        $totalEnrolled = $course->enrollments->count();
+        $presentCount = $course->enrollments->filter(fn ($e) => (bool) ($attendances[$e->id] ?? false))->count();
+        $attendanceRate = $totalEnrolled > 0 ? (int) round($presentCount / $totalEnrolled * 100) : 0;
+
+        $absentees = $course->enrollments
+            ->reject(fn ($e) => (bool) ($attendances[$e->id] ?? false))
+            ->map(fn ($e) => $e->user);
+
+        return view('courses.attendance', compact('course', 'lesson', 'attendances', 'presentCount', 'totalEnrolled', 'attendanceRate', 'absentees'));
     }
 
     /**

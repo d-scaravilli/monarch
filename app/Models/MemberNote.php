@@ -16,10 +16,10 @@ class MemberNote extends Model
     ];
 
     public const TYPES = [
-        'infortunio' => 'Infortunio',
         'tecnica' => 'Nota tecnica',
         'progresso' => 'Progresso',
         'altro' => 'Altro',
+        'infortunio' => 'Infortunio',
     ];
 
     public function typeLabel(): string
