@@ -2,6 +2,7 @@
     $initial = $enrollments->mapWithKeys(fn ($e) => [$e->id => (bool) ($attendances[$e->id] ?? false)]);
     $accentColor = $currentModule->color ?? 'gray';
     $accentHex = \App\Support\ModuleTheme::hex($accentColor);
+    $accent = \App\Support\ModuleTheme::classes($accentColor);
 @endphp
 
 <x-app-layout>
@@ -86,12 +87,22 @@
 
         <x-card class="p-0 divide-y divide-gray-100 dark:divide-white/10">
             @forelse ($enrollments as $enrollment)
+                @php
+                    $initials = collect(explode(' ', $enrollment->user->name))->map(fn ($p) => mb_substr($p, 0, 1))->take(2)->implode('');
+                    $hasNoteForLesson = $enrollment->user->notes->where('lesson_id', $lesson->id)->isNotEmpty();
+                @endphp
                 <div class="px-5 py-4">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2">
+                            <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full {{ $accent['badge'] }} text-xs font-bold text-white">
+                                {{ mb_strtoupper($initials) }}
+                            </span>
                             <div>
                                 <p class="font-medium text-gray-900 dark:text-gray-100 flex items-center gap-1.5">
-                                    {{ $enrollment->user->name }}
+                                    <a href="{{ route('members.show', $enrollment->user) }}" class="hover:underline">{{ $enrollment->user->name }}</a>
+                                    @if ($hasNoteForLesson)
+                                        <x-badge color="red">nota</x-badge>
+                                    @endif
                                     @if ($enrollment->user->notes->where('type', 'infortunio')->isNotEmpty())
                                         <x-badge color="red">infortunio</x-badge>
                                     @endif
