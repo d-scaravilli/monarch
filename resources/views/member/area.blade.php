@@ -63,7 +63,7 @@
                     <x-card class="space-y-4 text-sm">
                         <div>
                             <p class="text-xs text-gray-400">Codice fiscale</p>
-                            <p class="font-medium text-gray-900 dark:text-gray-100">{{ $member->memberProfile->fiscal_code ?? '—' }}</p>
+                            <p class="font-medium text-gray-900 dark:text-gray-100">{{ $member->memberProfile?->fiscal_code ?? '—' }}</p>
                         </div>
                         <div>
                             <div class="flex items-center justify-between">
@@ -73,7 +73,7 @@
                                     <x-heroicon-o-pencil class="h-3.5 w-3.5" />
                                 </button>
                             </div>
-                            <p class="font-medium text-gray-900 dark:text-gray-100">{{ $member->memberProfile->phone ?? '—' }}</p>
+                            <p class="font-medium text-gray-900 dark:text-gray-100">{{ $member->memberProfile?->phone ?? '—' }}</p>
                         </div>
                         @if ($member->memberProfile?->notes)
                             <div>
@@ -135,7 +135,7 @@
                                 @csrf @method('PATCH')
                                 <div class="space-y-1.5">
                                     <x-input-label for="phone" value="Telefono" />
-                                    <x-text-input id="phone" type="tel" name="phone" value="{{ old('phone', $member->memberProfile->phone) }}" class="w-full" />
+                                    <x-text-input id="phone" type="tel" name="phone" value="{{ old('phone', $member->memberProfile?->phone) }}" class="w-full" />
                                     <x-input-error :messages="$errors->get('phone')" class="mt-1" />
                                 </div>
                                 <div class="flex items-center justify-end gap-3 pt-2">
