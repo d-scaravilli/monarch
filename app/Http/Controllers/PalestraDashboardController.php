@@ -17,13 +17,14 @@ use Illuminate\View\View;
 class PalestraDashboardController extends Controller
 {
     /**
-     * Overview for admins/instructors entering the Palestra module.
-     * Instructors only ever see their own courses' data.
+     * Overview for admins entering the Palestra module. Admin-only:
+     * instructor has the same pages as member (no Dashboard), with extra
+     * abilities inside them on their own assigned courses.
      */
     public function index(AccountingService $accounting): View
     {
         $user = Auth::user();
-        abort_unless($user->hasAnyRole(['admin', 'instructor']), 403);
+        abort_unless($user->hasRole('admin'), 403);
 
         $isAdmin = $user->hasRole('admin');
         $courseIds = $isAdmin ? null : $user->instructedCourses()->pluck('courses.id');

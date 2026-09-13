@@ -17,16 +17,17 @@ class CoursePolicy
     }
 
     /**
-     * View a course's detail page (roster, lessons).
+     * View a course's detail page (roster, lessons). An instructor can see
+     * it either because they're assigned to teach it, or — same as any
+     * member — because they're enrolled in it or it's an evento (public
+     * noticeboard, open to all regardless of enrollment).
      */
     public function view(User $user, Course $course): bool
     {
-        if ($user->hasRole('instructor')) {
-            return $course->instructors()->whereKey($user->id)->exists();
+        if ($user->hasRole('instructor') && $course->instructors()->whereKey($user->id)->exists()) {
+            return true;
         }
 
-        // An "evento" is a public noticeboard: any member can look, not
-        // just the ones enrolled in it.
         if ($course->isEvento()) {
             return true;
         }

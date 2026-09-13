@@ -70,7 +70,9 @@ class DashboardController extends Controller
         abort_unless($user->hasRole('admin') || $user->modules()->whereKey($module->id)->exists(), 403);
 
         return match ($module->slug) {
-            'palestra' => $user->hasRole('member') ? redirect()->route('member.area') : redirect()->route('palestra.dashboard'),
+            // Instructor lands on "La mia area" just like member — the
+            // Dashboard is admin-only now.
+            'palestra' => $user->hasAnyRole(['member', 'instructor']) ? redirect()->route('member.area') : redirect()->route('palestra.dashboard'),
             'amministrazione' => redirect()->route('admin.dashboard'),
             default => redirect()->route('dashboard'),
         };

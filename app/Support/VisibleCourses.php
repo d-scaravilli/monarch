@@ -22,17 +22,21 @@ class VisibleCourses
             return null;
         }
 
-        if ($user->hasRole('instructor')) {
-            return $user->instructedCourses()->pluck('courses.id');
-        }
-
-        // A plain member sees the courses they're enrolled in, plus every
-        // "evento" regardless of enrollment — events are a public
-        // noticeboard, not gated by who signed up.
-        return Course::query()
+        // Enrolled-as-member courses, plus every "evento" regardless of
+        // enrollment — events are a public noticeboard, not gated by who
+        // signed up. Applies to any non-admin, instructor included: an
+        // instructor who's also enrolled somewhere as a member must still
+        // see that course.
+        $ids = Course::query()
             ->where(fn ($q) => $q
                 ->whereHas('enrollments', fn ($q2) => $q2->where('user_id', $user->id))
                 ->orWhere('type', 'evento'))
             ->pluck('id');
+
+        if ($user->hasRole('instructor')) {
+            $ids = $ids->merge($user->instructedCourses()->pluck('courses.id'))->unique()->values();
+        }
+
+        return $ids;
     }
 }

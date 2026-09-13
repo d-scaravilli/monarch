@@ -1,7 +1,7 @@
 @php
     $user = auth()->user();
     $isAdmin = $user->hasRole('admin');
-    $isStaff = $user->hasAnyRole(['admin', 'instructor']);
+    $isInstructor = $user->hasRole('instructor');
     $isMember = $user->hasRole('member');
     $accentColor = $currentModule->color ?? 'gray';
     $accentIcon = $currentModule->icon ?? 'squares-2x2';
@@ -15,21 +15,27 @@
 
     if (! $currentModule) {
         $navItems[] = ['label' => 'Impostazioni', 'route' => 'settings.edit', 'icon' => 'cog-6-tooth', 'active' => request()->routeIs('settings.*'), 'mobile' => true];
-    } elseif ($currentModule->slug === 'palestra' && $isMember) {
+    } elseif ($currentModule->slug === 'palestra' && ($isMember || $isInstructor)) {
+        // Instructor gets exactly the same pages as member — no Dashboard —
+        // plus Team (filtered to their own courses, see MemberController).
+        // Extra abilities inside these pages (notes, description, presence
+        // management) come from CoursePolicy::manageAttendance, not from
+        // seeing a different set of pages.
         $navItems[] = ['label' => 'La mia area', 'route' => 'member.area', 'icon' => 'user-circle', 'active' => request()->routeIs('member.area'), 'mobile' => true];
         $navItems[] = ['label' => 'Corsi', 'route' => 'courses.index', 'icon' => 'academic-cap', 'active' => request()->routeIs('courses.*'), 'mobile' => true];
         $navItems[] = ['label' => 'Lezioni', 'route' => 'lessons.index', 'icon' => 'calendar-days', 'active' => request()->routeIs('lessons.*'), 'mobile' => true];
         $navItems[] = ['label' => 'Calendario', 'route' => 'palestra.calendar', 'icon' => 'calendar', 'active' => request()->routeIs('palestra.calendar'), 'mobile' => true];
-    } elseif ($currentModule->slug === 'palestra' && $isStaff) {
+        if ($isInstructor) {
+            $navItems[] = ['label' => 'Team', 'route' => 'members.team', 'icon' => 'user-group', 'active' => request()->routeIs('members.*'), 'mobile' => true];
+        }
+    } elseif ($currentModule->slug === 'palestra' && $isAdmin) {
         $navItems[] = ['label' => 'Dashboard', 'route' => 'palestra.dashboard', 'icon' => 'home', 'active' => request()->routeIs('palestra.dashboard'), 'mobile' => true];
         $navItems[] = ['label' => 'Corsi', 'route' => 'courses.index', 'icon' => 'academic-cap', 'active' => request()->routeIs('courses.*'), 'mobile' => true];
         $navItems[] = ['label' => 'Lezioni', 'route' => 'lessons.index', 'icon' => 'calendar-days', 'active' => request()->routeIs('lessons.*'), 'mobile' => true];
         $navItems[] = ['label' => 'Team', 'route' => 'members.team', 'icon' => 'user-group', 'active' => request()->routeIs('members.*'), 'mobile' => true];
         $navItems[] = ['label' => 'Calendario', 'route' => 'palestra.calendar', 'icon' => 'calendar', 'active' => request()->routeIs('palestra.calendar'), 'mobile' => true];
-        if ($isAdmin) {
-            $navItems[] = ['label' => 'Contabilità', 'route' => 'accounting.index', 'icon' => 'banknotes', 'active' => request()->routeIs('accounting.*'), 'mobile' => false];
-            $navItems[] = ['label' => 'Gestione modulo', 'route' => 'modules.settings.edit', 'params' => [$currentModule], 'icon' => 'wrench-screwdriver', 'active' => request()->routeIs('modules.settings.*'), 'mobile' => false];
-        }
+        $navItems[] = ['label' => 'Contabilità', 'route' => 'accounting.index', 'icon' => 'banknotes', 'active' => request()->routeIs('accounting.*'), 'mobile' => false];
+        $navItems[] = ['label' => 'Gestione modulo', 'route' => 'modules.settings.edit', 'params' => [$currentModule], 'icon' => 'wrench-screwdriver', 'active' => request()->routeIs('modules.settings.*'), 'mobile' => false];
     } elseif ($currentModule->slug === 'amministrazione') {
         $navItems[] = ['label' => 'Dashboard', 'route' => 'admin.dashboard', 'icon' => 'home', 'active' => request()->routeIs('admin.dashboard'), 'mobile' => true];
         $navItems[] = ['label' => 'Utenti', 'route' => 'admin.users.index', 'icon' => 'users', 'active' => request()->routeIs('admin.users.*'), 'mobile' => true];
