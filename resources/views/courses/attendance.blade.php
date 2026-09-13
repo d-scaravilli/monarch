@@ -8,7 +8,7 @@
 <x-app-layout>
     <x-slot name="header">Presenze &middot; {{ $lesson->date->translatedFormat('d M Y') }}</x-slot>
 
-    <div class="grid gap-4 sm:grid-cols-3 mb-6">
+    <div class="grid gap-4 lg:grid-cols-3 mb-6">
         <x-card class="flex flex-col items-center justify-center">
             <x-section-header class="self-start">Percentuale presenza</x-section-header>
             <div class="w-full" x-data="{
@@ -30,16 +30,36 @@
             <p class="text-xs text-gray-400 -mt-2">{{ $presentCount }}/{{ $totalEnrolled }} presenti</p>
         </x-card>
 
-        <x-card class="sm:col-span-2">
+        <x-card>
             <x-section-header>Assenti ({{ $absentees->count() }})</x-section-header>
             @if ($absentees->isEmpty())
                 <p class="text-sm text-gray-500 py-4">Nessun assente.</p>
             @else
-                <div class="flex flex-wrap gap-2">
+                <div class="flex flex-wrap gap-1.5">
                     @foreach ($absentees as $absentee)
                         <x-badge color="red">{{ $absentee->name }}</x-badge>
                     @endforeach
                 </div>
+            @endif
+        </x-card>
+
+        <x-card class="p-0 overflow-hidden">
+            <x-section-header class="px-5 pt-5">Presenti ({{ $presentees->count() }})</x-section-header>
+            @if ($presentees->isEmpty())
+                <p class="text-sm text-gray-500 px-5 pb-5 pt-1">Nessun presente.</p>
+            @else
+                <table class="w-full text-sm">
+                    <tbody class="divide-y divide-gray-100 dark:divide-white/10">
+                        @foreach ($presentees as $presentee)
+                            <tr>
+                                <td class="px-5 py-2 text-gray-700 dark:text-gray-300">{{ $presentee->name }}</td>
+                                <td class="px-5 py-2 text-right">
+                                    <x-heroicon-o-check-circle class="h-4 w-4 text-green-600 ml-auto" />
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             @endif
         </x-card>
     </div>

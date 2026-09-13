@@ -34,7 +34,11 @@ class AttendanceController extends Controller
             ->reject(fn ($e) => (bool) ($attendances[$e->id] ?? false))
             ->map(fn ($e) => $e->user);
 
-        return view('courses.attendance', compact('course', 'lesson', 'enrollments', 'attendances', 'presentCount', 'totalEnrolled', 'attendanceRate', 'absentees'));
+        $presentees = $enrollments
+            ->filter(fn ($e) => (bool) ($attendances[$e->id] ?? false))
+            ->map(fn ($e) => $e->user);
+
+        return view('courses.attendance', compact('course', 'lesson', 'enrollments', 'attendances', 'presentCount', 'totalEnrolled', 'attendanceRate', 'absentees', 'presentees'));
     }
 
     /**
