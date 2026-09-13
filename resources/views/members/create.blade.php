@@ -56,9 +56,9 @@
             </div>
 
             <div class="space-y-1.5">
-                <x-input-label for="emergency_contact" value="Contatto di emergenza" />
-                <x-text-input id="emergency_contact" name="emergency_contact" value="{{ old('emergency_contact') }}" class="w-full" />
-                <x-input-error :messages="$errors->get('emergency_contact')" class="mt-1" />
+                <x-input-label for="phone" value="Contatto telefonico" />
+                <x-text-input id="phone" type="tel" name="phone" value="{{ old('phone') }}" class="w-full" />
+                <x-input-error :messages="$errors->get('phone')" class="mt-1" />
             </div>
 
             <div class="space-y-1.5">

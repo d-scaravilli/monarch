@@ -15,7 +15,7 @@ class MemberProfile extends Model
     protected $fillable = [
         'user_id',
         'fiscal_code',
-        'emergency_contact',
+        'phone',
         'notes',
         'owns_sword',
         'shirt_given',

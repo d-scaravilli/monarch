@@ -12,7 +12,7 @@ class MemberProfileFactory extends Factory
         return [
             'user_id' => User::factory(),
             'fiscal_code' => strtoupper(fake()->bothify('??????##?##?###?')),
-            'emergency_contact' => fake()->name().' - '.fake()->phoneNumber(),
+            'phone' => fake()->numerify('3## #######'),
             'notes' => null,
         ];
     }

@@ -47,7 +47,7 @@ class PalestraSeeder extends Seeder
         $testMember->assignRole('member');
         MemberProfile::firstOrCreate(['user_id' => $testMember->id], [
             'fiscal_code' => 'TSTUSR85M01H501Z',
-            'emergency_contact' => 'Mario Rossi - 333 1234567',
+            'phone' => '333 1234567',
         ]);
         MedicalCertificate::firstOrCreate(
             ['user_id' => $testMember->id],

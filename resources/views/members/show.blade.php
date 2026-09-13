@@ -85,8 +85,8 @@
                             <p class="font-medium text-gray-900 dark:text-gray-100">{{ $member->memberProfile->fiscal_code ?? '—' }}</p>
                         </div>
                         <div>
-                            <p class="text-xs text-gray-400">Contatto di emergenza</p>
-                            <p class="font-medium text-gray-900 dark:text-gray-100">{{ $member->memberProfile->emergency_contact ?? '—' }}</p>
+                            <p class="text-xs text-gray-400">Contatto telefonico</p>
+                            <p class="font-medium text-gray-900 dark:text-gray-100">{{ $member->memberProfile->phone ?? '—' }}</p>
                         </div>
                         @if ($member->memberProfile?->notes)
                             <div>

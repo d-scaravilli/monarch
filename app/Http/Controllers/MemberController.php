@@ -85,7 +85,7 @@ class MemberController extends Controller
         MemberProfile::create([
             'user_id' => $member->id,
             'fiscal_code' => $data['fiscal_code'] ?? null,
-            'emergency_contact' => $data['emergency_contact'] ?? null,
+            'phone' => $data['phone'] ?? null,
             'notes' => $data['notes'] ?? null,
         ]);
 
@@ -103,7 +103,7 @@ class MemberController extends Controller
         $data = $request->validate([
             'existing_user_id' => 'required|exists:users,id|unique:member_profiles,user_id',
             'fiscal_code' => 'nullable|string|max:32',
-            'emergency_contact' => 'nullable|string|max:255',
+            'phone' => ['nullable', 'string', 'max:32', 'regex:/^[0-9+\s().-]+$/'],
             'notes' => 'nullable|string',
         ]);
 
@@ -117,7 +117,7 @@ class MemberController extends Controller
         MemberProfile::create([
             'user_id' => $member->id,
             'fiscal_code' => $data['fiscal_code'] ?? null,
-            'emergency_contact' => $data['emergency_contact'] ?? null,
+            'phone' => $data['phone'] ?? null,
             'notes' => $data['notes'] ?? null,
         ]);
 
@@ -176,7 +176,7 @@ class MemberController extends Controller
 
         $member->memberProfile()->updateOrCreate(['user_id' => $member->id], [
             'fiscal_code' => $data['fiscal_code'] ?? null,
-            'emergency_contact' => $data['emergency_contact'] ?? null,
+            'phone' => $data['phone'] ?? null,
             'notes' => $data['notes'] ?? null,
             'owns_sword' => $data['owns_sword'] ?? false,
             'shirt_given' => $data['shirt_given'] ?? false,
@@ -202,7 +202,7 @@ class MemberController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email,'.($ignoreUserId ?? 'NULL').',id',
             'fiscal_code' => 'nullable|string|max:32',
-            'emergency_contact' => 'nullable|string|max:255',
+            'phone' => ['nullable', 'string', 'max:32', 'regex:/^[0-9+\s().-]+$/'],
             'notes' => 'nullable|string',
             'owns_sword' => 'nullable|boolean',
             'shirt_given' => 'nullable|boolean',
