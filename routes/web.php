@@ -47,6 +47,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/calendar', [CalendarController::class, 'index'])->name('palestra.calendar');
         Route::get('/team', [MemberController::class, 'team'])->name('members.team');
         Route::get('/progress', [ProgressController::class, 'index'])->name('progress.index');
+        Route::get('/progress/{member}', [ProgressController::class, 'show'])->name('progress.show');
         Route::get('/accounting', [AccountingController::class, 'index'])->name('accounting.index');
 
         Route::get('/area', [MemberAreaController::class, 'index'])->name('member.area');

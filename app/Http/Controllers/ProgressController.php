@@ -34,4 +34,21 @@ class ProgressController extends Controller
 
         return view('progress.index', compact('members'));
     }
+
+    /**
+     * The full timeline for one member. Reachable by admin/instructor
+     * under the same scope as index() (via UserPolicy::view, which
+     * already checks the instructor's course overlap), and additionally
+     * by the member themselves — for their own page only, linked from
+     * "La mia area".
+     */
+    public function show(User $member): View
+    {
+        $viewer = Auth::user();
+        abort_unless($viewer->id === $member->id || $viewer->can('view', $member), 403);
+
+        $member->load(['notes' => fn ($q) => $q->with(['author', 'lesson.course.discipline'])]);
+
+        return view('progress.show', compact('member'));
+    }
 }
