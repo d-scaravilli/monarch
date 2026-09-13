@@ -12,9 +12,18 @@ use Illuminate\View\View;
 
 class AttendanceController extends Controller
 {
+    /**
+     * Opening a lesson: admin/assigned-instructor get the full management
+     * view (toggle presence, add notes, edit description); anyone else
+     * allowed to view the course (enrolled member, or anyone for an
+     * evento) gets a read-only view with the same info minus other
+     * members' notes.
+     */
     public function edit(Course $course, Lesson $lesson): View
     {
-        $this->authorize('manageAttendance', $course);
+        $this->authorize('view', $course);
+
+        $canManage = auth()->user()->can('manageAttendance', $course);
 
         $course->load(['enrollments.user.notes.author']);
 
@@ -38,7 +47,7 @@ class AttendanceController extends Controller
             ->filter(fn ($e) => (bool) ($attendances[$e->id] ?? false))
             ->map(fn ($e) => $e->user);
 
-        return view('courses.attendance', compact('course', 'lesson', 'enrollments', 'attendances', 'presentCount', 'totalEnrolled', 'attendanceRate', 'absentees', 'presentees'));
+        return view('courses.attendance', compact('course', 'lesson', 'canManage', 'enrollments', 'attendances', 'presentCount', 'totalEnrolled', 'attendanceRate', 'absentees', 'presentees'));
     }
 
     /**
