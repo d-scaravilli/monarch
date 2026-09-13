@@ -1,5 +1,5 @@
 <x-app-layout>
-    <x-slot name="header">Corsi</x-slot>
+    <x-slot name="header">Corsi ed eventi</x-slot>
     @php $accent = \App\Support\ModuleTheme::classes($currentModule->color ?? 'gray'); @endphp
 
     @if (auth()->user()->hasRole('admin'))
@@ -34,6 +34,14 @@
                             </div>
                             <x-heroicon-o-chevron-right class="h-5 w-5 text-gray-300 shrink-0" />
                         </div>
+
+                        @if ($course->instructors->isNotEmpty())
+                            <div class="mt-3 flex flex-wrap gap-1.5">
+                                @foreach ($course->instructors as $instructor)
+                                    <x-badge>{{ $instructor->name }}</x-badge>
+                                @endforeach
+                            </div>
+                        @endif
 
                         <p class="mt-4 text-3xl font-bold {{ $accent['text'] }}">{{ $course->enrollments_count }}</p>
                         <p class="text-xs font-semibold uppercase tracking-wide text-gray-400">{{ $course->enrollments_count === 1 ? 'iscritto' : 'iscritti' }}</p>

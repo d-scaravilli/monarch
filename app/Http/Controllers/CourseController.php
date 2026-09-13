@@ -27,7 +27,7 @@ class CourseController extends Controller
         $courseIds = VisibleCourses::idsFor($user);
 
         $courses = Course::query()
-            ->with(['discipline', 'room', 'schedules'])
+            ->with(['discipline', 'room', 'schedules', 'instructors'])
             ->withCount('enrollments')
             ->when($courseIds !== null, fn ($q) => $q->whereIn('id', $courseIds))
             ->orderBy('year')
