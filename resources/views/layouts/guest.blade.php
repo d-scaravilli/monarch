@@ -1,24 +1,16 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="bg-gray-50" data-theme-pref="auto">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark bg-gray-50" data-theme-pref="dark">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <meta name="theme-color" content="#f9fafb">
+        <meta name="theme-color" content="#030712">
 
         <title>{{ config('app.name', 'Monarch') }}</title>
 
         <link rel="manifest" href="/manifest.json">
         <link rel="apple-touch-icon" href="/icons/icon-192.png">
         <link rel="icon" href="/icons/icon-192.png">
-
-        <script>
-            (function () {
-                if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                    document.documentElement.classList.add('dark');
-                }
-            })();
-        </script>
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
