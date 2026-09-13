@@ -20,8 +20,8 @@
         $navItems[] = ['label' => 'Dashboard', 'route' => 'palestra.dashboard', 'icon' => 'home', 'active' => request()->routeIs('palestra.dashboard'), 'mobile' => true];
         $navItems[] = ['label' => 'Corsi', 'route' => 'courses.index', 'icon' => 'academic-cap', 'active' => request()->routeIs('courses.*'), 'mobile' => true];
         $navItems[] = ['label' => 'Lezioni', 'route' => 'lessons.index', 'icon' => 'calendar-days', 'active' => request()->routeIs('lessons.*'), 'mobile' => true];
-        $navItems[] = ['label' => 'Calendario', 'route' => 'palestra.calendar', 'icon' => 'calendar', 'active' => request()->routeIs('palestra.calendar'), 'mobile' => true];
         $navItems[] = ['label' => 'Team', 'route' => 'members.team', 'icon' => 'user-group', 'active' => request()->routeIs('members.*'), 'mobile' => true];
+        $navItems[] = ['label' => 'Calendario', 'route' => 'palestra.calendar', 'icon' => 'calendar', 'active' => request()->routeIs('palestra.calendar'), 'mobile' => true];
         if ($isAdmin) {
             $navItems[] = ['label' => 'Contabilità', 'route' => 'accounting.index', 'icon' => 'banknotes', 'active' => request()->routeIs('accounting.*'), 'mobile' => false];
             $navItems[] = ['label' => 'Gestione modulo', 'route' => 'modules.settings.edit', 'params' => [$currentModule], 'icon' => 'wrench-screwdriver', 'active' => request()->routeIs('modules.settings.*'), 'mobile' => false];
@@ -89,8 +89,15 @@
                 </nav>
 
                 <div class="mt-auto pt-4 border-t border-gray-100 dark:border-white/10">
-                    <p class="px-2 text-sm font-medium text-gray-900 dark:text-gray-100 truncate">{{ $user->name }}</p>
-                    <p class="px-2 text-xs text-gray-400 truncate mb-3">{{ $user->email }}</p>
+                    <div class="flex items-start justify-between gap-2 px-2 mb-3">
+                        <div class="min-w-0">
+                            <p class="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">{{ $user->name }}</p>
+                            <p class="text-xs text-gray-400 truncate">{{ $user->email }}</p>
+                        </div>
+                        <a href="{{ route('settings.edit') }}" class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-white/5 dark:hover:text-gray-300">
+                            <x-heroicon-o-cog-6-tooth class="h-5 w-5" />
+                        </a>
+                    </div>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit" class="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-white/5">
