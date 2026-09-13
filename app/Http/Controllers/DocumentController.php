@@ -10,9 +10,14 @@ use Illuminate\Support\Facades\Storage;
 
 class DocumentController extends Controller
 {
+    /**
+     * Admin uploads for any member; a member may also upload their own
+     * (they just can't delete afterwards — destroy() below stays
+     * admin-only).
+     */
     public function store(Request $request, User $member): RedirectResponse
     {
-        abort_unless($request->user()->hasRole('admin'), 403);
+        abort_unless($request->user()->hasRole('admin') || $request->user()->id === $member->id, 403);
 
         $data = $request->validate([
             'type' => 'required|in:'.implode(',', array_keys(Document::TYPES)),

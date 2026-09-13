@@ -54,9 +54,10 @@ class User extends Authenticatable
     }
 
     /**
-     * Admin-managed documents (scheda iscritto): the generalized
-     * replacement for medicalCertificates() above, which stays in place
-     * only for the member-facing "La mia area" page.
+     * The generalized replacement for medicalCertificates() above, used
+     * everywhere now (admin scheda iscritto and "La mia area" alike).
+     * medicalCertificates() stays only for historical data already in
+     * that table; nothing reads it anymore.
      */
     public function documents(): HasMany
     {
