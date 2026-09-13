@@ -7,15 +7,16 @@ use Illuminate\Support\Collection;
 
 /**
  * The single definition of "which course year are we looking at by
- * default" — the most recently *created* course's year, not the
- * calendar year. Reused by Team and Contabilità so year selection never
- * diverges between pages.
+ * default" — the most recent year *by value* among existing courses
+ * (not the most recently *created* course's year, which can lag behind
+ * if an older-year course gets entered after a newer one). Reused by
+ * Team and Contabilità so year selection never diverges between pages.
  */
 class CourseYear
 {
     public static function default(): ?string
     {
-        return Course::query()->latest('created_at')->value('year');
+        return Course::query()->orderByDesc('year')->value('year');
     }
 
     /**
