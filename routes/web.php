@@ -33,6 +33,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('/modules/{module}/settings', [ModuleSettingsController::class, 'update'])->name('modules.settings.update');
     Route::post('/modules/{module}/settings/access', [ModuleSettingsController::class, 'grantAccess'])->name('modules.settings.access.store');
     Route::delete('/modules/{module}/settings/access/{user}', [ModuleSettingsController::class, 'revokeAccess'])->name('modules.settings.access.destroy');
+    Route::delete('/modules/{module}/settings/reset', [ModuleSettingsController::class, 'resetData'])->name('modules.settings.reset');
 
     Route::get('/settings', [SettingsController::class, 'edit'])->name('settings.edit');
     Route::patch('/settings/account', [ProfileController::class, 'update'])->name('settings.account.update');

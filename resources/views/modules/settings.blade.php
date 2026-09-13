@@ -132,5 +132,58 @@
                 </form>
             </x-card>
         </div>
+
+        @if ($module->slug === 'palestra')
+            <div>
+                <x-section-header class="text-red-500 dark:text-red-400">Zona pericolosa</x-section-header>
+                <x-card class="ring-1 ring-red-200 dark:ring-red-500/30 bg-red-50/50 dark:bg-red-500/5">
+                    <div class="flex items-start justify-between gap-4">
+                        <div>
+                            <p class="font-medium text-gray-900 dark:text-gray-100">Azzera dati modulo</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                                Cancella iscrizioni, corsi/eventi, fasce orarie, lezioni, presenze, pagamenti,
+                                documenti e note. Account utente, sale e impostazioni del modulo restano intatti.
+                                Azione irreversibile.
+                            </p>
+                        </div>
+                        <button type="button" x-data="" x-on:click="$dispatch('open-modal', 'reset-module-data')"
+                                class="shrink-0 inline-flex items-center gap-1.5 rounded-xl bg-red-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-red-700">
+                            <x-heroicon-o-exclamation-triangle class="h-4 w-4" /> Azzera dati modulo
+                        </button>
+                    </div>
+                </x-card>
+            </div>
+
+            <x-modal name="reset-module-data" max-width="lg">
+                <div class="p-6" x-data="{ confirmText: '' }">
+                    <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                        <x-heroicon-o-exclamation-triangle class="h-5 w-5 text-red-500" />
+                        Azzera dati modulo
+                    </h2>
+                    <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                        Stai per cancellare in modo permanente iscrizioni, corsi/eventi, fasce orarie, lezioni,
+                        presenze, pagamenti, documenti e note del modulo <strong>{{ $module->name }}</strong>.
+                        Account utente, sale e impostazioni del modulo non verranno toccati. Questa azione non
+                        può essere annullata.
+                    </p>
+
+                    <form method="POST" action="{{ route('modules.settings.reset', $module) }}" class="mt-5 space-y-4">
+                        @csrf @method('DELETE')
+                        <div class="space-y-1.5">
+                            <x-input-label value="Digita \"{{ $module->name }}\" per confermare" />
+                            <x-text-input name="confirm_name" x-model="confirmText" class="w-full" autocomplete="off" />
+                        </div>
+                        <div class="flex items-center justify-end gap-3 pt-2">
+                            <x-secondary-button type="button" x-on:click="$dispatch('close')">Annulla</x-secondary-button>
+                            <button type="submit"
+                                    :disabled="confirmText !== {{ Illuminate\Support\Js::from($module->name) }}"
+                                    class="inline-flex items-center gap-1.5 rounded-xl bg-red-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-red-700 disabled:opacity-40 disabled:cursor-not-allowed">
+                                Azzera definitivamente
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </x-modal>
+        @endif
     </div>
 </x-app-layout>
