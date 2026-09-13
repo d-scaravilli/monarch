@@ -94,7 +94,15 @@ class CourseController extends Controller
             ? min(100, round($course->enrollments->count() / $course->room->capacity * 100))
             : 0;
 
-        $attendanceTrend = $this->weeklyAttendanceTrend($course);
+        // An "evento" has its own lightweight layout (see courses/show.blade.php)
+        // built around its few specific dates rather than the full lessons
+        // table/weekly trend chart a periodic "corso" uses.
+        if ($course->isEvento()) {
+            $course->load(['lessons' => fn ($q) => $q->orderBy('date')->with('attendances')]);
+            $attendanceTrend = [];
+        } else {
+            $attendanceTrend = $this->weeklyAttendanceTrend($course);
+        }
 
         return view('courses.show', compact('course', 'canManage', 'availableMembers', 'fillPercent', 'attendanceTrend'));
     }

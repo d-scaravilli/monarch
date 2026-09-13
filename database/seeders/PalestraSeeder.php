@@ -156,6 +156,7 @@ class PalestraSeeder extends Seeder
             'room_id' => $rooms->random()->id,
             'type' => 'evento',
             'year' => now()->addMonths(2)->translatedFormat('d').'-'.now()->addMonths(2)->addDay()->translatedFormat('d M Y'),
+            'description' => "Due giornate intensive dedicate alle tecniche avanzate, aperte a tutti i livelli. Si consiglia abbigliamento comodo e attrezzatura propria, se disponibile — per chi non ne ha, sarà possibile noleggiarla in loco.\n\nIl seminario è tenuto da istruttori ospiti e prevede sia sessioni pratiche che momenti teorici.",
             'annual_cost' => 0,
             'monthly_cost' => 0,
             'enrollment_cost' => 25,

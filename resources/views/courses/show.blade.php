@@ -73,87 +73,185 @@
                 @endif
             </div>
 
-            @if ($course->description)
-                <p class="mt-4 text-sm text-gray-600 dark:text-gray-400">{{ $course->description }}</p>
-            @endif
+            @unless ($course->isEvento())
+                @if ($course->description)
+                    <p class="mt-4 text-sm text-gray-600 dark:text-gray-400">{{ $course->description }}</p>
+                @endif
 
-            <div class="mt-4 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-gray-600 dark:text-gray-400 border-t border-gray-100 dark:border-white/10 pt-4">
-                <span class="flex items-center gap-1.5">
-                    <x-heroicon-o-credit-card class="h-4 w-4" /> €{{ number_format($course->monthly_cost, 2) }}/mese &middot; €{{ number_format($course->annual_cost, 2) }}/anno
-                    @if ($course->enrollment_cost)
-                        &middot; €{{ number_format($course->enrollment_cost, 2) }} iscrizione
-                    @endif
-                </span>
-            </div>
-
-            @if ($course->instructors->isNotEmpty() || $course->schedules->isNotEmpty())
-                <div class="mt-3 flex flex-wrap gap-2">
-                    @foreach ($course->instructors as $instructor)
-                        <x-badge>{{ $instructor->name }}</x-badge>
-                    @endforeach
-                    @foreach ($course->schedules->sortBy('weekday') as $schedule)
-                        <x-badge color="amber">{{ $schedule->weekdayLabel() }} {{ substr($schedule->start_time, 0, 5) }}-{{ substr($schedule->end_time, 0, 5) }}</x-badge>
-                    @endforeach
+                <div class="mt-4 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-gray-600 dark:text-gray-400 border-t border-gray-100 dark:border-white/10 pt-4">
+                    <span class="flex items-center gap-1.5">
+                        <x-heroicon-o-credit-card class="h-4 w-4" /> €{{ number_format($course->monthly_cost, 2) }}/mese &middot; €{{ number_format($course->annual_cost, 2) }}/anno
+                        @if ($course->enrollment_cost)
+                            &middot; €{{ number_format($course->enrollment_cost, 2) }} iscrizione
+                        @endif
+                    </span>
                 </div>
-            @endif
+
+                @if ($course->instructors->isNotEmpty() || $course->schedules->isNotEmpty())
+                    <div class="mt-3 flex flex-wrap gap-2">
+                        @foreach ($course->instructors as $instructor)
+                            <x-badge>{{ $instructor->name }}</x-badge>
+                        @endforeach
+                        @foreach ($course->schedules->sortBy('weekday') as $schedule)
+                            <x-badge color="amber">{{ $schedule->weekdayLabel() }} {{ substr($schedule->start_time, 0, 5) }}-{{ substr($schedule->end_time, 0, 5) }}</x-badge>
+                        @endforeach
+                    </div>
+                @endif
+            @endunless
         </x-card>
 
-        <div class="grid gap-4 lg:grid-cols-3">
-            <x-card class="lg:col-span-2">
-                <x-section-header>Andamento presenze del corso</x-section-header>
-                <div
-                    x-data="{
-                        async init() {
-                            const ApexCharts = await window.loadApexCharts();
-                            const isDark = document.documentElement.classList.contains('dark');
-                            const chart = new ApexCharts(this.$refs.chart, {
-                                chart: { type: 'area', height: 220, toolbar: { show: false }, fontFamily: 'inherit', foreColor: isDark ? '#9ca3af' : '#6b7280' },
-                                series: [{ name: 'Presenze', data: {{ Illuminate\Support\Js::from(array_values($attendanceTrend)) }} }],
-                                xaxis: { categories: {{ Illuminate\Support\Js::from(array_keys($attendanceTrend)) }}, axisBorder: { show: false }, axisTicks: { show: false } },
-                                yaxis: { min: 0, max: 100, labels: { formatter: (v) => Math.round(v) + '%' } },
-                                colors: ['{{ $accentHex }}'],
-                                fill: { type: 'gradient', gradient: { opacityFrom: 0.35, opacityTo: 0 } },
-                                dataLabels: { enabled: false },
-                                stroke: { curve: 'smooth', width: 2.5 },
-                                grid: { borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(148,163,184,0.15)', strokeDashArray: 3 },
-                                tooltip: { theme: isDark ? 'dark' : 'light', y: { formatter: (v) => v + '%' } },
-                            });
-                            chart.render();
-                        },
-                    }"
-                >
-                    <div x-ref="chart"></div>
+        @if ($course->isEvento())
+            {{-- Evento: clean, description-led layout instead of the
+                 recurring-course charts/lessons-table pair below. --}}
+            <x-card class="px-6 py-8 sm:px-10 sm:py-10">
+                <h2 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3">Descrizione evento</h2>
+                @if ($course->description)
+                    <p class="text-base leading-relaxed text-gray-600 dark:text-gray-400 max-w-3xl whitespace-pre-line">{{ $course->description }}</p>
+                @else
+                    <p class="text-sm text-gray-400">Nessuna descrizione.</p>
+                @endif
+
+                <div class="mt-8 grid gap-6 sm:grid-cols-3 border-t border-gray-100 dark:border-white/10 pt-8">
+                    <div class="flex items-start gap-3">
+                        <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl {{ $accent['soft'] }}">
+                            <x-heroicon-o-calendar-days class="h-5 w-5 {{ $accent['text'] }}" />
+                        </span>
+                        <div>
+                            <p class="text-sm font-semibold text-gray-900 dark:text-gray-100">Quando</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">{{ $course->year }}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl {{ $accent['soft'] }}">
+                            <x-heroicon-o-map-pin class="h-5 w-5 {{ $accent['text'] }}" />
+                        </span>
+                        <div>
+                            <p class="text-sm font-semibold text-gray-900 dark:text-gray-100">Dove</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">{{ $course->room->name }}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl {{ $accent['soft'] }}">
+                            <x-heroicon-o-credit-card class="h-5 w-5 {{ $accent['text'] }}" />
+                        </span>
+                        <div>
+                            <p class="text-sm font-semibold text-gray-900 dark:text-gray-100">Costo</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">
+                                {{ $course->enrollment_cost ? '€'.number_format($course->enrollment_cost, 2) : 'Gratuito' }}
+                            </p>
+                        </div>
+                    </div>
                 </div>
+
+                @if ($course->instructors->isNotEmpty())
+                    <div class="mt-6 flex flex-wrap gap-2">
+                        @foreach ($course->instructors as $instructor)
+                            <x-badge>{{ $instructor->name }}</x-badge>
+                        @endforeach
+                    </div>
+                @endif
             </x-card>
 
-            <x-card class="flex flex-col items-center justify-center">
-                <x-section-header class="self-start">Riempimento posti</x-section-header>
-                <div
-                    class="w-full"
-                    x-data="{
-                        async init() {
-                            const ApexCharts = await window.loadApexCharts();
-                            const isDark = document.documentElement.classList.contains('dark');
-                            const chart = new ApexCharts(this.$refs.gauge, {
-                                chart: { type: 'radialBar', height: 220, fontFamily: 'inherit' },
-                                series: [{{ $fillPercent }}],
-                                labels: ['Posti occupati'],
-                                colors: ['{{ $accentHex }}'],
-                                plotOptions: { radialBar: { hollow: { size: '60%' }, dataLabels: { value: { fontSize: '1.5rem', fontWeight: 700, color: isDark ? '#f3f4f6' : '#111827', formatter: (v) => v + '%' } } } },
-                            });
-                            chart.render();
-                        },
-                    }"
-                >
-                    <div x-ref="gauge"></div>
+            <div class="grid gap-4 sm:grid-cols-2">
+                <x-card class="flex flex-col items-center justify-center">
+                    <x-section-header class="self-start">Riempimento posti</x-section-header>
+                    <div
+                        class="w-full"
+                        x-data="{
+                            async init() {
+                                const ApexCharts = await window.loadApexCharts();
+                                const isDark = document.documentElement.classList.contains('dark');
+                                const chart = new ApexCharts(this.$refs.gauge, {
+                                    chart: { type: 'radialBar', height: 220, fontFamily: 'inherit' },
+                                    series: [{{ $fillPercent }}],
+                                    labels: ['Posti occupati'],
+                                    colors: ['{{ $accentHex }}'],
+                                    plotOptions: { radialBar: { hollow: { size: '60%' }, dataLabels: { value: { fontSize: '1.5rem', fontWeight: 700, color: isDark ? '#f3f4f6' : '#111827', formatter: (v) => v + '%' } } } },
+                                });
+                                chart.render();
+                            },
+                        }"
+                    >
+                        <div x-ref="gauge"></div>
+                    </div>
+                    <p class="text-xs text-gray-400 -mt-2">{{ $course->enrollments->count() }}/{{ $course->room->capacity }} posti sala</p>
+                </x-card>
+
+                <div>
+                    <x-section-header>Giorni evento</x-section-header>
+                    <x-card class="divide-y divide-gray-100 dark:divide-white/10 p-0">
+                        @forelse ($course->lessons as $lesson)
+                            <a href="{{ route('courses.lessons.attendance.edit', [$course, $lesson]) }}" class="flex items-center justify-between px-5 py-3.5">
+                                <span class="font-medium text-gray-900 dark:text-gray-100">{{ $lesson->date->translatedFormat('l d F Y') }}</span>
+                                <span class="flex items-center gap-2">
+                                    <x-badge color="green">{{ $lesson->attendances->where('present', true)->count() }} presenti</x-badge>
+                                    <x-heroicon-o-chevron-right class="h-4 w-4 text-gray-300" />
+                                </span>
+                            </a>
+                        @empty
+                            <p class="px-5 py-6 text-sm text-gray-500">Nessuna data configurata.</p>
+                        @endforelse
+                    </x-card>
                 </div>
-                <p class="text-xs text-gray-400 -mt-2">{{ $course->enrollments->count() }}/{{ $course->room->capacity }} posti sala</p>
-            </x-card>
-        </div>
+            </div>
+        @else
+            <div class="grid gap-4 lg:grid-cols-3">
+                <x-card class="lg:col-span-2">
+                    <x-section-header>Andamento presenze del corso</x-section-header>
+                    <div
+                        x-data="{
+                            async init() {
+                                const ApexCharts = await window.loadApexCharts();
+                                const isDark = document.documentElement.classList.contains('dark');
+                                const chart = new ApexCharts(this.$refs.chart, {
+                                    chart: { type: 'area', height: 220, toolbar: { show: false }, fontFamily: 'inherit', foreColor: isDark ? '#9ca3af' : '#6b7280' },
+                                    series: [{ name: 'Presenze', data: {{ Illuminate\Support\Js::from(array_values($attendanceTrend)) }} }],
+                                    xaxis: { categories: {{ Illuminate\Support\Js::from(array_keys($attendanceTrend)) }}, axisBorder: { show: false }, axisTicks: { show: false } },
+                                    yaxis: { min: 0, max: 100, labels: { formatter: (v) => Math.round(v) + '%' } },
+                                    colors: ['{{ $accentHex }}'],
+                                    fill: { type: 'gradient', gradient: { opacityFrom: 0.35, opacityTo: 0 } },
+                                    dataLabels: { enabled: false },
+                                    stroke: { curve: 'smooth', width: 2.5 },
+                                    grid: { borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(148,163,184,0.15)', strokeDashArray: 3 },
+                                    tooltip: { theme: isDark ? 'dark' : 'light', y: { formatter: (v) => v + '%' } },
+                                });
+                                chart.render();
+                            },
+                        }"
+                    >
+                        <div x-ref="chart"></div>
+                    </div>
+                </x-card>
+
+                <x-card class="flex flex-col items-center justify-center">
+                    <x-section-header class="self-start">Riempimento posti</x-section-header>
+                    <div
+                        class="w-full"
+                        x-data="{
+                            async init() {
+                                const ApexCharts = await window.loadApexCharts();
+                                const isDark = document.documentElement.classList.contains('dark');
+                                const chart = new ApexCharts(this.$refs.gauge, {
+                                    chart: { type: 'radialBar', height: 220, fontFamily: 'inherit' },
+                                    series: [{{ $fillPercent }}],
+                                    labels: ['Posti occupati'],
+                                    colors: ['{{ $accentHex }}'],
+                                    plotOptions: { radialBar: { hollow: { size: '60%' }, dataLabels: { value: { fontSize: '1.5rem', fontWeight: 700, color: isDark ? '#f3f4f6' : '#111827', formatter: (v) => v + '%' } } } },
+                                });
+                                chart.render();
+                            },
+                        }"
+                    >
+                        <div x-ref="gauge"></div>
+                    </div>
+                    <p class="text-xs text-gray-400 -mt-2">{{ $course->enrollments->count() }}/{{ $course->room->capacity }} posti sala</p>
+                </x-card>
+            </div>
+        @endif
 
         <div>
             <x-section-header>Iscritti ({{ $course->enrollments->count() }})</x-section-header>
-            <livewire:course-enrollments-table :course-id="$course->id" :accent-color="$accentColor" />
+            <livewire:course-enrollments-table :course-id="$course->id" :accent-color="$accentColor" :compact="$course->isEvento()" />
         </div>
 
         @if ($canManage && ! $course->trashed())
@@ -195,10 +293,12 @@
             </x-modal>
         @endif
 
-        <div>
-            <x-section-header>Lezioni</x-section-header>
-            <livewire:lessons-table :course-id="$course->id" />
-        </div>
+        @unless ($course->isEvento())
+            <div>
+                <x-section-header>Lezioni</x-section-header>
+                <livewire:lessons-table :course-id="$course->id" />
+            </div>
+        @endunless
 
         @if ($canManage)
             <div>

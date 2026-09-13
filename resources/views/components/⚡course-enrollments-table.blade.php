@@ -12,6 +12,12 @@ new class extends Component
 
     public string $accentColor = 'gray';
 
+    /**
+     * An evento's roster only needs a name to check who's coming — no
+     * email/dates/attendance/costs, which don't mean much for a one-off.
+     */
+    public bool $compact = false;
+
     public string $sortField = 'enrollment_date';
 
     public string $sortDirection = 'desc';
@@ -37,7 +43,7 @@ new class extends Component
     {
         $enrollments = Enrollment::query()
             ->where('course_id', $this->courseId)
-            ->with(['user', 'course', 'attendances.lesson', 'payments'])
+            ->with($this->compact ? ['user'] : ['user', 'course', 'attendances.lesson', 'payments'])
             ->orderBy($this->sortField, $this->sortDirection)
             ->paginate(5);
 
@@ -58,10 +64,12 @@ new class extends Component
                         <th class="px-5 py-3 text-left">
                             <button wire:click="sortBy('enrollment_date')" class="hover:text-gray-600 dark:hover:text-gray-200">Iscritto</button>
                         </th>
-                        <th class="px-5 py-3 text-left hidden sm:table-cell">Email</th>
-                        <th class="px-5 py-3 text-left hidden md:table-cell">Data iscrizione</th>
-                        <th class="px-5 py-3 text-left">Presenze/Assenze</th>
-                        <th class="px-5 py-3 text-left">Costi</th>
+                        @unless ($compact)
+                            <th class="px-5 py-3 text-left hidden sm:table-cell">Email</th>
+                            <th class="px-5 py-3 text-left hidden md:table-cell">Data iscrizione</th>
+                            <th class="px-5 py-3 text-left">Presenze/Assenze</th>
+                            <th class="px-5 py-3 text-left">Costi</th>
+                        @endunless
                         <th class="px-5 py-3 text-right">Azioni</th>
                     </tr>
                 </thead>
@@ -81,24 +89,26 @@ new class extends Component
                                     <span class="font-medium text-gray-900 dark:text-gray-100">{{ $enrollment->user->name }}</span>
                                 </a>
                             </td>
-                            <td class="px-5 py-3.5 text-gray-500 dark:text-gray-400 hidden sm:table-cell">{{ $enrollment->user->email }}</td>
-                            <td class="px-5 py-3.5 text-gray-500 dark:text-gray-400 hidden md:table-cell whitespace-nowrap">{{ $enrollment->enrollment_date->translatedFormat('d M Y') }}</td>
-                            @php $validAttendances = $enrollment->validAttendances(); @endphp
-                            <td class="px-5 py-3.5">
-                                <span class="inline-flex items-center gap-2">
-                                    <x-badge color="green">{{ $validAttendances->where('present', true)->count() }}</x-badge>
-                                    <x-badge color="red">{{ $validAttendances->where('present', false)->count() }}</x-badge>
-                                </span>
-                            </td>
-                            <td class="px-5 py-3.5 whitespace-nowrap">
-                                @if ($status === 'missing')
-                                    <x-badge color="amber">Mancano €{{ number_format(abs($balance), 2) }}</x-badge>
-                                @elseif ($status === 'overpaid')
-                                    <x-badge color="green">+€{{ number_format($balance, 2) }}</x-badge>
-                                @else
-                                    <x-badge color="green">In pari</x-badge>
-                                @endif
-                            </td>
+                            @unless ($compact)
+                                <td class="px-5 py-3.5 text-gray-500 dark:text-gray-400 hidden sm:table-cell">{{ $enrollment->user->email }}</td>
+                                <td class="px-5 py-3.5 text-gray-500 dark:text-gray-400 hidden md:table-cell whitespace-nowrap">{{ $enrollment->enrollment_date->translatedFormat('d M Y') }}</td>
+                                @php $validAttendances = $enrollment->validAttendances(); @endphp
+                                <td class="px-5 py-3.5">
+                                    <span class="inline-flex items-center gap-2">
+                                        <x-badge color="green">{{ $validAttendances->where('present', true)->count() }}</x-badge>
+                                        <x-badge color="red">{{ $validAttendances->where('present', false)->count() }}</x-badge>
+                                    </span>
+                                </td>
+                                <td class="px-5 py-3.5 whitespace-nowrap">
+                                    @if ($status === 'missing')
+                                        <x-badge color="amber">Mancano €{{ number_format(abs($balance), 2) }}</x-badge>
+                                    @elseif ($status === 'overpaid')
+                                        <x-badge color="green">+€{{ number_format($balance, 2) }}</x-badge>
+                                    @else
+                                        <x-badge color="green">In pari</x-badge>
+                                    @endif
+                                </td>
+                            @endunless
                             <td class="px-5 py-3.5 text-right">
                                 @if (auth()->user()->hasRole('admin'))
                                     <button type="button" wire:click="deleteEnrollment({{ $enrollment->id }})"
@@ -111,7 +121,7 @@ new class extends Component
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="px-5 py-8 text-center text-sm text-gray-500">Nessun iscritto.</td>
+                            <td colspan="{{ $compact ? 2 : 6 }}" class="px-5 py-8 text-center text-sm text-gray-500">Nessun iscritto.</td>
                         </tr>
                     @endforelse
                 </tbody>
