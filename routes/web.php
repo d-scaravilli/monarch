@@ -18,6 +18,7 @@ use App\Http\Controllers\NoteController;
 use App\Http\Controllers\PalestraDashboardController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProgressController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\SettingsController;
 use Illuminate\Support\Facades\Route;
@@ -45,6 +46,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/palestra/dashboard', [PalestraDashboardController::class, 'index'])->name('palestra.dashboard');
         Route::get('/calendar', [CalendarController::class, 'index'])->name('palestra.calendar');
         Route::get('/team', [MemberController::class, 'team'])->name('members.team');
+        Route::get('/progress', [ProgressController::class, 'index'])->name('progress.index');
         Route::get('/accounting', [AccountingController::class, 'index'])->name('accounting.index');
 
         Route::get('/area', [MemberAreaController::class, 'index'])->name('member.area');
