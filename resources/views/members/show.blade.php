@@ -94,7 +94,106 @@
                                 <p class="font-medium text-gray-900 dark:text-gray-100">{{ $member->memberProfile->notes }}</p>
                             </div>
                         @endif
+
+                        <div class="border-t border-gray-100 dark:border-white/10 pt-4">
+                            <p class="text-xs text-gray-400 mb-2">Documenti</p>
+                            <div class="-mx-5 divide-y divide-gray-100 dark:divide-white/10">
+                                @forelse ($member->documents as $document)
+                                    <div class="flex items-center justify-between gap-3 px-5 py-3">
+                                        <div class="min-w-0">
+                                            <p class="font-medium text-gray-900 dark:text-gray-100">{{ $document->typeLabel() }}</p>
+                                            <p class="text-xs text-gray-400">
+                                                Caricato il {{ $document->uploaded_at->translatedFormat('d M Y') }}
+                                                @if ($document->expiry_date)
+                                                    &middot; Scade il {{ $document->expiry_date->translatedFormat('d M Y') }}
+                                                @endif
+                                            </p>
+                                        </div>
+                                        <div class="flex items-center gap-2 shrink-0">
+                                            @if ($document->expiry_date)
+                                                @if ($document->isExpired())
+                                                    <x-badge color="red">Scaduto</x-badge>
+                                                @elseif ($document->isExpiringSoon())
+                                                    <x-badge color="amber">In scadenza</x-badge>
+                                                @else
+                                                    <x-badge color="green">Valido</x-badge>
+                                                @endif
+                                            @endif
+                                            @if ($document->fileUrl())
+                                                <a href="{{ $document->fileUrl() }}" target="_blank" class="flex h-8 w-8 items-center justify-center rounded-full text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5">
+                                                    <x-heroicon-o-arrow-down-tray class="h-4 w-4" />
+                                                </a>
+                                            @endif
+                                            @if (! $member->trashed())
+                                                <form method="POST" action="{{ route('documents.destroy', $document) }}" onsubmit="return confirm('Eliminare questo documento?')">
+                                                    @csrf @method('DELETE')
+                                                    <button type="submit" class="flex h-8 w-8 items-center justify-center rounded-full text-gray-400 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-500/10">
+                                                        <x-heroicon-o-trash class="h-4 w-4" />
+                                                    </button>
+                                                </form>
+                                            @endif
+                                        </div>
+                                    </div>
+                                @empty
+                                    <p class="px-5 py-3 text-sm text-gray-500">Nessun documento caricato.</p>
+                                @endforelse
+                            </div>
+
+                            @if (! $member->trashed())
+                                <div class="mt-3">
+                                    <button type="button" x-data="" x-on:click="$dispatch('open-modal', 'upload-document')"
+                                            class="text-sm font-medium text-gray-600 dark:text-gray-300 flex items-center gap-1">
+                                        <x-heroicon-o-plus class="h-4 w-4" /> Carica documento
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
                     </x-card>
+
+                    @if (! $member->trashed())
+                        <x-modal name="upload-document" max-width="lg">
+                            <div class="p-6" x-data="{ type: 'certificato_medico' }">
+                                <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Carica documento</h2>
+
+                                <form method="POST" action="{{ route('members.documents.store', $member) }}" enctype="multipart/form-data" class="mt-5 space-y-4">
+                                    @csrf
+                                    <div class="grid sm:grid-cols-2 gap-3">
+                                        <div class="space-y-1.5">
+                                            <x-input-label value="Tipo" />
+                                            <select name="type" x-model="type" class="w-full rounded-xl border-gray-200 bg-gray-50 py-3 dark:border-white/10 dark:bg-white/5 dark:text-gray-100">
+                                                @foreach (\App\Models\Document::TYPES as $value => $label)
+                                                    <option value="{{ $value }}">{{ $label }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="space-y-1.5" x-show="type === 'altro'" x-cloak>
+                                            <x-input-label value="Etichetta" />
+                                            <x-text-input name="custom_label" class="w-full" placeholder="Es. Referto medico" />
+                                        </div>
+                                    </div>
+                                    <div class="space-y-1.5">
+                                        <x-input-label value="File" />
+                                        <input type="file" name="file" required
+                                               class="block w-full text-sm text-gray-600 dark:text-gray-300 file:mr-3 file:rounded-xl file:border-0 file:bg-gray-100 file:px-3 file:py-2 file:text-sm dark:file:bg-white/10 dark:file:text-gray-200" />
+                                    </div>
+                                    <div class="grid sm:grid-cols-2 gap-3">
+                                        <div class="space-y-1.5">
+                                            <x-input-label value="Data caricamento" />
+                                            <x-text-input type="date" name="uploaded_at" value="{{ now()->toDateString() }}" class="w-full" />
+                                        </div>
+                                        <div class="space-y-1.5">
+                                            <x-input-label value="Scadenza (facoltativa)" />
+                                            <x-text-input type="date" name="expiry_date" class="w-full" />
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-end gap-3 pt-2">
+                                        <x-secondary-button type="button" x-on:click="$dispatch('close')">Annulla</x-secondary-button>
+                                        <x-primary-button>Carica</x-primary-button>
+                                    </div>
+                                </form>
+                            </div>
+                        </x-modal>
+                    @endif
                 </div>
 
                 <div>
@@ -211,103 +310,6 @@
                             </button>
                         </div>
                         <x-payment-modal name="register-payment" :enrollments="$member->enrollments" />
-                    @endif
-                </div>
-
-                <div>
-                    <x-section-header>Documenti</x-section-header>
-                    <x-card class="divide-y divide-gray-100 dark:divide-white/10 p-0">
-                        @forelse ($member->documents as $document)
-                            <div class="flex items-center justify-between gap-3 px-5 py-3.5">
-                                <div class="min-w-0">
-                                    <p class="font-medium text-gray-900 dark:text-gray-100">{{ $document->typeLabel() }}</p>
-                                    <p class="text-xs text-gray-400">
-                                        Caricato il {{ $document->uploaded_at->translatedFormat('d M Y') }}
-                                        @if ($document->expiry_date)
-                                            &middot; Scade il {{ $document->expiry_date->translatedFormat('d M Y') }}
-                                        @endif
-                                    </p>
-                                </div>
-                                <div class="flex items-center gap-2 shrink-0">
-                                    @if ($document->expiry_date)
-                                        @if ($document->isExpired())
-                                            <x-badge color="red">Scaduto</x-badge>
-                                        @elseif ($document->isExpiringSoon())
-                                            <x-badge color="amber">In scadenza</x-badge>
-                                        @else
-                                            <x-badge color="green">Valido</x-badge>
-                                        @endif
-                                    @endif
-                                    @if ($document->fileUrl())
-                                        <a href="{{ $document->fileUrl() }}" target="_blank" class="flex h-8 w-8 items-center justify-center rounded-full text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5">
-                                            <x-heroicon-o-arrow-down-tray class="h-4 w-4" />
-                                        </a>
-                                    @endif
-                                    @if (! $member->trashed())
-                                        <form method="POST" action="{{ route('documents.destroy', $document) }}" onsubmit="return confirm('Eliminare questo documento?')">
-                                            @csrf @method('DELETE')
-                                            <button type="submit" class="flex h-8 w-8 items-center justify-center rounded-full text-gray-400 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-500/10">
-                                                <x-heroicon-o-trash class="h-4 w-4" />
-                                            </button>
-                                        </form>
-                                    @endif
-                                </div>
-                            </div>
-                        @empty
-                            <p class="px-5 py-6 text-sm text-gray-500">Nessun documento caricato.</p>
-                        @endforelse
-                    </x-card>
-
-                    @if (! $member->trashed())
-                        <div class="mt-3">
-                            <button type="button" x-data="" x-on:click="$dispatch('open-modal', 'upload-document')"
-                                    class="text-sm font-medium text-gray-600 dark:text-gray-300 flex items-center gap-1">
-                                <x-heroicon-o-plus class="h-4 w-4" /> Carica documento
-                            </button>
-                        </div>
-
-                        <x-modal name="upload-document" max-width="lg">
-                            <div class="p-6" x-data="{ type: 'certificato_medico' }">
-                                <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Carica documento</h2>
-
-                                <form method="POST" action="{{ route('members.documents.store', $member) }}" enctype="multipart/form-data" class="mt-5 space-y-4">
-                                    @csrf
-                                    <div class="grid sm:grid-cols-2 gap-3">
-                                        <div class="space-y-1.5">
-                                            <x-input-label value="Tipo" />
-                                            <select name="type" x-model="type" class="w-full rounded-xl border-gray-200 bg-gray-50 py-3 dark:border-white/10 dark:bg-white/5 dark:text-gray-100">
-                                                @foreach (\App\Models\Document::TYPES as $value => $label)
-                                                    <option value="{{ $value }}">{{ $label }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <div class="space-y-1.5" x-show="type === 'altro'" x-cloak>
-                                            <x-input-label value="Etichetta" />
-                                            <x-text-input name="custom_label" class="w-full" placeholder="Es. Referto medico" />
-                                        </div>
-                                    </div>
-                                    <div class="space-y-1.5">
-                                        <x-input-label value="File" />
-                                        <input type="file" name="file" required
-                                               class="block w-full text-sm text-gray-600 dark:text-gray-300 file:mr-3 file:rounded-xl file:border-0 file:bg-gray-100 file:px-3 file:py-2 file:text-sm dark:file:bg-white/10 dark:file:text-gray-200" />
-                                    </div>
-                                    <div class="grid sm:grid-cols-2 gap-3">
-                                        <div class="space-y-1.5">
-                                            <x-input-label value="Data caricamento" />
-                                            <x-text-input type="date" name="uploaded_at" value="{{ now()->toDateString() }}" class="w-full" />
-                                        </div>
-                                        <div class="space-y-1.5">
-                                            <x-input-label value="Scadenza (facoltativa)" />
-                                            <x-text-input type="date" name="expiry_date" class="w-full" />
-                                        </div>
-                                    </div>
-                                    <div class="flex items-center justify-end gap-3 pt-2">
-                                        <x-secondary-button type="button" x-on:click="$dispatch('close')">Annulla</x-secondary-button>
-                                        <x-primary-button>Carica</x-primary-button>
-                                    </div>
-                                </form>
-                            </div>
-                        </x-modal>
                     @endif
                 </div>
             </div>
