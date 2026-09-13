@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
+use Spatie\Permission\PermissionRegistrar;
 
 class UserController extends Controller
 {
@@ -59,6 +60,13 @@ class UserController extends Controller
 
         $user->syncRoles($data['roles'] ?? []);
         $user->modules()->sync($data['modules'] ?? []);
+
+        // Spatie's permission cache lives in the app's default cache store
+        // (database, here) — shared across every process, not just this
+        // request. Without forgetting it, a role change can keep granting
+        // (or keep denying) access based on stale data until the cache
+        // entry expires on its own.
+        app(PermissionRegistrar::class)->forgetCachedPermissions();
 
         return redirect()->route('admin.users.edit', $user)->with('status', 'Utente aggiornato.');
     }

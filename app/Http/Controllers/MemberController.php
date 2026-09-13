@@ -11,6 +11,7 @@ use App\Support\CourseYear;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Spatie\Permission\PermissionRegistrar;
 
 class MemberController extends Controller
 {
@@ -109,6 +110,7 @@ class MemberController extends Controller
 
         $member = User::findOrFail($data['existing_user_id']);
         $member->assignRole('member');
+        app(PermissionRegistrar::class)->forgetCachedPermissions();
 
         if ($palestra) {
             $member->modules()->syncWithoutDetaching([$palestra->id]);

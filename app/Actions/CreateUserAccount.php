@@ -5,6 +5,7 @@ namespace App\Actions;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Spatie\Permission\PermissionRegistrar;
 
 /**
  * Single place that knows how to create a login-capable user account with
@@ -31,6 +32,7 @@ class CreateUserAccount
         ]);
 
         $user->syncRoles($roles);
+        app(PermissionRegistrar::class)->forgetCachedPermissions();
 
         if ($moduleIds !== []) {
             $user->modules()->syncWithoutDetaching($moduleIds);
