@@ -10,6 +10,10 @@
     $accent = \App\Support\ModuleTheme::classes($accentColor);
     $coverImage = $currentModule?->memberCoverImageUrl();
     $initials = collect(explode(' ', $member->name))->map(fn ($p) => mb_substr($p, 0, 1))->take(2)->implode('');
+    // An instructor can open this page (scoped to their own courses' members,
+    // see UserPolicy::view) but never sees money or personal documents —
+    // only the admin does.
+    $showFinancials = auth()->user()->hasRole('admin');
 @endphp
 
 <x-app-layout>
@@ -26,7 +30,7 @@
         <div class="rounded-2xl overflow-hidden bg-white dark:bg-gray-900 shadow-sm ring-1 ring-gray-100 dark:ring-white/10">
             <div class="h-28 sm:h-36 relative {{ $coverImage ? '' : $accent['badge'] }}"
                  style="background-image: {{ $coverImage ? "linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url('{$coverImage}')" : "linear-gradient(135deg, {$accentHex} 0%, {$accentHex}99 100%)" }}; background-size: cover; background-position: center;">
-                @if (! $member->trashed())
+                @if ($showFinancials && ! $member->trashed())
                     <div class="absolute top-3 right-3 flex items-center gap-1">
                         <a href="{{ route('members.edit', $member) }}" class="flex h-9 w-9 items-center justify-center rounded-full bg-white/20 text-white backdrop-blur hover:bg-white/30">
                             <x-heroicon-o-pencil class="h-4 w-4" />
@@ -57,7 +61,7 @@
                     </div>
                 </div>
 
-                <div class="mt-5 grid grid-cols-3 divide-x divide-gray-100 dark:divide-white/10 rounded-xl bg-gray-50 dark:bg-white/5 py-3 text-center">
+                <div class="mt-5 grid grid-cols-{{ $showFinancials ? 3 : 2 }} divide-x divide-gray-100 dark:divide-white/10 rounded-xl bg-gray-50 dark:bg-white/5 py-3 text-center">
                     <div>
                         <p class="text-xl font-bold text-gray-900 dark:text-gray-100">{{ $activeEnrollmentsCount }}</p>
                         <p class="text-xs text-gray-400">iscrizioni attive</p>
@@ -66,10 +70,12 @@
                         <p class="text-xl font-bold text-gray-900 dark:text-gray-100">{{ $attendanceRate !== null ? $attendanceRate.'%' : '—' }}</p>
                         <p class="text-xs text-gray-400">presenze</p>
                     </div>
-                    <div>
-                        <p class="text-xl font-bold text-gray-900 dark:text-gray-100">&euro;{{ number_format($totalPaid, 0) }}</p>
-                        <p class="text-xs text-gray-400">totale versato</p>
-                    </div>
+                    @if ($showFinancials)
+                        <div>
+                            <p class="text-xl font-bold text-gray-900 dark:text-gray-100">&euro;{{ number_format($totalPaid, 0) }}</p>
+                            <p class="text-xs text-gray-400">totale versato</p>
+                        </div>
+                    @endif
                 </div>
 
             </div>
@@ -96,6 +102,7 @@
                             </div>
                         @endif
 
+                        @if ($showFinancials)
                         <div class="border-t border-gray-100 dark:border-white/10 pt-4">
                             <p class="text-xs text-gray-400 mb-2">Documenti</p>
                             <div class="-mx-5 divide-y divide-gray-100 dark:divide-white/10">
@@ -149,9 +156,10 @@
                                 </div>
                             @endif
                         </div>
+                        @endif
                     </x-card>
 
-                    @if (! $member->trashed())
+                    @if ($showFinancials && ! $member->trashed())
                         <x-modal name="upload-document" max-width="lg">
                             <div class="p-6" x-data="{ type: 'certificato_medico' }">
                                 <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Carica documento</h2>
@@ -220,7 +228,7 @@
                     </x-card>
                 </div>
 
-                <div class="grid grid-cols-2 gap-4 lg:grid-cols-1">
+                <div class="grid grid-cols-{{ $showFinancials ? 2 : 1 }} gap-4 lg:grid-cols-1">
                     <x-card class="flex flex-col items-center">
                         <x-section-header class="self-start">Livello di presenze</x-section-header>
                         <div class="w-full" x-data="{
@@ -241,78 +249,82 @@
                         </div>
                     </x-card>
 
-                    <x-card class="flex flex-col items-center">
-                        <x-section-header class="self-start">Completamento pagamenti</x-section-header>
-                        <div class="w-full" x-data="{
-                            async init() {
-                                const ApexCharts = await window.loadApexCharts();
-                                const isDark = document.documentElement.classList.contains('dark');
-                                const chart = new ApexCharts(this.$refs.gauge, {
-                                    chart: { type: 'radialBar', height: 180, fontFamily: 'inherit' },
-                                    series: [{{ $paymentCompletionPercent }}],
-                                    labels: ['Pagato'],
-                                    colors: ['{{ $accentHex }}'],
-                                    plotOptions: { radialBar: { hollow: { size: '60%' }, dataLabels: { value: { fontSize: '1.2rem', fontWeight: 700, color: isDark ? '#f3f4f6' : '#111827', formatter: (v) => v + '%' } } } },
-                                });
-                                chart.render();
-                            },
-                        }">
-                            <div x-ref="gauge"></div>
-                        </div>
-                    </x-card>
-                </div>
-
-                <div>
-                    <x-section-header>Pagamenti</x-section-header>
-                    <x-card class="p-0 divide-y divide-gray-100 dark:divide-white/10" x-data="{ open: null }">
-                        @forelse ($member->enrollments as $enrollment)
-                            @php $paymentStatus = $enrollment->balanceStatus(); @endphp
-                            <div>
-                                <button type="button" @click="open = open === {{ $enrollment->id }} ? null : {{ $enrollment->id }}"
-                                        class="w-full flex items-center justify-between gap-3 px-5 py-3.5 text-left">
-                                    <div class="min-w-0">
-                                        <p class="font-medium text-gray-900 dark:text-gray-100 truncate">{{ $enrollment->course->discipline->name }} &middot; {{ $enrollment->course->year }}</p>
-                                        <p class="text-xs text-gray-400">Pagato €{{ number_format($enrollment->paidAmount(), 2) }} di €{{ number_format($enrollment->dueAmount(), 2) }}</p>
-                                    </div>
-                                    <div class="flex items-center gap-2 shrink-0">
-                                        @if ($paymentStatus === 'missing')
-                                            <x-badge color="amber">Mancano €{{ number_format(abs($enrollment->balance()), 2) }}</x-badge>
-                                        @elseif ($paymentStatus === 'overpaid')
-                                            <x-badge color="green">+€{{ number_format($enrollment->balance(), 2) }}</x-badge>
-                                        @else
-                                            <x-badge color="green">In pari</x-badge>
-                                        @endif
-                                        <span class="transition-transform" :class="open === {{ $enrollment->id }} ? 'rotate-90' : ''">
-                                            <x-heroicon-o-chevron-right class="h-4 w-4 text-gray-300" />
-                                        </span>
-                                    </div>
-                                </button>
-                                <div x-show="open === {{ $enrollment->id }}" x-cloak class="px-5 pb-4 space-y-2">
-                                    @forelse ($enrollment->payments->sortByDesc('date') as $payment)
-                                        <div class="flex items-center justify-between rounded-lg bg-gray-50 dark:bg-white/5 px-3 py-2 text-sm">
-                                            <span class="text-gray-600 dark:text-gray-400">{{ $payment->date->translatedFormat('d M Y') }} &middot; {{ $payment->method }}</span>
-                                            <span class="font-semibold text-gray-900 dark:text-gray-100">€{{ number_format($payment->amount, 2) }}</span>
-                                        </div>
-                                    @empty
-                                        <p class="text-sm text-gray-500">Nessun pagamento registrato per questo corso.</p>
-                                    @endforelse
-                                </div>
+                    @if ($showFinancials)
+                        <x-card class="flex flex-col items-center">
+                            <x-section-header class="self-start">Completamento pagamenti</x-section-header>
+                            <div class="w-full" x-data="{
+                                async init() {
+                                    const ApexCharts = await window.loadApexCharts();
+                                    const isDark = document.documentElement.classList.contains('dark');
+                                    const chart = new ApexCharts(this.$refs.gauge, {
+                                        chart: { type: 'radialBar', height: 180, fontFamily: 'inherit' },
+                                        series: [{{ $paymentCompletionPercent }}],
+                                        labels: ['Pagato'],
+                                        colors: ['{{ $accentHex }}'],
+                                        plotOptions: { radialBar: { hollow: { size: '60%' }, dataLabels: { value: { fontSize: '1.2rem', fontWeight: 700, color: isDark ? '#f3f4f6' : '#111827', formatter: (v) => v + '%' } } } },
+                                    });
+                                    chart.render();
+                                },
+                            }">
+                                <div x-ref="gauge"></div>
                             </div>
-                        @empty
-                            <p class="px-5 py-6 text-sm text-gray-500">Nessuna iscrizione.</p>
-                        @endforelse
-                    </x-card>
-
-                    @if (! $member->trashed() && $member->enrollments->isNotEmpty())
-                        <div class="mt-3">
-                            <button type="button" x-data="" x-on:click="$dispatch('open-modal', 'register-payment')"
-                                    class="text-sm font-medium text-gray-600 dark:text-gray-300 flex items-center gap-1">
-                                <x-heroicon-o-plus class="h-4 w-4" /> Registra pagamento
-                            </button>
-                        </div>
-                        <x-payment-modal name="register-payment" :enrollments="$member->enrollments" />
+                        </x-card>
                     @endif
                 </div>
+
+                @if ($showFinancials)
+                    <div>
+                        <x-section-header>Pagamenti</x-section-header>
+                        <x-card class="p-0 divide-y divide-gray-100 dark:divide-white/10" x-data="{ open: null }">
+                            @forelse ($member->enrollments as $enrollment)
+                                @php $paymentStatus = $enrollment->balanceStatus(); @endphp
+                                <div>
+                                    <button type="button" @click="open = open === {{ $enrollment->id }} ? null : {{ $enrollment->id }}"
+                                            class="w-full flex items-center justify-between gap-3 px-5 py-3.5 text-left">
+                                        <div class="min-w-0">
+                                            <p class="font-medium text-gray-900 dark:text-gray-100 truncate">{{ $enrollment->course->discipline->name }} &middot; {{ $enrollment->course->year }}</p>
+                                            <p class="text-xs text-gray-400">Pagato €{{ number_format($enrollment->paidAmount(), 2) }} di €{{ number_format($enrollment->dueAmount(), 2) }}</p>
+                                        </div>
+                                        <div class="flex items-center gap-2 shrink-0">
+                                            @if ($paymentStatus === 'missing')
+                                                <x-badge color="amber">Mancano €{{ number_format(abs($enrollment->balance()), 2) }}</x-badge>
+                                            @elseif ($paymentStatus === 'overpaid')
+                                                <x-badge color="green">+€{{ number_format($enrollment->balance(), 2) }}</x-badge>
+                                            @else
+                                                <x-badge color="green">In pari</x-badge>
+                                            @endif
+                                            <span class="transition-transform" :class="open === {{ $enrollment->id }} ? 'rotate-90' : ''">
+                                                <x-heroicon-o-chevron-right class="h-4 w-4 text-gray-300" />
+                                            </span>
+                                        </div>
+                                    </button>
+                                    <div x-show="open === {{ $enrollment->id }}" x-cloak class="px-5 pb-4 space-y-2">
+                                        @forelse ($enrollment->payments->sortByDesc('date') as $payment)
+                                            <div class="flex items-center justify-between rounded-lg bg-gray-50 dark:bg-white/5 px-3 py-2 text-sm">
+                                                <span class="text-gray-600 dark:text-gray-400">{{ $payment->date->translatedFormat('d M Y') }} &middot; {{ $payment->method }}</span>
+                                                <span class="font-semibold text-gray-900 dark:text-gray-100">€{{ number_format($payment->amount, 2) }}</span>
+                                            </div>
+                                        @empty
+                                            <p class="text-sm text-gray-500">Nessun pagamento registrato per questo corso.</p>
+                                        @endforelse
+                                    </div>
+                                </div>
+                            @empty
+                                <p class="px-5 py-6 text-sm text-gray-500">Nessuna iscrizione.</p>
+                            @endforelse
+                        </x-card>
+
+                        @if (! $member->trashed() && $member->enrollments->isNotEmpty())
+                            <div class="mt-3">
+                                <button type="button" x-data="" x-on:click="$dispatch('open-modal', 'register-payment')"
+                                        class="text-sm font-medium text-gray-600 dark:text-gray-300 flex items-center gap-1">
+                                    <x-heroicon-o-plus class="h-4 w-4" /> Registra pagamento
+                                </button>
+                            </div>
+                            <x-payment-modal name="register-payment" :enrollments="$member->enrollments" />
+                        @endif
+                    </div>
+                @endif
             </div>
 
             {{-- Right column: iscrizioni, presenze, note --}}

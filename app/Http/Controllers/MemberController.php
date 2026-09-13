@@ -21,15 +21,27 @@ class MemberController extends Controller
      * it was merged in here. Defaults to the most recently *created*
      * course's year (not the calendar year), so a member from a past-year
      * course only shows up once you explicitly pick that year or "Tutti".
+     *
+     * An instructor sees the same page, but hard-scoped to members
+     * enrolled in one of their own assigned courses — that base
+     * restriction is always applied first and isn't affected by any of
+     * the query-string filters below, so there's no way to widen it.
      */
     public function team(Request $request): View
     {
         $this->authorize('viewAny', User::class);
 
+        $user = $request->user();
+        $instructorCourseIds = $user->hasRole('instructor') ? $user->instructedCourses()->pluck('courses.id') : null;
+
         $year = $request->has('year') ? $request->input('year') : CourseYear::default();
 
         $members = User::role('member')
             ->with(['memberProfile', 'enrollments.course.discipline'])
+            ->when($instructorCourseIds !== null, fn ($q) => $q->whereHas(
+                'enrollments',
+                fn ($q2) => $q2->whereIn('course_id', $instructorCourseIds),
+            ))
             ->when($request->filled('search'), function ($query) use ($request) {
                 $search = $request->string('search');
                 $query->where(fn ($q) => $q->where('name', 'like', "%{$search}%")->orWhere('email', 'like', "%{$search}%"));
@@ -50,7 +62,10 @@ class MemberController extends Controller
         return view('members.team', [
             'members' => $members,
             'selectedYear' => $year,
-            'courses' => Course::with('discipline')->orderBy('year')->get(),
+            'courses' => Course::with('discipline')
+                ->when($instructorCourseIds !== null, fn ($q) => $q->whereIn('id', $instructorCourseIds))
+                ->orderBy('year')
+                ->get(),
             'years' => CourseYear::options(),
         ]);
     }

@@ -39,10 +39,12 @@
             </form>
         </x-card>
 
-        <a href="{{ route('members.create') }}" class="inline-flex items-center justify-center gap-1.5 rounded-xl bg-gray-900 dark:bg-white dark:text-gray-900 px-4 py-2.5 text-sm font-semibold text-white shrink-0">
-            <x-heroicon-o-plus class="h-4 w-4" />
-            Nuovo iscritto
-        </a>
+        @if (auth()->user()->hasRole('admin'))
+            <a href="{{ route('members.create') }}" class="inline-flex items-center justify-center gap-1.5 rounded-xl bg-gray-900 dark:bg-white dark:text-gray-900 px-4 py-2.5 text-sm font-semibold text-white shrink-0">
+                <x-heroicon-o-plus class="h-4 w-4" />
+                Nuovo iscritto
+            </a>
+        @endif
     </div>
 
     @if ($members->isEmpty())
