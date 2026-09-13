@@ -41,6 +41,12 @@
                     {{ $day->day }}
                 </span>
 
+                @if ($hasLessons)
+                    <span class="mt-1 flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold text-white {{ $accent['badge'] }}">
+                        {{ $dayLessons->count() }}
+                    </span>
+                @endif
+
                 @unless ($mini)
                     <div class="mt-1.5 space-y-1">
                         @foreach ($dayLessons->take($view === 'week' ? 20 : 3) as $lesson)
