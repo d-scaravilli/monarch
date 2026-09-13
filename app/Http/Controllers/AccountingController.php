@@ -24,6 +24,7 @@ class AccountingController extends Controller
             'byCourse' => $accounting->byCourse($enrollments),
             'whoOwes' => $accounting->whoOwes($enrollments),
             'monthlyCollected' => $accounting->monthlyCollected($enrollments),
+            'enrollments' => $enrollments,
         ]);
     }
 }

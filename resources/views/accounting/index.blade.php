@@ -8,9 +8,16 @@
 
     <div class="space-y-6">
         <x-card>
-            <form method="GET" class="flex flex-wrap items-end gap-3">
-                <x-year-select :years="$years" :selected="$selectedYear" all-label="" />
-            </form>
+            <div class="flex flex-wrap items-end justify-between gap-3">
+                <form method="GET" class="flex flex-wrap items-end gap-3">
+                    <x-year-select :years="$years" :selected="$selectedYear" all-label="" />
+                </form>
+
+                <button type="button" x-data="" x-on:click="$dispatch('open-modal', 'register-payment')"
+                        class="inline-flex items-center gap-1.5 rounded-xl bg-gray-900 dark:bg-white dark:text-gray-900 px-4 py-2.5 text-sm font-semibold text-white">
+                    <x-heroicon-o-banknotes class="h-4 w-4" /> Registra pagamento
+                </button>
+            </div>
         </x-card>
 
         <div class="grid gap-4 grid-cols-2 lg:grid-cols-4">
@@ -121,5 +128,9 @@
                 </x-card>
             </div>
         </div>
+
+        @if ($enrollments->isNotEmpty())
+            <x-payment-modal name="register-payment" :enrollments="$enrollments" />
+        @endif
     </div>
 </x-app-layout>
