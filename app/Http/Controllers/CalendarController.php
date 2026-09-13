@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use App\Models\Lesson;
 use App\Models\Room;
+use App\Support\VisibleCourses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\View\View;
@@ -14,12 +15,15 @@ class CalendarController extends Controller
     /**
      * Month or week grid of all lessons, filterable by course/room.
      * Lessons only carry a date (no time-of-day), so this is a
-     * day-cell calendar rather than an hour-by-hour time grid.
+     * day-cell calendar rather than an hour-by-hour time grid. Scoped to
+     * whatever the viewer is allowed to see: everything for admin, only
+     * assigned courses for an instructor, only enrolled courses (plus
+     * every evento) for a member.
      */
     public function index(Request $request): View
     {
         $user = $request->user();
-        $courseIds = $user->hasRole('admin') ? null : $user->instructedCourses()->pluck('courses.id');
+        $courseIds = VisibleCourses::idsFor($user);
 
         $view = $request->input('view') === 'week' ? 'week' : 'month';
         $anchor = $request->filled('date') ? Carbon::parse($request->string('date')) : now();

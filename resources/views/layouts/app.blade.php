@@ -19,6 +19,7 @@
         $navItems[] = ['label' => 'La mia area', 'route' => 'member.area', 'icon' => 'user-circle', 'active' => request()->routeIs('member.area'), 'mobile' => true];
         $navItems[] = ['label' => 'Corsi', 'route' => 'courses.index', 'icon' => 'academic-cap', 'active' => request()->routeIs('courses.*'), 'mobile' => true];
         $navItems[] = ['label' => 'Lezioni', 'route' => 'lessons.index', 'icon' => 'calendar-days', 'active' => request()->routeIs('lessons.*'), 'mobile' => true];
+        $navItems[] = ['label' => 'Calendario', 'route' => 'palestra.calendar', 'icon' => 'calendar', 'active' => request()->routeIs('palestra.calendar'), 'mobile' => true];
     } elseif ($currentModule->slug === 'palestra' && $isStaff) {
         $navItems[] = ['label' => 'Dashboard', 'route' => 'palestra.dashboard', 'icon' => 'home', 'active' => request()->routeIs('palestra.dashboard'), 'mobile' => true];
         $navItems[] = ['label' => 'Corsi', 'route' => 'courses.index', 'icon' => 'academic-cap', 'active' => request()->routeIs('courses.*'), 'mobile' => true];
