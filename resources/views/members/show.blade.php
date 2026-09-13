@@ -228,17 +228,17 @@
                     </x-card>
                 </div>
 
-                <div class="grid grid-cols-{{ $showFinancials ? 2 : 1 }} gap-4 lg:grid-cols-1">
+                @if ($showFinancials)
                     <x-card class="flex flex-col items-center">
-                        <x-section-header class="self-start">Livello di presenze</x-section-header>
+                        <x-section-header class="self-start">Completamento pagamenti</x-section-header>
                         <div class="w-full" x-data="{
                             async init() {
                                 const ApexCharts = await window.loadApexCharts();
                                 const isDark = document.documentElement.classList.contains('dark');
                                 const chart = new ApexCharts(this.$refs.gauge, {
                                     chart: { type: 'radialBar', height: 180, fontFamily: 'inherit' },
-                                    series: [{{ $attendanceRate ?? 0 }}],
-                                    labels: ['Presenze'],
+                                    series: [{{ $paymentCompletionPercent }}],
+                                    labels: ['Pagato'],
                                     colors: ['{{ $accentHex }}'],
                                     plotOptions: { radialBar: { hollow: { size: '60%' }, dataLabels: { value: { fontSize: '1.2rem', fontWeight: 700, color: isDark ? '#f3f4f6' : '#111827', formatter: (v) => v + '%' } } } },
                                 });
@@ -248,29 +248,7 @@
                             <div x-ref="gauge"></div>
                         </div>
                     </x-card>
-
-                    @if ($showFinancials)
-                        <x-card class="flex flex-col items-center">
-                            <x-section-header class="self-start">Completamento pagamenti</x-section-header>
-                            <div class="w-full" x-data="{
-                                async init() {
-                                    const ApexCharts = await window.loadApexCharts();
-                                    const isDark = document.documentElement.classList.contains('dark');
-                                    const chart = new ApexCharts(this.$refs.gauge, {
-                                        chart: { type: 'radialBar', height: 180, fontFamily: 'inherit' },
-                                        series: [{{ $paymentCompletionPercent }}],
-                                        labels: ['Pagato'],
-                                        colors: ['{{ $accentHex }}'],
-                                        plotOptions: { radialBar: { hollow: { size: '60%' }, dataLabels: { value: { fontSize: '1.2rem', fontWeight: 700, color: isDark ? '#f3f4f6' : '#111827', formatter: (v) => v + '%' } } } },
-                                    });
-                                    chart.render();
-                                },
-                            }">
-                                <div x-ref="gauge"></div>
-                            </div>
-                        </x-card>
-                    @endif
-                </div>
+                @endif
 
                 @if ($showFinancials)
                     <div>
