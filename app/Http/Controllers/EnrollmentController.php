@@ -4,13 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use App\Models\Enrollment;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Spatie\Permission\PermissionRegistrar;
 
 class EnrollmentController extends Controller
 {
     /**
-     * Enroll an existing member into a course.
+     * Enroll an existing user into a course — they don't need to already
+     * carry the "member" role for this (an instructor can be enrolled in
+     * a course they don't teach), but they do end up with it afterwards:
+     * every place that lists "gli iscritti" (Team, dashboard stats) keys
+     * off that role, not off which other roles someone also has.
      */
     public function store(Request $request, Course $course): RedirectResponse
     {
@@ -29,6 +35,12 @@ class EnrollmentController extends Controller
             'status' => 'active',
             'billing_frequency' => $data['billing_frequency'] ?? 'annual',
         ]);
+
+        $user = User::findOrFail($data['user_id']);
+        if (! $user->hasRole('member')) {
+            $user->assignRole('member');
+            app(PermissionRegistrar::class)->forgetCachedPermissions();
+        }
 
         return redirect()->route('courses.show', $course)->with('status', 'Iscrizione aggiunta.');
     }

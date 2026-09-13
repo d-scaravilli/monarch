@@ -91,8 +91,11 @@ class CourseController extends Controller
         $isStaffForCourse = $canManage || $isAssignedInstructor;
         $compactRoster = $course->isEvento() || ! $isStaffForCourse;
 
+        // An instructor is still a person who can enroll in a course
+        // (just not necessarily this one) — never filtered out here just
+        // because they teach elsewhere.
         $availableMembers = $canManage
-            ? User::role('member')->whereNotIn('id', $course->enrollments->pluck('user_id'))->orderBy('name')->get()
+            ? User::role(['member', 'instructor'])->whereNotIn('id', $course->enrollments->pluck('user_id'))->orderBy('name')->get()
             : collect();
 
         $fillPercent = $course->room->capacity > 0

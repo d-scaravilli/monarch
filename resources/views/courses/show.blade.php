@@ -269,7 +269,7 @@
                             <x-input-label value="Iscritto" />
                             <select name="user_id" class="w-full rounded-xl border-gray-200 bg-gray-50 py-3 dark:border-white/10 dark:bg-white/5 dark:text-gray-100">
                                 @forelse ($availableMembers as $member)
-                                    <option value="{{ $member->id }}">{{ $member->name }}</option>
+                                    <option value="{{ $member->id }}">{{ $member->name }}{{ $member->hasRole('instructor') ? ' — istruttore' : '' }}</option>
                                 @empty
                                     <option value="">Nessun iscritto disponibile</option>
                                 @endforelse

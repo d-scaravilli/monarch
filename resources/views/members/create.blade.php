@@ -41,7 +41,7 @@
                     <select name="existing_user_id" class="w-full rounded-xl border-gray-200 bg-gray-50 dark:border-white/10 dark:bg-white/5 dark:text-gray-100">
                         <option value="">Seleziona...</option>
                         @foreach ($linkableUsers as $user)
-                            <option value="{{ $user->id }}" @selected(old('existing_user_id') == $user->id)>{{ $user->name }} ({{ $user->email }})</option>
+                            <option value="{{ $user->id }}" @selected(old('existing_user_id') == $user->id)>{{ $user->name }} ({{ $user->email }}){{ $user->hasRole('instructor') ? ' — istruttore' : '' }}</option>
                         @endforeach
                     </select>
                     <x-input-error :messages="$errors->get('existing_user_id')" class="mt-1" />
