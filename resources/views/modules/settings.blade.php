@@ -56,6 +56,34 @@
                         </div>
                     </div>
 
+                    @if ($module->slug === 'palestra')
+                        <div class="space-y-1.5">
+                            <x-input-label value="Sfondo tabella iscritti" />
+                            <p class="text-xs text-gray-400">Usata nella pagina di ogni corso. Se carichi un'immagine, sostituisce il colore d'accento come sfondo (con un leggero overlay scuro per leggibilità).</p>
+                            <div class="flex items-center gap-4">
+                                <span class="flex h-14 w-24 shrink-0 items-center justify-center overflow-hidden rounded-xl {{ \App\Support\ModuleTheme::classes($module->color)['soft'] }} dark:bg-white/5">
+                                    @if ($module->enrollmentsBackgroundUrl())
+                                        <img src="{{ $module->enrollmentsBackgroundUrl() }}" alt="" class="h-full w-full object-cover">
+                                    @else
+                                        <span class="text-xs {{ \App\Support\ModuleTheme::classes($module->color)['text'] }}">Colore</span>
+                                    @endif
+                                </span>
+                                <label class="inline-flex cursor-pointer items-center gap-1.5 rounded-xl border border-gray-200 dark:border-white/10 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200">
+                                    <x-heroicon-o-photo class="h-4 w-4" />
+                                    Carica immagine
+                                    <input type="file" name="enrollments_bg_image" accept="image/*" class="hidden">
+                                </label>
+                                @if ($module->enrollmentsBackgroundUrl())
+                                    <label class="inline-flex cursor-pointer items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                                        <input type="checkbox" name="remove_enrollments_bg_image" value="1" class="rounded-md border-gray-300 text-gray-900 focus:ring-gray-900">
+                                        Torna al colore
+                                    </label>
+                                @endif
+                            </div>
+                            <x-input-error :messages="$errors->get('enrollments_bg_image')" class="mt-1" />
+                        </div>
+                    @endif
+
                     <label class="flex items-center justify-between rounded-xl bg-gray-50 dark:bg-white/5 px-4 py-3">
                         <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Modulo attivo</span>
                         <input type="checkbox" name="is_active" value="1" class="rounded-md border-gray-300 text-gray-900 focus:ring-gray-900" @checked(old('is_active', $module->is_active))>

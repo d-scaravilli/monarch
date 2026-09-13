@@ -42,6 +42,8 @@ class ModuleSettingsController extends Controller
             'color' => 'required|string|in:'.implode(',', ModuleTheme::colorKeys()),
             'is_active' => 'boolean',
             'image' => 'nullable|image|max:2048',
+            'enrollments_bg_image' => 'nullable|image|max:2048',
+            'remove_enrollments_bg_image' => 'nullable|boolean',
         ]);
 
         if ($request->hasFile('image')) {
@@ -51,8 +53,18 @@ class ModuleSettingsController extends Controller
             $data['image_path'] = $request->file('image')->store('modules', 'public');
         }
 
+        if ($request->hasFile('enrollments_bg_image')) {
+            if ($module->enrollments_bg_image_path) {
+                Storage::disk('public')->delete($module->enrollments_bg_image_path);
+            }
+            $data['enrollments_bg_image_path'] = $request->file('enrollments_bg_image')->store('modules', 'public');
+        } elseif ($request->boolean('remove_enrollments_bg_image') && $module->enrollments_bg_image_path) {
+            Storage::disk('public')->delete($module->enrollments_bg_image_path);
+            $data['enrollments_bg_image_path'] = null;
+        }
+
         $data['is_active'] = $request->boolean('is_active');
-        unset($data['image']);
+        unset($data['image'], $data['enrollments_bg_image'], $data['remove_enrollments_bg_image']);
 
         $module->update($data);
 
