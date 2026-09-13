@@ -82,12 +82,21 @@ new class extends Component
                         @endphp
                         <tr wire:key="enrollment-{{ $enrollment->id }}">
                             <td class="px-5 py-3.5">
-                                <a href="{{ route('members.show', $enrollment->user) }}" class="flex items-center gap-2.5">
-                                    <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full {{ $accent['badge'] }} text-xs font-bold text-white">
-                                        {{ mb_strtoupper($initials) }}
-                                    </span>
-                                    <span class="font-medium text-gray-900 dark:text-gray-100">{{ $enrollment->user->name }}</span>
-                                </a>
+                                @if (auth()->user()->can('view', $enrollment->user))
+                                    <a href="{{ route('members.show', $enrollment->user) }}" class="flex items-center gap-2.5">
+                                        <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full {{ $accent['badge'] }} text-xs font-bold text-white">
+                                            {{ mb_strtoupper($initials) }}
+                                        </span>
+                                        <span class="font-medium text-gray-900 dark:text-gray-100">{{ $enrollment->user->name }}</span>
+                                    </a>
+                                @else
+                                    <div class="flex items-center gap-2.5">
+                                        <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full {{ $accent['badge'] }} text-xs font-bold text-white">
+                                            {{ mb_strtoupper($initials) }}
+                                        </span>
+                                        <span class="font-medium text-gray-900 dark:text-gray-100">{{ $enrollment->user->name }}</span>
+                                    </div>
+                                @endif
                             </td>
                             @unless ($compact)
                                 <td class="px-5 py-3.5 text-gray-500 dark:text-gray-400 hidden sm:table-cell">{{ $enrollment->user->email }}</td>

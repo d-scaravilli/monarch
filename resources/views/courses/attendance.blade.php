@@ -121,7 +121,7 @@
                             </span>
                             <div>
                                 <p class="font-medium text-gray-900 dark:text-gray-100 flex items-center gap-1.5">
-                                    @if ($canManage)
+                                    @if (auth()->user()->can('view', $enrollment->user))
                                         <a href="{{ route('members.show', $enrollment->user) }}" class="hover:underline">{{ $enrollment->user->name }}</a>
                                     @else
                                         {{ $enrollment->user->name }}
