@@ -228,7 +228,7 @@
                 </x-card>
 
                 <x-card class="flex flex-col items-center justify-center">
-                    <x-section-header class="self-start">Riempimento posti</x-section-header>
+                    <x-section-header class="self-start">Media presenze del corso</x-section-header>
                     <div
                         class="w-full"
                         x-data="{
@@ -237,8 +237,8 @@
                                 const isDark = document.documentElement.classList.contains('dark');
                                 const chart = new ApexCharts(this.$refs.gauge, {
                                     chart: { type: 'radialBar', height: 220, fontFamily: 'inherit' },
-                                    series: [{{ $fillPercent }}],
-                                    labels: ['Posti occupati'],
+                                    series: [{{ $averageAttendanceRate ?? 0 }}],
+                                    labels: ['Media presenze'],
                                     colors: ['{{ $accentHex }}'],
                                     plotOptions: { radialBar: { hollow: { size: '60%' }, dataLabels: { value: { fontSize: '1.5rem', fontWeight: 700, color: isDark ? '#f3f4f6' : '#111827', formatter: (v) => v + '%' } } } },
                                 });
@@ -248,7 +248,9 @@
                     >
                         <div x-ref="gauge"></div>
                     </div>
-                    <p class="text-xs text-gray-400 -mt-2">{{ $course->enrollments->count() }}/{{ $course->room->capacity }} posti sala</p>
+                    <p class="text-xs text-gray-400 -mt-2">
+                        {{ $averageAttendanceRate !== null ? 'su tutte le lezioni svolte' : 'nessuna lezione svolta finora' }}
+                    </p>
                 </x-card>
             </div>
         @endif

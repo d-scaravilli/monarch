@@ -105,14 +105,16 @@ class CourseController extends Controller
         // An "evento" has its own lightweight layout (see courses/show.blade.php)
         // built around its few specific dates rather than the full lessons
         // table/weekly trend chart a periodic "corso" uses.
+        $averageAttendanceRate = null;
         if ($course->isEvento()) {
             $course->load(['lessons' => fn ($q) => $q->orderBy('date')->with('attendances')]);
             $attendanceTrend = [];
         } else {
             $attendanceTrend = $this->weeklyAttendanceTrend($course);
+            $averageAttendanceRate = $this->averageAttendanceRate($course);
         }
 
-        return view('courses.show', compact('course', 'canManage', 'compactRoster', 'availableMembers', 'fillPercent', 'attendanceTrend'));
+        return view('courses.show', compact('course', 'canManage', 'compactRoster', 'availableMembers', 'fillPercent', 'attendanceTrend', 'averageAttendanceRate'));
     }
 
     /**
@@ -147,6 +149,26 @@ class CourseController extends Controller
         }
 
         return $trend;
+    }
+
+    /**
+     * Average presence rate across every lesson held so far (not future
+     * ones), for the course page's gauge — same join/filter shape as
+     * weeklyAttendanceTrend(), just aggregated over all time instead of
+     * bucketed by week.
+     */
+    private function averageAttendanceRate(Course $course): ?int
+    {
+        $attendances = Attendance::query()
+            ->join('enrollments', 'attendances.enrollment_id', '=', 'enrollments.id')
+            ->join('lessons', 'attendances.lesson_id', '=', 'lessons.id')
+            ->where('lessons.course_id', $course->id)
+            ->where('lessons.date', '<=', now())
+            ->whereColumn('lessons.date', '>=', 'enrollments.enrollment_date')
+            ->select('attendances.*')
+            ->get();
+
+        return $attendances->isEmpty() ? null : (int) round($attendances->where('present', true)->count() / $attendances->count() * 100);
     }
 
     public function edit(Course $course): View
