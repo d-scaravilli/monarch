@@ -19,10 +19,9 @@
     } elseif ($currentModule->slug === 'palestra' && $isStaff) {
         $navItems[] = ['label' => 'Dashboard', 'route' => 'palestra.dashboard', 'icon' => 'home', 'active' => request()->routeIs('palestra.dashboard'), 'mobile' => true];
         $navItems[] = ['label' => 'Corsi', 'route' => 'courses.index', 'icon' => 'academic-cap', 'active' => request()->routeIs('courses.*'), 'mobile' => true];
-        $navItems[] = ['label' => 'Iscritti', 'route' => 'members.index', 'icon' => 'users', 'active' => request()->routeIs('members.*') && ! request()->routeIs('members.team'), 'mobile' => true];
         $navItems[] = ['label' => 'Lezioni', 'route' => 'lessons.index', 'icon' => 'calendar-days', 'active' => request()->routeIs('lessons.*'), 'mobile' => true];
         $navItems[] = ['label' => 'Calendario', 'route' => 'palestra.calendar', 'icon' => 'calendar', 'active' => request()->routeIs('palestra.calendar'), 'mobile' => true];
-        $navItems[] = ['label' => 'Team', 'route' => 'members.team', 'icon' => 'user-group', 'active' => request()->routeIs('members.team'), 'mobile' => false];
+        $navItems[] = ['label' => 'Team', 'route' => 'members.team', 'icon' => 'user-group', 'active' => request()->routeIs('members.*'), 'mobile' => true];
         if ($isAdmin) {
             $navItems[] = ['label' => 'Contabilità', 'route' => 'accounting.index', 'icon' => 'banknotes', 'active' => request()->routeIs('accounting.*'), 'mobile' => false];
             $navItems[] = ['label' => 'Gestione modulo', 'route' => 'modules.settings.edit', 'params' => [$currentModule], 'icon' => 'wrench-screwdriver', 'active' => request()->routeIs('modules.settings.*'), 'mobile' => false];

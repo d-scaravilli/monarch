@@ -14,31 +14,12 @@ use Illuminate\View\View;
 
 class MemberController extends Controller
 {
-    public function index(Request $request): View
-    {
-        $this->authorize('viewAny', User::class);
-
-        $members = User::role('member')
-            ->with('memberProfile')
-            ->when($request->filled('search'), function ($query) use ($request) {
-                $search = $request->string('search');
-                $query->where(fn ($q) => $q->where('name', 'like', "%{$search}%")->orWhere('email', 'like', "%{$search}%"));
-            })
-            ->when($request->input('status') === 'active', fn ($q) => $q->whereHas('enrollments', fn ($q2) => $q2->where('status', 'active')))
-            ->when($request->input('status') === 'inactive', fn ($q) => $q->whereDoesntHave('enrollments', fn ($q2) => $q2->where('status', 'active')))
-            ->orderBy('name')
-            ->paginate(20)
-            ->withQueryString();
-
-        return view('members.index', compact('members'));
-    }
-
     /**
-     * Quick card view of members, filterable by course/year — a faster
-     * visual complement to the searchable index above, not a replacement.
-     * Defaults to the most recently *created* course's year (not the
-     * calendar year), so a member from a past-year course only shows
-     * up once you explicitly pick that year or "Tutti".
+     * Card view of members, filterable by course/year plus the
+     * search/status filters the old standalone "Iscritti" list had before
+     * it was merged in here. Defaults to the most recently *created*
+     * course's year (not the calendar year), so a member from a past-year
+     * course only shows up once you explicitly pick that year or "Tutti".
      */
     public function team(Request $request): View
     {
@@ -48,6 +29,12 @@ class MemberController extends Controller
 
         $members = User::role('member')
             ->with(['memberProfile', 'enrollments.course.discipline'])
+            ->when($request->filled('search'), function ($query) use ($request) {
+                $search = $request->string('search');
+                $query->where(fn ($q) => $q->where('name', 'like', "%{$search}%")->orWhere('email', 'like', "%{$search}%"));
+            })
+            ->when($request->input('status') === 'active', fn ($q) => $q->whereHas('enrollments', fn ($q2) => $q2->where('status', 'active')))
+            ->when($request->input('status') === 'inactive', fn ($q) => $q->whereDoesntHave('enrollments', fn ($q2) => $q2->where('status', 'active')))
             ->when($request->filled('course_id'), fn ($q) => $q->whereHas(
                 'enrollments',
                 fn ($q2) => $q2->where('course_id', $request->input('course_id')),
@@ -206,7 +193,7 @@ class MemberController extends Controller
 
         $member->delete();
 
-        return redirect()->route('members.index')->with('status', 'Iscritto eliminato.');
+        return redirect()->route('members.team')->with('status', 'Iscritto eliminato.');
     }
 
     private function validateMember(Request $request, ?int $ignoreUserId = null): array

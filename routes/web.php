@@ -48,7 +48,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::get('/area', [MemberAreaController::class, 'index'])->name('member.area');
 
-        Route::resource('members', MemberController::class);
+        Route::resource('members', MemberController::class)->except('index');
+        Route::redirect('/members', '/team');
         Route::post('/members/{member}/documents', [DocumentController::class, 'store'])->name('members.documents.store');
         Route::delete('/documents/{document}', [DocumentController::class, 'destroy'])->name('documents.destroy');
 
