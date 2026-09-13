@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attendance;
+use App\Models\Document;
 use App\Models\Enrollment;
 use App\Models\Lesson;
 use App\Models\User;
@@ -67,9 +68,9 @@ class PalestraDashboardController extends Controller
         $topPresent = $this->topByAttendance($courseIds, present: true);
         $topAbsent = $this->topByAttendance($courseIds, present: false);
 
-        $newMembersThisMonth = User::role('member')
-            ->whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()])
-            ->count();
+        // Not scoped to a single certificate type: any document (medical
+        // certificate, iscrizione form, etc.) with an expiry coming up.
+        $expiringDocuments = Document::whereBetween('expiry_date', [today(), today()->addDays(30)])->count();
 
         $outstanding = $accounting->totals(
             $accounting->enrollmentsForYear(CourseYear::default(), $courseIds)
@@ -84,7 +85,7 @@ class PalestraDashboardController extends Controller
             'weeklyAttendanceTrend' => $weeklyAttendanceTrend,
             'topPresent' => $topPresent,
             'topAbsent' => $topAbsent,
-            'newMembersThisMonth' => $newMembersThisMonth,
+            'expiringDocuments' => $expiringDocuments,
             'outstanding' => $outstanding,
             'isAdmin' => $isAdmin,
             'miniCalendarDays' => $miniCalendarDays,

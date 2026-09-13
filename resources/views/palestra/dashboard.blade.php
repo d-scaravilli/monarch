@@ -14,7 +14,7 @@
         <div class="grid gap-4 grid-cols-2 lg:grid-cols-3">
             <x-metric-card icon="users" label="Iscritti attivi" :value="$activeEnrollments" :color="$accentColor" />
             <x-metric-card icon="calendar-days" label="Lezioni questa settimana" :value="$lessonsThisWeek" :color="$accentColor" :trend="$weekTrend" />
-            <x-metric-card icon="user-plus" label="Nuovi iscritti questo mese" :value="$newMembersThisMonth" :color="$accentColor" class="col-span-2 lg:col-span-1" />
+            <x-metric-card icon="document-text" label="Documenti in scadenza (30gg)" :value="$expiringDocuments" :color="$accentColor" class="col-span-2 lg:col-span-1" />
         </div>
 
         {{-- Andamento presenze + calendario mensile --}}
