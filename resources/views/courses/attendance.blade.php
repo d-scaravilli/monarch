@@ -235,8 +235,11 @@
                 <x-heroicon-o-check-circle class="h-4 w-4 text-green-600" x-show="saved" x-cloak />
             </div>
             <x-card>
-                <textarea x-model="value" @blur="save()" rows="4" placeholder="Cosa si è fatto durante la lezione..."
+                <textarea x-model="value" rows="4" placeholder="Cosa si è fatto durante la lezione..."
                           class="w-full rounded-xl border-gray-200 bg-gray-50 focus:bg-white focus:border-gray-900 focus:ring-gray-900 dark:border-white/10 dark:bg-white/5 dark:text-gray-100"></textarea>
+                <div class="flex justify-end mt-3">
+                    <x-primary-button type="button" @click="save()">Salva</x-primary-button>
+                </div>
             </x-card>
         </div>
     @elseif ($lesson->description)
