@@ -14,7 +14,7 @@ class Module extends Model
         'description',
         'icon',
         'image_path',
-        'enrollments_bg_image_path',
+        'member_cover_image_path',
         'color',
         'is_active',
     ];
@@ -37,12 +37,12 @@ class Module extends Model
     }
 
     /**
-     * Background image for the "iscritti" tables (course-enrollments-table),
-     * shared by every course under this module — an alternative to the
-     * plain accent-color background chosen alongside it.
+     * Cover banner image for the member-show page, shared by every member
+     * card under this module — an alternative to the plain accent-color
+     * gradient chosen alongside it.
      */
-    public function enrollmentsBackgroundUrl(): ?string
+    public function memberCoverImageUrl(): ?string
     {
-        return $this->enrollments_bg_image_path ? Storage::disk('public')->url($this->enrollments_bg_image_path) : null;
+        return $this->member_cover_image_path ? Storage::disk('public')->url($this->member_cover_image_path) : null;
     }
 }

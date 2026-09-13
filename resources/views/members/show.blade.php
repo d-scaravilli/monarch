@@ -8,6 +8,7 @@
     $accentColor = $currentModule->color ?? 'gray';
     $accentHex = \App\Support\ModuleTheme::hex($accentColor);
     $accent = \App\Support\ModuleTheme::classes($accentColor);
+    $coverImage = $currentModule?->memberCoverImageUrl();
     $initials = collect(explode(' ', $member->name))->map(fn ($p) => mb_substr($p, 0, 1))->take(2)->implode('');
 @endphp
 
@@ -23,8 +24,8 @@
 
         {{-- Cover + avatar --}}
         <div class="rounded-2xl overflow-hidden bg-white dark:bg-gray-900 shadow-sm ring-1 ring-gray-100 dark:ring-white/10">
-            <div class="h-28 sm:h-36 relative {{ $accent['badge'] }}"
-                 style="background-image: linear-gradient(135deg, {{ $accentHex }} 0%, {{ $accentHex }}99 100%);">
+            <div class="h-28 sm:h-36 relative {{ $coverImage ? '' : $accent['badge'] }}"
+                 style="background-image: {{ $coverImage ? "linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url('{$coverImage}')" : "linear-gradient(135deg, {$accentHex} 0%, {$accentHex}99 100%)" }}; background-size: cover; background-position: center;">
                 @if (! $member->trashed())
                     <div class="absolute top-3 right-3 flex items-center gap-1">
                         <a href="{{ route('members.edit', $member) }}" class="flex h-9 w-9 items-center justify-center rounded-full bg-white/20 text-white backdrop-blur hover:bg-white/30">

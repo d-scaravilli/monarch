@@ -42,8 +42,8 @@ class ModuleSettingsController extends Controller
             'color' => 'required|string|in:'.implode(',', ModuleTheme::colorKeys()),
             'is_active' => 'boolean',
             'image' => 'nullable|image|max:2048',
-            'enrollments_bg_image' => 'nullable|image|max:2048',
-            'remove_enrollments_bg_image' => 'nullable|boolean',
+            'member_cover_image' => 'nullable|image|max:2048',
+            'remove_member_cover_image' => 'nullable|boolean',
         ]);
 
         if ($request->hasFile('image')) {
@@ -53,18 +53,18 @@ class ModuleSettingsController extends Controller
             $data['image_path'] = $request->file('image')->store('modules', 'public');
         }
 
-        if ($request->hasFile('enrollments_bg_image')) {
-            if ($module->enrollments_bg_image_path) {
-                Storage::disk('public')->delete($module->enrollments_bg_image_path);
+        if ($request->hasFile('member_cover_image')) {
+            if ($module->member_cover_image_path) {
+                Storage::disk('public')->delete($module->member_cover_image_path);
             }
-            $data['enrollments_bg_image_path'] = $request->file('enrollments_bg_image')->store('modules', 'public');
-        } elseif ($request->boolean('remove_enrollments_bg_image') && $module->enrollments_bg_image_path) {
-            Storage::disk('public')->delete($module->enrollments_bg_image_path);
-            $data['enrollments_bg_image_path'] = null;
+            $data['member_cover_image_path'] = $request->file('member_cover_image')->store('modules', 'public');
+        } elseif ($request->boolean('remove_member_cover_image') && $module->member_cover_image_path) {
+            Storage::disk('public')->delete($module->member_cover_image_path);
+            $data['member_cover_image_path'] = null;
         }
 
         $data['is_active'] = $request->boolean('is_active');
-        unset($data['image'], $data['enrollments_bg_image'], $data['remove_enrollments_bg_image']);
+        unset($data['image'], $data['member_cover_image'], $data['remove_member_cover_image']);
 
         $module->update($data);
 

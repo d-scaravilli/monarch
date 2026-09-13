@@ -55,28 +55,12 @@ new class extends Component
 }
 ?>
 
-@php
-    $bgImage = $currentModule?->enrollmentsBackgroundUrl();
-    $mutedText = $bgImage ? 'text-white/70' : 'text-gray-400';
-    $bodyText = $bgImage ? 'text-white' : 'text-gray-900 dark:text-gray-100';
-    $secondaryText = $bgImage ? 'text-white/70' : 'text-gray-500 dark:text-gray-400';
-    $divide = $bgImage ? 'divide-white/10' : 'divide-gray-100 dark:divide-white/10';
-    $border = $bgImage ? 'border-white/10' : 'border-gray-100 dark:border-white/10';
-    $actionIcon = $bgImage ? 'text-white/60 hover:text-red-300' : 'text-gray-400 hover:text-red-600';
-@endphp
-
 <div class="space-y-3">
-    <div
-        @if ($bgImage)
-            style="background-image: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), url('{{ $bgImage }}'); background-size: cover; background-position: center;"
-        @endif
-        class="rounded-2xl overflow-hidden shadow-sm ring-1 ring-gray-100 dark:ring-white/10 {{ $bgImage ? '' : $accent['soft'].' dark:bg-white/5' }}"
-        wire:loading.class="opacity-60"
-    >
+    <div class="rounded-2xl overflow-hidden shadow-sm ring-1 ring-gray-100 dark:ring-white/10 {{ $accent['soft'] }} dark:bg-white/5" wire:loading.class="opacity-60">
         <div class="overflow-x-auto">
             <table class="w-full text-sm">
                 <thead>
-                    <tr class="border-b {{ $border }} text-xs font-semibold uppercase tracking-wide {{ $mutedText }}">
+                    <tr class="border-b border-gray-100 dark:border-white/10 text-xs font-semibold uppercase tracking-wide text-gray-400">
                         <th class="px-5 py-3 text-left">
                             <button wire:click="sortBy('enrollment_date')" class="hover:text-gray-600 dark:hover:text-gray-200">Iscritto</button>
                         </th>
@@ -89,7 +73,7 @@ new class extends Component
                         <th class="px-5 py-3 text-right">Azioni</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y {{ $divide }}">
+                <tbody class="divide-y divide-gray-100 dark:divide-white/10">
                     @forelse ($enrollments as $enrollment)
                         @php
                             $initials = collect(explode(' ', $enrollment->user->name))->map(fn ($p) => mb_substr($p, 0, 1))->take(2)->implode('');
@@ -102,12 +86,12 @@ new class extends Component
                                     <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full {{ $accent['badge'] }} text-xs font-bold text-white">
                                         {{ mb_strtoupper($initials) }}
                                     </span>
-                                    <span class="font-medium {{ $bodyText }}">{{ $enrollment->user->name }}</span>
+                                    <span class="font-medium text-gray-900 dark:text-gray-100">{{ $enrollment->user->name }}</span>
                                 </a>
                             </td>
                             @unless ($compact)
-                                <td class="px-5 py-3.5 {{ $secondaryText }} hidden sm:table-cell">{{ $enrollment->user->email }}</td>
-                                <td class="px-5 py-3.5 {{ $secondaryText }} hidden md:table-cell whitespace-nowrap">{{ $enrollment->enrollment_date->translatedFormat('d M Y') }}</td>
+                                <td class="px-5 py-3.5 text-gray-500 dark:text-gray-400 hidden sm:table-cell">{{ $enrollment->user->email }}</td>
+                                <td class="px-5 py-3.5 text-gray-500 dark:text-gray-400 hidden md:table-cell whitespace-nowrap">{{ $enrollment->enrollment_date->translatedFormat('d M Y') }}</td>
                                 @php $validAttendances = $enrollment->validAttendances(); @endphp
                                 <td class="px-5 py-3.5">
                                     <span class="inline-flex items-center gap-2">
@@ -129,7 +113,7 @@ new class extends Component
                                 @if (auth()->user()->hasRole('admin'))
                                     <button type="button" wire:click="deleteEnrollment({{ $enrollment->id }})"
                                             wire:confirm="Rimuovere questa iscrizione?"
-                                            class="{{ $actionIcon }}">
+                                            class="text-gray-400 hover:text-red-600">
                                         <x-heroicon-o-trash class="h-4 w-4" />
                                     </button>
                                 @endif
@@ -137,7 +121,7 @@ new class extends Component
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="{{ $compact ? 2 : 6 }}" class="px-5 py-8 text-center text-sm {{ $secondaryText }}">Nessun iscritto.</td>
+                            <td colspan="{{ $compact ? 2 : 6 }}" class="px-5 py-8 text-center text-sm text-gray-500">Nessun iscritto.</td>
                         </tr>
                     @endforelse
                 </tbody>
