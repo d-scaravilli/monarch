@@ -17,6 +17,7 @@
         $navItems[] = ['label' => 'Impostazioni', 'route' => 'settings.edit', 'icon' => 'cog-6-tooth', 'active' => request()->routeIs('settings.*'), 'mobile' => true];
     } elseif ($currentModule->slug === 'palestra' && $isMember) {
         $navItems[] = ['label' => 'La mia area', 'route' => 'member.area', 'icon' => 'user-circle', 'active' => request()->routeIs('member.area'), 'mobile' => true];
+        $navItems[] = ['label' => 'Corsi', 'route' => 'courses.index', 'icon' => 'academic-cap', 'active' => request()->routeIs('courses.*'), 'mobile' => true];
     } elseif ($currentModule->slug === 'palestra' && $isStaff) {
         $navItems[] = ['label' => 'Dashboard', 'route' => 'palestra.dashboard', 'icon' => 'home', 'active' => request()->routeIs('palestra.dashboard'), 'mobile' => true];
         $navItems[] = ['label' => 'Corsi', 'route' => 'courses.index', 'icon' => 'academic-cap', 'active' => request()->routeIs('courses.*'), 'mobile' => true];

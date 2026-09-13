@@ -8,6 +8,7 @@ use App\Models\Discipline;
 use App\Models\Lesson;
 use App\Models\Room;
 use App\Models\User;
+use App\Support\VisibleCourses;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,19 +17,19 @@ use Illuminate\View\View;
 class CourseController extends Controller
 {
     /**
-     * Active courses: all of them for the admin, only the assigned
-     * ones for an instructor.
+     * Active courses: all of them for the admin, only the assigned ones
+     * for an instructor, and only the enrolled ones (plus every evento)
+     * for a member.
      */
     public function index(): View
     {
         $user = Auth::user();
+        $courseIds = VisibleCourses::idsFor($user);
 
         $courses = Course::query()
             ->with(['discipline', 'room', 'schedules'])
             ->withCount('enrollments')
-            ->when(! $user->hasRole('admin'), function ($query) use ($user) {
-                $query->whereHas('instructors', fn ($q) => $q->whereKey($user->id));
-            })
+            ->when($courseIds !== null, fn ($q) => $q->whereIn('id', $courseIds))
             ->orderBy('year')
             ->get();
 
@@ -84,7 +85,11 @@ class CourseController extends Controller
             'enrollments' => fn ($query) => $query->with('user')->orderBy('enrollment_date', 'desc'),
         ]);
 
-        $canManage = Auth::user()->hasRole('admin');
+        $user = Auth::user();
+        $canManage = $user->hasRole('admin');
+        $isAssignedInstructor = $user->hasRole('instructor') && $course->instructors->contains($user->id);
+        $isStaffForCourse = $canManage || $isAssignedInstructor;
+        $compactRoster = $course->isEvento() || ! $isStaffForCourse;
 
         $availableMembers = $canManage
             ? User::role('member')->whereNotIn('id', $course->enrollments->pluck('user_id'))->orderBy('name')->get()
@@ -104,7 +109,7 @@ class CourseController extends Controller
             $attendanceTrend = $this->weeklyAttendanceTrend($course);
         }
 
-        return view('courses.show', compact('course', 'canManage', 'availableMembers', 'fillPercent', 'attendanceTrend'));
+        return view('courses.show', compact('course', 'canManage', 'compactRoster', 'availableMembers', 'fillPercent', 'attendanceTrend'));
     }
 
     /**

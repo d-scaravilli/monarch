@@ -25,6 +25,12 @@ class CoursePolicy
             return $course->instructors()->whereKey($user->id)->exists();
         }
 
+        // An "evento" is a public noticeboard: any member can look, not
+        // just the ones enrolled in it.
+        if ($course->isEvento()) {
+            return true;
+        }
+
         return $course->enrollments()->where('user_id', $user->id)->exists();
     }
 

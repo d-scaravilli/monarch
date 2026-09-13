@@ -78,14 +78,16 @@
                     <p class="mt-4 text-sm text-gray-600 dark:text-gray-400">{{ $course->description }}</p>
                 @endif
 
-                <div class="mt-4 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-gray-600 dark:text-gray-400 border-t border-gray-100 dark:border-white/10 pt-4">
-                    <span class="flex items-center gap-1.5">
-                        <x-heroicon-o-credit-card class="h-4 w-4" /> €{{ number_format($course->monthly_cost, 2) }}/mese &middot; €{{ number_format($course->annual_cost, 2) }}/anno
-                        @if ($course->enrollment_cost)
-                            &middot; €{{ number_format($course->enrollment_cost, 2) }} iscrizione
-                        @endif
-                    </span>
-                </div>
+                @if ($canManage)
+                    <div class="mt-4 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-gray-600 dark:text-gray-400 border-t border-gray-100 dark:border-white/10 pt-4">
+                        <span class="flex items-center gap-1.5">
+                            <x-heroicon-o-credit-card class="h-4 w-4" /> €{{ number_format($course->monthly_cost, 2) }}/mese &middot; €{{ number_format($course->annual_cost, 2) }}/anno
+                            @if ($course->enrollment_cost)
+                                &middot; €{{ number_format($course->enrollment_cost, 2) }} iscrizione
+                            @endif
+                        </span>
+                    </div>
+                @endif
 
                 @if ($course->instructors->isNotEmpty() || $course->schedules->isNotEmpty())
                     <div class="mt-3 flex flex-wrap gap-2">
@@ -111,7 +113,7 @@
                     <p class="text-sm text-gray-400">Nessuna descrizione.</p>
                 @endif
 
-                <div class="mt-8 grid gap-6 sm:grid-cols-3 border-t border-gray-100 dark:border-white/10 pt-8">
+                <div class="mt-8 grid gap-6 sm:grid-cols-{{ $canManage ? 3 : 2 }} border-t border-gray-100 dark:border-white/10 pt-8">
                     <div class="flex items-start gap-3">
                         <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl {{ $accent['soft'] }}">
                             <x-heroicon-o-calendar-days class="h-5 w-5 {{ $accent['text'] }}" />
@@ -130,17 +132,19 @@
                             <p class="text-sm text-gray-500 dark:text-gray-400">{{ $course->room->name }}</p>
                         </div>
                     </div>
-                    <div class="flex items-start gap-3">
-                        <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl {{ $accent['soft'] }}">
-                            <x-heroicon-o-credit-card class="h-5 w-5 {{ $accent['text'] }}" />
-                        </span>
-                        <div>
-                            <p class="text-sm font-semibold text-gray-900 dark:text-gray-100">Costo</p>
-                            <p class="text-sm text-gray-500 dark:text-gray-400">
-                                {{ $course->enrollment_cost ? '€'.number_format($course->enrollment_cost, 2) : 'Gratuito' }}
-                            </p>
+                    @if ($canManage)
+                        <div class="flex items-start gap-3">
+                            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl {{ $accent['soft'] }}">
+                                <x-heroicon-o-credit-card class="h-5 w-5 {{ $accent['text'] }}" />
+                            </span>
+                            <div>
+                                <p class="text-sm font-semibold text-gray-900 dark:text-gray-100">Costo</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">
+                                    {{ $course->enrollment_cost ? '€'.number_format($course->enrollment_cost, 2) : 'Gratuito' }}
+                                </p>
+                            </div>
                         </div>
-                    </div>
+                    @endif
                 </div>
 
                 @if ($course->instructors->isNotEmpty())
@@ -251,7 +255,7 @@
 
         <div>
             <x-section-header>Iscritti ({{ $course->enrollments->count() }})</x-section-header>
-            <livewire:course-enrollments-table :course-id="$course->id" :accent-color="$accentColor" :compact="$course->isEvento()" />
+            <livewire:course-enrollments-table :course-id="$course->id" :accent-color="$accentColor" :compact="$compactRoster" />
         </div>
 
         @if ($canManage && ! $course->trashed())
