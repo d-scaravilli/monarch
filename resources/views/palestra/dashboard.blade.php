@@ -18,8 +18,8 @@
         </div>
 
         {{-- Andamento presenze + calendario mensile --}}
-        <div class="grid gap-4 lg:grid-cols-2">
-            <x-card>
+        <div class="grid gap-4 lg:grid-cols-2 items-stretch">
+            <x-card class="h-full flex flex-col">
                 <x-section-header>Andamento presenze</x-section-header>
                 <div
                     x-data="{
@@ -46,10 +46,7 @@
                 </div>
             </x-card>
 
-            <div>
-                <x-section-header>{{ $miniCalendarAnchor->translatedFormat('F Y') }}</x-section-header>
-                <x-month-calendar-grid :days="$miniCalendarDays" :lessons-by-date="$miniCalendarLessons" :anchor="$miniCalendarAnchor" mini />
-            </div>
+            <x-month-calendar-grid :days="$miniCalendarDays" :lessons-by-date="$miniCalendarLessons" :anchor="$miniCalendarAnchor" :heading="$miniCalendarAnchor->translatedFormat('F Y')" mini />
         </div>
 
         {{-- Top presenze/assenze + da incassare --}}

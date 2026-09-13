@@ -1,38 +1,37 @@
-@props(['days', 'lessonsByDate', 'anchor', 'view' => 'month', 'mini' => false])
+@props(['days', 'lessonsByDate', 'anchor', 'view' => 'month', 'mini' => false, 'heading' => null])
 @php
     $weekdayLabels = $mini ? ['L', 'M', 'M', 'G', 'V', 'S', 'D'] : ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'];
     $accent = \App\Support\ModuleTheme::classes($currentModule->color ?? 'gray');
 @endphp
 
-<x-card class="p-0 overflow-hidden">
+<x-card class="p-0 overflow-hidden {{ $heading ? 'h-full flex flex-col' : '' }}">
+    @if ($heading)
+        <div class="px-5 pt-4">
+            <x-section-header class="mb-2">{{ $heading }}</x-section-header>
+        </div>
+    @endif
+
     <div class="grid grid-cols-7 border-b border-gray-100 dark:border-white/10 text-xs font-semibold uppercase tracking-wide text-gray-400">
         @foreach ($weekdayLabels as $weekdayLabel)
             <div class="px-1 py-2 text-center">{{ $weekdayLabel }}</div>
         @endforeach
     </div>
 
-    <div class="grid grid-cols-7">
+    <div class="grid grid-cols-7 {{ $heading ? 'flex-1 auto-rows-fr' : '' }}">
         @foreach ($days as $day)
             @php
                 $inMonth = $view === 'week' || $day->month === $anchor->month;
                 $dayLessons = $lessonsByDate->get($day->toDateString(), collect());
                 $isToday = $day->isToday();
+                $hasLessons = $mini && $dayLessons->isNotEmpty();
             @endphp
             <div class="border-b border-r border-gray-100 dark:border-white/10 {{ $mini ? 'min-h-[2.75rem] p-1' : ($view === 'week' ? 'min-h-[10rem] p-2' : 'min-h-[6.5rem] p-2') }} {{ $inMonth ? '' : 'bg-gray-50/50 dark:bg-white/[0.02]' }}">
                 <span class="flex h-6 w-6 items-center justify-center rounded-full text-xs font-medium
-                             {{ $isToday ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900' : ($inMonth ? 'text-gray-700 dark:text-gray-300' : 'text-gray-300 dark:text-gray-600') }}">
+                             {{ $isToday ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900' : ($hasLessons ? $accent['badge'].' text-white' : ($inMonth ? 'text-gray-700 dark:text-gray-300' : 'text-gray-300 dark:text-gray-600')) }}">
                     {{ $day->day }}
                 </span>
 
-                @if ($mini)
-                    @if ($dayLessons->isNotEmpty())
-                        <div class="mt-1 flex justify-center gap-0.5">
-                            @foreach ($dayLessons->take(3) as $lesson)
-                                <span class="h-1.5 w-1.5 rounded-full {{ $accent['badge'] }}"></span>
-                            @endforeach
-                        </div>
-                    @endif
-                @else
+                @unless ($mini)
                     <div class="mt-1.5 space-y-1">
                         @foreach ($dayLessons->take($view === 'week' ? 20 : 3) as $lesson)
                             <a href="{{ route('courses.lessons.attendance.edit', [$lesson->course, $lesson]) }}"
@@ -44,7 +43,7 @@
                             <p class="text-xs text-gray-400 px-1.5">+{{ $dayLessons->count() - 3 }} altre</p>
                         @endif
                     </div>
-                @endif
+                @endunless
             </div>
         @endforeach
     </div>
