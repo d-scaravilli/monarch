@@ -28,6 +28,12 @@
                 $dayLessons = $lessonsByDate->get($day->toDateString(), collect());
                 $isToday = $day->isToday();
                 $hasLessons = $mini && $dayLessons->isNotEmpty();
+                // A single lesson goes straight to its own attendance page;
+                // more than one is ambiguous, so it opens the full Calendario
+                // instead, already filtered (week view) on that date.
+                $dayHref = ! $hasLessons ? null : ($dayLessons->count() === 1
+                    ? route('courses.lessons.attendance.edit', [$dayLessons->first()->course, $dayLessons->first()])
+                    : route('palestra.calendar', ['view' => 'week', 'date' => $day->toDateString()]));
             @endphp
             <div class="border-b border-r border-gray-100 dark:border-white/10 {{ $mini ? 'min-h-[2.75rem] p-1' : ($view === 'week' ? 'min-h-[10rem] p-2' : 'min-h-[6.5rem] p-2') }} {{ $inMonth ? '' : 'bg-gray-50/50 dark:bg-white/[0.02]' }}">
                 {{-- The lesson indicator must never share the same circle as
@@ -36,14 +42,20 @@
                      lesson indicator disappeared on exactly the day someone
                      is most likely to check first. Kept as two independent
                      elements below instead. --}}
-                <span class="flex h-6 w-6 items-center justify-center rounded-full text-xs font-medium
-                             {{ $isToday ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900' : ($inMonth ? 'text-gray-700 dark:text-gray-300' : 'text-gray-300 dark:text-gray-600') }}">
-                    {{ $day->day }}
-                </span>
-
-                @if ($hasLessons)
-                    <span class="mt-1 flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold text-white {{ $accent['badge'] }}">
-                        {{ $dayLessons->count() }}
+                @if ($dayHref)
+                    <a href="{{ $dayHref }}" class="block w-fit">
+                        <span class="flex h-6 w-6 items-center justify-center rounded-full text-xs font-medium
+                                     {{ $isToday ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900' : ($inMonth ? 'text-gray-700 dark:text-gray-300' : 'text-gray-300 dark:text-gray-600') }}">
+                            {{ $day->day }}
+                        </span>
+                        <span class="mt-1 flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold text-white {{ $accent['badge'] }}">
+                            {{ $dayLessons->count() }}
+                        </span>
+                    </a>
+                @else
+                    <span class="flex h-6 w-6 items-center justify-center rounded-full text-xs font-medium
+                                 {{ $isToday ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900' : ($inMonth ? 'text-gray-700 dark:text-gray-300' : 'text-gray-300 dark:text-gray-600') }}">
+                        {{ $day->day }}
                     </span>
                 @endif
 
