@@ -21,13 +21,23 @@
         @foreach ($days as $day)
             @php
                 $inMonth = $view === 'week' || $day->month === $anchor->month;
+                // .get() returns lessons keyed by the exact "Y-m-d" string built
+                // by the controller's groupBy — confirmed this matches $day's
+                // own toDateString() for every cell, mini or full, so the data
+                // does reach this component correctly for the right month.
                 $dayLessons = $lessonsByDate->get($day->toDateString(), collect());
                 $isToday = $day->isToday();
                 $hasLessons = $mini && $dayLessons->isNotEmpty();
             @endphp
             <div class="border-b border-r border-gray-100 dark:border-white/10 {{ $mini ? 'min-h-[2.75rem] p-1' : ($view === 'week' ? 'min-h-[10rem] p-2' : 'min-h-[6.5rem] p-2') }} {{ $inMonth ? '' : 'bg-gray-50/50 dark:bg-white/[0.02]' }}">
+                {{-- The lesson indicator must never share the same circle as
+                     "today": when a lesson falls on today, folding both
+                     signals into one badge let "today" silently win, so the
+                     lesson indicator disappeared on exactly the day someone
+                     is most likely to check first. Kept as two independent
+                     elements below instead. --}}
                 <span class="flex h-6 w-6 items-center justify-center rounded-full text-xs font-medium
-                             {{ $isToday ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900' : ($hasLessons ? $accent['badge'].' text-white' : ($inMonth ? 'text-gray-700 dark:text-gray-300' : 'text-gray-300 dark:text-gray-600')) }}">
+                             {{ $isToday ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900' : ($inMonth ? 'text-gray-700 dark:text-gray-300' : 'text-gray-300 dark:text-gray-600') }}">
                     {{ $day->day }}
                 </span>
 
