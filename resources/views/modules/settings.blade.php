@@ -1,9 +1,28 @@
+@php
+    $initialTab = 'general';
+    if ($errors->has('confirm_name')) {
+        $initialTab = 'danger';
+    } elseif ($errors->has('user_id')) {
+        $initialTab = 'access';
+    } elseif ($errors->any()) {
+        $initialTab = 'general';
+    }
+@endphp
+
 <x-app-layout>
     <x-slot name="header">Gestione modulo</x-slot>
 
-    <div class="max-w-2xl space-y-6">
-        <div>
-            <x-section-header>Aspetto</x-section-header>
+    <div class="max-w-2xl space-y-6" x-data="{ tab: '{{ $initialTab }}' }">
+        <div class="inline-flex flex-wrap gap-1 rounded-xl bg-gray-100 dark:bg-white/5 p-1 text-sm font-medium">
+            <button type="button" @click="tab = 'general'" class="rounded-lg px-4 py-2 transition" :class="tab === 'general' ? 'bg-white dark:bg-gray-900 shadow-sm text-gray-900 dark:text-gray-100' : 'text-gray-500 dark:text-gray-400'">Generale</button>
+            <button type="button" @click="tab = 'access'" class="rounded-lg px-4 py-2 transition" :class="tab === 'access' ? 'bg-white dark:bg-gray-900 shadow-sm text-gray-900 dark:text-gray-100' : 'text-gray-500 dark:text-gray-400'">Accessi</button>
+            @if ($module->slug === 'palestra')
+                <button type="button" @click="tab = 'rooms'" class="rounded-lg px-4 py-2 transition" :class="tab === 'rooms' ? 'bg-white dark:bg-gray-900 shadow-sm text-gray-900 dark:text-gray-100' : 'text-gray-500 dark:text-gray-400'">Sale</button>
+                <button type="button" @click="tab = 'danger'" class="rounded-lg px-4 py-2 transition" :class="tab === 'danger' ? 'bg-white dark:bg-gray-900 shadow-sm text-red-600 dark:text-red-400' : 'text-gray-500 dark:text-gray-400'">Zona pericolosa</button>
+            @endif
+        </div>
+
+        <div x-show="tab === 'general'" x-cloak>
             <x-card>
                 <form method="POST" action="{{ route('modules.settings.update', $module) }}" enctype="multipart/form-data" class="space-y-5">
                     @csrf
@@ -94,23 +113,7 @@
             </x-card>
         </div>
 
-        @if ($module->slug === 'palestra')
-            <div>
-                <x-section-header>Sale</x-section-header>
-                <a href="{{ route('rooms.index') }}">
-                    <x-card class="flex items-center justify-between hover:ring-gray-300 dark:hover:ring-white/20 transition">
-                        <span class="flex items-center gap-3">
-                            <x-heroicon-o-building-office-2 class="h-5 w-5 text-gray-400" />
-                            <span class="font-medium text-gray-900 dark:text-gray-100">Gestisci sale</span>
-                        </span>
-                        <x-heroicon-o-chevron-right class="h-5 w-5 text-gray-300" />
-                    </x-card>
-                </a>
-            </div>
-        @endif
-
-        <div>
-            <x-section-header>Chi ha accesso</x-section-header>
+        <div x-show="tab === 'access'" x-cloak>
             <p class="text-xs text-gray-400 mb-2">Gli admin vedono sempre tutto, indipendentemente da questo elenco.</p>
 
             <livewire:module-access-table :module-id="$module->id" />
@@ -134,8 +137,19 @@
         </div>
 
         @if ($module->slug === 'palestra')
-            <div>
-                <x-section-header class="text-red-500 dark:text-red-400">Zona pericolosa</x-section-header>
+            <div x-show="tab === 'rooms'" x-cloak>
+                <a href="{{ route('rooms.index') }}">
+                    <x-card class="flex items-center justify-between hover:ring-gray-300 dark:hover:ring-white/20 transition">
+                        <span class="flex items-center gap-3">
+                            <x-heroicon-o-building-office-2 class="h-5 w-5 text-gray-400" />
+                            <span class="font-medium text-gray-900 dark:text-gray-100">Gestisci sale</span>
+                        </span>
+                        <x-heroicon-o-chevron-right class="h-5 w-5 text-gray-300" />
+                    </x-card>
+                </a>
+            </div>
+
+            <div x-show="tab === 'danger'" x-cloak>
                 <x-card class="ring-1 ring-red-200 dark:ring-red-500/30 bg-red-50/50 dark:bg-red-500/5">
                     <div class="flex items-start justify-between gap-4">
                         <div>
