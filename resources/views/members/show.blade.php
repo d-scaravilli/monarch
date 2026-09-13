@@ -204,44 +204,13 @@
                     </x-card>
 
                     @if (! $member->trashed() && $member->enrollments->isNotEmpty())
-                        <div class="mt-3" x-data="{ open: false, url: '' }">
-                            <button type="button" @click="open = !open" class="text-sm font-medium text-gray-600 dark:text-gray-300 flex items-center gap-1">
+                        <div class="mt-3">
+                            <button type="button" x-data="" x-on:click="$dispatch('open-modal', 'register-payment')"
+                                    class="text-sm font-medium text-gray-600 dark:text-gray-300 flex items-center gap-1">
                                 <x-heroicon-o-plus class="h-4 w-4" /> Registra pagamento
                             </button>
-                            <x-card x-show="open" x-cloak class="mt-3">
-                                <form method="POST" :action="url" class="space-y-3">
-                                    @csrf
-                                    <div class="space-y-1.5">
-                                        <x-input-label value="Corso" />
-                                        <select @change="url = $event.target.value" class="w-full rounded-xl border-gray-200 bg-gray-50 dark:border-white/10 dark:bg-white/5 dark:text-gray-100">
-                                            <option value="">Seleziona...</option>
-                                            @foreach ($member->enrollments as $enrollment)
-                                                <option value="{{ route('enrollments.payments.store', $enrollment) }}">{{ $enrollment->course->discipline->name }} ({{ $enrollment->course->year }})</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="flex flex-wrap items-end gap-3">
-                                        <div class="w-28 space-y-1.5">
-                                            <x-input-label value="Importo €" />
-                                            <x-text-input type="number" step="0.01" min="0" name="amount" class="w-full" />
-                                        </div>
-                                        <div class="w-32 space-y-1.5">
-                                            <x-input-label value="Metodo" />
-                                            <select name="method" class="w-full rounded-xl border-gray-200 bg-gray-50 dark:border-white/10 dark:bg-white/5 dark:text-gray-100">
-                                                <option value="contanti">Contanti</option>
-                                                <option value="bonifico">Bonifico</option>
-                                                <option value="carta">Carta</option>
-                                            </select>
-                                        </div>
-                                        <div class="w-36 space-y-1.5">
-                                            <x-input-label value="Data" />
-                                            <x-text-input type="date" name="date" value="{{ now()->toDateString() }}" class="w-full" />
-                                        </div>
-                                        <x-primary-button>Registra</x-primary-button>
-                                    </div>
-                                </form>
-                            </x-card>
                         </div>
+                        <x-payment-modal name="register-payment" :enrollments="$member->enrollments" />
                     @endif
                 </div>
 
@@ -290,17 +259,23 @@
                     </x-card>
 
                     @if (! $member->trashed())
-                        <div class="mt-3" x-data="{ open: false, type: 'certificato_medico' }">
-                            <button type="button" @click="open = !open" class="text-sm font-medium text-gray-600 dark:text-gray-300 flex items-center gap-1">
+                        <div class="mt-3">
+                            <button type="button" x-data="" x-on:click="$dispatch('open-modal', 'upload-document')"
+                                    class="text-sm font-medium text-gray-600 dark:text-gray-300 flex items-center gap-1">
                                 <x-heroicon-o-plus class="h-4 w-4" /> Carica documento
                             </button>
-                            <x-card x-show="open" x-cloak class="mt-3">
-                                <form method="POST" action="{{ route('members.documents.store', $member) }}" enctype="multipart/form-data" class="space-y-3">
+                        </div>
+
+                        <x-modal name="upload-document" max-width="lg">
+                            <div class="p-6" x-data="{ type: 'certificato_medico' }">
+                                <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Carica documento</h2>
+
+                                <form method="POST" action="{{ route('members.documents.store', $member) }}" enctype="multipart/form-data" class="mt-5 space-y-4">
                                     @csrf
                                     <div class="grid sm:grid-cols-2 gap-3">
                                         <div class="space-y-1.5">
                                             <x-input-label value="Tipo" />
-                                            <select name="type" x-model="type" class="w-full rounded-xl border-gray-200 bg-gray-50 dark:border-white/10 dark:bg-white/5 dark:text-gray-100">
+                                            <select name="type" x-model="type" class="w-full rounded-xl border-gray-200 bg-gray-50 py-3 dark:border-white/10 dark:bg-white/5 dark:text-gray-100">
                                                 @foreach (\App\Models\Document::TYPES as $value => $label)
                                                     <option value="{{ $value }}">{{ $label }}</option>
                                                 @endforeach
@@ -326,12 +301,13 @@
                                             <x-text-input type="date" name="expiry_date" class="w-full" />
                                         </div>
                                     </div>
-                                    <div class="flex justify-end">
+                                    <div class="flex items-center justify-end gap-3 pt-2">
+                                        <x-secondary-button type="button" x-on:click="$dispatch('close')">Annulla</x-secondary-button>
                                         <x-primary-button>Carica</x-primary-button>
                                     </div>
                                 </form>
-                            </x-card>
-                        </div>
+                            </div>
+                        </x-modal>
                     @endif
                 </div>
             </div>
