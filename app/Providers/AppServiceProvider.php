@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Course;
 use App\Models\Module;
 use App\Models\User;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
@@ -47,7 +48,27 @@ class AppServiceProvider extends ServiceProvider
         // renders in the caller's scope, not the layout's.
         View::composer('*', function ($view) {
             $view->with('currentModule', $this->resolveCurrentModule());
+            $view->with('accessibleModules', $this->resolveAccessibleModules());
         });
+    }
+
+    /**
+     * Every active module the current user can enter — all of them for
+     * admin, only the granted ones otherwise. Drives the single/multiple
+     * module navigation (skip the launcher, hide "Torna ai moduli", list
+     * shortcuts in Impostazioni) from one shared source.
+     */
+    private function resolveAccessibleModules(): Collection
+    {
+        if (! auth()->check()) {
+            return collect();
+        }
+
+        $user = auth()->user();
+
+        return $user->hasRole('admin')
+            ? Module::where('is_active', true)->get()
+            : $user->modules()->where('is_active', true)->get();
     }
 
     private function resolveCurrentModule(): ?Module

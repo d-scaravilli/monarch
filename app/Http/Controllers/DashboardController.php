@@ -13,16 +13,23 @@ use Illuminate\View\View;
 class DashboardController extends Controller
 {
     /**
-     * The module launcher: every account lands here after login and
-     * picks a module, even when only one is available, for consistency.
+     * The module launcher. An account with access to more than one module
+     * picks here; an account with exactly one module skips straight into
+     * it — there's nothing to choose, so the extra click would be pure
+     * friction (this is the common case for an instructor/member, who
+     * only ever have Palestra).
      */
-    public function index(): View
+    public function index(): View|RedirectResponse
     {
         $user = Auth::user();
 
         $modules = $user->hasRole('admin')
             ? Module::where('is_active', true)->get()
             : $user->modules()->where('is_active', true)->get();
+
+        if ($modules->count() === 1) {
+            return $this->enter($modules->first());
+        }
 
         $moduleAlerts = $this->resolveModuleAlerts($user, $modules);
 

@@ -7,6 +7,7 @@
     $accentIcon = $currentModule->icon ?? 'squares-2x2';
     $accentImage = $currentModule?->imageUrl();
     $accent = \App\Support\ModuleTheme::classes($accentColor);
+    $hasMultipleModules = $accessibleModules->count() > 1;
 
     // The nav shows only the current context's items: just "Impostazioni"
     // on the launcher, or only the active module's own pages once inside one.
@@ -74,7 +75,7 @@
                 </a>
 
                 <nav class="flex-1 space-y-1">
-                    @if ($currentModule)
+                    @if ($currentModule && $hasMultipleModules)
                         <x-sidebar-link :href="route('dashboard')" icon="arrow-left" :active="false">
                             Torna ai moduli
                         </x-sidebar-link>

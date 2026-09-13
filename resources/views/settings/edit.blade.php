@@ -4,6 +4,21 @@
     <x-slot name="header">Impostazioni</x-slot>
 
     <div class="max-w-xl space-y-6">
+        @if ($accessibleModules->isNotEmpty())
+            <div>
+                <x-section-header>Moduli</x-section-header>
+                <x-card class="p-0 divide-y divide-gray-100 dark:divide-white/10">
+                    @foreach ($accessibleModules as $module)
+                        <a href="{{ route('modules.enter', $module) }}" class="flex items-center gap-3 px-5 py-3.5">
+                            <x-module-badge :icon="$module->icon" :color="$module->color" :image="$module->imageUrl()" size="h-9 w-9" />
+                            <span class="flex-1 font-medium text-gray-900 dark:text-gray-100">{{ $module->name }}</span>
+                            <x-heroicon-o-chevron-right class="h-4 w-4 text-gray-300" />
+                        </a>
+                    @endforeach
+                </x-card>
+            </div>
+        @endif
+
         @include('settings.partials.avatar-form')
 
         @include('settings.partials.account-form')
