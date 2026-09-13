@@ -338,26 +338,8 @@
                 </div>
 
                 <div>
-                    <x-section-header>Note</x-section-header>
-                    <x-card class="divide-y divide-gray-100 dark:divide-white/10 p-0">
-                        @forelse ($member->notes as $note)
-                            <div class="px-5 py-3.5">
-                                <div class="flex items-center gap-2">
-                                    <x-badge :color="$note->type === 'infortunio' ? 'red' : 'gray'">{{ $note->typeLabel() }}</x-badge>
-                                    <span class="text-xs text-gray-400">
-                                        {{ $note->created_at->translatedFormat('d M Y') }}
-                                        &middot; {{ $note->author->name }}
-                                        @if ($note->lesson?->course?->discipline)
-                                            &middot; {{ $note->lesson->course->discipline->name }}
-                                        @endif
-                                    </span>
-                                </div>
-                                <p class="mt-1.5 text-sm text-gray-700 dark:text-gray-300">{{ $note->description }}</p>
-                            </div>
-                        @empty
-                            <p class="px-5 py-6 text-sm text-gray-500">Nessuna nota registrata.</p>
-                        @endforelse
-                    </x-card>
+                    <x-section-header>Progressi</x-section-header>
+                    <x-member-progress-card :member="$member" />
                 </div>
             </div>
         </div>
