@@ -3,6 +3,7 @@
 use App\Models\Course;
 use App\Models\Lesson;
 use App\Models\Room;
+use App\Support\VisibleCourses;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -80,8 +81,7 @@ new class extends Component
     public function with(): array
     {
         $user = Auth::user();
-        $isAdmin = $user->hasRole('admin');
-        $courseIds = $isAdmin ? null : $user->instructedCourses()->pluck('courses.id');
+        $courseIds = VisibleCourses::idsFor($user);
 
         $lessons = Lesson::query()
             ->with(['course.discipline', 'course.room', 'attendances'])
