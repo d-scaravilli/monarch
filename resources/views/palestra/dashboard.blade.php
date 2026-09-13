@@ -11,14 +11,15 @@
 
     <div class="space-y-6">
         {{-- Stat row --}}
-        <div class="grid gap-4 grid-cols-2">
+        <div class="grid gap-4 grid-cols-2 lg:grid-cols-3">
             <x-metric-card icon="users" label="Iscritti attivi" :value="$activeEnrollments" :color="$accentColor" />
             <x-metric-card icon="calendar-days" label="Lezioni questa settimana" :value="$lessonsThisWeek" :color="$accentColor" :trend="$weekTrend" />
+            <x-metric-card icon="user-plus" label="Nuovi iscritti questo mese" :value="$newMembersThisMonth" :color="$accentColor" class="col-span-2 lg:col-span-1" />
         </div>
 
-        {{-- Chart + top presence --}}
-        <div class="grid gap-4 lg:grid-cols-3">
-            <x-card class="lg:col-span-2">
+        {{-- Andamento presenze + calendario mensile --}}
+        <div class="grid gap-4 lg:grid-cols-2">
+            <x-card>
                 <x-section-header>Andamento presenze</x-section-header>
                 <div
                     x-data="{
@@ -45,6 +46,14 @@
                 </div>
             </x-card>
 
+            <div>
+                <x-section-header>{{ $miniCalendarAnchor->translatedFormat('F Y') }}</x-section-header>
+                <x-month-calendar-grid :days="$miniCalendarDays" :lessons-by-date="$miniCalendarLessons" :anchor="$miniCalendarAnchor" mini />
+            </div>
+        </div>
+
+        {{-- Top presenze/assenze + da incassare --}}
+        <div class="grid gap-4 lg:grid-cols-3">
             <x-card>
                 <x-section-header>Iscritti con più presenze</x-section-header>
                 <div class="divide-y divide-gray-100 dark:divide-white/10 -mx-5">
@@ -62,10 +71,7 @@
                     @endforelse
                 </div>
             </x-card>
-        </div>
 
-        {{-- Top absences + monthly/financial snapshot --}}
-        <div class="grid gap-4 lg:grid-cols-3">
             <x-card>
                 <x-section-header>Iscritti con più assenze</x-section-header>
                 <div class="divide-y divide-gray-100 dark:divide-white/10 -mx-5">
@@ -82,8 +88,6 @@
                     @endforelse
                 </div>
             </x-card>
-
-            <x-metric-card icon="user-plus" label="Nuovi iscritti questo mese" :value="$newMembersThisMonth" :color="$accentColor" />
 
             <x-metric-card icon="banknotes" label="Da incassare" value="€{{ number_format($outstanding, 2) }}" :color="$accentColor" />
         </div>

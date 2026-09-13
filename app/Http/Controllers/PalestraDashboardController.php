@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Services\AccountingService;
 use App\Support\CourseYear;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
@@ -73,6 +74,8 @@ class PalestraDashboardController extends Controller
             $accounting->enrollmentsForYear(CourseYear::default(), $courseIds)
         )['missing'];
 
+        [$miniCalendarDays, $miniCalendarLessons] = $this->miniMonthCalendar($courseIds);
+
         return view('palestra.dashboard', [
             'activeEnrollments' => $activeEnrollments,
             'lessonsThisWeek' => $lessonsThisWeek,
@@ -83,7 +86,40 @@ class PalestraDashboardController extends Controller
             'newMembersThisMonth' => $newMembersThisMonth,
             'outstanding' => $outstanding,
             'isAdmin' => $isAdmin,
+            'miniCalendarDays' => $miniCalendarDays,
+            'miniCalendarLessons' => $miniCalendarLessons,
+            'miniCalendarAnchor' => now(),
         ]);
+    }
+
+    /**
+     * Current month's grid + lessons, for the miniature calendar panel —
+     * feeds the same reusable <x-month-calendar-grid> the full Calendario
+     * page uses, just scoped to "this month" with no filters.
+     *
+     * @param  Collection<int, int>|null  $courseIds
+     * @return array{0: Collection<int, Carbon>, 1: Collection<string, Collection<int, Lesson>>}
+     */
+    private function miniMonthCalendar(?Collection $courseIds): array
+    {
+        $gridStart = now()->startOfMonth()->startOfWeek(Carbon::MONDAY);
+        $gridEnd = now()->endOfMonth()->endOfWeek(Carbon::SUNDAY);
+
+        $days = collect();
+        $cursor = $gridStart->copy();
+        while ($cursor->lte($gridEnd)) {
+            $days->push($cursor->copy());
+            $cursor->addDay();
+        }
+
+        $lessons = Lesson::query()
+            ->with('course.discipline')
+            ->whereBetween('date', [$gridStart->toDateString(), $gridEnd->toDateString()])
+            ->when($courseIds, fn ($q) => $q->whereIn('course_id', $courseIds))
+            ->get()
+            ->groupBy(fn (Lesson $lesson) => $lesson->date->toDateString());
+
+        return [$days, $lessons];
     }
 
     /**
