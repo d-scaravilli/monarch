@@ -14,15 +14,6 @@ use Illuminate\Support\ServiceProvider;
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * Which route-name prefixes belong to which module. The only entry
-     * today is Palestra; a future module adds its own line here.
-     */
-    private const MODULE_ROUTES = [
-        'palestra' => ['palestra.', 'courses.', 'members.', 'lessons.', 'enrollments.', 'payments.', 'member.area', 'rooms.', 'accounting.', 'documents.'],
-        'amministrazione' => ['admin.'],
-    ];
-
-    /**
      * Register any application services.
      */
     public function register(): void
@@ -71,25 +62,30 @@ class AppServiceProvider extends ServiceProvider
             : $user->modules()->where('is_active', true)->get();
     }
 
+    /**
+     * Every module's routes sit behind Route::middleware('module:<slug>'),
+     * so the slug is read straight from there — instead of matching
+     * route-name prefixes against a hand-maintained list, which silently
+     * drifts out of sync every time a page is added under a route name
+     * the list doesn't already know about (as happened with progress.*).
+     * This way a new page just needs the same module: middleware it
+     * already needs for access control, and it's automatically covered.
+     */
     private function resolveCurrentModule(): ?Module
     {
         $route = request()->route();
 
         // Routes that already bind a {module} parameter (e.g. the generic
         // module-settings page) know their module directly — no need to
-        // guess from the route name.
+        // inspect middleware for those.
         $boundModule = $route?->parameter('module');
         if ($boundModule instanceof Module) {
             return $boundModule;
         }
 
-        $routeName = optional($route)->getName() ?? '';
-
-        foreach (self::MODULE_ROUTES as $slug => $prefixes) {
-            foreach ($prefixes as $prefix) {
-                if ($routeName === $prefix || str_starts_with($routeName, $prefix)) {
-                    return Module::where('slug', $slug)->first();
-                }
+        foreach ($route?->gatherMiddleware() ?? [] as $middleware) {
+            if (str_starts_with($middleware, 'module:')) {
+                return Module::where('slug', substr($middleware, strlen('module:')))->first();
             }
         }
 
