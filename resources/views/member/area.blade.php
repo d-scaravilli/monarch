@@ -8,7 +8,8 @@
     $accentColor = $currentModule->color ?? 'gray';
     $accentHex = \App\Support\ModuleTheme::hex($accentColor);
     $accent = \App\Support\ModuleTheme::classes($accentColor);
-    $coverImage = $currentModule?->memberCoverImageUrl();
+    $coverTransparent = $currentModule?->memberCoverIsTransparent() ?? false;
+    $coverImage = $coverTransparent ? null : $currentModule?->memberCoverImageUrl();
     $initials = collect(explode(' ', $member->name))->map(fn ($p) => mb_substr($p, 0, 1))->take(2)->implode('');
 @endphp
 
@@ -18,24 +19,24 @@
     <div class="space-y-6">
         {{-- Cover + avatar --}}
         <div class="rounded-2xl overflow-hidden bg-white dark:bg-gray-900 shadow-sm ring-1 ring-gray-100 dark:ring-white/10">
-            <div class="h-28 sm:h-36 relative {{ $coverImage ? '' : $accent['badge'] }}"
-                 style="background-image: {{ $coverImage ? "linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url('{$coverImage}')" : "linear-gradient(135deg, {$accentHex} 0%, {$accentHex}99 100%)" }}; background-size: cover; background-position: center;">
+            <div class="h-28 sm:h-36 relative {{ $coverTransparent ? '' : ($coverImage ? '' : $accent['badge']) }}"
+                 @unless ($coverTransparent)
+                     style="background-image: {{ $coverImage ? "linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url('{$coverImage}')" : "linear-gradient(135deg, {$accentHex} 0%, {$accentHex}99 100%)" }}; background-size: cover; background-position: center;"
+                 @endunless>
             </div>
 
-            <div class="px-5 sm:px-6 pb-5">
-                <div class="-mt-10 sm:-mt-12 flex items-end gap-4">
-                    <span class="relative z-10 flex h-20 w-20 sm:h-24 sm:w-24 shrink-0 items-center justify-center rounded-2xl bg-white dark:bg-gray-900 text-2xl font-bold {{ $accent['text'] }} ring-4 ring-white dark:ring-gray-900 shadow-sm">
-                        {{ mb_strtoupper($initials) }}
-                    </span>
-                    <div class="pb-1 min-w-0">
-                        <p class="font-bold text-xl text-gray-900 dark:text-gray-100 flex items-center gap-2 truncate">
-                            {{ $member->name }}
-                            @if ($recentInjury)
-                                <x-badge color="red">Infortunio recente</x-badge>
-                            @endif
-                        </p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400 truncate">{{ $member->email }}</p>
-                    </div>
+            <div class="relative px-5 sm:px-6 pb-5">
+                <span class="absolute -top-10 sm:-top-12 left-5 sm:left-6 z-10 flex h-20 w-20 sm:h-24 sm:w-24 shrink-0 items-center justify-center rounded-2xl bg-white dark:bg-gray-900 text-2xl font-bold {{ $accent['text'] }} ring-4 ring-white dark:ring-gray-900 shadow-sm">
+                    {{ mb_strtoupper($initials) }}
+                </span>
+                <div class="pt-2 pl-24 sm:pl-28 min-w-0">
+                    <p class="font-bold text-xl text-gray-900 dark:text-gray-100 flex items-center gap-2 truncate">
+                        {{ $member->name }}
+                        @if ($recentInjury)
+                            <x-badge color="red">Infortunio recente</x-badge>
+                        @endif
+                    </p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 truncate">{{ $member->email }}</p>
                 </div>
 
                 <div class="mt-5 grid grid-cols-3 divide-x divide-gray-100 dark:divide-white/10 rounded-xl bg-gray-50 dark:bg-white/5 py-3 text-center">

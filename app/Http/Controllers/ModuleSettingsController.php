@@ -49,6 +49,7 @@ class ModuleSettingsController extends Controller
             'image' => 'nullable|image|max:2048',
             'member_cover_image' => 'nullable|image|max:2048',
             'remove_member_cover_image' => 'nullable|boolean',
+            'member_cover_style' => 'nullable|string|in:color,image,transparent',
         ]);
 
         if ($request->hasFile('image')) {
@@ -69,6 +70,7 @@ class ModuleSettingsController extends Controller
         }
 
         $data['is_active'] = $request->boolean('is_active');
+        $data['member_cover_style'] = $data['member_cover_style'] ?? 'color';
         unset($data['image'], $data['member_cover_image'], $data['remove_member_cover_image']);
 
         $module->update($data);

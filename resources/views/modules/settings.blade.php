@@ -10,7 +10,7 @@
 @endphp
 
 <x-app-layout>
-    <x-slot name="header">Gestione modulo</x-slot>
+    <x-slot name="header">Gestisci</x-slot>
 
     <div class="max-w-2xl space-y-6" x-data="{ tab: '{{ $initialTab }}' }">
         <div class="inline-flex flex-wrap gap-1 rounded-xl bg-gray-100 dark:bg-white/5 p-1 text-sm font-medium">
@@ -76,15 +76,31 @@
                     </div>
 
                     @if ($module->slug === 'palestra')
-                        <div class="space-y-1.5">
+                        <div class="space-y-1.5" x-data="{ coverStyle: {{ Illuminate\Support\Js::from(old('member_cover_style', $module->member_cover_style)) }} }">
                             <x-input-label value="Copertina scheda iscritto" />
-                            <p class="text-xs text-gray-400">Usata nel banner sopra l'avatar in ogni scheda iscritto. Se carichi un'immagine, sostituisce il colore d'accento come sfondo (con un leggero overlay scuro per leggibilità).</p>
-                            <div class="flex items-center gap-4">
+                            <p class="text-xs text-gray-400">Lo sfondo del banner sopra l'avatar in ogni scheda iscritto: il colore d'accento, un'immagine, oppure nessuno sfondo.</p>
+
+                            <div class="flex flex-wrap gap-2">
+                                <label class="inline-flex cursor-pointer items-center rounded-xl border border-gray-200 dark:border-white/10 px-3 py-1.5 text-sm font-medium has-[:checked]:border-gray-900 has-[:checked]:bg-gray-100 dark:has-[:checked]:border-white dark:has-[:checked]:bg-white/10">
+                                    <input type="radio" name="member_cover_style" value="color" x-model="coverStyle" class="hidden">
+                                    Colore
+                                </label>
+                                <label class="inline-flex cursor-pointer items-center rounded-xl border border-gray-200 dark:border-white/10 px-3 py-1.5 text-sm font-medium has-[:checked]:border-gray-900 has-[:checked]:bg-gray-100 dark:has-[:checked]:border-white dark:has-[:checked]:bg-white/10">
+                                    <input type="radio" name="member_cover_style" value="image" x-model="coverStyle" class="hidden">
+                                    Immagine
+                                </label>
+                                <label class="inline-flex cursor-pointer items-center rounded-xl border border-gray-200 dark:border-white/10 px-3 py-1.5 text-sm font-medium has-[:checked]:border-gray-900 has-[:checked]:bg-gray-100 dark:has-[:checked]:border-white dark:has-[:checked]:bg-white/10">
+                                    <input type="radio" name="member_cover_style" value="transparent" x-model="coverStyle" class="hidden">
+                                    Trasparente
+                                </label>
+                            </div>
+
+                            <div x-show="coverStyle === 'image'" x-cloak class="flex items-center gap-4 pt-1">
                                 <span class="flex h-14 w-24 shrink-0 items-center justify-center overflow-hidden rounded-xl {{ \App\Support\ModuleTheme::classes($module->color)['soft'] }} dark:bg-white/5">
                                     @if ($module->memberCoverImageUrl())
                                         <img src="{{ $module->memberCoverImageUrl() }}" alt="" class="h-full w-full object-cover">
                                     @else
-                                        <span class="text-xs {{ \App\Support\ModuleTheme::classes($module->color)['text'] }}">Colore</span>
+                                        <span class="text-xs {{ \App\Support\ModuleTheme::classes($module->color)['text'] }}">Nessuna</span>
                                     @endif
                                 </span>
                                 <label class="inline-flex cursor-pointer items-center gap-1.5 rounded-xl border border-gray-200 dark:border-white/10 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200">
@@ -95,7 +111,7 @@
                                 @if ($module->memberCoverImageUrl())
                                     <label class="inline-flex cursor-pointer items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
                                         <input type="checkbox" name="remove_member_cover_image" value="1" class="rounded-md border-gray-300 text-gray-900 focus:ring-gray-900">
-                                        Torna al colore
+                                        Elimina immagine
                                     </label>
                                 @endif
                             </div>

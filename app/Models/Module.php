@@ -15,6 +15,7 @@ class Module extends Model
         'icon',
         'image_path',
         'member_cover_image_path',
+        'member_cover_style',
         'color',
         'is_active',
     ];
@@ -44,5 +45,10 @@ class Module extends Model
     public function memberCoverImageUrl(): ?string
     {
         return $this->member_cover_image_path ? Storage::disk('public')->url($this->member_cover_image_path) : null;
+    }
+
+    public function memberCoverIsTransparent(): bool
+    {
+        return $this->member_cover_style === 'transparent';
     }
 }
