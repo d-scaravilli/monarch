@@ -27,17 +27,23 @@
         $navItems[] = ['label' => 'Calendario', 'route' => 'palestra.calendar', 'icon' => 'calendar', 'active' => request()->routeIs('palestra.calendar'), 'mobile' => true];
         if ($isInstructor) {
             $navItems[] = ['label' => 'Team', 'route' => 'members.team', 'icon' => 'user-group', 'active' => request()->routeIs('members.*'), 'mobile' => true];
-            $navItems[] = ['label' => 'Progressi', 'route' => 'progress.index', 'icon' => 'chart-bar', 'active' => request()->routeIs('progress.*'), 'mobile' => false];
+            // The mobile tab bar now scrolls horizontally (see the bottom
+            // nav below), so every page can live there instead of being
+            // hidden — no "more" menu needed.
+            $navItems[] = ['label' => 'Progressi', 'route' => 'progress.index', 'icon' => 'chart-bar', 'active' => request()->routeIs('progress.*'), 'mobile' => true];
         }
     } elseif ($currentModule->slug === 'palestra' && $isAdmin) {
         $navItems[] = ['label' => 'Dashboard', 'route' => 'palestra.dashboard', 'icon' => 'home', 'active' => request()->routeIs('palestra.dashboard'), 'mobile' => true];
         $navItems[] = ['label' => 'Corsi/Eventi', 'route' => 'courses.index', 'icon' => 'academic-cap', 'active' => request()->routeIs('courses.*'), 'mobile' => true];
         $navItems[] = ['label' => 'Lezioni', 'route' => 'lessons.index', 'icon' => 'calendar-days', 'active' => request()->routeIs('lessons.*'), 'mobile' => true];
         $navItems[] = ['label' => 'Team', 'route' => 'members.team', 'icon' => 'user-group', 'active' => request()->routeIs('members.*'), 'mobile' => true];
-        $navItems[] = ['label' => 'Progressi', 'route' => 'progress.index', 'icon' => 'chart-bar', 'active' => request()->routeIs('progress.*'), 'mobile' => false];
+        $navItems[] = ['label' => 'Progressi', 'route' => 'progress.index', 'icon' => 'chart-bar', 'active' => request()->routeIs('progress.*'), 'mobile' => true];
         $navItems[] = ['label' => 'Calendario', 'route' => 'palestra.calendar', 'icon' => 'calendar', 'active' => request()->routeIs('palestra.calendar'), 'mobile' => true];
-        $navItems[] = ['label' => 'Contabilità', 'route' => 'accounting.index', 'icon' => 'banknotes', 'active' => request()->routeIs('accounting.*'), 'mobile' => false];
-        $navItems[] = ['label' => 'Gestione modulo', 'route' => 'modules.settings.edit', 'params' => [$currentModule], 'icon' => 'wrench-screwdriver', 'active' => request()->routeIs('modules.settings.*'), 'mobile' => false];
+        // The mobile tab bar now scrolls horizontally (see the bottom nav
+        // below), so every admin page can live there instead of being
+        // hidden — no "more" menu needed.
+        $navItems[] = ['label' => 'Contabilità', 'route' => 'accounting.index', 'icon' => 'banknotes', 'active' => request()->routeIs('accounting.*'), 'mobile' => true];
+        $navItems[] = ['label' => 'Gestione modulo', 'route' => 'modules.settings.edit', 'params' => [$currentModule], 'icon' => 'wrench-screwdriver', 'active' => request()->routeIs('modules.settings.*'), 'mobile' => true];
     } elseif ($currentModule->slug === 'amministrazione') {
         $navItems[] = ['label' => 'Dashboard', 'route' => 'admin.dashboard', 'icon' => 'home', 'active' => request()->routeIs('admin.dashboard'), 'mobile' => true];
         $navItems[] = ['label' => 'Utenti', 'route' => 'admin.users.index', 'icon' => 'users', 'active' => request()->routeIs('admin.users.*'), 'mobile' => true];
@@ -156,13 +162,15 @@
             </div>
         </div>
 
-        {{-- Mobile bottom tab bar --}}
+        {{-- Mobile bottom tab bar — scrolls horizontally when there are more than ~5 items --}}
         <nav class="lg:hidden fixed inset-x-0 bottom-0 z-20 flex border-t border-gray-100 dark:border-white/10 bg-white/95 dark:bg-gray-900/95 backdrop-blur pb-[env(safe-area-inset-bottom)]">
-            @foreach (collect($navItems)->where('mobile', true) as $item)
-                <x-tab-link :href="route($item['route'], $item['params'] ?? [])" :icon="$item['icon']" :color="$accentColor" :active="$item['active']">
-                    {{ $item['label'] }}
-                </x-tab-link>
-            @endforeach
+            <div class="flex w-full justify-evenly overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                @foreach (collect($navItems)->where('mobile', true) as $item)
+                    <x-tab-link :href="route($item['route'], $item['params'] ?? [])" :icon="$item['icon']" :color="$accentColor" :active="$item['active']">
+                        {{ $item['label'] }}
+                    </x-tab-link>
+                @endforeach
+            </div>
         </nav>
 
         @livewireScripts
