@@ -254,5 +254,5 @@
         </div>
     @endif
 
-    <a href="{{ route('courses.show', $course) }}" class="mt-4 inline-block text-sm font-medium text-gray-500 hover:text-gray-700">&larr; Torna al corso</a>
+    <a href="{{ route('courses.show', $course) }}" class="mt-4 inline-block text-sm font-medium text-gray-500 hover:text-gray-700">&larr; Torna {{ $course->isEvento() ? "all'evento" : 'al corso' }}</a>
 </x-app-layout>
