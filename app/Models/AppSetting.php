@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class AppSetting extends Model
@@ -30,8 +29,17 @@ class AppSetting extends Model
         ]);
     }
 
+    /**
+     * A root-relative path, deliberately not Storage::disk('public')->url()
+     * — that builds an absolute URL from APP_URL, and if it's out of sync
+     * with the domain actually serving the request (easy to get stale),
+     * the preview `<img>` on the Aspetto page points at the wrong host
+     * and shows as broken, even though the file itself is perfectly fine
+     * (the generated /icons/*.png files are already served this same
+     * root-relative way, which is why those never had the problem).
+     */
     public function iconImageUrl(): ?string
     {
-        return $this->icon_image_path ? Storage::disk('public')->url($this->icon_image_path) : null;
+        return $this->icon_image_path ? '/storage/'.$this->icon_image_path : null;
     }
 }
