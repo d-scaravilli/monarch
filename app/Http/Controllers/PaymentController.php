@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Enrollment;
 use App\Models\Payment;
+use App\Notifications\PaymentRegisteredNotification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -20,7 +21,9 @@ class PaymentController extends Controller
             'notes' => 'nullable|string|max:255',
         ]);
 
-        $enrollment->payments()->create($data);
+        $payment = $enrollment->payments()->create($data);
+
+        $enrollment->user->notify(new PaymentRegisteredNotification($payment));
 
         return back()->with('status', 'Pagamento registrato.');
     }

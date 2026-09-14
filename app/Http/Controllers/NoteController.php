@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use App\Models\Lesson;
 use App\Models\MemberNote;
+use App\Notifications\NoteAddedNotification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -26,13 +27,15 @@ class NoteController extends Controller
             'description' => ['required', 'string'],
         ]);
 
-        MemberNote::create([
+        $note = MemberNote::create([
             'user_id' => $data['user_id'],
             'lesson_id' => $lesson->id,
             'created_by' => $request->user()->id,
             'type' => $data['type'],
             'description' => $data['description'],
         ]);
+
+        $note->user->notify(new NoteAddedNotification($note));
 
         return back()->with('status', 'Nota aggiunta.');
     }
