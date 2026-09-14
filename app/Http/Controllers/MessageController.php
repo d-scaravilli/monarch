@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Notifications\NewMessageNotification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
 
@@ -19,9 +20,9 @@ class MessageController extends Controller
         return $this->render($request);
     }
 
-    public function show(Request $request, Message $message): View
+    public function show(Request $request, User $contact): View
     {
-        return $this->render($request, $message);
+        return $this->render($request, $contact);
     }
 
     public function store(Request $request): RedirectResponse
@@ -65,58 +66,113 @@ class MessageController extends Controller
             fn (User $recipient) => $recipient->notify(new NewMessageNotification($message))
         );
 
-        return redirect()->route('messages.show', $message)->with('status', 'Messaggio inviato.');
+        // With a single recipient, land straight on that conversation;
+        // with several (multiple/course mode) there's no one thread to
+        // open, so just go back to the list — every recipient now has
+        // their own row there.
+        $redirect = $recipientIds->count() === 1
+            ? redirect()->route('messages.show', $recipientIds->first())
+            : redirect()->route('messages.index');
+
+        return $redirect->with('status', 'Messaggio inviato.');
     }
 
-    private function render(Request $request, ?Message $message = null): View
+    private function render(Request $request, ?User $contact = null): View
     {
         $user = $request->user();
         $canSend = $this->canSend($user);
 
-        $box = $canSend && $request->query('box') === 'sent' ? 'sent' : 'received';
+        $conversations = $this->conversations($user, $canSend);
 
-        if ($box === 'sent') {
-            $list = Message::where('sender_id', $user->id)
-                ->withCount('recipients')
-                ->withCount(['recipients as read_recipients_count' => fn ($q) => $q->whereNotNull('read_at')])
-                ->latest()
-                ->get();
-        } else {
-            $list = MessageRecipient::where('user_id', $user->id)
-                ->with('message.sender')
-                ->latest()
-                ->get();
-        }
+        $thread = null;
 
-        $selectedMessage = null;
-        $readReceipts = null;
+        if ($contact) {
+            abort_unless($conversations->has($contact->id), 403);
 
-        if ($message) {
-            $isSender = $message->sender_id === $user->id;
-            $recipientRow = $message->recipients()->where('user_id', $user->id)->first();
+            // Mark every still-unread message from this contact as read
+            // in one go — opening the thread reads the whole exchange,
+            // not just the single most recent message. (Read status is
+            // only ever displayed for messages *we* sent, as a receipt —
+            // never for our own received messages, so the in-memory
+            // thread below doesn't need patching to reflect this.)
+            MessageRecipient::where('user_id', $user->id)
+                ->whereNull('read_at')
+                ->whereHas('message', fn ($q) => $q->where('sender_id', $contact->id))
+                ->update(['read_at' => now()]);
 
-            abort_unless($isSender || $recipientRow, 403);
-
-            if ($recipientRow && ! $recipientRow->read_at) {
-                $recipientRow->update(['read_at' => now()]);
-            }
-
-            $selectedMessage = $message->load('sender');
-
-            if ($isSender) {
-                $readReceipts = $message->recipients()->with('user')->orderBy('user_id')->get();
-            }
+            $thread = $conversations->get($contact->id)['thread'];
         }
 
         return view('messages.index', [
-            'list' => $list,
-            'box' => $box,
+            'conversations' => $conversations->values(),
+            'contact' => $contact,
+            'thread' => $thread,
             'canSend' => $canSend,
-            'selectedMessage' => $selectedMessage,
-            'readReceipts' => $readReceipts,
             'recipientPool' => $canSend ? $this->recipientPool($user) : collect(),
             'coursePool' => $canSend ? $this->coursePool($user) : collect(),
         ]);
+    }
+
+    /**
+     * One entry per person the user has exchanged messages with — not
+     * per message — each carrying the full chronological thread with
+     * that person, admin-style "sent only" or instructor/member "both
+     * directions merged" depending on canSend/role (see the class-level
+     * scoping methods below, unchanged from before this view rework).
+     *
+     * @return Collection<int, array{counterpart: User, thread: Collection, latestAt: Carbon, unread: bool}>
+     */
+    private function conversations(User $user, bool $canSend): Collection
+    {
+        $entries = collect();
+
+        if ($canSend) {
+            Message::where('sender_id', $user->id)
+                ->with('recipients.user')
+                ->get()
+                ->each(function (Message $message) use ($entries) {
+                    foreach ($message->recipients as $recipient) {
+                        $entries->push([
+                            'counterpart' => $recipient->user,
+                            'message' => $message,
+                            'direction' => 'sent',
+                            'at' => $message->created_at,
+                            'read_at' => $recipient->read_at,
+                        ]);
+                    }
+                });
+        }
+
+        // Admin never receives messages inside Monarch (see canSend()).
+        if (! $user->hasRole('admin')) {
+            MessageRecipient::where('user_id', $user->id)
+                ->with('message.sender')
+                ->get()
+                ->each(function (MessageRecipient $recipient) use ($entries) {
+                    $entries->push([
+                        'counterpart' => $recipient->message->sender,
+                        'message' => $recipient->message,
+                        'direction' => 'received',
+                        'at' => $recipient->message->created_at,
+                        'read_at' => $recipient->read_at,
+                    ]);
+                });
+        }
+
+        return $entries
+            ->groupBy(fn (array $entry) => $entry['counterpart']->id)
+            ->map(function (Collection $group) {
+                $thread = $group->sortBy('at')->values();
+                $latest = $thread->last();
+
+                return [
+                    'counterpart' => $latest['counterpart'],
+                    'thread' => $thread,
+                    'latestAt' => $latest['at'],
+                    'unread' => $thread->contains(fn (array $e) => $e['direction'] === 'received' && ! $e['read_at']),
+                ];
+            })
+            ->sortByDesc('latestAt');
     }
 
     private function canSend(User $user): bool

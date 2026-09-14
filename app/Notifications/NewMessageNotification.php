@@ -32,6 +32,6 @@ class NewMessageNotification extends Notification
             ->title('Nuovo messaggio: '.$this->message->subject)
             ->icon('/icons/icon-192.png')
             ->body($this->message->sender->name.': '.Str::limit($this->message->body, 100))
-            ->data(['url' => route('messages.show', $this->message)]);
+            ->data(['url' => route('messages.show', $this->message->sender)]);
     }
 }

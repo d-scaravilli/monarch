@@ -175,7 +175,7 @@ class MessageTest extends TestCase
         ])->assertForbidden();
     }
 
-    public function test_opening_a_message_marks_it_read_and_sender_sees_the_timestamp(): void
+    public function test_opening_a_conversation_marks_its_messages_read_and_sender_sees_the_timestamp(): void
     {
         $admin = $this->makeAdmin();
         $member = $this->makeMember();
@@ -185,17 +185,18 @@ class MessageTest extends TestCase
 
         $this->assertNull($recipient->fresh()->read_at);
 
-        $this->actingAs($member)->get(route('messages.show', $message))->assertOk();
+        // The member opens the conversation with the admin (the sender).
+        $this->actingAs($member)->get(route('messages.show', $admin))->assertOk();
 
         $this->assertNotNull($recipient->fresh()->read_at);
 
-        // The sender's view shows the read receipt.
-        $response = $this->actingAs($admin)->get(route('messages.show', $message));
+        // The admin opens the conversation with the member and sees the read receipt.
+        $response = $this->actingAs($admin)->get(route('messages.show', $member));
         $response->assertOk();
-        $response->assertSee($member->name);
+        $response->assertSee('Letto il');
     }
 
-    public function test_a_user_who_is_not_sender_or_recipient_cannot_view_the_message(): void
+    public function test_a_user_with_no_shared_messages_cannot_view_a_conversation(): void
     {
         $admin = $this->makeAdmin();
         $member = $this->makeMember();
@@ -204,6 +205,8 @@ class MessageTest extends TestCase
         $message = Message::create(['sender_id' => $admin->id, 'subject' => 'Ciao', 'body' => 'Prova']);
         $message->recipients()->create(['user_id' => $member->id]);
 
-        $this->actingAs($outsider)->get(route('messages.show', $message))->assertForbidden();
+        // The outsider never exchanged anything with the admin, so that
+        // "conversation" doesn't exist for them.
+        $this->actingAs($outsider)->get(route('messages.show', $admin))->assertForbidden();
     }
 }
