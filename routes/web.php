@@ -21,6 +21,7 @@ use App\Http\Controllers\PalestraDashboardController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgressController;
+use App\Http\Controllers\PushSubscriptionController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\SettingsController;
 use Illuminate\Support\Facades\Route;
@@ -48,6 +49,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/settings/account', [ProfileController::class, 'destroy'])->name('settings.account.destroy');
     Route::post('/settings/avatar', [SettingsController::class, 'updateAvatar'])->name('settings.avatar.update');
     Route::patch('/settings/theme', [SettingsController::class, 'updateTheme'])->name('settings.theme');
+
+    Route::post('/push-subscriptions', [PushSubscriptionController::class, 'store'])->name('push-subscriptions.store');
+    Route::delete('/push-subscriptions', [PushSubscriptionController::class, 'destroy'])->name('push-subscriptions.destroy');
 
     Route::middleware('module:palestra')->group(function () {
         Route::get('/palestra/dashboard', [PalestraDashboardController::class, 'index'])->name('palestra.dashboard');

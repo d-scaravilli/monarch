@@ -24,6 +24,7 @@
         $navItems[] = ['label' => 'La mia area', 'route' => 'member.area', 'icon' => 'user-circle', 'active' => request()->routeIs('member.area'), 'mobile' => true];
         $navItems[] = ['label' => 'Corsi/Eventi', 'route' => 'courses.index', 'icon' => 'academic-cap', 'active' => request()->routeIs('courses.*'), 'mobile' => true];
         $navItems[] = ['label' => 'Lezioni', 'route' => 'lessons.index', 'icon' => 'calendar-days', 'active' => request()->routeIs('lessons.*'), 'mobile' => true];
+        $navItems[] = ['label' => 'Messaggi', 'route' => 'messages.index', 'icon' => 'envelope', 'active' => request()->routeIs('messages.*'), 'mobile' => true];
         $navItems[] = ['label' => 'Calendario', 'route' => 'palestra.calendar', 'icon' => 'calendar', 'active' => request()->routeIs('palestra.calendar'), 'mobile' => true];
         if ($isInstructor) {
             $navItems[] = ['label' => 'Team', 'route' => 'members.team', 'icon' => 'user-group', 'active' => request()->routeIs('members.*'), 'mobile' => true];
@@ -37,6 +38,7 @@
         $navItems[] = ['label' => 'Corsi/Eventi', 'route' => 'courses.index', 'icon' => 'academic-cap', 'active' => request()->routeIs('courses.*'), 'mobile' => true];
         $navItems[] = ['label' => 'Lezioni', 'route' => 'lessons.index', 'icon' => 'calendar-days', 'active' => request()->routeIs('lessons.*'), 'mobile' => true];
         $navItems[] = ['label' => 'Team', 'route' => 'members.team', 'icon' => 'user-group', 'active' => request()->routeIs('members.*'), 'mobile' => true];
+        $navItems[] = ['label' => 'Messaggi', 'route' => 'messages.index', 'icon' => 'envelope', 'active' => request()->routeIs('messages.*'), 'mobile' => true];
         $navItems[] = ['label' => 'Progressi', 'route' => 'progress.index', 'icon' => 'chart-bar', 'active' => request()->routeIs('progress.*'), 'mobile' => true];
         $navItems[] = ['label' => 'Calendario', 'route' => 'palestra.calendar', 'icon' => 'calendar', 'active' => request()->routeIs('palestra.calendar'), 'mobile' => true];
         // The mobile tab bar now scrolls horizontally (see the bottom nav
@@ -60,6 +62,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name="theme-color" content="#f9fafb">
+        <meta name="vapid-public-key" content="{{ config('webpush.vapid.public_key') }}">
 
         <title>{{ isset($header) ? $header.' - ' : '' }}{{ config('app.name', 'Monarch') }}</title>
 

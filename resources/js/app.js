@@ -1,3 +1,5 @@
+import './push.js';
+
 // Livewire (loaded via @livewireScripts) bundles and starts Alpine.js
 // itself, so we don't import/start Alpine here to avoid double-init.
 
