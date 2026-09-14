@@ -1,5 +1,5 @@
 <x-app-layout>
-    <x-slot name="header">Corsi ed eventi</x-slot>
+    <x-slot name="header">Corsi/Eventi</x-slot>
     @php $accent = \App\Support\ModuleTheme::classes($currentModule->color ?? 'gray'); @endphp
 
     @if (auth()->user()->hasRole('admin'))
