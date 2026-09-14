@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountingController;
+use App\Http\Controllers\Admin\AppearanceController as AdminAppearanceController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\PermissionController as AdminPermissionController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\LessonController;
+use App\Http\Controllers\ManifestController;
 use App\Http\Controllers\MemberAreaController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\ModuleSettingsController;
@@ -26,6 +28,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return auth()->check() ? redirect()->route('dashboard') : redirect()->route('login');
 });
+
+// Public (no auth): browsers and the PWA installer fetch this without a
+// session. Replaces the old static public/manifest.json so the icon URLs
+// can carry a cache-busting version.
+Route::get('/manifest.json', ManifestController::class)->name('manifest');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -105,6 +112,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::get('/permissions', [AdminPermissionController::class, 'index'])->name('permissions.index');
         Route::post('/permissions', [AdminPermissionController::class, 'update'])->name('permissions.update');
+
+        Route::get('/appearance', [AdminAppearanceController::class, 'edit'])->name('appearance.edit');
+        Route::put('/appearance', [AdminAppearanceController::class, 'update'])->name('appearance.update');
     });
 });
 

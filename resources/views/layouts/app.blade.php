@@ -48,6 +48,7 @@
         $navItems[] = ['label' => 'Dashboard', 'route' => 'admin.dashboard', 'icon' => 'home', 'active' => request()->routeIs('admin.dashboard'), 'mobile' => true];
         $navItems[] = ['label' => 'Utenti', 'route' => 'admin.users.index', 'icon' => 'users', 'active' => request()->routeIs('admin.users.*'), 'mobile' => true];
         $navItems[] = ['label' => 'Permessi', 'route' => 'admin.permissions.index', 'icon' => 'shield-check', 'active' => request()->routeIs('admin.permissions.*'), 'mobile' => true];
+        $navItems[] = ['label' => 'Aspetto', 'route' => 'admin.appearance.edit', 'icon' => 'photo', 'active' => request()->routeIs('admin.appearance.*'), 'mobile' => true];
     }
 @endphp
 <!DOCTYPE html>
@@ -63,8 +64,10 @@
         <title>{{ isset($header) ? $header.' - ' : '' }}{{ config('app.name', 'Monarch') }}</title>
 
         <link rel="manifest" href="/manifest.json">
-        <link rel="apple-touch-icon" href="/icons/icon-192.png">
-        <link rel="icon" href="/icons/icon-192.png">
+        <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png?v={{ $appIconVersion }}">
+        <link rel="icon" href="/favicon.ico?v={{ $appIconVersion }}" sizes="any">
+        <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png?v={{ $appIconVersion }}">
+        <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16.png?v={{ $appIconVersion }}">
 
         <script>
             // Runs before the stylesheet paints, so "auto" never flashes the

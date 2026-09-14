@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\AppSetting;
 use App\Models\Course;
 use App\Models\Module;
 use App\Models\User;
@@ -40,6 +41,7 @@ class AppServiceProvider extends ServiceProvider
         View::composer('*', function ($view) {
             $view->with('currentModule', $this->resolveCurrentModule());
             $view->with('accessibleModules', $this->resolveAccessibleModules());
+            $view->with('appIconVersion', AppSetting::current()->icon_version);
         });
     }
 

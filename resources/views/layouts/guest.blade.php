@@ -9,8 +9,10 @@
         <title>{{ config('app.name', 'Monarch') }}</title>
 
         <link rel="manifest" href="/manifest.json">
-        <link rel="apple-touch-icon" href="/icons/icon-192.png">
-        <link rel="icon" href="/icons/icon-192.png">
+        <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png?v={{ $appIconVersion }}">
+        <link rel="icon" href="/favicon.ico?v={{ $appIconVersion }}" sizes="any">
+        <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png?v={{ $appIconVersion }}">
+        <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16.png?v={{ $appIconVersion }}">
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
