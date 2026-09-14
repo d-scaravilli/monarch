@@ -19,7 +19,7 @@
                 </select>
             </div>
 
-            <div class="grid grid-cols-3 gap-3">
+            <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
                 <div class="space-y-1.5">
                     <x-input-label value="Importo €" />
                     <x-text-input type="number" step="0.01" min="0" name="amount" class="w-full" required />

@@ -277,7 +277,7 @@
                                 @endforelse
                             </select>
                         </div>
-                        <div class="grid grid-cols-2 gap-3">
+                        <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
                             <div class="space-y-1.5">
                                 <x-input-label value="Sconto €" />
                                 <x-text-input type="number" step="0.01" min="0" name="discount" value="0" class="w-full" />

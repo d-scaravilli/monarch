@@ -59,7 +59,7 @@
         </x-card>
 
         <div class="grid gap-4 lg:grid-cols-2">
-            <div>
+            <div class="min-w-0">
                 <x-section-header>Per corso</x-section-header>
                 <x-card class="p-0 overflow-hidden">
                     <div class="overflow-x-auto">
@@ -101,7 +101,7 @@
                 </x-card>
             </div>
 
-            <div>
+            <div class="min-w-0">
                 <x-section-header>Chi deve ancora pagare</x-section-header>
                 <x-card class="divide-y divide-gray-100 dark:divide-white/10 p-0 max-h-96 overflow-y-auto">
                     @forelse ($whoOwes as $row)

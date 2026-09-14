@@ -57,7 +57,7 @@
 
         <div class="grid gap-6 lg:grid-cols-3">
             {{-- Left column: anagrafica, equipaggiamento, charts --}}
-            <div class="space-y-6 lg:col-span-1">
+            <div class="space-y-6 lg:col-span-1 min-w-0">
                 <div>
                     <x-section-header>Anagrafica</x-section-header>
                     <x-card class="space-y-4 text-sm">
@@ -84,7 +84,7 @@
 
                         <div class="border-t border-gray-100 dark:border-white/10 pt-4">
                             <p class="text-xs text-gray-400 mb-2">Documenti</p>
-                            <div class="-mx-5 divide-y divide-gray-100 dark:divide-white/10">
+                            <div class="-mx-5 max-h-72 divide-y divide-gray-100 overflow-y-auto dark:divide-white/10 sm:max-h-none sm:overflow-visible">
                                 @forelse ($member->documents as $document)
                                     <div class="flex items-center justify-between gap-3 px-5 py-3">
                                         <div class="min-w-0">
@@ -236,7 +236,7 @@
 
                 <div>
                     <x-section-header>Pagamenti</x-section-header>
-                    <x-card class="p-0 divide-y divide-gray-100 dark:divide-white/10" x-data="{ open: null }">
+                    <x-card class="max-h-96 overflow-y-auto p-0 divide-y divide-gray-100 dark:divide-white/10 sm:max-h-none sm:overflow-visible" x-data="{ open: null }">
                         @forelse ($member->enrollments as $enrollment)
                             @php $paymentStatus = $enrollment->balanceStatus(); @endphp
                             <div>
@@ -278,7 +278,7 @@
             </div>
 
             {{-- Right column: iscrizioni, presenze, note --}}
-            <div class="space-y-6 lg:col-span-2">
+            <div class="space-y-6 lg:col-span-2 min-w-0">
                 <div>
                     <x-section-header>Iscrizioni</x-section-header>
                     <x-card class="divide-y divide-gray-100 dark:divide-white/10 p-0">
