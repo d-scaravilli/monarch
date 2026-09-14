@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AuditLog;
 use App\Models\Course;
 use App\Models\Document;
+use App\Models\Enrollment;
 use App\Models\MemberNote;
 use App\Models\Module;
 use App\Models\User;
@@ -116,7 +117,19 @@ class ModuleSettingsController extends Controller
 
         abort_unless($data['confirm_name'] === $module->name, 422);
 
-        $memberIds = $module->users()->pluck('users.id');
+        // $module->users() is who was *granted access* to the module (an
+        // admin decision, made from the "Accessi" tab) — not who actually
+        // has data in it. A member enrolled the normal way, through
+        // "Aggiungi iscritto" on a course, never ends up in that pivot
+        // (EnrollmentController::store only assigns the "member" role),
+        // so scoping the wipe to it alone silently skipped their
+        // documents and notes. Union in everyone who's actually enrolled
+        // or teaching, computed before the transaction deletes those rows.
+        $memberIds = $module->users()->pluck('users.id')
+            ->merge(Enrollment::pluck('user_id'))
+            ->merge(DB::table('course_instructor')->pluck('user_id'))
+            ->unique()
+            ->values();
 
         DB::transaction(function () use ($memberIds) {
             Document::whereIn('user_id', $memberIds)->get()->each(function (Document $document) {
