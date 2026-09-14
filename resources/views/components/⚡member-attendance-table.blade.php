@@ -39,7 +39,7 @@ new class extends Component
                     <tr class="border-b border-gray-100 dark:border-white/10 text-xs font-semibold uppercase tracking-wide text-gray-400">
                         <th class="px-5 py-3 text-left">Data</th>
                         <th class="px-5 py-3 text-left">Corso</th>
-                        <th class="px-5 py-3 text-right">Esito</th>
+                        <th class="px-5 py-3 text-right">Presenza</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100 dark:divide-white/10">
