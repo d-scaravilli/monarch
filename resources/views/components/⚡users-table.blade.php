@@ -22,11 +22,45 @@ new class extends Component
 
     public string $sortDirection = 'asc';
 
+    /** @var array<int, int> */
+    public array $selected = [];
+
     public function updated($property): void
     {
         if (in_array($property, ['search', 'role', 'status'])) {
             $this->resetPage();
+            $this->selected = [];
         }
+    }
+
+    /**
+     * @param  array<int, int>  $ids  the current page's user ids, known
+     *                                to the view from $users already
+     */
+    public function toggleSelectAllOnPage(array $ids): void
+    {
+        $allSelected = $ids !== [] && count(array_diff($ids, $this->selected)) === 0;
+
+        $this->selected = $allSelected
+            ? array_values(array_diff($this->selected, $ids))
+            : array_values(array_unique([...$this->selected, ...$ids]));
+    }
+
+    /**
+     * Same soft-delete as the single-user action (Admin\UserController)
+     * — just applied to every selected user at once. The current admin's
+     * own row never gets a checkbox in the view, but a Livewire component
+     * method is still directly callable, so the exclusion is repeated
+     * here rather than trusted to the UI alone.
+     */
+    public function bulkDelete(): void
+    {
+        abort_unless(auth()->user()->hasRole('admin'), 403);
+
+        $ids = array_diff($this->selected, [auth()->id()]);
+        User::whereIn('id', $ids)->get()->each->delete();
+
+        $this->selected = [];
     }
 
     public function sortBy(string $field): void
@@ -86,11 +120,29 @@ new class extends Component
         </div>
     </x-card>
 
+    @if ($selected !== [])
+        <x-card class="!py-3 flex flex-wrap items-center justify-between gap-3">
+            <p class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ count($selected) }} selezionati</p>
+            <button type="button" wire:click="bulkDelete"
+                    wire:confirm="Eliminare {{ count($selected) }} utenti? Soft delete: lo storico collegato resta consultabile."
+                    class="inline-flex items-center gap-1.5 rounded-xl bg-red-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-red-700">
+                <x-heroicon-o-trash class="h-4 w-4" /> Elimina selezionati
+            </button>
+        </x-card>
+    @endif
+
     <x-card class="p-0 overflow-hidden" wire:loading.class="opacity-60">
         <div class="overflow-x-auto">
             <table class="w-full text-sm">
                 <thead>
                     <tr class="border-b border-gray-100 dark:border-white/10 text-xs font-semibold uppercase tracking-wide text-gray-400">
+                        <th class="px-5 py-3 w-10">
+                            @php $pageIds = $users->pluck('id')->diff([auth()->id()])->values()->all(); @endphp
+                            <input type="checkbox"
+                                   wire:click="toggleSelectAllOnPage({{ Illuminate\Support\Js::from($pageIds) }})"
+                                   @checked($pageIds !== [] && count(array_diff($pageIds, $selected)) === 0)
+                                   class="rounded-md border-gray-300 text-gray-900 focus:ring-gray-900">
+                        </th>
                         <th class="px-5 py-3 text-left">
                             <button wire:click="sortBy('name')" class="hover:text-gray-600 dark:hover:text-gray-200">Nome</button>
                         </th>
@@ -108,6 +160,12 @@ new class extends Component
                 <tbody class="divide-y divide-gray-100 dark:divide-white/10">
                     @forelse ($users as $tableUser)
                         <tr wire:key="user-{{ $tableUser->id }}">
+                            <td class="px-5 py-3.5">
+                                @unless ($tableUser->is(auth()->user()))
+                                    <input type="checkbox" wire:model.live="selected" value="{{ $tableUser->id }}"
+                                           class="rounded-md border-gray-300 text-gray-900 focus:ring-gray-900">
+                                @endunless
+                            </td>
                             <td class="px-5 py-3.5 text-gray-900 dark:text-gray-100 font-medium">
                                 {{ $tableUser->name }}
                                 @if ($tableUser->isDisabled())
@@ -138,7 +196,7 @@ new class extends Component
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="px-5 py-8 text-center text-sm text-gray-500">Nessun utente trovato.</td>
+                            <td colspan="7" class="px-5 py-8 text-center text-sm text-gray-500">Nessun utente trovato.</td>
                         </tr>
                     @endforelse
                 </tbody>
