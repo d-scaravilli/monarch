@@ -3,7 +3,7 @@
 
     <a href="{{ route('modules.settings.edit', $currentModule) }}" class="text-sm font-medium text-gray-500 hover:text-gray-700 mb-4 inline-flex items-center gap-1">
         <x-heroicon-o-chevron-right class="h-3 w-3 rotate-180" />
-        Gestione modulo
+        Gestisci
     </a>
 
     <div class="space-y-4 mt-2">
