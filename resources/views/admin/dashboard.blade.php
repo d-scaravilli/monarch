@@ -1,7 +1,7 @@
 @php $accentColor = $currentModule->color ?? 'blue'; @endphp
 
 <x-app-layout>
-    <x-slot name="header">Dashboard x</x-slot>
+    <x-slot name="header">Dashboard XX</x-slot>
 
     <div class="space-y-6">
         <div class="grid gap-4 grid-cols-2 lg:grid-cols-4">
