@@ -89,16 +89,45 @@
                     </div>
                 @endif
 
-                @if ($course->instructors->isNotEmpty() || $course->schedules->isNotEmpty())
-                    <div class="mt-3 flex flex-wrap gap-2">
-                        @foreach ($course->instructors as $instructor)
-                            <x-badge>{{ $instructor->name }}</x-badge>
-                        @endforeach
-                        @foreach ($course->schedules->sortBy('weekday') as $schedule)
-                            <x-badge color="amber">{{ $schedule->weekdayLabel() }} {{ substr($schedule->start_time, 0, 5) }}-{{ substr($schedule->end_time, 0, 5) }}</x-badge>
-                        @endforeach
+                <div class="mt-4 grid gap-4 sm:grid-cols-3 border-t border-gray-100 dark:border-white/10 pt-4">
+                    <div class="flex items-start gap-3">
+                        <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl {{ $accent['soft'] }}">
+                            <x-heroicon-o-map-pin class="h-5 w-5 {{ $accent['text'] }}" />
+                        </span>
+                        <div>
+                            <p class="text-sm font-semibold text-gray-900 dark:text-gray-100">Sala</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">{{ $course->room->name }}</p>
+                        </div>
                     </div>
-                @endif
+
+                    @if ($course->instructors->isNotEmpty())
+                        <div class="flex items-start gap-3">
+                            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl {{ $accent['soft'] }}">
+                                <x-heroicon-o-user class="h-5 w-5 {{ $accent['text'] }}" />
+                            </span>
+                            <div>
+                                <p class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ $course->instructors->count() > 1 ? 'Istruttori' : 'Istruttore' }}</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">{{ $course->instructors->pluck('name')->join(', ') }}</p>
+                            </div>
+                        </div>
+                    @endif
+
+                    @if ($course->schedules->isNotEmpty())
+                        <div class="flex items-start gap-3">
+                            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl {{ $accent['soft'] }}">
+                                <x-heroicon-o-clock class="h-5 w-5 {{ $accent['text'] }}" />
+                            </span>
+                            <div>
+                                <p class="text-sm font-semibold text-gray-900 dark:text-gray-100">Orari</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">
+                                    @foreach ($course->schedules->sortBy('weekday') as $schedule)
+                                        {{ $schedule->weekdayLabel() }} {{ substr($schedule->start_time, 0, 5) }}-{{ substr($schedule->end_time, 0, 5) }}{{ ! $loop->last ? ', ' : '' }}
+                                    @endforeach
+                                </p>
+                            </div>
+                        </div>
+                    @endif
+                </div>
             @endunless
         </x-card>
 
