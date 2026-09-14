@@ -114,13 +114,17 @@
                     $hasNoteForLesson = $enrollment->user->notes->where('lesson_id', $lesson->id)->isNotEmpty();
                 @endphp
                 <div class="px-5 py-4">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-2">
-                            <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full {{ $accent['badge'] }} text-xs font-bold text-white">
-                                {{ mb_strtoupper($initials) }}
+                    <div class="flex items-center justify-between gap-3">
+                        <div class="flex min-w-0 items-center gap-2">
+                            <span class="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full {{ $accent['badge'] }} text-xs font-bold text-white">
+                                @if ($enrollment->user->avatarUrl())
+                                    <img src="{{ $enrollment->user->avatarUrl() }}" alt="" class="h-full w-full object-cover">
+                                @else
+                                    {{ mb_strtoupper($initials) }}
+                                @endif
                             </span>
-                            <div>
-                                <p class="font-medium text-gray-900 dark:text-gray-100 flex items-center gap-1.5">
+                            <div class="min-w-0">
+                                <p class="font-medium text-gray-900 dark:text-gray-100 flex flex-wrap items-center gap-1.5">
                                     @if (auth()->user()->can('view', $enrollment->user))
                                         <a href="{{ route('members.show', $enrollment->user) }}" class="hover:underline">{{ $enrollment->user->name }}</a>
                                     @else
@@ -135,20 +139,11 @@
                                         @endif
                                     @endif
                                 </p>
-                                <p class="text-xs text-gray-400">{{ $enrollment->user->email }}</p>
                             </div>
                             <x-heroicon-o-check-circle class="h-4 w-4 text-green-600" x-show="saved === {{ $enrollment->id }}" x-cloak />
                         </div>
 
-                        <div class="flex items-center gap-3">
-                            @if ($canManage || $enrollment->user->id === auth()->id())
-                                <button type="button" @click="toggleNotes({{ $enrollment->user->id }})"
-                                        class="flex items-center gap-1 text-xs font-medium text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
-                                    <x-heroicon-o-pencil-square class="h-4 w-4" />
-                                    Note ({{ $enrollment->user->notes->count() }})
-                                </button>
-                            @endif
-
+                        <div class="flex shrink-0 flex-col items-end gap-1.5">
                             @if ($canManage)
                                 <button
                                     type="button"
@@ -163,6 +158,14 @@
                                 <x-heroicon-o-check-circle class="h-5 w-5 text-green-600" />
                             @else
                                 <x-heroicon-o-x-circle class="h-5 w-5 text-gray-300 dark:text-gray-600" />
+                            @endif
+
+                            @if ($canManage || $enrollment->user->id === auth()->id())
+                                <button type="button" @click="toggleNotes({{ $enrollment->user->id }})"
+                                        class="flex items-center gap-1 text-xs font-medium text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                                    <x-heroicon-o-pencil-square class="h-4 w-4" />
+                                    Note ({{ $enrollment->user->notes->count() }})
+                                </button>
                             @endif
                         </div>
                     </div>
