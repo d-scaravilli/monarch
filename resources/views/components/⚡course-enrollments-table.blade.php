@@ -50,6 +50,7 @@ new class extends Component
         return [
             'enrollments' => $enrollments,
             'accent' => \App\Support\ModuleTheme::classes($this->accentColor),
+            'canDelete' => auth()->user()->hasRole('admin'),
         ];
     }
 }
@@ -70,7 +71,9 @@ new class extends Component
                             <th class="px-5 py-3 text-left">Presenze/Assenze</th>
                             <th class="px-5 py-3 text-left">Costi</th>
                         @endunless
-                        <th class="px-5 py-3 text-right">Azioni</th>
+                        @if ($canDelete)
+                            <th class="px-5 py-3 text-right">Azioni</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100 dark:divide-white/10">
@@ -118,19 +121,19 @@ new class extends Component
                                     @endif
                                 </td>
                             @endunless
-                            <td class="px-5 py-3.5 text-right">
-                                @if (auth()->user()->hasRole('admin'))
+                            @if ($canDelete)
+                                <td class="px-5 py-3.5 text-right">
                                     <button type="button" wire:click="deleteEnrollment({{ $enrollment->id }})"
                                             wire:confirm="Rimuovere questa iscrizione?"
                                             class="text-gray-400 hover:text-red-600">
                                         <x-heroicon-o-trash class="h-4 w-4" />
                                     </button>
-                                @endif
-                            </td>
+                                </td>
+                            @endif
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="{{ $compact ? 2 : 6 }}" class="px-5 py-8 text-center text-sm text-gray-500">Nessun iscritto.</td>
+                            <td colspan="{{ ($compact ? 1 : 5) + ($canDelete ? 1 : 0) }}" class="px-5 py-8 text-center text-sm text-gray-500">Nessun iscritto.</td>
                         </tr>
                     @endforelse
                 </tbody>
