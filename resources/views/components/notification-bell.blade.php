@@ -1,4 +1,4 @@
-@props(['class' => '', 'openUpward' => false])
+@props(['class' => '', 'openUpward' => false, 'openRight' => false])
 
 @php
     $recentNotifications = auth()->user()->notifications()->latest()->limit(3)->get();
@@ -32,7 +32,7 @@
     <div
         x-show="open" x-cloak
         x-transition:enter="ease-out duration-150" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
-        class="absolute right-0 z-30 {{ $openUpward ? 'bottom-full mb-2' : 'top-full mt-2' }} w-80 max-w-[85vw] overflow-hidden rounded-2xl bg-white dark:bg-gray-900 shadow-lg ring-1 ring-gray-100 dark:ring-white/10"
+        class="absolute {{ $openRight ? 'left-0' : 'right-0' }} z-30 {{ $openUpward ? 'bottom-full mb-2' : 'top-full mt-2' }} w-80 max-w-[85vw] overflow-hidden rounded-2xl bg-white dark:bg-gray-900 shadow-lg ring-1 ring-gray-100 dark:ring-white/10"
     >
         <p class="px-4 pt-3 pb-2 text-xs font-semibold uppercase tracking-wide text-gray-400">Notifiche</p>
         <div class="divide-y divide-gray-100 dark:divide-white/10">

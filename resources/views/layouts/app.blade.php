@@ -120,7 +120,7 @@
                         </div>
                         <div class="flex shrink-0 items-center gap-1">
                             @unless ($isAdmin)
-                                <x-notification-bell class="h-8 w-8" :open-upward="true" />
+                                <x-notification-bell class="h-8 w-8" :open-upward="true" :open-right="true" />
                             @endunless
                             <a href="{{ route('settings.edit') }}" class="flex h-8 w-8 items-center justify-center rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-white/5 dark:hover:text-gray-300">
                                 <x-heroicon-o-cog-6-tooth class="h-5 w-5" />
