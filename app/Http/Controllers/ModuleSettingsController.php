@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Support\ModuleTheme;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
@@ -149,6 +150,25 @@ class ModuleSettingsController extends Controller
         AuditLog::record('module.reset', "Dati del modulo \"{$module->name}\" azzerati da {$request->user()->name}.");
 
         return redirect()->route('modules.settings.edit', $module)->with('status', 'Dati del modulo azzerati.');
+    }
+
+    /**
+     * "Zona pericolosa": wipes every stored notification (the rows
+     * feeding the bell dropdown), for every user. The notifications
+     * table has no module scoping column at all, so this is a genuine
+     * global reset, not limited to Palestra data — messages, payments,
+     * notes and every other piece of data are left untouched.
+     */
+    public function resetNotifications(Request $request, Module $module): RedirectResponse
+    {
+        $this->authorizeModuleManagement($request, $module);
+        abort_unless($module->slug === 'palestra', 404);
+
+        DatabaseNotification::query()->delete();
+
+        AuditLog::record('notifications.reset', "Tutte le notifiche azzerate da {$request->user()->name}.");
+
+        return redirect()->route('modules.settings.edit', $module)->with('status', 'Notifiche eliminate.');
     }
 
     private function authorizeModuleManagement(Request $request, Module $module): void

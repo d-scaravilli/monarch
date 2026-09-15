@@ -165,7 +165,7 @@
                 </a>
             </div>
 
-            <div x-show="tab === 'danger'" x-cloak>
+            <div x-show="tab === 'danger'" x-cloak class="space-y-4">
                 <x-card class="ring-1 ring-red-200 dark:ring-red-500/30 bg-red-50/50 dark:bg-red-500/5">
                     <div class="flex items-start justify-between gap-4">
                         <div>
@@ -180,6 +180,27 @@
                                 class="shrink-0 inline-flex items-center gap-1.5 rounded-xl bg-red-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-red-700">
                             <x-heroicon-o-exclamation-triangle class="h-4 w-4" /> Azzera dati modulo
                         </button>
+                    </div>
+                </x-card>
+
+                <x-card class="ring-1 ring-red-200 dark:ring-red-500/30 bg-red-50/50 dark:bg-red-500/5">
+                    <div class="flex items-start justify-between gap-4">
+                        <div>
+                            <p class="font-medium text-gray-900 dark:text-gray-100">Elimina tutte le notifiche</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                                Cancella tutte le notifiche salvate (quelle che alimentano la campanella), per
+                                tutti gli utenti. Non tocca messaggi, pagamenti, note o altri dati. Azione
+                                irreversibile.
+                            </p>
+                        </div>
+                        <form method="POST" action="{{ route('modules.settings.notifications.reset', $module) }}"
+                              onsubmit="return confirm('Eliminare tutte le notifiche salvate? L\'azione non può essere annullata.')">
+                            @csrf @method('DELETE')
+                            <button type="submit"
+                                    class="shrink-0 inline-flex items-center gap-1.5 whitespace-nowrap rounded-xl bg-red-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-red-700">
+                                <x-heroicon-o-bell-slash class="h-4 w-4" /> Elimina notifiche
+                            </button>
+                        </form>
                     </div>
                 </x-card>
             </div>

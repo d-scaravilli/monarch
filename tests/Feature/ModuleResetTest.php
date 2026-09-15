@@ -11,7 +11,9 @@ use App\Models\MemberNote;
 use App\Models\Module;
 use App\Models\Payment;
 use App\Models\User;
+use App\Notifications\PaymentRegisteredNotification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Notifications\DatabaseNotification;
 use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
@@ -83,5 +85,65 @@ class ModuleResetTest extends TestCase
         $this->assertSame(0, Payment::count());
         $this->assertSame(0, Document::count());
         $this->assertSame(0, MemberNote::count());
+    }
+
+    /**
+     * "Elimina tutte le notifiche" must wipe every stored notification
+     * (any user's) but leave every other kind of data — messages,
+     * payments, notes — completely untouched.
+     */
+    public function test_resetting_notifications_wipes_all_notifications_but_nothing_else(): void
+    {
+        Role::create(['name' => 'admin']);
+
+        $module = Module::create([
+            'slug' => 'palestra',
+            'name' => 'Palestra',
+            'icon' => 'fire',
+            'color' => 'orange',
+            'is_active' => true,
+        ]);
+
+        $admin = User::factory()->create();
+        $admin->assignRole('admin');
+        $member = User::factory()->create();
+
+        $member->notify(new PaymentRegisteredNotification(
+            Payment::factory()->create(['enrollment_id' => Enrollment::factory()->create(['user_id' => $member->id])->id])
+        ));
+        $admin->notify(new PaymentRegisteredNotification(
+            Payment::factory()->create(['enrollment_id' => Enrollment::factory()->create()->id])
+        ));
+
+        $this->assertSame(2, DatabaseNotification::count());
+        $this->assertSame(2, Payment::count());
+
+        $response = $this->actingAs($admin)->delete(route('modules.settings.notifications.reset', $module));
+
+        $response->assertRedirect(route('modules.settings.edit', $module));
+        $this->assertSame(0, DatabaseNotification::count());
+        // Untouched: this action must never cascade into unrelated data.
+        $this->assertSame(2, Payment::count());
+    }
+
+    public function test_non_admin_cannot_reset_notifications(): void
+    {
+        Role::create(['name' => 'admin']);
+        Role::create(['name' => 'member']);
+
+        $module = Module::create([
+            'slug' => 'palestra',
+            'name' => 'Palestra',
+            'icon' => 'fire',
+            'color' => 'orange',
+            'is_active' => true,
+        ]);
+
+        $member = User::factory()->create();
+        $member->assignRole('member');
+
+        $this->actingAs($member)
+            ->delete(route('modules.settings.notifications.reset', $module))
+            ->assertForbidden();
     }
 }
