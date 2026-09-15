@@ -24,13 +24,14 @@ class EnrollmentController extends Controller
 
         $data = $request->validate([
             'user_id' => 'required|exists:users,id|unique:enrollments,user_id,NULL,id,course_id,'.$course->id,
+            'enrollment_date' => 'nullable|date',
             'discount' => 'nullable|numeric|min:0',
             'billing_frequency' => 'nullable|in:annual,monthly',
         ]);
 
         $course->enrollments()->create([
             'user_id' => $data['user_id'],
-            'enrollment_date' => now(),
+            'enrollment_date' => $data['enrollment_date'] ?? now(),
             'discount' => $data['discount'] ?? 0,
             'status' => 'active',
             'billing_frequency' => $data['billing_frequency'] ?? 'annual',
@@ -43,6 +44,30 @@ class EnrollmentController extends Controller
         }
 
         return redirect()->route('courses.show', $course)->with('status', 'Iscrizione aggiunta.');
+    }
+
+    /**
+     * Correct an existing enrollment's date, discount or billing frequency
+     * — who is enrolled and in which course never change here, only the
+     * terms of the enrollment itself.
+     */
+    public function update(Request $request, Enrollment $enrollment): RedirectResponse
+    {
+        $this->authorize('update', $enrollment->course);
+
+        $data = $request->validate([
+            'enrollment_date' => 'required|date',
+            'discount' => 'nullable|numeric|min:0',
+            'billing_frequency' => 'nullable|in:annual,monthly',
+        ]);
+
+        $enrollment->update([
+            'enrollment_date' => $data['enrollment_date'],
+            'discount' => $data['discount'] ?? 0,
+            'billing_frequency' => $data['billing_frequency'] ?? 'annual',
+        ]);
+
+        return redirect()->route('courses.show', $enrollment->course)->with('status', 'Iscrizione aggiornata.');
     }
 
     /**

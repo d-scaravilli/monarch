@@ -131,11 +131,17 @@ new class extends Component
                             @endunless
                             @if ($canDelete)
                                 <td class="px-5 py-3.5 text-right">
-                                    <button type="button" wire:click="deleteEnrollment({{ $enrollment->id }})"
-                                            wire:confirm="Rimuovere questa iscrizione?"
-                                            class="text-gray-400 hover:text-red-600">
-                                        <x-heroicon-o-trash class="h-4 w-4" />
-                                    </button>
+                                    <span class="inline-flex items-center gap-1">
+                                        <button type="button" x-data="" x-on:click="$dispatch('open-modal', 'edit-enrollment-{{ $enrollment->id }}')"
+                                                class="text-gray-400 hover:text-gray-700 dark:hover:text-gray-200">
+                                            <x-heroicon-o-pencil class="h-4 w-4" />
+                                        </button>
+                                        <button type="button" wire:click="deleteEnrollment({{ $enrollment->id }})"
+                                                wire:confirm="Rimuovere questa iscrizione?"
+                                                class="text-gray-400 hover:text-red-600">
+                                            <x-heroicon-o-trash class="h-4 w-4" />
+                                        </button>
+                                    </span>
                                 </td>
                             @endif
                         </tr>
@@ -151,5 +157,42 @@ new class extends Component
 
     @if ($enrollments->hasPages())
         <div>{{ $enrollments->links() }}</div>
+    @endif
+
+    @if ($canDelete)
+        @foreach ($enrollments as $enrollment)
+            <x-modal name="edit-enrollment-{{ $enrollment->id }}" max-width="lg">
+                <div class="p-6">
+                    <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Modifica iscrizione</h2>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ $enrollment->user->name }}</p>
+
+                    <form method="POST" action="{{ route('enrollments.update', $enrollment) }}" class="mt-5 space-y-4">
+                        @csrf
+                        @method('PATCH')
+                        <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                            <div class="space-y-1.5">
+                                <x-input-label value="Data iscrizione" />
+                                <x-text-input type="date" name="enrollment_date" value="{{ $enrollment->enrollment_date->toDateString() }}" class="w-full" />
+                            </div>
+                            <div class="space-y-1.5">
+                                <x-input-label value="Sconto €" />
+                                <x-text-input type="number" step="0.01" min="0" name="discount" value="{{ $enrollment->discount }}" class="w-full" />
+                            </div>
+                            <div class="space-y-1.5">
+                                <x-input-label value="Tipo" />
+                                <select name="billing_frequency" class="w-full rounded-xl border-gray-200 bg-gray-50 dark:border-white/10 dark:bg-white/5 dark:text-gray-100">
+                                    <option value="annual" @selected($enrollment->billing_frequency === 'annual')>Annuale</option>
+                                    <option value="monthly" @selected($enrollment->billing_frequency === 'monthly')>Mensile</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-end gap-3 pt-2">
+                            <x-secondary-button type="button" x-on:click="$dispatch('close')">Annulla</x-secondary-button>
+                            <x-primary-button>Salva</x-primary-button>
+                        </div>
+                    </form>
+                </div>
+            </x-modal>
+        @endforeach
     @endif
 </div>
