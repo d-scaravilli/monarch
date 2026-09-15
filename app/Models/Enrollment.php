@@ -53,6 +53,16 @@ class Enrollment extends Model
     }
 
     /**
+     * The goals set for this specific enrollment (person + course + year)
+     * — in creation order, which doubles as their sequence along the
+     * year's "percorso".
+     */
+    public function goals(): HasMany
+    {
+        return $this->hasMany(Goal::class)->oldest();
+    }
+
+    /**
      * Attendances for lessons that happened on or after this enrollment
      * started. A lesson before the member joined the course is one they
      * couldn't possibly have attended, so it must never count toward

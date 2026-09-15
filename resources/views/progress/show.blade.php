@@ -7,7 +7,7 @@
 <x-app-layout>
     <x-slot name="header">Progressi &middot; {{ $member->name }}</x-slot>
 
-    <div class="max-w-2xl">
+    <div class="max-w-3xl">
         <div class="flex items-center gap-3 mb-6">
             <span class="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full {{ $accent['badge'] }} text-sm font-bold text-white">
                 @if ($member->avatarUrl())
@@ -21,6 +21,14 @@
                 <p class="text-xs text-gray-400 truncate">{{ $member->email }}</p>
             </div>
         </div>
+
+        @if ($member->enrollments->isNotEmpty())
+            <div class="space-y-4 mb-6">
+                @foreach ($member->enrollments as $enrollment)
+                    <x-enrollment-goals :enrollment="$enrollment" :can-manage="auth()->user()->can('manageAttendance', $enrollment->course)" />
+                @endforeach
+            </div>
+        @endif
 
         <x-progress-timeline :notes="$member->notes" />
 

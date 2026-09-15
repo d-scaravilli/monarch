@@ -189,6 +189,7 @@
                             @endif
 
                             @if ($canManage)
+                                @php $inProgressGoals = $enrollment->goals->where('status', 'in_progress'); @endphp
                                 <div>
                                     <p class="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-2">Aggiungi nota</p>
                                     <form method="POST" action="{{ route('courses.lessons.notes.store', [$course, $lesson]) }}" class="space-y-2.5">
@@ -203,6 +204,14 @@
                                             <textarea name="description" rows="2" required placeholder="Descrizione..."
                                                       class="flex-1 rounded-xl border-gray-200 bg-white text-sm dark:border-white/10 dark:bg-white/5 dark:text-gray-100"></textarea>
                                         </div>
+                                        @if ($inProgressGoals->isNotEmpty())
+                                            <select name="goal_id" class="w-full rounded-xl border-gray-200 bg-white text-sm dark:border-white/10 dark:bg-white/5 dark:text-gray-100">
+                                                <option value="">Nessun obiettivo collegato (appunto generico)</option>
+                                                @foreach ($inProgressGoals as $goal)
+                                                    <option value="{{ $goal->id }}">Obiettivo: {{ $goal->title }}</option>
+                                                @endforeach
+                                            </select>
+                                        @endif
                                         <div class="flex justify-end">
                                             <x-secondary-button type="submit">Aggiungi</x-secondary-button>
                                         </div>

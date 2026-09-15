@@ -25,7 +25,7 @@ class AttendanceController extends Controller
 
         $canManage = auth()->user()->can('manageAttendance', $course);
 
-        $course->load(['enrollments.user.notes.author']);
+        $course->load(['enrollments.user.notes.author', 'enrollments.goals']);
 
         // Someone who joined after this lesson took place couldn't have
         // attended it, so they don't belong on its roster at all.

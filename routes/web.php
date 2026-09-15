@@ -11,6 +11,7 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\EnrollmentController;
+use App\Http\Controllers\GoalController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\ManifestController;
 use App\Http\Controllers\MemberAreaController;
@@ -105,6 +106,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/courses/{course}/lessons/{lesson}/attendance/mark-all', [AttendanceController::class, 'markAllPresent'])->name('courses.lessons.attendance.mark-all');
         Route::patch('/courses/{course}/lessons/{lesson}/description', [AttendanceController::class, 'updateDescription'])->name('courses.lessons.description.update');
         Route::post('/courses/{course}/lessons/{lesson}/notes', [NoteController::class, 'store'])->name('courses.lessons.notes.store');
+
+        Route::post('/enrollments/{enrollment}/goals', [GoalController::class, 'store'])->name('enrollments.goals.store');
+        Route::put('/goals/{goal}', [GoalController::class, 'update'])->name('goals.update');
 
         Route::post('/enrollments/{enrollment}/payments', [PaymentController::class, 'store'])->name('enrollments.payments.store');
         Route::put('/payments/{payment}', [PaymentController::class, 'update'])->name('payments.update');

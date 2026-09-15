@@ -47,7 +47,10 @@ class ProgressController extends Controller
         $viewer = Auth::user();
         abort_unless($viewer->id === $member->id || $viewer->can('view', $member), 403);
 
-        $member->load(['notes' => fn ($q) => $q->with(['author', 'lesson.course.discipline'])]);
+        $member->load([
+            'notes' => fn ($q) => $q->with(['author', 'lesson.course.discipline']),
+            'enrollments' => fn ($q) => $q->with(['course.discipline', 'goals.notes.author']),
+        ]);
 
         return view('progress.show', compact('member'));
     }

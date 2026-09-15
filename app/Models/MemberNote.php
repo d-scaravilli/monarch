@@ -10,6 +10,7 @@ class MemberNote extends Model
     protected $fillable = [
         'user_id',
         'lesson_id',
+        'goal_id',
         'created_by',
         'type',
         'description',
@@ -40,5 +41,10 @@ class MemberNote extends Model
     public function author(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function goal(): BelongsTo
+    {
+        return $this->belongsTo(Goal::class);
     }
 }
