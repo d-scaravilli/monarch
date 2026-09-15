@@ -29,6 +29,7 @@
                             $person = $conv['counterpart'];
                             $last = $conv['thread']->first();
                             $isActive = $contact && $contact->id === $person->id;
+                            $personDeleted = $person->trashed();
                         @endphp
                         <a href="{{ route('messages.show', $person) }}"
                            x-show="!search || {{ Illuminate\Support\Js::from(\Illuminate\Support\Str::lower($person->name)) }}.includes(search.toLowerCase())"
@@ -47,6 +48,9 @@
                                 <div class="flex items-center justify-between gap-2">
                                     <p class="truncate text-sm {{ $conv['unread'] ? 'font-semibold text-gray-900 dark:text-gray-100' : 'font-medium text-gray-700 dark:text-gray-300' }}">
                                         {{ $person->name }}
+                                        @if ($personDeleted)
+                                            <span class="font-normal text-gray-400">(eliminato)</span>
+                                        @endif
                                     </p>
                                     <span class="shrink-0 text-xs text-gray-400">{{ $conv['latestAt']->translatedFormat('d M') }}</span>
                                 </div>
@@ -81,7 +85,12 @@
                                         {{ $initials($contact->name) }}
                                     @endif
                                 </span>
-                                <p class="font-semibold text-gray-900 dark:text-gray-100">{{ $contact->name }}</p>
+                                <p class="font-semibold text-gray-900 dark:text-gray-100">
+                                    {{ $contact->name }}
+                                    @if ($contact->trashed())
+                                        <span class="font-normal text-gray-400">(eliminato)</span>
+                                    @endif
+                                </p>
                             </div>
 
                             <div class="divide-y divide-gray-100 dark:divide-white/10 max-h-[65vh] overflow-y-auto">

@@ -9,6 +9,7 @@ use App\Models\Module;
 use App\Models\User;
 use App\Notifications\NewMessageNotification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use Spatie\Permission\Models\Role;
 use Tests\TestCase;
@@ -208,6 +209,66 @@ class MessageTest extends TestCase
         // The outsider never exchanged anything with the admin, so that
         // "conversation" doesn't exist for them.
         $this->actingAs($outsider)->get(route('messages.show', $admin))->assertForbidden();
+    }
+
+    /**
+     * Reproduces the reported bug exactly: a message/message_recipients
+     * row is left pointing at a user who is now soft-deleted — this is
+     * deliberately done with a raw DB update (bypassing User::deleting(),
+     * see the cascade-cleanup test below) to simulate data that predates
+     * this fix, or any future code path that soft-deletes a user without
+     * going through Eloquent. Opening Messaggi used to crash with a 500
+     * (->id on a null counterpart inside conversations(), since a
+     * soft-deleted user is excluded from the default belongsTo query);
+     * it must now render fine, showing the real name with an "(eliminato)"
+     * tag instead of erroring.
+     */
+    public function test_messages_page_does_not_error_when_a_conversation_partner_is_deleted(): void
+    {
+        $admin = $this->makeAdmin();
+        $member = $this->makeMember();
+
+        $sent = Message::create(['sender_id' => $admin->id, 'subject' => 'Ciao', 'body' => 'Prova']);
+        $sent->recipients()->create(['user_id' => $member->id]);
+
+        DB::table('users')->where('id', $member->id)->update(['deleted_at' => now()]);
+        $this->assertTrue($member->fresh()->trashed());
+
+        $response = $this->actingAs($admin)->get(route('messages.index'));
+
+        $response->assertOk();
+        $response->assertSee($member->name);
+        $response->assertSee('(eliminato)');
+    }
+
+    /**
+     * Deleting a user must cascade-clean their messages — both sent
+     * messages (and everyone's recipient rows for them) and the rows
+     * where they themselves were a recipient — because the DB-level FK
+     * cascadeOnDelete() only fires on a real SQL DELETE, never on the
+     * soft-delete UPDATE this app actually performs.
+     */
+    public function test_deleting_a_user_removes_their_sent_messages_and_recipient_rows(): void
+    {
+        $admin = $this->makeAdmin();
+        $member = $this->makeMember();
+        $otherMember = $this->makeMember();
+
+        $sentByMember = Message::create(['sender_id' => $member->id, 'subject' => 'Da eliminare', 'body' => 'x']);
+        $sentByMember->recipients()->create(['user_id' => $admin->id]);
+        $sentByMember->recipients()->create(['user_id' => $otherMember->id]);
+
+        $sentToMember = Message::create(['sender_id' => $admin->id, 'subject' => 'Verso il membro', 'body' => 'x']);
+        $recipientRow = $sentToMember->recipients()->create(['user_id' => $member->id]);
+
+        $member->delete();
+
+        $this->assertDatabaseMissing('messages', ['id' => $sentByMember->id]);
+        $this->assertDatabaseMissing('message_recipients', ['message_id' => $sentByMember->id]);
+        $this->assertDatabaseMissing('message_recipients', ['id' => $recipientRow->id]);
+        // The message an admin sent to someone else survives — only the
+        // deleted user's own recipient row for it is gone.
+        $this->assertDatabaseHas('messages', ['id' => $sentToMember->id]);
     }
 
     public function test_thread_and_conversation_list_are_ordered_newest_first(): void

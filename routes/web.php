@@ -60,7 +60,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::middleware('module:palestra')->group(function () {
         Route::get('/messages', [MessageController::class, 'index'])->name('messages.index');
-        Route::get('/messages/{contact}', [MessageController::class, 'show'])->name('messages.show');
+        Route::get('/messages/{contact}', [MessageController::class, 'show'])->name('messages.show')->withTrashed();
         Route::post('/messages', [MessageController::class, 'store'])->name('messages.store');
 
         Route::get('/palestra/dashboard', [PalestraDashboardController::class, 'index'])->name('palestra.dashboard');

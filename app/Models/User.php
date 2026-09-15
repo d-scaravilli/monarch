@@ -103,4 +103,24 @@ class User extends Authenticatable
     {
         return $this->disabled_at !== null;
     }
+
+    /**
+     * The messages table's cascadeOnDelete() only fires on a real SQL
+     * DELETE — a soft delete is an UPDATE, so it never runs — meaning
+     * every deletion path (single member, admin users page, bulk delete)
+     * would otherwise leave this user's sent messages and message_recipients
+     * rows (as sender or recipient) behind, orphaned and unresolvable.
+     */
+    protected static function booted(): void
+    {
+        static::deleting(function (User $user) {
+            $sentMessageIds = $user->sentMessages()->pluck('id');
+
+            MessageRecipient::whereIn('message_id', $sentMessageIds)
+                ->orWhere('user_id', $user->id)
+                ->delete();
+
+            Message::whereIn('id', $sentMessageIds)->delete();
+        });
+    }
 }

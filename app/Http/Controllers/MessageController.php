@@ -128,7 +128,7 @@ class MessageController extends Controller
 
         if ($canSend) {
             Message::where('sender_id', $user->id)
-                ->with('recipients.user')
+                ->with(['recipients.user' => fn ($q) => $q->withTrashed()])
                 ->get()
                 ->each(function (Message $message) use ($entries) {
                     foreach ($message->recipients as $recipient) {
@@ -146,7 +146,7 @@ class MessageController extends Controller
         // Admin never receives messages inside Monarch (see canSend()).
         if (! $user->hasRole('admin')) {
             MessageRecipient::where('user_id', $user->id)
-                ->with('message.sender')
+                ->with(['message.sender' => fn ($q) => $q->withTrashed()])
                 ->get()
                 ->each(function (MessageRecipient $recipient) use ($entries) {
                     $entries->push([
@@ -160,6 +160,12 @@ class MessageController extends Controller
         }
 
         return $entries
+            // Defense in depth: a soft-deleted counterpart still resolves
+            // fine via withTrashed() above, but a truly orphaned row (its
+            // user_id pointing at nothing at all — e.g. legacy data from
+            // before cascade cleanup existed) would have a null
+            // counterpart here. Drop it rather than crash on ->id below.
+            ->filter(fn (array $entry) => $entry['counterpart'] !== null)
             ->groupBy(fn (array $entry) => $entry['counterpart']->id)
             ->map(function (Collection $group) {
                 // Newest first, both here (the thread itself) and in the
