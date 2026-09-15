@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Attendance;
 use App\Models\Course;
 use App\Models\Enrollment;
 use App\Models\Lesson;
@@ -126,6 +127,79 @@ class AttendanceTest extends TestCase
 
         $response->assertOk();
         $response->assertDontSee('Segna tutti presenti');
+    }
+
+    /**
+     * Reproduces the reported bug exactly: an enrollee nobody has ever
+     * touched the toggle for must still end up with an explicit, saved
+     * "assente" row the moment the lesson page is opened — not silently
+     * have no attendance row at all. Confirms the root cause: before
+     * this fix, an untouched enrollee had zero rows in `attendances`,
+     * which is indistinguishable client-side from "explicitly marked
+     * absent", so the first click always had to go absent -> presente
+     * first (there was nothing to toggle *from*), and a genuine
+     * single-click "mark this person absent on purpose" never saved
+     * anything.
+     */
+    public function test_opening_a_lesson_backfills_an_explicit_absent_row_for_every_untouched_enrollee(): void
+    {
+        $admin = $this->makeAdmin();
+        $course = Course::factory()->create();
+        $lesson = Lesson::create(['course_id' => $course->id, 'date' => now()]);
+        $member = $this->makeMember();
+        $enrollment = Enrollment::factory()->create(['course_id' => $course->id, 'user_id' => $member->id]);
+
+        $this->assertDatabaseMissing('attendances', ['enrollment_id' => $enrollment->id, 'lesson_id' => $lesson->id]);
+
+        $response = $this->actingAs($admin)->get(route('courses.lessons.attendance.edit', [$course, $lesson]));
+
+        $response->assertOk();
+        $this->assertDatabaseHas('attendances', [
+            'enrollment_id' => $enrollment->id,
+            'lesson_id' => $lesson->id,
+            'present' => false,
+        ]);
+    }
+
+    /**
+     * A member merely viewing the (read-only) lesson page must never
+     * trigger a write — only opening it as someone who can actually
+     * manage attendance backfills the rows.
+     */
+    public function test_a_member_viewing_the_lesson_page_does_not_backfill_attendance_rows(): void
+    {
+        $member = $this->makeMember();
+        $course = Course::factory()->create();
+        $lesson = Lesson::create(['course_id' => $course->id, 'date' => now()]);
+        $enrollment = Enrollment::factory()->create(['course_id' => $course->id, 'user_id' => $member->id]);
+
+        $this->actingAs($member)->get(route('courses.lessons.attendance.edit', [$course, $lesson]))->assertOk();
+
+        $this->assertDatabaseMissing('attendances', ['enrollment_id' => $enrollment->id, 'lesson_id' => $lesson->id]);
+    }
+
+    /**
+     * The backfill must never clobber attendance already saved for
+     * someone the admin did touch — only the untouched enrollees get a
+     * new row.
+     */
+    public function test_backfilling_absent_rows_does_not_overwrite_already_recorded_attendance(): void
+    {
+        $admin = $this->makeAdmin();
+        $course = Course::factory()->create();
+        $lesson = Lesson::create(['course_id' => $course->id, 'date' => now()]);
+        $touchedMember = $this->makeMember();
+        $touchedEnrollment = Enrollment::factory()->create(['course_id' => $course->id, 'user_id' => $touchedMember->id]);
+        $touchedEnrollment->attendances()->create(['lesson_id' => $lesson->id, 'present' => true]);
+
+        $this->actingAs($admin)->get(route('courses.lessons.attendance.edit', [$course, $lesson]))->assertOk();
+
+        $this->assertDatabaseHas('attendances', [
+            'enrollment_id' => $touchedEnrollment->id,
+            'lesson_id' => $lesson->id,
+            'present' => true,
+        ]);
+        $this->assertSame(1, Attendance::where('lesson_id', $lesson->id)->where('enrollment_id', $touchedEnrollment->id)->count());
     }
 
     public function test_the_lesson_link_in_the_member_attendance_table_points_to_the_lesson_page(): void

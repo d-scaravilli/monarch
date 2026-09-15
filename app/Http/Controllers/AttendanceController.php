@@ -31,6 +31,33 @@ class AttendanceController extends Controller
         // attended it, so they don't belong on its roster at all.
         $enrollments = $course->enrollments->filter(fn ($e) => $e->enrollment_date->lte($lesson->date))->values();
 
+        // An enrollment with no attendance row yet only *looks* absent —
+        // the toggle's default, untouched visual state — but nothing was
+        // ever actually saved. A single click then always has to move
+        // false -> true first (there's nothing to distinguish "never
+        // touched" from "explicitly false"), so marking someone absent
+        // on purpose silently required two clicks. Backfilling an
+        // explicit present=false row for everyone up front means every
+        // row is real data from the first load, and every further click
+        // is a normal, single, correctly-saved toggle in either
+        // direction. Only worth doing for someone who can actually
+        // toggle — a read-only viewer's page load shouldn't write.
+        if ($canManage) {
+            $alreadyRecorded = Attendance::where('lesson_id', $lesson->id)->pluck('enrollment_id');
+            $missing = $enrollments->pluck('id')->diff($alreadyRecorded);
+
+            if ($missing->isNotEmpty()) {
+                $now = now();
+                Attendance::insert($missing->map(fn ($enrollmentId) => [
+                    'enrollment_id' => $enrollmentId,
+                    'lesson_id' => $lesson->id,
+                    'present' => false,
+                    'created_at' => $now,
+                    'updated_at' => $now,
+                ])->all());
+            }
+        }
+
         $attendances = Attendance::query()
             ->where('lesson_id', $lesson->id)
             ->pluck('present', 'enrollment_id');
