@@ -149,7 +149,7 @@ class MemberController extends Controller
         $member->load([
             'memberProfile',
             'documents',
-            'enrollments' => fn ($q) => $q->with(['course.discipline', 'payments', 'attendances.lesson'])->orderByDesc('enrollment_date'),
+            'enrollments' => fn ($q) => $q->with(['course.discipline', 'payments', 'attendances.lesson', 'goals.notes.author'])->orderByDesc('enrollment_date'),
             'notes' => fn ($q) => $q->with(['author', 'lesson.course.discipline']),
         ]);
 

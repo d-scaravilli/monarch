@@ -15,12 +15,18 @@
     // see UserPolicy::view) but never sees money or personal documents —
     // only the admin does.
     $showFinancials = auth()->user()->hasRole('admin');
+
+    // Lets links land directly on a given tab (e.g. the Progressi list's
+    // "who has goals" entries) instead of always opening on Iscrizioni.
+    $initialTab = in_array(request()->query('tab'), ['iscrizioni', 'pagamenti', 'progressi', 'anagrafica'], true)
+        ? request()->query('tab')
+        : 'iscrizioni';
 @endphp
 
 <x-app-layout>
     <x-slot name="header">{{ $member->name }}</x-slot>
 
-    <div class="space-y-6" x-data="{ tab: 'iscrizioni' }">
+    <div class="space-y-6" x-data="{ tab: {{ Illuminate\Support\Js::from($initialTab) }} }">
         @if ($member->trashed())
             <div class="rounded-2xl bg-amber-50 dark:bg-amber-500/10 px-4 py-3 text-sm font-medium text-amber-700 dark:text-amber-400 ring-1 ring-amber-100 dark:ring-amber-500/20">
                 Questo iscritto è stato eliminato. Stai consultando lo storico.
@@ -363,8 +369,12 @@
             </div>
         @endif
 
-        {{-- Tab: Progressi — the notes timeline, same component as the dedicated Progressi page --}}
-        <div x-show="tab === 'progressi'" x-cloak class="max-w-2xl">
+        {{-- Tab: Progressi — goals path per enrollment, then the notes timeline. Same components as the dedicated Progressi page and "La mia area", so the three stay in sync. --}}
+        <div x-show="tab === 'progressi'" x-cloak class="max-w-3xl space-y-4">
+            @foreach ($member->enrollments as $enrollment)
+                <x-enrollment-goals :enrollment="$enrollment" :can-manage="auth()->user()->can('manageAttendance', $enrollment->course)" />
+            @endforeach
+
             <x-progress-timeline :notes="$member->notes" />
         </div>
     </div>

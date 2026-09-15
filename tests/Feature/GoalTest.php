@@ -6,6 +6,7 @@ use App\Models\Course;
 use App\Models\Enrollment;
 use App\Models\Goal;
 use App\Models\Lesson;
+use App\Models\MemberNote;
 use App\Models\Module;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -89,6 +90,44 @@ class GoalTest extends TestCase
             'status' => 'in_progress',
             'created_by' => $admin->id,
         ]);
+    }
+
+    /**
+     * Reproduces the reported flow bug: a goal must be plannable with
+     * zero notes ever having existed for this enrollment — creating one
+     * must never require going through a note first.
+     */
+    public function test_a_goal_can_be_created_with_no_notes_existing_at_all(): void
+    {
+        $admin = $this->makeAdmin();
+        $enrollment = Enrollment::factory()->create();
+
+        $this->assertSame(0, MemberNote::count());
+
+        $this->actingAs($admin)->post(route('enrollments.goals.store', $enrollment), [
+            'title' => 'Obiettivo senza note',
+        ])->assertRedirect();
+
+        $this->assertSame(0, MemberNote::count());
+        $this->assertDatabaseHas('goals', ['title' => 'Obiettivo senza note']);
+    }
+
+    /**
+     * The "Nuovo obiettivo" button on the scheda iscritto's own Progressi
+     * tab (not just the separate dedicated Progressi page) must be
+     * reachable directly — this used to be missing entirely there.
+     */
+    public function test_new_goal_button_is_reachable_from_the_member_profile_progressi_tab(): void
+    {
+        $admin = $this->makeAdmin();
+        $member = $this->makeMember();
+        $course = Course::factory()->create();
+        Enrollment::factory()->create(['user_id' => $member->id, 'course_id' => $course->id]);
+
+        $response = $this->actingAs($admin)->get(route('members.show', ['member' => $member, 'tab' => 'progressi']));
+
+        $response->assertOk();
+        $response->assertSee('Nuovo obiettivo');
     }
 
     public function test_assigned_instructor_can_create_and_complete_a_goal(): void
