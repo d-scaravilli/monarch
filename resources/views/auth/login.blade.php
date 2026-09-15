@@ -26,12 +26,6 @@
                 <input id="remember_me" type="checkbox" class="rounded-md border-gray-300 text-gray-900 focus:ring-gray-900" name="remember">
                 Ricordami
             </label>
-
-            @if (Route::has('password.request'))
-                <a class="text-sm font-medium text-gray-500 hover:text-gray-700 dark:hover:text-gray-300" href="{{ route('password.request') }}">
-                    Password dimenticata?
-                </a>
-            @endif
         </div>
 
         <x-primary-button class="w-full justify-center">

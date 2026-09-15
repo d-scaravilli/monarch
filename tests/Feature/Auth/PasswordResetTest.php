@@ -12,6 +12,19 @@ class PasswordResetTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * Self-service password reset is disabled (see routes/auth.php) —
+     * whoever forgets their password asks the admin in person instead.
+     * Skipped rather than deleted so this whole file goes back to being
+     * meaningful the moment those routes are uncommented.
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->markTestSkipped('Self-service password reset is disabled — see routes/auth.php.');
+    }
+
     public function test_reset_password_link_screen_can_be_rendered(): void
     {
         $response = $this->get('/forgot-password');
