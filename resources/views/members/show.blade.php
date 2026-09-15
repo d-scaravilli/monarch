@@ -49,8 +49,12 @@
             </div>
 
             <div class="relative px-5 sm:px-6 pb-5">
-                <span class="absolute -top-10 sm:-top-12 left-5 sm:left-6 z-10 flex h-20 w-20 sm:h-24 sm:w-24 shrink-0 items-center justify-center rounded-2xl bg-white dark:bg-gray-900 text-2xl font-bold {{ $accent['text'] }} ring-4 ring-white dark:ring-gray-900 shadow-sm">
-                    {{ mb_strtoupper($initials) }}
+                <span class="absolute -top-10 sm:-top-12 left-5 sm:left-6 z-10 flex h-20 w-20 sm:h-24 sm:w-24 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-white dark:bg-gray-900 text-2xl font-bold {{ $accent['text'] }} ring-4 ring-white dark:ring-gray-900 shadow-sm">
+                    @if ($member->avatarUrl())
+                        <img src="{{ $member->avatarUrl() }}" class="h-full w-full object-cover" alt="">
+                    @else
+                        {{ mb_strtoupper($initials) }}
+                    @endif
                 </span>
                 <div class="pt-2 pl-24 sm:pl-28 min-w-0">
                     <p class="font-bold text-xl text-gray-900 dark:text-gray-100 flex items-center gap-2 truncate">

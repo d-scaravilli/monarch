@@ -9,8 +9,12 @@
 
     <div class="max-w-2xl">
         <div class="flex items-center gap-3 mb-6">
-            <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full {{ $accent['badge'] }} text-sm font-bold text-white">
-                {{ mb_strtoupper($initials) }}
+            <span class="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full {{ $accent['badge'] }} text-sm font-bold text-white">
+                @if ($member->avatarUrl())
+                    <img src="{{ $member->avatarUrl() }}" class="h-full w-full object-cover" alt="">
+                @else
+                    {{ mb_strtoupper($initials) }}
+                @endif
             </span>
             <div class="min-w-0">
                 <p class="font-semibold text-gray-900 dark:text-gray-100 truncate">{{ $member->name }}</p>

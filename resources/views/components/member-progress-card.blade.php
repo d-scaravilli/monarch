@@ -12,8 +12,12 @@
 <a href="{{ route('progress.show', $member) }}" class="block h-full">
     <x-card class="h-full hover:ring-gray-300 dark:hover:ring-white/20 transition">
         <div class="flex items-center gap-3">
-            <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full {{ $accent['badge'] }} text-xs font-bold text-white">
-                {{ mb_strtoupper($initials) }}
+            <span class="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full {{ $accent['badge'] }} text-xs font-bold text-white">
+                @if ($member->avatarUrl())
+                    <img src="{{ $member->avatarUrl() }}" class="h-full w-full object-cover" alt="">
+                @else
+                    {{ mb_strtoupper($initials) }}
+                @endif
             </span>
             <div class="min-w-0 flex-1">
                 <p class="font-medium text-gray-900 dark:text-gray-100 truncate">{{ $member->name }}</p>

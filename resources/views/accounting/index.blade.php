@@ -1,6 +1,7 @@
 @php
     $accentColor = $currentModule->color ?? 'gray';
     $accentHex = \App\Support\ModuleTheme::hex($accentColor);
+    $accent = \App\Support\ModuleTheme::classes($accentColor);
 @endphp
 
 <x-app-layout>
@@ -105,15 +106,27 @@
                 <x-section-header>Chi deve ancora pagare</x-section-header>
                 <x-card class="divide-y divide-gray-100 dark:divide-white/10 p-0 max-h-96 overflow-y-auto">
                     @forelse ($whoOwes as $row)
+                        @php
+                            $owesInitials = collect(explode(' ', $row['user']->name))->map(fn ($p) => mb_substr($p, 0, 1))->take(2)->implode('');
+                        @endphp
                         <div class="flex items-center justify-between gap-3 px-5 py-3.5">
-                            <a href="{{ route('members.show', $row['user']) }}" class="min-w-0 flex-1">
-                                <p class="font-medium text-gray-900 dark:text-gray-100 truncate">{{ $row['user']->name }}</p>
-                                <p class="text-xs text-gray-400">
-                                    Versato €{{ number_format($row['paid'], 2) }}
-                                    @if ($row['enrollments']->count() > 1)
-                                        &middot; {{ $row['enrollments']->count() }} corsi
+                            <a href="{{ route('members.show', $row['user']) }}" class="flex min-w-0 flex-1 items-center gap-3">
+                                <span class="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full {{ $accent['badge'] }} text-xs font-bold text-white">
+                                    @if ($row['user']->avatarUrl())
+                                        <img src="{{ $row['user']->avatarUrl() }}" class="h-full w-full object-cover" alt="">
+                                    @else
+                                        {{ mb_strtoupper($owesInitials) }}
                                     @endif
-                                </p>
+                                </span>
+                                <span class="min-w-0">
+                                    <p class="font-medium text-gray-900 dark:text-gray-100 truncate">{{ $row['user']->name }}</p>
+                                    <p class="text-xs text-gray-400">
+                                        Versato €{{ number_format($row['paid'], 2) }}
+                                        @if ($row['enrollments']->count() > 1)
+                                            &middot; {{ $row['enrollments']->count() }} corsi
+                                        @endif
+                                    </p>
+                                </span>
                             </a>
                             <span class="text-sm font-semibold text-amber-600 dark:text-amber-400 shrink-0">€{{ number_format($row['missing'], 2) }}</span>
                             <button type="button" x-data="" x-on:click="$dispatch('open-modal', 'accounting-pay-{{ $row['user']->id }}')"

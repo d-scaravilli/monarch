@@ -87,15 +87,23 @@ new class extends Component
                             <td class="px-5 py-3.5">
                                 @if (auth()->user()->can('view', $enrollment->user))
                                     <a href="{{ route('members.show', $enrollment->user) }}" class="flex items-center gap-2.5">
-                                        <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full {{ $accent['badge'] }} text-xs font-bold text-white">
-                                            {{ mb_strtoupper($initials) }}
+                                        <span class="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full {{ $accent['badge'] }} text-xs font-bold text-white">
+                                            @if ($enrollment->user->avatarUrl())
+                                                <img src="{{ $enrollment->user->avatarUrl() }}" class="h-full w-full object-cover" alt="">
+                                            @else
+                                                {{ mb_strtoupper($initials) }}
+                                            @endif
                                         </span>
                                         <span class="font-medium text-gray-900 dark:text-gray-100">{{ $enrollment->user->name }}</span>
                                     </a>
                                 @else
                                     <div class="flex items-center gap-2.5">
-                                        <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full {{ $accent['badge'] }} text-xs font-bold text-white">
-                                            {{ mb_strtoupper($initials) }}
+                                        <span class="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full {{ $accent['badge'] }} text-xs font-bold text-white">
+                                            @if ($enrollment->user->avatarUrl())
+                                                <img src="{{ $enrollment->user->avatarUrl() }}" class="h-full w-full object-cover" alt="">
+                                            @else
+                                                {{ mb_strtoupper($initials) }}
+                                            @endif
                                         </span>
                                         <span class="font-medium text-gray-900 dark:text-gray-100">{{ $enrollment->user->name }}</span>
                                     </div>
