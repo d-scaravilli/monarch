@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
@@ -32,7 +35,31 @@ class ProgressController extends Controller
             ->orderBy('name')
             ->get();
 
-        return view('progress.index', compact('members'));
+        // Compact "who has goals" list at the top of the page — a
+        // different cut of the same members (goal-driven rather than
+        // note-driven), so it needs its own query rather than filtering
+        // $members above.
+        $membersWithGoals = User::role('member')
+            ->whereHas('enrollments', fn ($q) => $this->enrollmentsWithGoals($q, $instructorCourseIds))
+            ->with(['enrollments' => fn ($q) => $this->enrollmentsWithGoals($q, $instructorCourseIds)->with('course.discipline')])
+            ->orderBy('name')
+            ->get();
+
+        return view('progress.index', compact('members', 'membersWithGoals'));
+    }
+
+    /**
+     * Shared filter reused both as a whereHas() existence check and as
+     * a with() eager-load constraint — the two pass different builder
+     * types in (a plain query builder vs. the enrollments relation
+     * itself), hence the union type.
+     *
+     * @param  ?Collection<int, int>  $instructorCourseIds
+     */
+    private function enrollmentsWithGoals(Builder|Relation $query, ?Collection $instructorCourseIds): Builder|Relation
+    {
+        return $query->whereHas('goals')
+            ->when($instructorCourseIds !== null, fn ($q) => $q->whereIn('course_id', $instructorCourseIds));
     }
 
     /**
