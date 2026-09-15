@@ -105,7 +105,6 @@
                 <x-heroicon-o-check-circle class="h-4 w-4" />
                 Segna tutti presenti
             </button>
-        @endif
 
         <x-card class="p-0 divide-y divide-gray-100 dark:divide-white/10">
             @forelse ($enrollments as $enrollment)
@@ -217,6 +216,7 @@
                 <p class="px-5 py-6 text-sm text-gray-500">Nessun iscritto per questo corso.</p>
             @endforelse
         </x-card>
+        @endif
     </div>
 
     @if ($canManage)

@@ -22,7 +22,7 @@ new class extends Component
             ->join('disciplines', 'courses.discipline_id', '=', 'disciplines.id')
             ->where('enrollments.user_id', $this->memberId)
             ->whereColumn('lessons.date', '>=', 'enrollments.enrollment_date')
-            ->select(['attendances.*', 'lessons.date as lesson_date', 'disciplines.name as discipline_name'])
+            ->select(['attendances.*', 'lessons.date as lesson_date', 'disciplines.name as discipline_name', 'lessons.course_id'])
             ->orderByDesc('lessons.date')
             ->paginate(10);
 
@@ -44,7 +44,11 @@ new class extends Component
                 </thead>
                 <tbody class="divide-y divide-gray-100 dark:divide-white/10">
                     @forelse ($attendances as $attendance)
-                        <tr wire:key="attendance-{{ $attendance->id }}">
+                        @php
+                            $lessonUrl = route('courses.lessons.attendance.edit', [$attendance->course_id, $attendance->lesson_id]);
+                        @endphp
+                        <tr wire:key="attendance-{{ $attendance->id }}" onclick="window.location='{{ $lessonUrl }}'"
+                            class="cursor-pointer hover:bg-gray-50 dark:hover:bg-white/5">
                             <td class="px-5 py-3 text-gray-700 dark:text-gray-300 whitespace-nowrap">
                                 {{ \Illuminate\Support\Carbon::parse($attendance->lesson_date)->translatedFormat('d M Y') }}
                             </td>
