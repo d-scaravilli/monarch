@@ -22,15 +22,20 @@
                 <a href="{{ route('courses.show', $course) }}">
                     <x-card class="h-full hover:ring-gray-300 dark:hover:ring-white/20 transition">
                         <div class="flex items-start justify-between gap-3">
-                            <div class="min-w-0">
-                                <p class="font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-1.5">
-                                    {{ $course->discipline->name }}
-                                    <x-badge :color="$course->isEvento() ? 'purple' : 'gray'">{{ $course->isEvento() ? 'Evento' : 'Corso' }}</x-badge>
-                                </p>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">{{ $course->room->name }} &middot; {{ $course->year }}</p>
-                                @if ($course->schedules->isNotEmpty())
-                                    <p class="mt-1 text-xs text-gray-400 truncate">{{ $course->scheduleSummary() }}</p>
-                                @endif
+                            <div class="flex items-start gap-3 min-w-0">
+                                <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl {{ $accent['badge'] }} text-white">
+                                    <x-course-icon :icon="$course->icon ?? 'sparkles'" class="h-5 w-5" />
+                                </span>
+                                <div class="min-w-0">
+                                    <p class="font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-1.5">
+                                        {{ $course->discipline->name }}
+                                        <x-badge :color="$course->isEvento() ? 'purple' : 'gray'">{{ $course->isEvento() ? 'Evento' : 'Corso' }}</x-badge>
+                                    </p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ $course->room->name }} &middot; {{ $course->year }}</p>
+                                    @if ($course->schedules->isNotEmpty())
+                                        <p class="mt-1 text-xs text-gray-400 truncate">{{ $course->scheduleSummary() }}</p>
+                                    @endif
+                                </div>
                             </div>
                             <x-heroicon-o-chevron-right class="h-5 w-5 text-gray-300 shrink-0" />
                         </div>

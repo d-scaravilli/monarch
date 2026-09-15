@@ -8,6 +8,7 @@ use App\Models\Discipline;
 use App\Models\Lesson;
 use App\Models\Room;
 use App\Models\User;
+use App\Support\CourseIcons;
 use App\Support\VisibleCourses;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -60,6 +61,7 @@ class CourseController extends Controller
             'discipline_id' => $discipline->id,
             'room_id' => $room->id,
             'type' => $data['type'],
+            'icon' => empty($data['icon']) ? null : $data['icon'],
             'year' => $data['year'],
             'description' => $data['description'] ?? null,
             'annual_cost' => $data['annual_cost'],
@@ -196,6 +198,7 @@ class CourseController extends Controller
             'discipline_id' => $discipline->id,
             'room_id' => $room->id,
             'type' => $data['type'],
+            'icon' => empty($data['icon']) ? null : $data['icon'],
             'year' => $data['year'],
             'description' => $data['description'] ?? null,
             'annual_cost' => $data['annual_cost'],
@@ -230,6 +233,7 @@ class CourseController extends Controller
             'new_room_name' => 'nullable|string|max:255|required_without:room_id',
             'new_room_capacity' => 'nullable|integer|min:1|required_with:new_room_name',
             'type' => 'required|in:corso,evento',
+            'icon' => 'nullable|string|in:'.implode(',', CourseIcons::choices()),
             'year' => 'required|string|max:100',
             'description' => 'nullable|string',
             'annual_cost' => 'required|numeric|min:0',

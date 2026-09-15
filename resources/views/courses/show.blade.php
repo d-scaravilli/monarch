@@ -47,7 +47,7 @@
             <div class="flex items-start justify-between gap-3">
                 <div class="flex items-center gap-4">
                     <span class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl {{ $accent['badge'] }} text-white">
-                        <x-heroicon-o-sparkles class="h-6 w-6" />
+                        <x-course-icon :icon="$course->icon ?? 'sparkles'" class="h-6 w-6" />
                     </span>
                     <div>
                         <p class="text-lg font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">

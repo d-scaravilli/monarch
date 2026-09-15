@@ -19,6 +19,7 @@ class Course extends Model
         'discipline_id',
         'room_id',
         'type',
+        'icon',
         'year',
         'description',
         'annual_cost',

@@ -78,6 +78,24 @@
     </div>
 
     <div class="space-y-2">
+        <x-input-label value="Icona" />
+        <p class="text-xs text-gray-400">Facoltativa: se non scelta, viene usata l'icona del modulo.</p>
+        <div class="grid grid-cols-8 gap-2">
+            <label class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl border border-gray-200 dark:border-white/10 has-[:checked]:border-gray-900 has-[:checked]:bg-gray-100 dark:has-[:checked]:border-white dark:has-[:checked]:bg-white/10">
+                <input type="radio" name="icon" value="" class="hidden" @checked(old('icon', $course->icon ?? null) === null)>
+                <x-heroicon-o-no-symbol class="h-5 w-5 text-gray-400" />
+            </label>
+            @foreach (\App\Support\CourseIcons::choices() as $icon)
+                <label class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl border border-gray-200 dark:border-white/10 has-[:checked]:border-gray-900 has-[:checked]:bg-gray-100 dark:has-[:checked]:border-white dark:has-[:checked]:bg-white/10">
+                    <input type="radio" name="icon" value="{{ $icon }}" class="hidden" @checked(old('icon', $course->icon ?? null) === $icon)>
+                    <x-course-icon :icon="$icon" class="h-5 w-5 text-gray-600 dark:text-gray-300" />
+                </label>
+            @endforeach
+        </div>
+        <x-input-error :messages="$errors->get('icon')" class="mt-1" />
+    </div>
+
+    <div class="space-y-2">
         <x-input-label for="year" value="Anno" />
         <x-text-input id="year" name="year" value="{{ old('year', $course->year ?? '2025/2026') }}" class="w-full py-3 text-base" placeholder="Es. 2025/2026 oppure 18-19-20 settembre 2026" />
         <x-input-error :messages="$errors->get('year')" class="mt-1" />
