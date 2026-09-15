@@ -16,7 +16,7 @@
 <x-app-layout>
     <x-slot name="header">La mia area</x-slot>
 
-    <div class="space-y-6" x-data="{ tab: 'anagrafica' }">
+    <div class="space-y-6" x-data="{ tab: 'iscrizioni' }">
         {{-- Cover + avatar: identity stays visible above the tabs, always --}}
         <div class="rounded-2xl overflow-hidden bg-white dark:bg-gray-900 shadow-sm ring-1 ring-gray-100 dark:ring-white/10">
             <div class="h-28 sm:h-36 relative {{ $coverTransparent ? '' : ($coverImage ? '' : $accent['badge']) }}"
@@ -58,12 +58,13 @@
 
         {{-- Tabs --}}
         <div class="inline-flex flex-wrap gap-1 rounded-xl bg-gray-100 dark:bg-white/5 p-1 text-sm font-medium">
-            <button type="button" @click="tab = 'anagrafica'" class="rounded-lg px-4 py-2 transition" :class="tab === 'anagrafica' ? 'bg-white dark:bg-gray-900 shadow-sm text-gray-900 dark:text-gray-100' : 'text-gray-500 dark:text-gray-400'">Anagrafica</button>
             <button type="button" @click="tab = 'iscrizioni'" class="rounded-lg px-4 py-2 transition" :class="tab === 'iscrizioni' ? 'bg-white dark:bg-gray-900 shadow-sm text-gray-900 dark:text-gray-100' : 'text-gray-500 dark:text-gray-400'">Iscrizioni</button>
             <button type="button" @click="tab = 'pagamenti'" class="rounded-lg px-4 py-2 transition" :class="tab === 'pagamenti' ? 'bg-white dark:bg-gray-900 shadow-sm text-gray-900 dark:text-gray-100' : 'text-gray-500 dark:text-gray-400'">Pagamenti</button>
+            <button type="button" @click="tab = 'progressi'" class="rounded-lg px-4 py-2 transition" :class="tab === 'progressi' ? 'bg-white dark:bg-gray-900 shadow-sm text-gray-900 dark:text-gray-100' : 'text-gray-500 dark:text-gray-400'">Progressi</button>
+            <button type="button" @click="tab = 'anagrafica'" class="rounded-lg px-4 py-2 transition" :class="tab === 'anagrafica' ? 'bg-white dark:bg-gray-900 shadow-sm text-gray-900 dark:text-gray-100' : 'text-gray-500 dark:text-gray-400'">Anagrafica</button>
         </div>
 
-        {{-- Tab: Anagrafica — personal data, documents, equipment, progressi --}}
+        {{-- Tab: Anagrafica — personal data, documents, equipment --}}
         <div x-show="tab === 'anagrafica'" x-cloak class="grid gap-6 lg:grid-cols-2 items-start">
             <div class="space-y-6 min-w-0">
                 <div>
@@ -223,11 +224,6 @@
                         <p class="text-xs text-gray-400">Gestito solo dall'amministrazione.</p>
                     </x-card>
                 </div>
-
-                <div>
-                    <x-section-header>Progressi</x-section-header>
-                    <x-member-progress-card :member="$member" />
-                </div>
             </div>
         </div>
 
@@ -333,6 +329,11 @@
                     @endforelse
                 </x-card>
             </div>
+        </div>
+
+        {{-- Tab: Progressi — the notes timeline, same component as the dedicated Progressi page --}}
+        <div x-show="tab === 'progressi'" x-cloak class="max-w-2xl">
+            <x-progress-timeline :notes="$member->notes" />
         </div>
     </div>
 </x-app-layout>

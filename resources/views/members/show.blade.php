@@ -20,7 +20,7 @@
 <x-app-layout>
     <x-slot name="header">{{ $member->name }}</x-slot>
 
-    <div class="space-y-6" x-data="{ tab: 'anagrafica' }">
+    <div class="space-y-6" x-data="{ tab: 'iscrizioni' }">
         @if ($member->trashed())
             <div class="rounded-2xl bg-amber-50 dark:bg-amber-500/10 px-4 py-3 text-sm font-medium text-amber-700 dark:text-amber-400 ring-1 ring-amber-100 dark:ring-amber-500/20">
                 Questo iscritto è stato eliminato. Stai consultando lo storico.
@@ -83,11 +83,12 @@
 
         {{-- Tabs --}}
         <div class="inline-flex flex-wrap gap-1 rounded-xl bg-gray-100 dark:bg-white/5 p-1 text-sm font-medium">
-            <button type="button" @click="tab = 'anagrafica'" class="rounded-lg px-4 py-2 transition" :class="tab === 'anagrafica' ? 'bg-white dark:bg-gray-900 shadow-sm text-gray-900 dark:text-gray-100' : 'text-gray-500 dark:text-gray-400'">Anagrafica</button>
             <button type="button" @click="tab = 'iscrizioni'" class="rounded-lg px-4 py-2 transition" :class="tab === 'iscrizioni' ? 'bg-white dark:bg-gray-900 shadow-sm text-gray-900 dark:text-gray-100' : 'text-gray-500 dark:text-gray-400'">Iscrizioni</button>
             @if ($showFinancials)
                 <button type="button" @click="tab = 'pagamenti'" class="rounded-lg px-4 py-2 transition" :class="tab === 'pagamenti' ? 'bg-white dark:bg-gray-900 shadow-sm text-gray-900 dark:text-gray-100' : 'text-gray-500 dark:text-gray-400'">Pagamenti</button>
             @endif
+            <button type="button" @click="tab = 'progressi'" class="rounded-lg px-4 py-2 transition" :class="tab === 'progressi' ? 'bg-white dark:bg-gray-900 shadow-sm text-gray-900 dark:text-gray-100' : 'text-gray-500 dark:text-gray-400'">Progressi</button>
+            <button type="button" @click="tab = 'anagrafica'" class="rounded-lg px-4 py-2 transition" :class="tab === 'anagrafica' ? 'bg-white dark:bg-gray-900 shadow-sm text-gray-900 dark:text-gray-100' : 'text-gray-500 dark:text-gray-400'">Anagrafica</button>
         </div>
 
         {{-- Tab: Anagrafica — personal data, documents, equipment, note --}}
@@ -238,29 +239,6 @@
                         </div>
                     </x-card>
                 </div>
-
-                <div>
-                    <x-section-header>Note</x-section-header>
-                    <x-card class="divide-y divide-gray-100 dark:divide-white/10 p-0">
-                        @forelse ($member->notes as $note)
-                            <div class="px-5 py-3.5">
-                                <div class="flex items-center gap-2">
-                                    <x-badge :color="$note->type === 'infortunio' ? 'red' : 'gray'">{{ $note->typeLabel() }}</x-badge>
-                                    <span class="text-xs text-gray-400">
-                                        {{ $note->created_at->translatedFormat('d M Y') }}
-                                        &middot; {{ $note->author->name }}
-                                        @if ($note->lesson?->course?->discipline)
-                                            &middot; {{ $note->lesson->course->discipline->name }}
-                                        @endif
-                                    </span>
-                                </div>
-                                <p class="mt-1.5 text-sm text-gray-700 dark:text-gray-300">{{ $note->description }}</p>
-                            </div>
-                        @empty
-                            <p class="px-5 py-6 text-sm text-gray-500">Nessuna nota registrata.</p>
-                        @endforelse
-                    </x-card>
-                </div>
             </div>
         </div>
 
@@ -379,5 +357,10 @@
                 </div>
             </div>
         @endif
+
+        {{-- Tab: Progressi — the notes timeline, same component as the dedicated Progressi page --}}
+        <div x-show="tab === 'progressi'" x-cloak class="max-w-2xl">
+            <x-progress-timeline :notes="$member->notes" />
+        </div>
     </div>
 </x-app-layout>
