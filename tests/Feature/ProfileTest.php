@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
@@ -114,5 +116,28 @@ class ProfileTest extends TestCase
 
         $response->assertForbidden();
         $this->assertNotNull($user->fresh());
+    }
+
+    public function test_user_can_delete_their_avatar(): void
+    {
+        Storage::fake('public');
+        $user = User::factory()->create();
+
+        $this->actingAs($user)->post('/settings/avatar', [
+            'avatar' => UploadedFile::fake()->image('avatar.jpg'),
+        ]);
+
+        $path = $user->refresh()->avatar_path;
+        $this->assertNotNull($path);
+        Storage::disk('public')->assertExists($path);
+
+        $response = $this->actingAs($user)->delete('/settings/avatar');
+
+        $response
+            ->assertSessionHasNoErrors()
+            ->assertRedirect();
+
+        $this->assertNull($user->refresh()->avatar_path);
+        Storage::disk('public')->assertMissing($path);
     }
 }

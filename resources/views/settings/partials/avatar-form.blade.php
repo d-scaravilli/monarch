@@ -30,4 +30,15 @@
             <p class="mt-1.5 text-xs text-gray-400">JPG o PNG, max 2MB.</p>
         </div>
     </form>
+
+    @if ($user->avatarUrl())
+        <form method="post" action="{{ route('settings.avatar.destroy') }}" class="mt-3" onsubmit="return confirm('Eliminare la foto profilo? Torneranno le iniziali.')">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 dark:border-white/10 px-4 py-2 text-sm font-medium text-red-600 dark:text-red-400">
+                <x-heroicon-o-trash class="h-4 w-4" />
+                Elimina foto
+            </button>
+        </form>
+    @endif
 </x-card>

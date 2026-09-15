@@ -34,6 +34,18 @@ class SettingsController extends Controller
         return back()->with('status', 'Foto profilo aggiornata.');
     }
 
+    public function destroyAvatar(): RedirectResponse
+    {
+        $user = Auth::user();
+
+        if ($user->avatar_path) {
+            Storage::disk('public')->delete($user->avatar_path);
+            $user->update(['avatar_path' => null]);
+        }
+
+        return back()->with('status', 'Foto profilo eliminata.');
+    }
+
     /**
      * Saved immediately on tap (see settings/edit.blade.php), no separate
      * submit button. Returns JSON so the page can update without a reload.

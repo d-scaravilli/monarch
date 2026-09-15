@@ -50,6 +50,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/settings/account', [ProfileController::class, 'update'])->name('settings.account.update');
     Route::delete('/settings/account', [ProfileController::class, 'destroy'])->name('settings.account.destroy');
     Route::post('/settings/avatar', [SettingsController::class, 'updateAvatar'])->name('settings.avatar.update');
+    Route::delete('/settings/avatar', [SettingsController::class, 'destroyAvatar'])->name('settings.avatar.destroy');
     Route::patch('/settings/theme', [SettingsController::class, 'updateTheme'])->name('settings.theme');
 
     Route::post('/push-subscriptions', [PushSubscriptionController::class, 'store'])->name('push-subscriptions.store');
