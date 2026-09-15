@@ -86,13 +86,13 @@
         </div>
 
         {{-- Tabs --}}
-        <div class="inline-flex flex-wrap gap-0 sm:gap-1 rounded-xl bg-gray-100 dark:bg-white/5 p-1 text-sm font-medium">
-            <button type="button" @click="tab = 'iscrizioni'" class="rounded-lg px-1.5 sm:px-4 py-2 transition" :class="tab === 'iscrizioni' ? 'bg-white dark:bg-gray-900 shadow-sm text-gray-900 dark:text-gray-100' : 'text-gray-500 dark:text-gray-400'">Iscrizioni</button>
+        <div class="flex w-full gap-1 rounded-xl bg-gray-100 dark:bg-white/5 p-1 text-sm font-medium">
+            <button type="button" @click="tab = 'iscrizioni'" class="flex-1 min-w-0 truncate rounded-lg px-1 py-2 text-center transition" :class="tab === 'iscrizioni' ? 'bg-white dark:bg-gray-900 shadow-sm text-gray-900 dark:text-gray-100' : 'text-gray-500 dark:text-gray-400'">Iscrizioni</button>
             @if ($showFinancials)
-                <button type="button" @click="tab = 'pagamenti'" class="rounded-lg px-1.5 sm:px-4 py-2 transition" :class="tab === 'pagamenti' ? 'bg-white dark:bg-gray-900 shadow-sm text-gray-900 dark:text-gray-100' : 'text-gray-500 dark:text-gray-400'">Pagamenti</button>
+                <button type="button" @click="tab = 'pagamenti'" class="flex-1 min-w-0 truncate rounded-lg px-1 py-2 text-center transition" :class="tab === 'pagamenti' ? 'bg-white dark:bg-gray-900 shadow-sm text-gray-900 dark:text-gray-100' : 'text-gray-500 dark:text-gray-400'">Pagamenti</button>
             @endif
-            <button type="button" @click="tab = 'progressi'" class="rounded-lg px-1.5 sm:px-4 py-2 transition" :class="tab === 'progressi' ? 'bg-white dark:bg-gray-900 shadow-sm text-gray-900 dark:text-gray-100' : 'text-gray-500 dark:text-gray-400'">Progressi</button>
-            <button type="button" @click="tab = 'anagrafica'" class="rounded-lg px-1.5 sm:px-4 py-2 transition" :class="tab === 'anagrafica' ? 'bg-white dark:bg-gray-900 shadow-sm text-gray-900 dark:text-gray-100' : 'text-gray-500 dark:text-gray-400'">Anagrafica</button>
+            <button type="button" @click="tab = 'progressi'" class="flex-1 min-w-0 truncate rounded-lg px-1 py-2 text-center transition" :class="tab === 'progressi' ? 'bg-white dark:bg-gray-900 shadow-sm text-gray-900 dark:text-gray-100' : 'text-gray-500 dark:text-gray-400'">Progressi</button>
+            <button type="button" @click="tab = 'anagrafica'" class="flex-1 min-w-0 truncate rounded-lg px-1 py-2 text-center transition" :class="tab === 'anagrafica' ? 'bg-white dark:bg-gray-900 shadow-sm text-gray-900 dark:text-gray-100' : 'text-gray-500 dark:text-gray-400'">Anagrafica</button>
         </div>
 
         {{-- Tab: Anagrafica — personal data, documents, equipment, note --}}
