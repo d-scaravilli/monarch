@@ -97,6 +97,9 @@
                         <div>
                             <p class="text-sm font-semibold text-gray-900 dark:text-gray-100">Sala</p>
                             <p class="text-sm text-gray-500 dark:text-gray-400">{{ $course->room->name }}</p>
+                            @if ($course->room->address)
+                                <p class="text-xs text-gray-400">{{ $course->room->address }}</p>
+                            @endif
                         </div>
                     </div>
 
@@ -159,6 +162,9 @@
                         <div>
                             <p class="text-sm font-semibold text-gray-900 dark:text-gray-100">Dove</p>
                             <p class="text-sm text-gray-500 dark:text-gray-400">{{ $course->room->name }}</p>
+                            @if ($course->room->address)
+                                <p class="text-xs text-gray-400">{{ $course->room->address }}</p>
+                            @endif
                         </div>
                     </div>
                     @if ($canManage)

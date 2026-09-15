@@ -14,24 +14,37 @@
                         <div>
                             <p class="font-medium text-gray-900 dark:text-gray-100">{{ $room->name }}</p>
                             <p class="text-xs text-gray-400">{{ $room->capacity }} posti &middot; {{ $room->courses_count }} {{ $room->courses_count === 1 ? 'corso' : 'corsi' }}</p>
+                            @if ($room->address)
+                                <p class="mt-0.5 text-xs text-gray-400">{{ $room->address }}</p>
+                            @endif
                         </div>
                         <button type="button" @click="editing = true" class="text-gray-400 hover:text-gray-700 dark:hover:text-gray-200">
                             <x-heroicon-o-pencil class="h-4 w-4" />
                         </button>
                     </div>
 
-                    <form method="POST" action="{{ route('rooms.update', $room) }}" x-show="editing" x-cloak class="flex flex-wrap items-end gap-3">
+                    <form method="POST" action="{{ route('rooms.update', $room) }}" x-show="editing" x-cloak class="space-y-3">
                         @csrf @method('PUT')
-                        <div class="flex-1 min-w-[8rem] space-y-1.5">
-                            <x-input-label value="Nome" />
-                            <x-text-input name="name" value="{{ $room->name }}" class="w-full" />
+                        <div class="flex flex-wrap items-end gap-3">
+                            <div class="flex-1 min-w-[8rem] space-y-1.5">
+                                <x-input-label value="Nome" />
+                                <x-text-input name="name" value="{{ $room->name }}" class="w-full" />
+                            </div>
+                            <div class="w-28 space-y-1.5">
+                                <x-input-label value="Capienza" />
+                                <x-text-input type="number" min="1" name="capacity" value="{{ $room->capacity }}" class="w-full" />
+                            </div>
                         </div>
-                        <div class="w-28 space-y-1.5">
-                            <x-input-label value="Capienza" />
-                            <x-text-input type="number" min="1" name="capacity" value="{{ $room->capacity }}" class="w-full" />
+                        <div class="space-y-1.5">
+                            <x-input-label value="Indirizzo" />
+                            <textarea name="address" rows="2"
+                                      class="w-full rounded-xl border-gray-200 bg-gray-50 text-sm dark:border-white/10 dark:bg-white/5 dark:text-gray-100"
+                                      placeholder="Via, numero civico, città, eventuali note (piano, citofono...)">{{ $room->address }}</textarea>
                         </div>
-                        <x-primary-button>Salva</x-primary-button>
-                        <button type="button" @click="editing = false" class="text-sm font-medium text-gray-500 hover:text-gray-700 pb-2.5">Annulla</button>
+                        <div class="flex items-center gap-3">
+                            <x-primary-button>Salva</x-primary-button>
+                            <button type="button" @click="editing = false" class="text-sm font-medium text-gray-500 hover:text-gray-700">Annulla</button>
+                        </div>
                     </form>
                 </div>
             @endforeach
@@ -40,17 +53,26 @@
         <div>
             <x-section-header>Nuova sala</x-section-header>
             <x-card>
-                <form method="POST" action="{{ route('rooms.store') }}" class="flex flex-wrap items-end gap-3">
+                <form method="POST" action="{{ route('rooms.store') }}" class="space-y-3">
                     @csrf
-                    <div class="flex-1 min-w-[8rem] space-y-1.5">
-                        <x-input-label value="Nome" />
-                        <x-text-input name="name" class="w-full" />
-                        <x-input-error :messages="$errors->get('name')" class="mt-1" />
+                    <div class="flex flex-wrap items-end gap-3">
+                        <div class="flex-1 min-w-[8rem] space-y-1.5">
+                            <x-input-label value="Nome" />
+                            <x-text-input name="name" class="w-full" />
+                            <x-input-error :messages="$errors->get('name')" class="mt-1" />
+                        </div>
+                        <div class="w-28 space-y-1.5">
+                            <x-input-label value="Capienza" />
+                            <x-text-input type="number" min="1" name="capacity" class="w-full" />
+                            <x-input-error :messages="$errors->get('capacity')" class="mt-1" />
+                        </div>
                     </div>
-                    <div class="w-28 space-y-1.5">
-                        <x-input-label value="Capienza" />
-                        <x-text-input type="number" min="1" name="capacity" class="w-full" />
-                        <x-input-error :messages="$errors->get('capacity')" class="mt-1" />
+                    <div class="space-y-1.5">
+                        <x-input-label value="Indirizzo" />
+                        <textarea name="address" rows="2"
+                                  class="w-full rounded-xl border-gray-200 bg-gray-50 text-sm dark:border-white/10 dark:bg-white/5 dark:text-gray-100"
+                                  placeholder="Via, numero civico, città, eventuali note (piano, citofono...)"></textarea>
+                        <x-input-error :messages="$errors->get('address')" class="mt-1" />
                     </div>
                     <x-primary-button>Aggiungi</x-primary-button>
                 </form>

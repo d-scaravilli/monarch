@@ -15,6 +15,7 @@ class Room extends Model
     protected $fillable = [
         'name',
         'capacity',
+        'address',
     ];
 
     public function courses(): HasMany

@@ -41,13 +41,14 @@ class RoomController extends Controller
     }
 
     /**
-     * @return array{name: string, capacity: int}
+     * @return array{name: string, capacity: int, address: ?string}
      */
     private function validateRoom(Request $request): array
     {
         return $request->validate([
             'name' => 'required|string|max:255',
             'capacity' => 'required|integer|min:1',
+            'address' => 'nullable|string',
         ]);
     }
 }
