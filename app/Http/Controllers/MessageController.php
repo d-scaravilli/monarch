@@ -77,6 +77,20 @@ class MessageController extends Controller
         return $redirect->with('status', 'Messaggio inviato.');
     }
 
+    /**
+     * An admin can delete any message; an instructor only their own —
+     * never someone else's, even one addressed to them.
+     */
+    public function destroy(Request $request, Message $message): RedirectResponse
+    {
+        $user = $request->user();
+        abort_unless($user->hasRole('admin') || $message->sender_id === $user->id, 403);
+
+        $message->delete();
+
+        return redirect()->route('messages.index')->with('status', 'Messaggio eliminato.');
+    }
+
     private function render(Request $request, ?User $contact = null): View
     {
         $user = $request->user();

@@ -271,6 +271,38 @@ class MessageTest extends TestCase
         $this->assertDatabaseHas('messages', ['id' => $sentToMember->id]);
     }
 
+    public function test_admin_can_delete_any_message(): void
+    {
+        $admin = $this->makeAdmin();
+        $instructor = $this->makeInstructor();
+
+        $message = Message::create(['sender_id' => $instructor->id, 'subject' => 'Ciao', 'body' => 'x']);
+        $message->recipients()->create(['user_id' => $admin->id]);
+
+        $this->actingAs($admin)->delete(route('messages.destroy', $message))->assertRedirect();
+
+        $this->assertDatabaseMissing('messages', ['id' => $message->id]);
+    }
+
+    public function test_instructor_can_delete_their_own_message_but_not_someone_elses(): void
+    {
+        $instructorA = $this->makeInstructor();
+        $instructorB = $this->makeInstructor();
+        $member = $this->makeMember();
+
+        $ownMessage = Message::create(['sender_id' => $instructorA->id, 'subject' => 'Mio', 'body' => 'x']);
+        $ownMessage->recipients()->create(['user_id' => $member->id]);
+
+        $othersMessage = Message::create(['sender_id' => $instructorB->id, 'subject' => 'Altrui', 'body' => 'x']);
+        $othersMessage->recipients()->create(['user_id' => $instructorA->id]);
+
+        $this->actingAs($instructorA)->delete(route('messages.destroy', $othersMessage))->assertForbidden();
+        $this->assertDatabaseHas('messages', ['id' => $othersMessage->id]);
+
+        $this->actingAs($instructorA)->delete(route('messages.destroy', $ownMessage))->assertRedirect();
+        $this->assertDatabaseMissing('messages', ['id' => $ownMessage->id]);
+    }
+
     public function test_thread_and_conversation_list_are_ordered_newest_first(): void
     {
         $admin = $this->makeAdmin();

@@ -95,13 +95,27 @@
 
                             <div class="divide-y divide-gray-100 dark:divide-white/10 max-h-[65vh] overflow-y-auto">
                                 @foreach ($thread as $entry)
+                                    @php
+                                        $canDeleteMessage = auth()->user()->hasRole('admin') || $entry['message']->sender_id === auth()->id();
+                                    @endphp
                                     <div class="px-5 py-4">
                                         <div class="flex items-center justify-between gap-2">
                                             <p class="text-sm font-semibold text-gray-900 dark:text-gray-100">
                                                 {{ $entry['direction'] === 'sent' ? 'Tu' : $contact->name }}
                                                 <span class="font-normal text-gray-400">&middot; {{ $entry['message']->subject }}</span>
                                             </p>
-                                            <span class="shrink-0 text-xs text-gray-400">{{ $entry['at']->translatedFormat('d M Y, H:i') }}</span>
+                                            <span class="flex shrink-0 items-center gap-2">
+                                                <span class="text-xs text-gray-400">{{ $entry['at']->translatedFormat('d M Y, H:i') }}</span>
+                                                @if ($canDeleteMessage)
+                                                    <form method="POST" action="{{ route('messages.destroy', $entry['message']) }}" onsubmit="return confirm('Eliminare questo messaggio?')">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="text-gray-400 hover:text-red-600">
+                                                            <x-heroicon-o-trash class="h-3.5 w-3.5" />
+                                                        </button>
+                                                    </form>
+                                                @endif
+                                            </span>
                                         </div>
                                         <p class="mt-1.5 text-sm text-gray-700 dark:text-gray-300 whitespace-pre-line">{{ $entry['message']->body }}</p>
                                         @if ($entry['direction'] === 'sent')

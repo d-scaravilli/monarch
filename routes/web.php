@@ -62,6 +62,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/messages', [MessageController::class, 'index'])->name('messages.index');
         Route::get('/messages/{contact}', [MessageController::class, 'show'])->name('messages.show')->withTrashed();
         Route::post('/messages', [MessageController::class, 'store'])->name('messages.store');
+        Route::delete('/messages/{message}', [MessageController::class, 'destroy'])->name('messages.destroy');
 
         Route::get('/palestra/dashboard', [PalestraDashboardController::class, 'index'])->name('palestra.dashboard');
         Route::get('/calendar', [CalendarController::class, 'index'])->name('palestra.calendar');
