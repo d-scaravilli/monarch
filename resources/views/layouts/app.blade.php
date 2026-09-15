@@ -24,7 +24,7 @@
         $navItems[] = ['label' => 'La mia area', 'route' => 'member.area', 'icon' => 'user-circle', 'active' => request()->routeIs('member.area'), 'mobile' => true];
         $navItems[] = ['label' => 'Corsi/Eventi', 'route' => 'courses.index', 'icon' => 'academic-cap', 'active' => request()->routeIs('courses.*'), 'mobile' => true];
         $navItems[] = ['label' => 'Lezioni', 'route' => 'lessons.index', 'icon' => 'calendar-days', 'active' => request()->routeIs('lessons.*'), 'mobile' => true];
-        $navItems[] = ['label' => 'Messaggi', 'route' => 'messages.index', 'icon' => 'envelope', 'active' => request()->routeIs('messages.*'), 'mobile' => true];
+        $navItems[] = ['label' => 'Messaggi', 'route' => 'messages.index', 'icon' => 'envelope', 'active' => request()->routeIs('messages.*'), 'mobile' => true, 'badge' => $unreadMessagesCount];
         $navItems[] = ['label' => 'Calendario', 'route' => 'palestra.calendar', 'icon' => 'calendar', 'active' => request()->routeIs('palestra.calendar'), 'mobile' => true];
         if ($isInstructor) {
             $navItems[] = ['label' => 'Team', 'route' => 'members.team', 'icon' => 'user-group', 'active' => request()->routeIs('members.*'), 'mobile' => true];
@@ -38,7 +38,7 @@
         $navItems[] = ['label' => 'Corsi/Eventi', 'route' => 'courses.index', 'icon' => 'academic-cap', 'active' => request()->routeIs('courses.*'), 'mobile' => true];
         $navItems[] = ['label' => 'Lezioni', 'route' => 'lessons.index', 'icon' => 'calendar-days', 'active' => request()->routeIs('lessons.*'), 'mobile' => true];
         $navItems[] = ['label' => 'Team', 'route' => 'members.team', 'icon' => 'user-group', 'active' => request()->routeIs('members.*'), 'mobile' => true];
-        $navItems[] = ['label' => 'Messaggi', 'route' => 'messages.index', 'icon' => 'envelope', 'active' => request()->routeIs('messages.*'), 'mobile' => true];
+        $navItems[] = ['label' => 'Messaggi', 'route' => 'messages.index', 'icon' => 'envelope', 'active' => request()->routeIs('messages.*'), 'mobile' => true, 'badge' => $unreadMessagesCount];
         $navItems[] = ['label' => 'Progressi', 'route' => 'progress.index', 'icon' => 'chart-bar', 'active' => request()->routeIs('progress.*'), 'mobile' => true];
         $navItems[] = ['label' => 'Calendario', 'route' => 'palestra.calendar', 'icon' => 'calendar', 'active' => request()->routeIs('palestra.calendar'), 'mobile' => true];
         // The mobile tab bar now scrolls horizontally (see the bottom nav
@@ -106,7 +106,7 @@
                     @endif
 
                     @foreach ($navItems as $item)
-                        <x-sidebar-link :href="route($item['route'], $item['params'] ?? [])" :icon="$item['icon']" :color="$accentColor" :active="$item['active']">
+                        <x-sidebar-link :href="route($item['route'], $item['params'] ?? [])" :icon="$item['icon']" :color="$accentColor" :active="$item['active']" :badge="$item['badge'] ?? 0">
                             {{ $item['label'] }}
                         </x-sidebar-link>
                     @endforeach
@@ -118,9 +118,14 @@
                             <p class="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">{{ $user->name }}</p>
                             <p class="text-xs text-gray-400 truncate">{{ $user->email }}</p>
                         </div>
-                        <a href="{{ route('settings.edit') }}" class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-white/5 dark:hover:text-gray-300">
-                            <x-heroicon-o-cog-6-tooth class="h-5 w-5" />
-                        </a>
+                        <div class="flex shrink-0 items-center gap-1">
+                            @unless ($isAdmin)
+                                <x-notification-bell class="h-8 w-8" :open-upward="true" />
+                            @endunless
+                            <a href="{{ route('settings.edit') }}" class="flex h-8 w-8 items-center justify-center rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-white/5 dark:hover:text-gray-300">
+                                <x-heroicon-o-cog-6-tooth class="h-5 w-5" />
+                            </a>
+                        </div>
                     </div>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
@@ -139,13 +144,14 @@
                         <x-module-badge :icon="$accentIcon" :color="$accentColor" :image="$accentImage" size="h-8 w-8" />
                         <span class="text-lg font-semibold tracking-tight">{{ $header ?? ($currentModule->name ?? 'Monarch') }}</span>
                     </a>
-                    <a href="{{ route('settings.edit') }}" class="flex h-9 w-9 items-center justify-center rounded-full bg-gray-900 dark:bg-white/10 text-white text-sm font-semibold overflow-hidden">
-                        @if ($user->avatarUrl())
-                            <img src="{{ $user->avatarUrl() }}" alt="" class="h-full w-full object-cover">
-                        @else
-                            {{ Str::of($user->name)->substr(0, 1)->upper() }}
-                        @endif
-                    </a>
+                    <div class="flex items-center gap-1">
+                        @unless ($isAdmin)
+                            <x-notification-bell class="h-9 w-9" />
+                        @endunless
+                        <a href="{{ route('settings.edit') }}" class="flex h-9 w-9 items-center justify-center rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-white/5 dark:hover:text-gray-300">
+                            <x-heroicon-o-cog-6-tooth class="h-5 w-5" />
+                        </a>
+                    </div>
                 </header>
 
                 @if (session('status'))
@@ -172,7 +178,7 @@
         <nav class="lg:hidden fixed inset-x-0 bottom-0 z-20 flex border-t border-gray-100 dark:border-white/10 bg-white/95 dark:bg-gray-900/95 backdrop-blur pb-[env(safe-area-inset-bottom)]">
             <div class="flex w-full justify-evenly gap-2 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                 @foreach (collect($navItems)->where('mobile', true) as $item)
-                    <x-tab-link :href="route($item['route'], $item['params'] ?? [])" :icon="$item['icon']" :color="$accentColor" :active="$item['active']">
+                    <x-tab-link :href="route($item['route'], $item['params'] ?? [])" :icon="$item['icon']" :color="$accentColor" :active="$item['active']" :badge="$item['badge'] ?? 0">
                         {{ $item['label'] }}
                     </x-tab-link>
                 @endforeach

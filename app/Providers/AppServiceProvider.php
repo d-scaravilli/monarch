@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\AppSetting;
 use App\Models\Course;
+use App\Models\MessageRecipient;
 use App\Models\Module;
 use App\Models\User;
 use Illuminate\Support\Collection;
@@ -42,6 +43,7 @@ class AppServiceProvider extends ServiceProvider
             $view->with('currentModule', $this->resolveCurrentModule());
             $view->with('accessibleModules', $this->resolveAccessibleModules());
             $view->with('appIconVersion', AppSetting::current()->icon_version);
+            $view->with('unreadMessagesCount', $this->resolveUnreadMessagesCount());
         });
     }
 
@@ -62,6 +64,21 @@ class AppServiceProvider extends ServiceProvider
         return $user->hasRole('admin')
             ? Module::where('is_active', true)->get()
             : $user->modules()->where('is_active', true)->get();
+    }
+
+    /**
+     * Drives the unread-messages badge on the "Messaggi" nav item — see
+     * MessageController for how a message gets marked read (opening the
+     * conversation thread), unrelated to the notification bell's own
+     * read state.
+     */
+    private function resolveUnreadMessagesCount(): int
+    {
+        if (! auth()->check()) {
+            return 0;
+        }
+
+        return MessageRecipient::where('user_id', auth()->id())->whereNull('read_at')->count();
     }
 
     /**

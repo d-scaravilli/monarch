@@ -18,6 +18,7 @@ use App\Http\Controllers\MemberController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ModuleSettingsController;
 use App\Http\Controllers\NoteController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PalestraDashboardController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
@@ -53,6 +54,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::post('/push-subscriptions', [PushSubscriptionController::class, 'store'])->name('push-subscriptions.store');
     Route::delete('/push-subscriptions', [PushSubscriptionController::class, 'destroy'])->name('push-subscriptions.destroy');
+
+    Route::post('/notifications/read', [NotificationController::class, 'markRead'])->name('notifications.read');
 
     Route::middleware('module:palestra')->group(function () {
         Route::get('/messages', [MessageController::class, 'index'])->name('messages.index');

@@ -23,7 +23,7 @@ class NewMessageNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return [WebPushChannel::class];
+        return [WebPushChannel::class, 'database'];
     }
 
     public function toWebPush(object $notifiable, self $notification): WebPushMessage
@@ -33,5 +33,19 @@ class NewMessageNotification extends Notification
             ->icon('/icons/icon-192.png')
             ->body($this->message->sender->name.': '.Str::limit($this->message->body, 100))
             ->data(['url' => route('messages.show', $this->message->sender)]);
+    }
+
+    /**
+     * Feeds the notification bell dropdown (see x-notification-bell).
+     *
+     * @return array<string, string>
+     */
+    public function toArray(object $notifiable): array
+    {
+        return [
+            'title' => 'Nuovo messaggio: '.$this->message->subject,
+            'body' => $this->message->sender->name.': '.Str::limit($this->message->body, 100),
+            'url' => route('messages.show', $this->message->sender),
+        ];
     }
 }
