@@ -14,10 +14,16 @@
                     <x-year-select :years="$years" :selected="$selectedYear" all-label="" />
                 </form>
 
-                <button type="button" x-data="" x-on:click="$dispatch('open-modal', 'register-payment')"
-                        class="inline-flex items-center gap-1.5 rounded-xl bg-gray-900 dark:bg-white dark:text-gray-900 px-4 py-2.5 text-sm font-semibold text-white">
-                    <x-heroicon-o-banknotes class="h-4 w-4" /> Registra pagamento
-                </button>
+                <div class="flex flex-wrap items-center gap-2">
+                    <a href="{{ route('accounting.payments') }}"
+                       class="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 dark:border-white/10 px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-white/5">
+                        <x-heroicon-o-clock class="h-4 w-4" /> Storico pagamenti
+                    </a>
+                    <button type="button" x-data="" x-on:click="$dispatch('open-modal', 'register-payment')"
+                            class="inline-flex items-center gap-1.5 rounded-xl bg-gray-900 dark:bg-white dark:text-gray-900 px-4 py-2.5 text-sm font-semibold text-white">
+                        <x-heroicon-o-banknotes class="h-4 w-4" /> Registra pagamento
+                    </button>
+                </div>
             </div>
         </x-card>
 

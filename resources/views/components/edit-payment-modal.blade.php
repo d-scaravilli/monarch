@@ -28,6 +28,12 @@
                 </div>
             </div>
 
+            <div class="space-y-1.5">
+                <x-input-label value="Note" />
+                <textarea name="notes" rows="2" placeholder="Facoltative..."
+                          class="w-full rounded-xl border-gray-200 bg-gray-50 text-sm dark:border-white/10 dark:bg-white/5 dark:text-gray-100">{{ $payment->notes }}</textarea>
+            </div>
+
             <div class="flex items-center justify-end gap-3 pt-2">
                 <x-secondary-button type="button" x-on:click="$dispatch('close')">Annulla</x-secondary-button>
                 <x-primary-button>Salva</x-primary-button>

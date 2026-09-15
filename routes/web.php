@@ -71,6 +71,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/progress', [ProgressController::class, 'index'])->name('progress.index');
         Route::get('/progress/{member}', [ProgressController::class, 'show'])->name('progress.show');
         Route::get('/accounting', [AccountingController::class, 'index'])->name('accounting.index');
+        Route::get('/accounting/payments', [AccountingController::class, 'payments'])->name('accounting.payments');
 
         Route::get('/area', [MemberAreaController::class, 'index'])->name('member.area');
         Route::patch('/area/phone', [MemberAreaController::class, 'updatePhone'])->name('member.area.phone.update');

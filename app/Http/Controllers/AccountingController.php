@@ -27,4 +27,17 @@ class AccountingController extends Controller
             'enrollments' => $enrollments,
         ]);
     }
+
+    /**
+     * "Storico pagamenti": every payment ever registered, one row each —
+     * the row-level counterpart to index()'s per-course/per-member
+     * aggregates. Not year-scoped on purpose: it's meant as the complete
+     * archive, searchable/sortable rather than filtered.
+     */
+    public function payments(Request $request): View
+    {
+        abort_unless($request->user()->hasRole('admin'), 403);
+
+        return view('accounting.payments');
+    }
 }
