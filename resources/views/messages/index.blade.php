@@ -27,7 +27,7 @@
                     @forelse ($conversations as $conv)
                         @php
                             $person = $conv['counterpart'];
-                            $last = $conv['thread']->last();
+                            $last = $conv['thread']->first();
                             $isActive = $contact && $contact->id === $person->id;
                         @endphp
                         <a href="{{ route('messages.show', $person) }}"

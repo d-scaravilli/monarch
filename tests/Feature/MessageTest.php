@@ -209,4 +209,24 @@ class MessageTest extends TestCase
         // "conversation" doesn't exist for them.
         $this->actingAs($outsider)->get(route('messages.show', $admin))->assertForbidden();
     }
+
+    public function test_thread_and_conversation_list_are_ordered_newest_first(): void
+    {
+        $admin = $this->makeAdmin();
+        $member = $this->makeMember();
+
+        $older = Message::create(['sender_id' => $admin->id, 'subject' => 'Primo', 'body' => 'Primo messaggio']);
+        $older->recipients()->create(['user_id' => $member->id]);
+        $older->forceFill(['created_at' => now()->subDay()])->save();
+
+        $newer = Message::create(['sender_id' => $admin->id, 'subject' => 'Secondo', 'body' => 'Secondo messaggio']);
+        $newer->recipients()->create(['user_id' => $member->id]);
+
+        $response = $this->actingAs($admin)->get(route('messages.show', $member));
+
+        // The newer message's subject must appear before the older
+        // one's in the rendered HTML (thread ordered newest-first).
+        $html = $response->getContent();
+        $this->assertTrue(strpos($html, 'Secondo') < strpos($html, 'Primo'));
+    }
 }

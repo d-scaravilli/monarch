@@ -162,8 +162,11 @@ class MessageController extends Controller
         return $entries
             ->groupBy(fn (array $entry) => $entry['counterpart']->id)
             ->map(function (Collection $group) {
-                $thread = $group->sortBy('at')->values();
-                $latest = $thread->last();
+                // Newest first, both here (the thread itself) and in the
+                // conversation list below — not the "oldest first" order
+                // a typical email thread reads in.
+                $thread = $group->sortByDesc('at')->values();
+                $latest = $thread->first();
 
                 return [
                     'counterpart' => $latest['counterpart'],
