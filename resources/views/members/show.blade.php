@@ -20,14 +20,14 @@
 <x-app-layout>
     <x-slot name="header">{{ $member->name }}</x-slot>
 
-    <div class="space-y-6">
+    <div class="space-y-6" x-data="{ tab: 'anagrafica' }">
         @if ($member->trashed())
             <div class="rounded-2xl bg-amber-50 dark:bg-amber-500/10 px-4 py-3 text-sm font-medium text-amber-700 dark:text-amber-400 ring-1 ring-amber-100 dark:ring-amber-500/20">
                 Questo iscritto è stato eliminato. Stai consultando lo storico.
             </div>
         @endif
 
-        {{-- Cover + avatar --}}
+        {{-- Cover + avatar: identity stays visible above the tabs, always --}}
         <div class="rounded-2xl overflow-hidden bg-white dark:bg-gray-900 shadow-sm ring-1 ring-gray-100 dark:ring-white/10">
             <div class="h-28 sm:h-36 relative {{ $coverTransparent ? '' : ($coverImage ? '' : $accent['badge']) }}"
                  @unless ($coverTransparent)
@@ -78,13 +78,21 @@
                         </div>
                     @endif
                 </div>
-
             </div>
         </div>
 
-        <div class="grid gap-6 lg:grid-cols-3">
-            {{-- Left column: anagrafica, equipaggiamento, charts --}}
-            <div class="space-y-6 lg:col-span-1 min-w-0">
+        {{-- Tabs --}}
+        <div class="inline-flex flex-wrap gap-1 rounded-xl bg-gray-100 dark:bg-white/5 p-1 text-sm font-medium">
+            <button type="button" @click="tab = 'anagrafica'" class="rounded-lg px-4 py-2 transition" :class="tab === 'anagrafica' ? 'bg-white dark:bg-gray-900 shadow-sm text-gray-900 dark:text-gray-100' : 'text-gray-500 dark:text-gray-400'">Anagrafica</button>
+            <button type="button" @click="tab = 'iscrizioni'" class="rounded-lg px-4 py-2 transition" :class="tab === 'iscrizioni' ? 'bg-white dark:bg-gray-900 shadow-sm text-gray-900 dark:text-gray-100' : 'text-gray-500 dark:text-gray-400'">Iscrizioni</button>
+            @if ($showFinancials)
+                <button type="button" @click="tab = 'pagamenti'" class="rounded-lg px-4 py-2 transition" :class="tab === 'pagamenti' ? 'bg-white dark:bg-gray-900 shadow-sm text-gray-900 dark:text-gray-100' : 'text-gray-500 dark:text-gray-400'">Pagamenti</button>
+            @endif
+        </div>
+
+        {{-- Tab: Anagrafica — personal data, documents, equipment, note --}}
+        <div x-show="tab === 'anagrafica'" x-cloak class="grid gap-6 lg:grid-cols-2 items-start">
+            <div class="space-y-6 min-w-0">
                 <div>
                     <x-section-header>Anagrafica</x-section-header>
                     <x-card class="space-y-4 text-sm">
@@ -205,7 +213,9 @@
                         </x-modal>
                     @endif
                 </div>
+            </div>
 
+            <div class="space-y-6 min-w-0">
                 <div>
                     <x-section-header>Equipaggiamento</x-section-header>
                     <x-card class="space-y-3 text-sm">
@@ -227,121 +237,6 @@
                             @endif
                         </div>
                     </x-card>
-                </div>
-
-                @if ($showFinancials)
-                    <x-card class="flex flex-col items-center">
-                        <x-section-header class="self-start">Completamento pagamenti</x-section-header>
-                        <div class="w-full" x-data="{
-                            async init() {
-                                const ApexCharts = await window.loadApexCharts();
-                                const isDark = document.documentElement.classList.contains('dark');
-                                const chart = new ApexCharts(this.$refs.gauge, {
-                                    chart: { type: 'radialBar', height: 180, fontFamily: 'inherit' },
-                                    series: [{{ $paymentCompletionPercent }}],
-                                    labels: ['Pagato'],
-                                    colors: ['{{ $accentHex }}'],
-                                    plotOptions: { radialBar: { hollow: { size: '60%' }, dataLabels: { value: { fontSize: '1.2rem', fontWeight: 700, color: isDark ? '#f3f4f6' : '#111827', formatter: (v) => v + '%' } } } },
-                                });
-                                chart.render();
-                            },
-                        }">
-                            <div x-ref="gauge"></div>
-                        </div>
-                    </x-card>
-                @endif
-
-                @if ($showFinancials)
-                    <div>
-                        <x-section-header>Pagamenti</x-section-header>
-                        <x-card class="max-h-96 overflow-y-auto p-0 divide-y divide-gray-100 dark:divide-white/10 sm:max-h-none sm:overflow-visible" x-data="{ open: null }">
-                            @forelse ($member->enrollments as $enrollment)
-                                @php $paymentStatus = $enrollment->balanceStatus(); @endphp
-                                <div>
-                                    <button type="button" @click="open = open === {{ $enrollment->id }} ? null : {{ $enrollment->id }}"
-                                            class="w-full flex items-center justify-between gap-3 px-5 py-3.5 text-left">
-                                        <div class="min-w-0">
-                                            <p class="font-medium text-gray-900 dark:text-gray-100 truncate">{{ $enrollment->course->discipline->name }} &middot; {{ $enrollment->course->year }}</p>
-                                            <p class="text-xs text-gray-400">Pagato €{{ number_format($enrollment->paidAmount(), 2) }} di €{{ number_format($enrollment->dueAmount(), 2) }}</p>
-                                        </div>
-                                        <div class="flex items-center gap-2 shrink-0">
-                                            @if ($paymentStatus === 'missing')
-                                                <x-badge color="amber">Mancano €{{ number_format(abs($enrollment->balance()), 2) }}</x-badge>
-                                            @elseif ($paymentStatus === 'overpaid')
-                                                <x-badge color="green">+€{{ number_format($enrollment->balance(), 2) }}</x-badge>
-                                            @else
-                                                <x-badge color="green">In pari</x-badge>
-                                            @endif
-                                            <span class="transition-transform" :class="open === {{ $enrollment->id }} ? 'rotate-90' : ''">
-                                                <x-heroicon-o-chevron-right class="h-4 w-4 text-gray-300" />
-                                            </span>
-                                        </div>
-                                    </button>
-                                    <div x-show="open === {{ $enrollment->id }}" x-cloak class="px-5 pb-4 space-y-2">
-                                        @forelse ($enrollment->payments->sortByDesc('date') as $payment)
-                                            <div class="flex items-center justify-between rounded-lg bg-gray-50 dark:bg-white/5 px-3 py-2 text-sm">
-                                                <span class="text-gray-600 dark:text-gray-400">{{ $payment->date->translatedFormat('d M Y') }} &middot; {{ $payment->method }}</span>
-                                                <span class="font-semibold text-gray-900 dark:text-gray-100">€{{ number_format($payment->amount, 2) }}</span>
-                                            </div>
-                                        @empty
-                                            <p class="text-sm text-gray-500">Nessun pagamento registrato per questo corso.</p>
-                                        @endforelse
-                                    </div>
-                                </div>
-                            @empty
-                                <p class="px-5 py-6 text-sm text-gray-500">Nessuna iscrizione.</p>
-                            @endforelse
-                        </x-card>
-
-                        @if (! $member->trashed() && $member->enrollments->isNotEmpty())
-                            <div class="mt-3">
-                                <button type="button" x-data="" x-on:click="$dispatch('open-modal', 'register-payment')"
-                                        class="text-sm font-medium text-gray-600 dark:text-gray-300 flex items-center gap-1">
-                                    <x-heroicon-o-plus class="h-4 w-4" /> Registra pagamento
-                                </button>
-                            </div>
-                            <x-payment-modal name="register-payment" :enrollments="$member->enrollments" />
-                        @endif
-                    </div>
-                @endif
-            </div>
-
-            {{-- Right column: iscrizioni, presenze, note --}}
-            <div class="space-y-6 lg:col-span-2 min-w-0">
-                <div>
-                    <x-section-header>Iscrizioni</x-section-header>
-                    <x-card class="divide-y divide-gray-100 dark:divide-white/10 p-0">
-                        @forelse ($member->enrollments as $enrollment)
-                            <a href="{{ route('courses.show', $enrollment->course) }}" class="block px-5 py-3.5">
-                                <div class="flex items-center justify-between">
-                                    <div>
-                                        <p class="font-medium text-gray-900 dark:text-gray-100">{{ $enrollment->course->discipline->name }} &middot; {{ $enrollment->course->year }}</p>
-                                        <p class="text-xs text-gray-400">Dal {{ $enrollment->enrollment_date->translatedFormat('d M Y') }}</p>
-                                    </div>
-                                    <x-badge :color="$enrollment->status === 'active' ? 'green' : 'gray'">{{ $enrollment->status }}</x-badge>
-                                </div>
-
-                                @if ($enrollment->status === 'active')
-                                    <div class="mt-3">
-                                        <div class="h-1.5 w-full rounded-full bg-gray-100 dark:bg-white/10 overflow-hidden">
-                                            <div class="h-full rounded-full {{ $accent['badge'] }}" style="width: {{ $enrollment->renewalProgressPercent() }}%"></div>
-                                        </div>
-                                        <p class="mt-1.5 text-xs text-gray-400">
-                                            Rinnovo {{ $enrollment->billing_frequency === 'monthly' ? 'mensile' : 'annuale' }}
-                                            &middot; {{ $enrollment->daysUntilRenewal() }} giorni al {{ $enrollment->renewalDate()->translatedFormat('d M Y') }}
-                                        </p>
-                                    </div>
-                                @endif
-                            </a>
-                        @empty
-                            <p class="px-5 py-6 text-sm text-gray-500">Nessuna iscrizione.</p>
-                        @endforelse
-                    </x-card>
-                </div>
-
-                <div>
-                    <x-section-header>Presenze</x-section-header>
-                    <livewire:member-attendance-table :member-id="$member->id" />
                 </div>
 
                 <div>
@@ -368,5 +263,121 @@
                 </div>
             </div>
         </div>
+
+        {{-- Tab: Iscrizioni — enrollments and attendance --}}
+        <div x-show="tab === 'iscrizioni'" x-cloak class="space-y-6">
+            <div>
+                <x-section-header>Iscrizioni</x-section-header>
+                <x-card class="divide-y divide-gray-100 dark:divide-white/10 p-0">
+                    @forelse ($member->enrollments as $enrollment)
+                        <a href="{{ route('courses.show', $enrollment->course) }}" class="block px-5 py-3.5">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="font-medium text-gray-900 dark:text-gray-100">{{ $enrollment->course->discipline->name }} &middot; {{ $enrollment->course->year }}</p>
+                                    <p class="text-xs text-gray-400">Dal {{ $enrollment->enrollment_date->translatedFormat('d M Y') }}</p>
+                                </div>
+                                <x-badge :color="$enrollment->status === 'active' ? 'green' : 'gray'">{{ $enrollment->status }}</x-badge>
+                            </div>
+
+                            @if ($enrollment->status === 'active')
+                                <div class="mt-3">
+                                    <div class="h-1.5 w-full rounded-full bg-gray-100 dark:bg-white/10 overflow-hidden">
+                                        <div class="h-full rounded-full {{ $accent['badge'] }}" style="width: {{ $enrollment->renewalProgressPercent() }}%"></div>
+                                    </div>
+                                    <p class="mt-1.5 text-xs text-gray-400">
+                                        Rinnovo {{ $enrollment->billing_frequency === 'monthly' ? 'mensile' : 'annuale' }}
+                                        &middot; {{ $enrollment->daysUntilRenewal() }} giorni al {{ $enrollment->renewalDate()->translatedFormat('d M Y') }}
+                                    </p>
+                                </div>
+                            @endif
+                        </a>
+                    @empty
+                        <p class="px-5 py-6 text-sm text-gray-500">Nessuna iscrizione.</p>
+                    @endforelse
+                </x-card>
+            </div>
+
+            <div>
+                <x-section-header>Presenze</x-section-header>
+                <livewire:member-attendance-table :member-id="$member->id" />
+            </div>
+        </div>
+
+        {{-- Tab: Pagamenti — completion gauge and transactions --}}
+        @if ($showFinancials)
+            <div x-show="tab === 'pagamenti'" x-cloak class="grid gap-6 lg:grid-cols-3 items-start">
+                <x-card class="lg:col-span-1 flex flex-col items-center">
+                    <x-section-header class="self-start">Completamento pagamenti</x-section-header>
+                    <div class="w-full" x-data="{
+                        async init() {
+                            const ApexCharts = await window.loadApexCharts();
+                            const isDark = document.documentElement.classList.contains('dark');
+                            const chart = new ApexCharts(this.$refs.gauge, {
+                                chart: { type: 'radialBar', height: 180, fontFamily: 'inherit' },
+                                series: [{{ $paymentCompletionPercent }}],
+                                labels: ['Pagato'],
+                                colors: ['{{ $accentHex }}'],
+                                plotOptions: { radialBar: { hollow: { size: '60%' }, dataLabels: { value: { fontSize: '1.2rem', fontWeight: 700, color: isDark ? '#f3f4f6' : '#111827', formatter: (v) => v + '%' } } } },
+                            });
+                            chart.render();
+                        },
+                    }">
+                        <div x-ref="gauge"></div>
+                    </div>
+                </x-card>
+
+                <div class="lg:col-span-2 min-w-0">
+                    <x-section-header>Pagamenti</x-section-header>
+                    <x-card class="max-h-96 overflow-y-auto p-0 divide-y divide-gray-100 dark:divide-white/10 sm:max-h-none sm:overflow-visible" x-data="{ open: null }">
+                        @forelse ($member->enrollments as $enrollment)
+                            @php $paymentStatus = $enrollment->balanceStatus(); @endphp
+                            <div>
+                                <button type="button" @click="open = open === {{ $enrollment->id }} ? null : {{ $enrollment->id }}"
+                                        class="w-full flex items-center justify-between gap-3 px-5 py-3.5 text-left">
+                                    <div class="min-w-0">
+                                        <p class="font-medium text-gray-900 dark:text-gray-100 truncate">{{ $enrollment->course->discipline->name }} &middot; {{ $enrollment->course->year }}</p>
+                                        <p class="text-xs text-gray-400">Pagato €{{ number_format($enrollment->paidAmount(), 2) }} di €{{ number_format($enrollment->dueAmount(), 2) }}</p>
+                                    </div>
+                                    <div class="flex items-center gap-2 shrink-0">
+                                        @if ($paymentStatus === 'missing')
+                                            <x-badge color="amber">Mancano €{{ number_format(abs($enrollment->balance()), 2) }}</x-badge>
+                                        @elseif ($paymentStatus === 'overpaid')
+                                            <x-badge color="green">+€{{ number_format($enrollment->balance(), 2) }}</x-badge>
+                                        @else
+                                            <x-badge color="green">In pari</x-badge>
+                                        @endif
+                                        <span class="transition-transform" :class="open === {{ $enrollment->id }} ? 'rotate-90' : ''">
+                                            <x-heroicon-o-chevron-right class="h-4 w-4 text-gray-300" />
+                                        </span>
+                                    </div>
+                                </button>
+                                <div x-show="open === {{ $enrollment->id }}" x-cloak class="px-5 pb-4 space-y-2">
+                                    @forelse ($enrollment->payments->sortByDesc('date') as $payment)
+                                        <div class="flex items-center justify-between rounded-lg bg-gray-50 dark:bg-white/5 px-3 py-2 text-sm">
+                                            <span class="text-gray-600 dark:text-gray-400">{{ $payment->date->translatedFormat('d M Y') }} &middot; {{ $payment->method }}</span>
+                                            <span class="font-semibold text-gray-900 dark:text-gray-100">€{{ number_format($payment->amount, 2) }}</span>
+                                        </div>
+                                    @empty
+                                        <p class="text-sm text-gray-500">Nessun pagamento registrato per questo corso.</p>
+                                    @endforelse
+                                </div>
+                            </div>
+                        @empty
+                            <p class="px-5 py-6 text-sm text-gray-500">Nessuna iscrizione.</p>
+                        @endforelse
+                    </x-card>
+
+                    @if (! $member->trashed() && $member->enrollments->isNotEmpty())
+                        <div class="mt-3">
+                            <button type="button" x-data="" x-on:click="$dispatch('open-modal', 'register-payment')"
+                                    class="text-sm font-medium text-gray-600 dark:text-gray-300 flex items-center gap-1">
+                                <x-heroicon-o-plus class="h-4 w-4" /> Registra pagamento
+                            </button>
+                        </div>
+                        <x-payment-modal name="register-payment" :enrollments="$member->enrollments" />
+                    @endif
+                </div>
+            </div>
+        @endif
     </div>
 </x-app-layout>
