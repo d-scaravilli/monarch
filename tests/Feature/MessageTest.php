@@ -284,6 +284,57 @@ class MessageTest extends TestCase
         $this->assertDatabaseMissing('messages', ['id' => $message->id]);
     }
 
+    /**
+     * The database notification feeding the bell dropdown is created per
+     * recipient when a message is sent — deleting the message must not
+     * leave it behind, orphaned the same way messages/message_recipients
+     * used to be for a deleted user (see the tests above).
+     */
+    public function test_deleting_a_message_removes_its_recipients_notifications(): void
+    {
+        $admin = $this->makeAdmin();
+        $member = $this->makeMember();
+
+        $this->actingAs($admin)->post(route('messages.store'), [
+            'recipient_mode' => 'single',
+            'recipient_id' => $member->id,
+            'subject' => 'Ciao',
+            'body' => 'Prova',
+        ])->assertRedirect();
+
+        $message = Message::first();
+        $this->assertDatabaseHas('notifications', [
+            'notifiable_id' => $member->id,
+            'type' => NewMessageNotification::class,
+        ]);
+        $notification = $member->notifications()->first();
+        $this->assertSame($message->id, $notification->data['message_id']);
+
+        $this->actingAs($admin)->delete(route('messages.destroy', $message))->assertRedirect();
+
+        $this->assertDatabaseMissing('notifications', ['id' => $notification->id]);
+    }
+
+    public function test_deleting_a_user_removes_the_notifications_for_their_sent_messages(): void
+    {
+        $admin = $this->makeAdmin();
+        $member = $this->makeMember();
+
+        $this->actingAs($admin)->post(route('messages.store'), [
+            'recipient_mode' => 'single',
+            'recipient_id' => $member->id,
+            'subject' => 'Ciao',
+            'body' => 'Prova',
+        ])->assertRedirect();
+
+        $notification = $member->notifications()->first();
+        $this->assertNotNull($notification);
+
+        $admin->delete();
+
+        $this->assertDatabaseMissing('notifications', ['id' => $notification->id]);
+    }
+
     public function test_instructor_can_delete_their_own_message_but_not_someone_elses(): void
     {
         $instructorA = $this->makeInstructor();

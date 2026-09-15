@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Notifications\NewMessageNotification;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -120,6 +121,7 @@ class User extends Authenticatable
                 ->orWhere('user_id', $user->id)
                 ->delete();
 
+            NewMessageNotification::deleteFor($sentMessageIds->all());
             Message::whereIn('id', $sentMessageIds)->delete();
         });
     }

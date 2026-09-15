@@ -86,6 +86,7 @@ class MessageController extends Controller
         $user = $request->user();
         abort_unless($user->hasRole('admin') || $message->sender_id === $user->id, 403);
 
+        NewMessageNotification::deleteFor($message->id);
         $message->delete();
 
         return redirect()->route('messages.index')->with('status', 'Messaggio eliminato.');
