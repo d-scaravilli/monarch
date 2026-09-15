@@ -323,10 +323,23 @@
                                 </button>
                                 <div x-show="open === {{ $enrollment->id }}" x-cloak class="px-5 pb-4 space-y-2">
                                     @forelse ($enrollment->payments->sortByDesc('date') as $payment)
-                                        <div class="flex items-center justify-between rounded-lg bg-gray-50 dark:bg-white/5 px-3 py-2 text-sm">
+                                        <div class="flex items-center justify-between gap-2 rounded-lg bg-gray-50 dark:bg-white/5 px-3 py-2 text-sm">
                                             <span class="text-gray-600 dark:text-gray-400">{{ $payment->date->translatedFormat('d M Y') }} &middot; {{ $payment->method }}</span>
-                                            <span class="font-semibold text-gray-900 dark:text-gray-100">€{{ number_format($payment->amount, 2) }}</span>
+                                            <span class="flex shrink-0 items-center gap-2">
+                                                <span class="font-semibold text-gray-900 dark:text-gray-100">€{{ number_format($payment->amount, 2) }}</span>
+                                                <button type="button" x-data="" x-on:click="$dispatch('open-modal', 'edit-payment-{{ $payment->id }}')"
+                                                        class="text-gray-400 hover:text-gray-700 dark:hover:text-gray-200">
+                                                    <x-heroicon-o-pencil class="h-3.5 w-3.5" />
+                                                </button>
+                                                <form method="POST" action="{{ route('payments.destroy', $payment) }}" onsubmit="return confirm('Eliminare questo pagamento?')">
+                                                    @csrf @method('DELETE')
+                                                    <button type="submit" class="text-gray-400 hover:text-red-600">
+                                                        <x-heroicon-o-trash class="h-3.5 w-3.5" />
+                                                    </button>
+                                                </form>
+                                            </span>
                                         </div>
+                                        <x-edit-payment-modal :payment="$payment" />
                                     @empty
                                         <p class="text-sm text-gray-500">Nessun pagamento registrato per questo corso.</p>
                                     @endforelse

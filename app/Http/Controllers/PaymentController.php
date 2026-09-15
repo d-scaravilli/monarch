@@ -28,6 +28,22 @@ class PaymentController extends Controller
         return back()->with('status', 'Pagamento registrato.');
     }
 
+    public function update(Request $request, Payment $payment): RedirectResponse
+    {
+        $this->authorize('update', $payment);
+
+        $data = $request->validate([
+            'amount' => 'required|numeric|min:0',
+            'method' => 'required|in:contanti,bonifico,carta',
+            'date' => 'required|date',
+            'notes' => 'nullable|string|max:255',
+        ]);
+
+        $payment->update($data);
+
+        return back()->with('status', 'Pagamento aggiornato.');
+    }
+
     public function destroy(Payment $payment): RedirectResponse
     {
         $this->authorize('delete', $payment);

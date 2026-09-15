@@ -43,7 +43,7 @@ new class extends Component
     public function with(): array
     {
         $payments = Payment::query()
-            ->with('enrollment.user')
+            ->with(['enrollment.user', 'enrollment.course.discipline'])
             ->whereHas('enrollment', fn ($q) => $q->where('course_id', $this->courseId))
             ->when($this->search, function ($q) {
                 $q->whereHas('enrollment.user', fn ($q2) => $q2->where('name', 'like', "%{$this->search}%"));
@@ -86,9 +86,14 @@ new class extends Component
                         <td class="px-5 py-3.5 text-gray-500 dark:text-gray-400 hidden sm:table-cell">{{ $payment->method }}</td>
                         <td class="px-5 py-3.5 text-right font-semibold text-gray-900 dark:text-gray-100">€{{ number_format($payment->amount, 2) }}</td>
                         <td class="px-5 py-3.5 text-right">
-                            <button type="button" wire:click="deletePayment({{ $payment->id }})" wire:confirm="Eliminare questo pagamento?" class="text-gray-400 hover:text-red-600">
-                                <x-heroicon-o-trash class="h-4 w-4" />
-                            </button>
+                            <span class="inline-flex items-center gap-1">
+                                <button type="button" x-data="" x-on:click="$dispatch('open-modal', 'edit-payment-{{ $payment->id }}')" class="text-gray-400 hover:text-gray-700 dark:hover:text-gray-200">
+                                    <x-heroicon-o-pencil class="h-4 w-4" />
+                                </button>
+                                <button type="button" wire:click="deletePayment({{ $payment->id }})" wire:confirm="Eliminare questo pagamento?" class="text-gray-400 hover:text-red-600">
+                                    <x-heroicon-o-trash class="h-4 w-4" />
+                                </button>
+                            </span>
                         </td>
                     </tr>
                 @empty
@@ -103,4 +108,8 @@ new class extends Component
     @if ($payments->hasPages())
         <div>{{ $payments->links() }}</div>
     @endif
+
+    @foreach ($payments as $payment)
+        <x-edit-payment-modal :payment="$payment" />
+    @endforeach
 </div>

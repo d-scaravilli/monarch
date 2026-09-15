@@ -105,6 +105,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/courses/{course}/lessons/{lesson}/notes', [NoteController::class, 'store'])->name('courses.lessons.notes.store');
 
         Route::post('/enrollments/{enrollment}/payments', [PaymentController::class, 'store'])->name('enrollments.payments.store');
+        Route::put('/payments/{payment}', [PaymentController::class, 'update'])->name('payments.update');
         Route::delete('/payments/{payment}', [PaymentController::class, 'destroy'])->name('payments.destroy');
 
         Route::get('/rooms', [RoomController::class, 'index'])->name('rooms.index');
