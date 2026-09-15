@@ -54,11 +54,18 @@ new class extends Component
                             </td>
                             <td class="px-5 py-3 text-gray-700 dark:text-gray-300">{{ $attendance->discipline_name }}</td>
                             <td class="px-5 py-3 text-right">
-                                @if ($attendance->present)
-                                    <x-heroicon-o-check-circle class="h-4 w-4 text-green-600 inline" />
-                                @else
-                                    <x-heroicon-o-x-circle class="h-4 w-4 text-red-400 inline" />
-                                @endif
+                                <span class="inline-flex items-center gap-3">
+                                    @if ($attendance->present)
+                                        <x-heroicon-o-check-circle class="h-4 w-4 text-green-600" />
+                                    @else
+                                        <x-heroicon-o-x-circle class="h-4 w-4 text-red-400" />
+                                    @endif
+                                    <a href="{{ $lessonUrl }}" onclick="event.stopPropagation()"
+                                       class="inline-flex items-center gap-1 text-xs font-medium text-gray-500 hover:text-gray-900 dark:hover:text-gray-100">
+                                        Apri
+                                        <x-heroicon-o-chevron-right class="h-3.5 w-3.5" />
+                                    </a>
+                                </span>
                             </td>
                         </tr>
                     @empty
