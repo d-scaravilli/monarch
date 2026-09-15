@@ -369,13 +369,11 @@
             </div>
         @endif
 
-        {{-- Tab: Progressi — goals path per enrollment, then the notes timeline. Same components as the dedicated Progressi page and "La mia area", so the three stay in sync. --}}
-        <div x-show="tab === 'progressi'" x-cloak class="max-w-3xl space-y-4">
+        {{-- Tab: Progressi — per enrollment, goals path (left) and its unlinked notes (right). Same component as the dedicated Progressi page and "La mia area", so the three stay in sync. --}}
+        <div x-show="tab === 'progressi'" x-cloak class="max-w-5xl space-y-8">
             @foreach ($member->enrollments as $enrollment)
-                <x-enrollment-goals :enrollment="$enrollment" :can-manage="auth()->user()->can('manageAttendance', $enrollment->course)" />
+                <x-enrollment-goals :enrollment="$enrollment" :notes="$member->notes" :can-manage="auth()->user()->can('manageAttendance', $enrollment->course)" />
             @endforeach
-
-            <x-progress-timeline :notes="$member->notes" />
         </div>
     </div>
 </x-app-layout>

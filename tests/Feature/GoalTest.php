@@ -297,4 +297,72 @@ class GoalTest extends TestCase
             'description' => 'Tentativo di collegamento errato',
         ]);
     }
+
+    /**
+     * The two-column layout must never show the same note twice: a note
+     * linked to a goal renders only inside that goal's card, a free note
+     * renders only in the "Note libere" column.
+     */
+    public function test_a_goal_linked_note_does_not_also_appear_among_free_notes(): void
+    {
+        $admin = $this->makeAdmin();
+        $member = $this->makeMember();
+        $course = Course::factory()->create();
+        $enrollment = Enrollment::factory()->create(['user_id' => $member->id, 'course_id' => $course->id]);
+        $goal = $this->makeGoal($enrollment, ['created_by' => $admin->id]);
+        $lesson = Lesson::factory()->create(['course_id' => $course->id]);
+
+        MemberNote::create([
+            'user_id' => $member->id,
+            'lesson_id' => $lesson->id,
+            'goal_id' => $goal->id,
+            'created_by' => $admin->id,
+            'type' => 'progresso',
+            'description' => 'Nota collegata univoca xyz123',
+        ]);
+        MemberNote::create([
+            'user_id' => $member->id,
+            'lesson_id' => $lesson->id,
+            'goal_id' => null,
+            'created_by' => $admin->id,
+            'type' => 'altro',
+            'description' => 'Nota libera univoca abc789',
+        ]);
+
+        $response = $this->actingAs($admin)->get(route('progress.show', $member));
+
+        $response->assertOk();
+        $html = $response->getContent();
+        $this->assertSame(1, substr_count($html, 'Nota collegata univoca xyz123'));
+        $this->assertSame(1, substr_count($html, 'Nota libera univoca abc789'));
+    }
+
+    /**
+     * A free note tied to one enrollment's course must not leak into a
+     * different enrollment's "Note libere" column when the member has
+     * more than one enrollment.
+     */
+    public function test_a_free_note_appears_only_once_even_with_multiple_enrollments(): void
+    {
+        $admin = $this->makeAdmin();
+        $member = $this->makeMember();
+        $courseA = Course::factory()->create();
+        $courseB = Course::factory()->create();
+        Enrollment::factory()->create(['user_id' => $member->id, 'course_id' => $courseA->id]);
+        Enrollment::factory()->create(['user_id' => $member->id, 'course_id' => $courseB->id]);
+        $lessonA = Lesson::factory()->create(['course_id' => $courseA->id]);
+
+        MemberNote::create([
+            'user_id' => $member->id,
+            'lesson_id' => $lessonA->id,
+            'created_by' => $admin->id,
+            'type' => 'altro',
+            'description' => 'Nota solo per corso A',
+        ]);
+
+        $response = $this->actingAs($admin)->get(route('progress.show', $member));
+
+        $response->assertOk();
+        $this->assertSame(1, substr_count($response->getContent(), 'Nota solo per corso A'));
+    }
 }

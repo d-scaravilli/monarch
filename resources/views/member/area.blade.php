@@ -323,13 +323,11 @@
             </div>
         </div>
 
-        {{-- Tab: Progressi — goals + notes timeline, same components as the dedicated Progressi page. Read-only here: canManage is always false, a member never edits their own goals/notes. --}}
-        <div x-show="tab === 'progressi'" x-cloak class="max-w-3xl space-y-4">
+        {{-- Tab: Progressi — per enrollment, goals path (left) and its unlinked notes (right), same component as the dedicated Progressi page. Read-only here: canManage is always false, a member never edits their own goals/notes. --}}
+        <div x-show="tab === 'progressi'" x-cloak class="max-w-5xl space-y-8">
             @foreach ($member->enrollments as $enrollment)
-                <x-enrollment-goals :enrollment="$enrollment" :can-manage="false" />
+                <x-enrollment-goals :enrollment="$enrollment" :notes="$member->notes" :can-manage="false" />
             @endforeach
-
-            <x-progress-timeline :notes="$member->notes" />
         </div>
     </div>
 </x-app-layout>
