@@ -260,18 +260,6 @@
                                 </div>
                                 <x-badge :color="$enrollment->status === 'active' ? 'green' : 'gray'">{{ $enrollment->status }}</x-badge>
                             </div>
-
-                            @if ($enrollment->status === 'active')
-                                <div class="mt-3">
-                                    <div class="h-1.5 w-full rounded-full bg-gray-100 dark:bg-white/10 overflow-hidden">
-                                        <div class="h-full rounded-full {{ $accent['badge'] }}" style="width: {{ $enrollment->renewalProgressPercent() }}%"></div>
-                                    </div>
-                                    <p class="mt-1.5 text-xs text-gray-400">
-                                        Rinnovo {{ $enrollment->billing_frequency === 'monthly' ? 'mensile' : 'annuale' }}
-                                        &middot; {{ $enrollment->daysUntilRenewal() }} giorni al {{ $enrollment->renewalDate()->translatedFormat('d M Y') }}
-                                    </p>
-                                </div>
-                            @endif
                         </a>
                     @empty
                         <p class="px-5 py-6 text-sm text-gray-500">Nessuna iscrizione.</p>
