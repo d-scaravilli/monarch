@@ -27,7 +27,7 @@ new class extends Component
 
     public string $sortField = 'date';
 
-    public string $sortDirection = 'asc';
+    public string $sortDirection = 'desc';
 
     /**
      * True when embedded on a single course's page: the course/room
@@ -176,10 +176,14 @@ new class extends Component
                             <td class="px-5 py-3.5 text-gray-700 dark:text-gray-300">{{ $lesson->course->discipline->name }}</td>
                             <td class="px-5 py-3.5 text-gray-500 dark:text-gray-400 hidden sm:table-cell">{{ $lesson->course->room->name }}</td>
                             <td class="px-5 py-3.5">
-                                <span class="inline-flex items-center gap-2">
-                                    <x-badge color="green">{{ $lesson->attendances->where('present', true)->count() }}</x-badge>
-                                    <x-badge color="red">{{ $lesson->attendances->where('present', false)->count() }}</x-badge>
-                                </span>
+                                @if ($lesson->cancelled)
+                                    <x-badge color="gray">Annullata</x-badge>
+                                @else
+                                    <span class="inline-flex items-center gap-2">
+                                        <x-badge color="green">{{ $lesson->attendances->where('present', true)->count() }}</x-badge>
+                                        <x-badge color="red">{{ $lesson->attendances->where('present', false)->count() }}</x-badge>
+                                    </span>
+                                @endif
                             </td>
                             <td class="px-5 py-3.5">
                                 <div class="flex items-center justify-end gap-3">
