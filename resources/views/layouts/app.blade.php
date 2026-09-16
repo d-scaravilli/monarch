@@ -51,6 +51,7 @@
         $navItems[] = ['label' => 'Utenti', 'route' => 'admin.users.index', 'icon' => 'users', 'active' => request()->routeIs('admin.users.*'), 'mobile' => true];
         $navItems[] = ['label' => 'Permessi', 'route' => 'admin.permissions.index', 'icon' => 'shield-check', 'active' => request()->routeIs('admin.permissions.*'), 'mobile' => true];
         $navItems[] = ['label' => 'Aspetto', 'route' => 'admin.appearance.edit', 'icon' => 'photo', 'active' => request()->routeIs('admin.appearance.*'), 'mobile' => true];
+        $navItems[] = ['label' => 'Notifiche', 'route' => 'admin.notifications.index', 'icon' => 'bell', 'active' => request()->routeIs('admin.notifications.*'), 'mobile' => true];
     }
 @endphp
 <!DOCTYPE html>

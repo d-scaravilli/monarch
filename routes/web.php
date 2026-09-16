@@ -3,6 +3,7 @@
 use App\Http\Controllers\AccountingController;
 use App\Http\Controllers\Admin\AppearanceController as AdminAppearanceController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\NotificationController as AdminNotificationController;
 use App\Http\Controllers\Admin\PermissionController as AdminPermissionController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\AttendanceController;
@@ -137,6 +138,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::get('/appearance', [AdminAppearanceController::class, 'edit'])->name('appearance.edit');
         Route::put('/appearance', [AdminAppearanceController::class, 'update'])->name('appearance.update');
+
+        Route::get('/notifications', [AdminNotificationController::class, 'index'])->name('notifications.index');
+        Route::delete('/notifications/{notification}', [AdminNotificationController::class, 'destroy'])->name('notifications.destroy');
     });
 });
 
