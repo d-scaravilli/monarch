@@ -156,7 +156,11 @@ new class extends Component
     </div>
 
     @if ($enrollments->hasPages())
-        <div>{{ $enrollments->links() }}</div>
+        {{-- scrollTo: false — Livewire's default pagination view otherwise
+             scrollIntoView()s the whole <body> on every page change, which
+             from here (well down the course page) reads as the page
+             jumping back to the top / reloading. --}}
+        <div>{{ $enrollments->links(data: ['scrollTo' => false]) }}</div>
     @endif
 
     @if ($canDelete)
