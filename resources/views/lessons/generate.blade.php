@@ -31,12 +31,12 @@
             <div class="grid grid-cols-2 gap-4">
                 <div class="space-y-1.5">
                     <x-input-label for="start_date" value="Dal" />
-                    <x-text-input id="start_date" type="date" name="start_date" value="{{ old('start_date', now()->toDateString()) }}" class="w-full" />
+                    <x-text-input id="start_date" type="date" name="start_date" value="{{ old('start_date', now()->toDateString()) }}" class="w-full" required />
                     <x-input-error :messages="$errors->get('start_date')" class="mt-1" />
                 </div>
                 <div class="space-y-1.5">
                     <x-input-label for="end_date" value="Al" />
-                    <x-text-input id="end_date" type="date" name="end_date" value="{{ old('end_date', now()->addMonths(9)->toDateString()) }}" class="w-full" />
+                    <x-text-input id="end_date" type="date" name="end_date" value="{{ old('end_date') }}" class="w-full" required />
                     <x-input-error :messages="$errors->get('end_date')" class="mt-1" />
                 </div>
             </div>
