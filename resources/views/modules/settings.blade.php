@@ -18,6 +18,7 @@
             <button type="button" @click="tab = 'access'" class="rounded-lg px-4 py-2 transition" :class="tab === 'access' ? 'bg-white dark:bg-gray-900 shadow-sm text-gray-900 dark:text-gray-100' : 'text-gray-500 dark:text-gray-400'">Accessi</button>
             @if ($module->slug === 'palestra')
                 <button type="button" @click="tab = 'rooms'" class="rounded-lg px-4 py-2 transition" :class="tab === 'rooms' ? 'bg-white dark:bg-gray-900 shadow-sm text-gray-900 dark:text-gray-100' : 'text-gray-500 dark:text-gray-400'">Sale</button>
+                <button type="button" @click="tab = 'directory'" class="rounded-lg px-4 py-2 transition" :class="tab === 'directory' ? 'bg-white dark:bg-gray-900 shadow-sm text-gray-900 dark:text-gray-100' : 'text-gray-500 dark:text-gray-400'">Anagrafica</button>
                 <button type="button" @click="tab = 'danger'" class="rounded-lg px-4 py-2 transition" :class="tab === 'danger' ? 'bg-white dark:bg-gray-900 shadow-sm text-red-600 dark:text-red-400' : 'text-gray-500 dark:text-gray-400'">Zona pericolosa</button>
             @endif
         </div>
@@ -159,6 +160,18 @@
                         <span class="flex items-center gap-3">
                             <x-heroicon-o-building-office-2 class="h-5 w-5 text-gray-400" />
                             <span class="font-medium text-gray-900 dark:text-gray-100">Gestisci sale</span>
+                        </span>
+                        <x-heroicon-o-chevron-right class="h-5 w-5 text-gray-300" />
+                    </x-card>
+                </a>
+            </div>
+
+            <div x-show="tab === 'directory'" x-cloak>
+                <a href="{{ route('directory.index') }}">
+                    <x-card class="flex items-center justify-between hover:ring-gray-300 dark:hover:ring-white/20 transition">
+                        <span class="flex items-center gap-3">
+                            <x-heroicon-o-identification class="h-5 w-5 text-gray-400" />
+                            <span class="font-medium text-gray-900 dark:text-gray-100">Anagrafica di massa</span>
                         </span>
                         <x-heroicon-o-chevron-right class="h-5 w-5 text-gray-300" />
                     </x-card>
