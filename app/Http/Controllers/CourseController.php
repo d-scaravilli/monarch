@@ -120,35 +120,41 @@ class CourseController extends Controller
     }
 
     /**
-     * Weekly presence/absence counts and rate for this course over the
-     * last 10 weeks, for the course-page mixed chart — same shape/logic
+     * Presence/absence counts and rate for this course's last 10 lessons
+     * actually held (registered attendance, not cancelled), one column
+     * per real lesson date — for the course-page mixed chart. Same shape
      * as the Palestra dashboard's chart, just scoped to a single course.
      *
      * @return array<string, array{present: int, absent: int, rate: int}>
      */
     private function weeklyAttendanceTrend(Course $course): array
     {
+        $lessons = Lesson::query()
+            ->where('course_id', $course->id)
+            ->where('cancelled', false)
+            ->where('date', '<=', now())
+            ->whereHas('attendances')
+            ->orderByDesc('date')
+            ->limit(10)
+            ->get(['id', 'date'])
+            ->sortBy('date');
+
         $trend = [];
 
-        for ($i = 9; $i >= 0; $i--) {
-            $start = now()->subWeeks($i)->startOfWeek();
-            $end = now()->subWeeks($i)->endOfWeek();
-
+        foreach ($lessons as $lesson) {
             // A lesson before the member's enrollment_date is one they
             // couldn't have attended, so it must not count as an absence.
-            $weekSet = Attendance::query()
+            $dayAttendances = Attendance::query()
                 ->join('enrollments', 'attendances.enrollment_id', '=', 'enrollments.id')
-                ->join('lessons', 'attendances.lesson_id', '=', 'lessons.id')
-                ->where('lessons.course_id', $course->id)
-                ->whereBetween('lessons.date', [$start, $end])
-                ->whereColumn('lessons.date', '>=', 'enrollments.enrollment_date')
+                ->where('attendances.lesson_id', $lesson->id)
+                ->where('enrollments.enrollment_date', '<=', $lesson->date)
                 ->select('attendances.*')
                 ->get();
 
-            $present = $weekSet->where('present', true)->count();
-            $total = $weekSet->count();
+            $present = $dayAttendances->where('present', true)->count();
+            $total = $dayAttendances->count();
 
-            $trend[$start->translatedFormat('d M')] = [
+            $trend[$lesson->date->translatedFormat('d M')] = [
                 'present' => $present,
                 'absent' => $total - $present,
                 'rate' => $total === 0 ? 0 : (int) round($present / $total * 100),
@@ -160,9 +166,8 @@ class CourseController extends Controller
 
     /**
      * Average presence rate across every lesson held so far (not future
-     * ones), for the course page's gauge — same join/filter shape as
-     * weeklyAttendanceTrend(), just aggregated over all time instead of
-     * bucketed by week.
+     * or cancelled ones), for the course page's gauge — only lessons
+     * with registered attendance count, same as weeklyAttendanceTrend().
      */
     private function averageAttendanceRate(Course $course): ?int
     {
@@ -170,6 +175,7 @@ class CourseController extends Controller
             ->join('enrollments', 'attendances.enrollment_id', '=', 'enrollments.id')
             ->join('lessons', 'attendances.lesson_id', '=', 'lessons.id')
             ->where('lessons.course_id', $course->id)
+            ->where('lessons.cancelled', false)
             ->where('lessons.date', '<=', now())
             ->whereColumn('lessons.date', '>=', 'enrollments.enrollment_date')
             ->select('attendances.*')

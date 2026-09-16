@@ -50,21 +50,31 @@ class PalestraDashboardController extends Controller
             ? null
             : round($weekAttendances->where('present', true)->count() / $weekAttendances->count() * 100);
 
-        // Weekly presence/absence counts and rate for the last 10 weeks,
-        // for the mixed chart.
-        $weeklyAttendanceTrend = [];
-        for ($i = 9; $i >= 0; $i--) {
-            $start = now()->subWeeks($i)->startOfWeek();
-            $end = now()->subWeeks($i)->endOfWeek();
+        // Presence/absence counts and rate for the last 10 real lesson
+        // dates (across every visible course), for the mixed chart — one
+        // column per calendar day that actually had a held, registered,
+        // non-cancelled lesson, not a fixed weekly bucket.
+        $lessonDates = Lesson::query()
+            ->where('cancelled', false)
+            ->where('date', '<=', now())
+            ->whereHas('attendances')
+            ->when($courseIds, fn ($q) => $q->whereIn('course_id', $courseIds))
+            ->orderByDesc('date')
+            ->pluck('date')
+            ->unique()
+            ->take(10)
+            ->sort();
 
-            $weekSet = $this->validAttendancesQuery($courseIds)
-                ->whereBetween('lessons.date', [$start, $end])
+        $weeklyAttendanceTrend = [];
+        foreach ($lessonDates as $date) {
+            $daySet = $this->validAttendancesQuery($courseIds)
+                ->whereDate('lessons.date', $date)
                 ->get();
 
-            $present = $weekSet->where('present', true)->count();
-            $total = $weekSet->count();
+            $present = $daySet->where('present', true)->count();
+            $total = $daySet->count();
 
-            $weeklyAttendanceTrend[$start->translatedFormat('d M')] = [
+            $weeklyAttendanceTrend[$date->translatedFormat('d M')] = [
                 'present' => $present,
                 'absent' => $total - $present,
                 'rate' => $total === 0 ? 0 : (int) round($present / $total * 100),
@@ -167,6 +177,7 @@ class PalestraDashboardController extends Controller
         return Attendance::query()
             ->join('enrollments', 'attendances.enrollment_id', '=', 'enrollments.id')
             ->join('lessons', 'attendances.lesson_id', '=', 'lessons.id')
+            ->where('lessons.cancelled', false)
             ->whereColumn('lessons.date', '>=', 'enrollments.enrollment_date')
             ->when($courseIds, fn ($q) => $q->whereIn('lessons.course_id', $courseIds))
             ->select('attendances.*');
