@@ -50,7 +50,8 @@ class PalestraDashboardController extends Controller
             ? null
             : round($weekAttendances->where('present', true)->count() / $weekAttendances->count() * 100);
 
-        // Weekly attendance rate for the last 10 weeks, for the area chart.
+        // Weekly presence/absence counts and rate for the last 10 weeks,
+        // for the mixed chart.
         $weeklyAttendanceTrend = [];
         for ($i = 9; $i >= 0; $i--) {
             $start = now()->subWeeks($i)->startOfWeek();
@@ -60,9 +61,14 @@ class PalestraDashboardController extends Controller
                 ->whereBetween('lessons.date', [$start, $end])
                 ->get();
 
-            $weeklyAttendanceTrend[$start->translatedFormat('d M')] = $weekSet->isEmpty()
-                ? 0
-                : round($weekSet->where('present', true)->count() / $weekSet->count() * 100);
+            $present = $weekSet->where('present', true)->count();
+            $total = $weekSet->count();
+
+            $weeklyAttendanceTrend[$start->translatedFormat('d M')] = [
+                'present' => $present,
+                'absent' => $total - $present,
+                'rate' => $total === 0 ? 0 : (int) round($present / $total * 100),
+            ];
         }
 
         $topPresent = $this->topByAttendance($courseIds, present: true);

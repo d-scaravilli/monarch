@@ -120,11 +120,11 @@ class CourseController extends Controller
     }
 
     /**
-     * Weekly attendance rate for this course over the last 10 weeks, for
-     * the course-page chart — same shape/logic as the Palestra dashboard's
-     * chart, just scoped to a single course.
+     * Weekly presence/absence counts and rate for this course over the
+     * last 10 weeks, for the course-page mixed chart — same shape/logic
+     * as the Palestra dashboard's chart, just scoped to a single course.
      *
-     * @return array<string, int>
+     * @return array<string, array{present: int, absent: int, rate: int}>
      */
     private function weeklyAttendanceTrend(Course $course): array
     {
@@ -145,9 +145,14 @@ class CourseController extends Controller
                 ->select('attendances.*')
                 ->get();
 
-            $trend[$start->translatedFormat('d M')] = $weekSet->isEmpty()
-                ? 0
-                : (int) round($weekSet->where('present', true)->count() / $weekSet->count() * 100);
+            $present = $weekSet->where('present', true)->count();
+            $total = $weekSet->count();
+
+            $trend[$start->translatedFormat('d M')] = [
+                'present' => $present,
+                'absent' => $total - $present,
+                'rate' => $total === 0 ? 0 : (int) round($present / $total * 100),
+            ];
         }
 
         return $trend;

@@ -27,16 +27,25 @@
                             const ApexCharts = await window.loadApexCharts();
                             const isDark = document.documentElement.classList.contains('dark');
                             const chart = new ApexCharts(this.$refs.chart, {
-                                chart: { type: 'area', height: 260, toolbar: { show: false }, fontFamily: 'inherit', foreColor: isDark ? '#9ca3af' : '#6b7280' },
-                                series: [{ name: 'Presenze', data: {{ Illuminate\Support\Js::from(array_values($weeklyAttendanceTrend)) }} }],
+                                chart: { height: 260, type: 'line', toolbar: { show: false }, zoom: { enabled: false }, fontFamily: 'inherit', foreColor: isDark ? '#9ca3af' : '#6b7280' },
+                                series: [
+                                    { name: 'Presenti', type: 'column', data: {{ Illuminate\Support\Js::from(array_column($weeklyAttendanceTrend, 'present')) }} },
+                                    { name: 'Assenti', type: 'column', data: {{ Illuminate\Support\Js::from(array_column($weeklyAttendanceTrend, 'absent')) }} },
+                                    { name: 'Andamento', type: 'line', data: {{ Illuminate\Support\Js::from(array_column($weeklyAttendanceTrend, 'rate')) }} },
+                                ],
                                 xaxis: { categories: {{ Illuminate\Support\Js::from(array_keys($weeklyAttendanceTrend)) }}, axisBorder: { show: false }, axisTicks: { show: false } },
-                                yaxis: { min: 0, max: 100, labels: { formatter: (v) => Math.round(v) + '%' } },
-                                colors: ['{{ $accentHex }}'],
-                                fill: { type: 'gradient', gradient: { opacityFrom: 0.35, opacityTo: 0 } },
+                                yaxis: [
+                                    { seriesName: 'Presenti', min: 0, forceNiceScale: true, title: { text: 'Presenze' } },
+                                    { seriesName: 'Assenti', show: false, min: 0, forceNiceScale: true },
+                                    { seriesName: 'Andamento', opposite: true, min: 0, max: 100, labels: { formatter: (v) => Math.round(v) + '%' }, title: { text: '% presenza' } },
+                                ],
+                                colors: ['{{ \App\Support\ModuleTheme::hex('green') }}', '{{ \App\Support\ModuleTheme::hex('red') }}', '{{ $accentHex }}'],
+                                plotOptions: { bar: { columnWidth: '45%', borderRadius: 4 } },
                                 dataLabels: { enabled: false },
-                                stroke: { curve: 'smooth', width: 2.5 },
+                                stroke: { width: [0, 0, 3], curve: 'smooth' },
+                                legend: { show: true, position: 'top', horizontalAlign: 'right' },
                                 grid: { borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(148,163,184,0.15)', strokeDashArray: 3 },
-                                tooltip: { theme: isDark ? 'dark' : 'light', y: { formatter: (v) => v + '%' } },
+                                tooltip: { theme: isDark ? 'dark' : 'light', y: [{ formatter: (v) => v }, { formatter: (v) => v }, { formatter: (v) => v + '%' }] },
                             });
                             chart.render();
                         },
