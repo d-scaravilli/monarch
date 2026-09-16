@@ -1,4 +1,4 @@
-@props(['notes'])
+@props(['notes', 'canManage' => false])
 
 @php
     $accent = \App\Support\ModuleTheme::classes($currentModule->color ?? 'gray');
@@ -28,15 +28,27 @@
                     </span>
 
                     <x-card>
-                        <div class="flex flex-wrap items-center gap-2">
-                            <x-badge :color="$isInjury ? 'red' : 'gray'">{{ $note->typeLabel() }}</x-badge>
-                            <span class="text-xs text-gray-400">
-                                {{ $note->created_at->translatedFormat('d M Y') }}
-                                &middot; {{ $note->author->name }}
-                                @if ($note->lesson?->course?->discipline)
-                                    &middot; {{ $note->lesson->course->discipline->name }}
-                                @endif
-                            </span>
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <x-badge :color="$isInjury ? 'red' : 'gray'">{{ $note->typeLabel() }}</x-badge>
+                                <span class="text-xs text-gray-400">
+                                    {{ $note->created_at->translatedFormat('d M Y') }}
+                                    &middot; {{ $note->author->name }}
+                                    @if ($note->lesson?->course?->discipline)
+                                        &middot; {{ $note->lesson->course->discipline->name }}
+                                    @endif
+                                </span>
+                            </div>
+                            @if ($canManage)
+                                <form method="POST" action="{{ route('notes.destroy', $note) }}"
+                                      onsubmit="return confirm('Eliminare questa nota?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-gray-400 hover:text-red-600 dark:hover:text-red-400">
+                                        <x-heroicon-o-trash class="h-3.5 w-3.5" />
+                                    </button>
+                                </form>
+                            @endif
                         </div>
                         <p class="mt-2 text-sm text-gray-700 dark:text-gray-300">{{ $note->description }}</p>
                     </x-card>

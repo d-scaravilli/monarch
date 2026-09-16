@@ -104,9 +104,21 @@
                                                     <div class="space-y-2">
                                                         @foreach ($goal->notes as $note)
                                                             <div class="rounded-lg bg-gray-50 dark:bg-white/5 px-3 py-2">
-                                                                <div class="flex items-center gap-2">
-                                                                    <x-badge :color="$note->type === 'infortunio' ? 'red' : 'gray'">{{ $note->typeLabel() }}</x-badge>
-                                                                    <span class="text-xs text-gray-400">{{ $note->created_at->translatedFormat('d M Y') }} &middot; {{ $note->author->name }}</span>
+                                                                <div class="flex items-center justify-between gap-2">
+                                                                    <div class="flex items-center gap-2">
+                                                                        <x-badge :color="$note->type === 'infortunio' ? 'red' : 'gray'">{{ $note->typeLabel() }}</x-badge>
+                                                                        <span class="text-xs text-gray-400">{{ $note->created_at->translatedFormat('d M Y') }} &middot; {{ $note->author->name }}</span>
+                                                                    </div>
+                                                                    @if ($canManage)
+                                                                        <form method="POST" action="{{ route('notes.destroy', $note) }}"
+                                                                              onsubmit="return confirm('Eliminare questa nota?')">
+                                                                            @csrf
+                                                                            @method('DELETE')
+                                                                            <button type="submit" class="text-gray-400 hover:text-red-600 dark:hover:text-red-400">
+                                                                                <x-heroicon-o-trash class="h-3.5 w-3.5" />
+                                                                            </button>
+                                                                        </form>
+                                                                    @endif
                                                                 </div>
                                                                 <p class="mt-1 text-gray-700 dark:text-gray-300">{{ $note->description }}</p>
                                                             </div>
@@ -116,12 +128,21 @@
                                             @endif
 
                                             @if ($canManage)
-                                                <div class="border-t border-gray-100 dark:border-white/10 pt-3 flex justify-end">
+                                                <div class="border-t border-gray-100 dark:border-white/10 pt-3 flex justify-end gap-4">
                                                     <button type="button" x-data="" x-on:click="$dispatch('open-modal', 'edit-goal-{{ $goal->id }}')"
                                                             class="inline-flex items-center gap-1.5 text-xs font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100">
                                                         <x-heroicon-o-pencil class="h-3.5 w-3.5" />
                                                         Modifica
                                                     </button>
+                                                    <form method="POST" action="{{ route('goals.destroy', $goal) }}"
+                                                          onsubmit="return confirm('Eliminare questo obiettivo? Le note collegate resteranno come note libere.')">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="inline-flex items-center gap-1.5 text-xs font-medium text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300">
+                                                            <x-heroicon-o-trash class="h-3.5 w-3.5" />
+                                                            Elimina
+                                                        </button>
+                                                    </form>
                                                 </div>
                                             @endif
                                         </x-card>
@@ -230,7 +251,7 @@
 
         <div class="min-w-0">
             <x-section-header>Note libere</x-section-header>
-            <x-progress-timeline :notes="$freeNotes" />
+            <x-progress-timeline :notes="$freeNotes" :can-manage="$canManage" />
         </div>
     </div>
 </div>

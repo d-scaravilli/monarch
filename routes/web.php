@@ -109,9 +109,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/courses/{course}/lessons/{lesson}/cancel', [AttendanceController::class, 'cancel'])->name('courses.lessons.attendance.cancel');
         Route::post('/courses/{course}/lessons/{lesson}/reactivate', [AttendanceController::class, 'reactivate'])->name('courses.lessons.attendance.reactivate');
         Route::post('/courses/{course}/lessons/{lesson}/notes', [NoteController::class, 'store'])->name('courses.lessons.notes.store');
+        Route::delete('/notes/{note}', [NoteController::class, 'destroy'])->name('notes.destroy');
 
         Route::post('/enrollments/{enrollment}/goals', [GoalController::class, 'store'])->name('enrollments.goals.store');
         Route::put('/goals/{goal}', [GoalController::class, 'update'])->name('goals.update');
+        Route::delete('/goals/{goal}', [GoalController::class, 'destroy'])->name('goals.destroy');
 
         Route::post('/enrollments/{enrollment}/payments', [PaymentController::class, 'store'])->name('enrollments.payments.store');
         Route::put('/payments/{payment}', [PaymentController::class, 'update'])->name('payments.update');

@@ -57,4 +57,13 @@ class NoteController extends Controller
 
         return back()->with('status', 'Nota aggiunta.');
     }
+
+    public function destroy(MemberNote $note): RedirectResponse
+    {
+        $this->authorize('manageAttendance', $note->lesson->course);
+
+        $note->delete();
+
+        return back()->with('status', 'Nota eliminata.');
+    }
 }

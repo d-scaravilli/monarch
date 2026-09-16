@@ -365,4 +365,83 @@ class GoalTest extends TestCase
         $response->assertOk();
         $this->assertSame(1, substr_count($response->getContent(), 'Nota solo per corso A'));
     }
+
+    /**
+     * Deleting a goal must not take its linked notes down with it — the
+     * goal_id column nullOnDelete()s, so they simply become free notes.
+     */
+    public function test_deleting_a_goal_unlinks_its_notes_instead_of_deleting_them(): void
+    {
+        $admin = $this->makeAdmin();
+        $member = $this->makeMember();
+        $course = Course::factory()->create();
+        $enrollment = Enrollment::factory()->create(['user_id' => $member->id, 'course_id' => $course->id]);
+        $goal = $this->makeGoal($enrollment, ['created_by' => $admin->id]);
+        $lesson = Lesson::factory()->create(['course_id' => $course->id]);
+
+        $note = MemberNote::create([
+            'user_id' => $member->id,
+            'lesson_id' => $lesson->id,
+            'goal_id' => $goal->id,
+            'created_by' => $admin->id,
+            'type' => 'progresso',
+            'description' => 'Nota da scollegare',
+        ]);
+
+        $this->actingAs($admin)->delete(route('goals.destroy', $goal))->assertRedirect();
+
+        $this->assertDatabaseMissing('goals', ['id' => $goal->id]);
+        $this->assertDatabaseHas('member_notes', ['id' => $note->id, 'goal_id' => null]);
+    }
+
+    public function test_member_cannot_delete_a_goal(): void
+    {
+        $member = $this->makeMember();
+        $enrollment = Enrollment::factory()->create(['user_id' => $member->id]);
+        $goal = $this->makeGoal($enrollment, ['created_by' => $member->id]);
+
+        $this->actingAs($member)->delete(route('goals.destroy', $goal))->assertForbidden();
+        $this->assertDatabaseHas('goals', ['id' => $goal->id]);
+    }
+
+    public function test_admin_can_delete_a_note(): void
+    {
+        $admin = $this->makeAdmin();
+        $member = $this->makeMember();
+        $course = Course::factory()->create();
+        Enrollment::factory()->create(['user_id' => $member->id, 'course_id' => $course->id]);
+        $lesson = Lesson::factory()->create(['course_id' => $course->id]);
+
+        $note = MemberNote::create([
+            'user_id' => $member->id,
+            'lesson_id' => $lesson->id,
+            'created_by' => $admin->id,
+            'type' => 'altro',
+            'description' => 'Nota da eliminare',
+        ]);
+
+        $this->actingAs($admin)->delete(route('notes.destroy', $note))->assertRedirect();
+
+        $this->assertDatabaseMissing('member_notes', ['id' => $note->id]);
+    }
+
+    public function test_member_cannot_delete_a_note(): void
+    {
+        $admin = $this->makeAdmin();
+        $member = $this->makeMember();
+        $course = Course::factory()->create();
+        Enrollment::factory()->create(['user_id' => $member->id, 'course_id' => $course->id]);
+        $lesson = Lesson::factory()->create(['course_id' => $course->id]);
+
+        $note = MemberNote::create([
+            'user_id' => $member->id,
+            'lesson_id' => $lesson->id,
+            'created_by' => $admin->id,
+            'type' => 'altro',
+            'description' => 'Nota protetta',
+        ]);
+
+        $this->actingAs($member)->delete(route('notes.destroy', $note))->assertForbidden();
+        $this->assertDatabaseHas('member_notes', ['id' => $note->id]);
+    }
 }

@@ -62,4 +62,17 @@ class GoalController extends Controller
 
         return back()->with('status', 'Obiettivo aggiornato.');
     }
+
+    /**
+     * Notes linked to this goal aren't deleted with it — the
+     * goal_id column nullOnDelete()s, so they simply become free notes.
+     */
+    public function destroy(Goal $goal): RedirectResponse
+    {
+        $this->authorize('manageAttendance', $goal->enrollment->course);
+
+        $goal->delete();
+
+        return back()->with('status', 'Obiettivo eliminato.');
+    }
 }
