@@ -223,7 +223,11 @@
                             <a href="{{ route('courses.lessons.attendance.edit', [$course, $lesson]) }}" class="flex items-center justify-between px-5 py-3.5">
                                 <span class="font-medium text-gray-900 dark:text-gray-100">{{ $lesson->date->translatedFormat('l d F Y') }}</span>
                                 <span class="flex items-center gap-2">
-                                    <x-badge color="green">{{ $lesson->attendances->where('present', true)->count() }} presenti</x-badge>
+                                    @if ($lesson->cancelled)
+                                        <x-badge color="gray">Annullata</x-badge>
+                                    @else
+                                        <x-badge color="green">{{ $lesson->attendances->where('present', true)->count() }} presenti</x-badge>
+                                    @endif
                                     <x-heroicon-o-chevron-right class="h-4 w-4 text-gray-300" />
                                 </span>
                             </a>

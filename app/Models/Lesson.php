@@ -18,12 +18,15 @@ class Lesson extends Model
         'date',
         'note',
         'description',
+        'cancelled',
+        'cancellation_reason',
     ];
 
     protected function casts(): array
     {
         return [
             'date' => 'date',
+            'cancelled' => 'boolean',
         ];
     }
 

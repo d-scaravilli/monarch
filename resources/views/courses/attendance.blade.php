@@ -8,6 +8,30 @@
 <x-app-layout>
     <x-slot name="header">Presenze &middot; {{ $lesson->date->translatedFormat('d M Y') }}</x-slot>
 
+    @if ($lesson->cancelled)
+        <x-card class="mb-6 border-2 border-dashed border-gray-300 dark:border-white/20 bg-gray-50 dark:bg-white/5">
+            <div class="flex items-start justify-between gap-4 flex-wrap">
+                <div class="flex items-start gap-3">
+                    <x-heroicon-o-no-symbol class="h-6 w-6 text-gray-400 shrink-0 mt-0.5" />
+                    <div>
+                        <p class="font-semibold text-gray-700 dark:text-gray-200">Lezione annullata</p>
+                        @if ($lesson->cancellation_reason)
+                            <p class="mt-1 text-sm text-gray-500">{{ $lesson->cancellation_reason }}</p>
+                        @endif
+                        <p class="mt-1 text-xs text-gray-400">Non è conteggiata nella media presenze né nel grafico andamento del corso.</p>
+                    </div>
+                </div>
+                @if ($canManage)
+                    <form method="POST" action="{{ route('courses.lessons.attendance.reactivate', [$course, $lesson]) }}">
+                        @csrf
+                        <x-secondary-button type="submit">Riattiva lezione</x-secondary-button>
+                    </form>
+                @endif
+            </div>
+        </x-card>
+    @endif
+
+    @unless ($lesson->cancelled)
     <div class="grid gap-4 lg:grid-cols-3 mb-6">
         <x-card class="flex flex-col items-center justify-center">
             <x-section-header class="self-start">Percentuale presenza</x-section-header>
@@ -97,14 +121,42 @@
         class="space-y-4"
     >
         @if ($canManage)
-            <button
-                type="button"
-                @click="markAllPresent()"
-                class="flex items-center gap-1.5 text-sm font-medium text-gray-600 dark:text-gray-300"
-            >
-                <x-heroicon-o-check-circle class="h-4 w-4" />
-                Segna tutti presenti
-            </button>
+            <div class="flex items-center justify-between gap-3 flex-wrap">
+                <button
+                    type="button"
+                    @click="markAllPresent()"
+                    class="flex items-center gap-1.5 text-sm font-medium text-gray-600 dark:text-gray-300"
+                >
+                    <x-heroicon-o-check-circle class="h-4 w-4" />
+                    Segna tutti presenti
+                </button>
+
+                <button type="button" x-data="" x-on:click="$dispatch('open-modal', 'cancel-lesson')"
+                        class="flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-red-600 dark:hover:text-red-400">
+                    <x-heroicon-o-no-symbol class="h-4 w-4" />
+                    Segna come annullata
+                </button>
+            </div>
+
+            <x-modal name="cancel-lesson" max-width="md">
+                <div class="p-6">
+                    <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Annulla lezione</h2>
+                    <p class="mt-1 text-sm text-gray-500">La lezione non verrà conteggiata nella media presenze né nel grafico del corso.</p>
+
+                    <form method="POST" action="{{ route('courses.lessons.attendance.cancel', [$course, $lesson]) }}" class="mt-5 space-y-4">
+                        @csrf
+                        <div class="space-y-1.5">
+                            <x-input-label value="Motivo (facoltativo)" />
+                            <textarea name="cancellation_reason" rows="3" placeholder="Es. maltempo, struttura chiusa..."
+                                      class="w-full rounded-xl border-gray-200 bg-gray-50 text-sm dark:border-white/10 dark:bg-white/5 dark:text-gray-100"></textarea>
+                        </div>
+                        <div class="flex items-center justify-end gap-3 pt-2">
+                            <x-secondary-button type="button" x-on:click="$dispatch('close')">Annulla</x-secondary-button>
+                            <x-primary-button>Conferma</x-primary-button>
+                        </div>
+                    </form>
+                </div>
+            </x-modal>
 
         <x-card class="p-0 divide-y divide-gray-100 dark:divide-white/10">
             @forelse ($enrollments as $enrollment)
@@ -227,6 +279,7 @@
         </x-card>
         @endif
     </div>
+    @endunless
 
     @if ($canManage)
         <div class="mt-4" x-data="{

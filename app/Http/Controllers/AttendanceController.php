@@ -42,7 +42,7 @@ class AttendanceController extends Controller
         // is a normal, single, correctly-saved toggle in either
         // direction. Only worth doing for someone who can actually
         // toggle — a read-only viewer's page load shouldn't write.
-        if ($canManage) {
+        if ($canManage && ! $lesson->cancelled) {
             $alreadyRecorded = Attendance::where('lesson_id', $lesson->id)->pluck('enrollment_id');
             $missing = $enrollments->pluck('id')->diff($alreadyRecorded);
 
@@ -96,6 +96,40 @@ class AttendanceController extends Controller
         );
 
         return response()->json(['present' => $attendance->present]);
+    }
+
+    /**
+     * Mark a lesson as cancelled (or reactivate it). A cancelled lesson
+     * is excluded from attendance stats and the trend chart, so this
+     * simply flips the flag and stores the free-text reason.
+     */
+    public function cancel(Request $request, Course $course, Lesson $lesson): RedirectResponse
+    {
+        $this->authorize('manageAttendance', $course);
+
+        $data = $request->validate([
+            'cancellation_reason' => 'nullable|string|max:500',
+        ]);
+
+        $lesson->update([
+            'cancelled' => true,
+            'cancellation_reason' => $data['cancellation_reason'] ?? null,
+        ]);
+
+        return redirect()
+            ->route('courses.lessons.attendance.edit', [$course, $lesson])
+            ->with('status', 'Lezione segnata come annullata.');
+    }
+
+    public function reactivate(Course $course, Lesson $lesson): RedirectResponse
+    {
+        $this->authorize('manageAttendance', $course);
+
+        $lesson->update(['cancelled' => false, 'cancellation_reason' => null]);
+
+        return redirect()
+            ->route('courses.lessons.attendance.edit', [$course, $lesson])
+            ->with('status', 'Lezione riattivata.');
     }
 
     public function markAllPresent(Course $course, Lesson $lesson): RedirectResponse

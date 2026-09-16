@@ -106,6 +106,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::patch('/courses/{course}/lessons/{lesson}/attendance', [AttendanceController::class, 'toggle'])->name('courses.lessons.attendance.toggle');
         Route::post('/courses/{course}/lessons/{lesson}/attendance/mark-all', [AttendanceController::class, 'markAllPresent'])->name('courses.lessons.attendance.mark-all');
         Route::patch('/courses/{course}/lessons/{lesson}/description', [AttendanceController::class, 'updateDescription'])->name('courses.lessons.description.update');
+        Route::post('/courses/{course}/lessons/{lesson}/cancel', [AttendanceController::class, 'cancel'])->name('courses.lessons.attendance.cancel');
+        Route::post('/courses/{course}/lessons/{lesson}/reactivate', [AttendanceController::class, 'reactivate'])->name('courses.lessons.attendance.reactivate');
         Route::post('/courses/{course}/lessons/{lesson}/notes', [NoteController::class, 'store'])->name('courses.lessons.notes.store');
 
         Route::post('/enrollments/{enrollment}/goals', [GoalController::class, 'store'])->name('enrollments.goals.store');

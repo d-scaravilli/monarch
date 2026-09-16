@@ -202,6 +202,64 @@ class AttendanceTest extends TestCase
         $this->assertSame(1, Attendance::where('lesson_id', $lesson->id)->where('enrollment_id', $touchedEnrollment->id)->count());
     }
 
+    public function test_admin_can_cancel_a_lesson_with_a_reason(): void
+    {
+        $admin = $this->makeAdmin();
+        $course = Course::factory()->create();
+        $lesson = Lesson::create(['course_id' => $course->id, 'date' => now()]);
+
+        $response = $this->actingAs($admin)->post(route('courses.lessons.attendance.cancel', [$course, $lesson]), [
+            'cancellation_reason' => 'Maltempo',
+        ]);
+
+        $response->assertRedirect();
+        $lesson->refresh();
+        $this->assertTrue($lesson->cancelled);
+        $this->assertSame('Maltempo', $lesson->cancellation_reason);
+    }
+
+    public function test_admin_can_reactivate_a_cancelled_lesson(): void
+    {
+        $admin = $this->makeAdmin();
+        $course = Course::factory()->create();
+        $lesson = Lesson::create(['course_id' => $course->id, 'date' => now(), 'cancelled' => true, 'cancellation_reason' => 'Maltempo']);
+
+        $this->actingAs($admin)->post(route('courses.lessons.attendance.reactivate', [$course, $lesson]))->assertRedirect();
+
+        $lesson->refresh();
+        $this->assertFalse($lesson->cancelled);
+        $this->assertNull($lesson->cancellation_reason);
+    }
+
+    public function test_member_cannot_cancel_a_lesson(): void
+    {
+        $member = $this->makeMember();
+        $course = Course::factory()->create();
+        $lesson = Lesson::create(['course_id' => $course->id, 'date' => now()]);
+        Enrollment::factory()->create(['course_id' => $course->id, 'user_id' => $member->id]);
+
+        $this->actingAs($member)->post(route('courses.lessons.attendance.cancel', [$course, $lesson]))->assertForbidden();
+        $this->assertFalse($lesson->fresh()->cancelled);
+    }
+
+    /**
+     * A cancelled lesson has nothing to attend, so opening it must not
+     * backfill any absent rows — those rows would only pollute stats that
+     * already exclude cancelled lessons at the query level.
+     */
+    public function test_opening_a_cancelled_lesson_does_not_backfill_attendance_rows(): void
+    {
+        $admin = $this->makeAdmin();
+        $course = Course::factory()->create();
+        $lesson = Lesson::create(['course_id' => $course->id, 'date' => now(), 'cancelled' => true]);
+        $member = $this->makeMember();
+        $enrollment = Enrollment::factory()->create(['course_id' => $course->id, 'user_id' => $member->id]);
+
+        $this->actingAs($admin)->get(route('courses.lessons.attendance.edit', [$course, $lesson]))->assertOk();
+
+        $this->assertDatabaseMissing('attendances', ['enrollment_id' => $enrollment->id, 'lesson_id' => $lesson->id]);
+    }
+
     public function test_the_lesson_link_in_the_member_attendance_table_points_to_the_lesson_page(): void
     {
         $member = $this->makeMember();
