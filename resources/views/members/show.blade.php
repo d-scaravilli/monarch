@@ -1,5 +1,6 @@
 @php
-    $attendances = $member->enrollments->flatMap(fn ($e) => $e->validAttendances()->map(fn ($a) => tap($a, fn ($a) => $a->enrollment = $e)));
+    // Corsi only: an evento's presences stay inside the evento itself and never enter this overall rate.
+    $attendances = $member->enrollments->reject(fn ($e) => $e->course->isEvento())->flatMap(fn ($e) => $e->validAttendances()->map(fn ($a) => tap($a, fn ($a) => $a->enrollment = $e)));
 
     $activeEnrollmentsCount = $member->enrollments->where('status', 'active')->count();
     $attendanceRate = $attendances->isEmpty() ? null : round($attendances->where('present', true)->count() / $attendances->count() * 100);
@@ -79,7 +80,7 @@
                     </div>
                     <div>
                         <p class="text-xl font-bold text-gray-900 dark:text-gray-100">{{ $attendanceRate !== null ? $attendanceRate.'%' : '—' }}</p>
-                        <p class="text-xs text-gray-400">presenze</p>
+                        <p class="text-xs text-gray-400">presenze corsi</p>
                     </div>
                     @if ($showFinancials)
                         <div>

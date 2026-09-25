@@ -51,11 +51,12 @@ class PalestraDashboardController extends Controller
             : round($weekAttendances->where('present', true)->count() / $weekAttendances->count() * 100);
 
         // Presence/absence counts and rate for the last 10 real lesson
-        // dates (across every visible course), for the mixed chart — one
-        // column per calendar day that actually had a held, registered,
-        // non-cancelled lesson, not a fixed weekly bucket.
+        // dates (across every visible corso, never an evento), for the
+        // mixed chart — one column per calendar day that actually had a
+        // held, registered, non-cancelled lesson, not a fixed weekly bucket.
         $lessonDates = Lesson::query()
             ->where('cancelled', false)
+            ->whereHas('course', fn ($q) => $q->corsi())
             ->where('date', '<=', now())
             ->whereHas('attendances')
             ->when($courseIds, fn ($q) => $q->whereIn('course_id', $courseIds))
@@ -167,7 +168,9 @@ class PalestraDashboardController extends Controller
      * Base query for attendance stats: joins in enrollments/lessons and
      * excludes any attendance row for a lesson that happened before the
      * member's enrollment_date (they couldn't have attended it, so it
-     * must never inflate an absence count). Every attendance aggregate
+     * must never inflate an absence count). Only lessons of a corso count:
+     * an evento's presences stay inside the evento itself and never enter
+     * an aggregate alongside the courses. Every attendance aggregate
      * on this dashboard builds on this one query.
      *
      * @param  Collection<int, int>|null  $courseIds
@@ -177,6 +180,8 @@ class PalestraDashboardController extends Controller
         return Attendance::query()
             ->join('enrollments', 'attendances.enrollment_id', '=', 'enrollments.id')
             ->join('lessons', 'attendances.lesson_id', '=', 'lessons.id')
+            ->join('courses', 'lessons.course_id', '=', 'courses.id')
+            ->where('courses.type', 'corso')
             ->where('lessons.cancelled', false)
             ->whereColumn('lessons.date', '>=', 'enrollments.enrollment_date')
             ->when($courseIds, fn ($q) => $q->whereIn('lessons.course_id', $courseIds))
