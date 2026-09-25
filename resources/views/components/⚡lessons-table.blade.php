@@ -13,6 +13,13 @@ new class extends Component
 {
     use WithPagination;
 
+    /**
+     * "corso" or "evento": the general lessons page shows one of the
+     * two at a time (tabs), never a mixed list.
+     */
+    #[Url]
+    public string $type = 'corso';
+
     #[Url]
     public ?int $courseId = null;
 
@@ -40,12 +47,21 @@ new class extends Component
     {
         $this->courseId = $courseId;
         $this->scoped = $courseId !== null;
+
+        if ($courseId !== null) {
+            $this->type = Course::withTrashed()->find($courseId)?->type ?? 'corso';
+        }
+
         $this->month = now()->format('Y-m');
     }
 
     public function updated($property): void
     {
-        if (in_array($property, ['courseId', 'roomId', 'month', 'allDates'])) {
+        if ($property === 'type') {
+            $this->courseId = null;
+        }
+
+        if (in_array($property, ['type', 'courseId', 'roomId', 'month', 'allDates'])) {
             $this->resetPage();
         }
     }
@@ -86,6 +102,7 @@ new class extends Component
         $lessons = Lesson::query()
             ->with(['course.discipline', 'course.room', 'attendances'])
             ->when($courseIds, fn ($q) => $q->whereIn('course_id', $courseIds))
+            ->whereHas('course', fn ($q) => $q->withTrashed()->where('type', $this->type))
             ->when($this->courseId, fn ($q) => $q->where('course_id', $this->courseId))
             ->when($this->roomId, fn ($q) => $q->whereHas('course', fn ($q2) => $q2->where('room_id', $this->roomId)))
             ->when(! $this->allDates && $this->month, function ($q) {
@@ -98,6 +115,7 @@ new class extends Component
         return [
             'lessons' => $lessons,
             'courses' => Course::with('discipline')
+                ->where('type', $this->type)
                 ->when($courseIds, fn ($q) => $q->whereIn('id', $courseIds))
                 ->orderBy('year')
                 ->get(),
@@ -108,11 +126,22 @@ new class extends Component
 ?>
 
 <div class="space-y-4">
+    @unless ($scoped)
+        <div class="flex w-full gap-1 rounded-xl bg-gray-100 dark:bg-white/5 p-1 text-sm font-medium">
+            @foreach (['corso' => 'Corsi', 'evento' => 'Eventi'] as $tabType => $tabLabel)
+                <button type="button" wire:click="$set('type', '{{ $tabType }}')"
+                        class="flex-1 min-w-0 truncate rounded-lg px-1 py-2 text-center transition {{ $type === $tabType ? 'bg-white dark:bg-gray-900 shadow-sm text-gray-900 dark:text-gray-100' : 'text-gray-500 dark:text-gray-400' }}">
+                    {{ $tabLabel }}
+                </button>
+            @endforeach
+        </div>
+    @endunless
+
     <x-card>
         <div class="flex flex-wrap items-end gap-3">
             @unless ($scoped)
                 <div>
-                    <x-input-label value="Corso" class="mb-1.5" />
+                    <x-input-label :value="$type === 'evento' ? 'Evento' : 'Corso'" class="mb-1.5" />
                     <select wire:model.live="courseId" class="rounded-xl border-gray-200 bg-gray-50 dark:border-white/10 dark:bg-white/5 dark:text-gray-100">
                         <option value="">Tutti</option>
                         @foreach ($courses as $course)
@@ -162,7 +191,7 @@ new class extends Component
                             </button>
                         </th>
                         <th class="px-5 py-3 text-left">
-                            <button wire:click="sortBy('course')" class="flex items-center gap-1 hover:text-gray-600 dark:hover:text-gray-200">Corso</button>
+                            <button wire:click="sortBy('course')" class="flex items-center gap-1 hover:text-gray-600 dark:hover:text-gray-200">{{ $type === 'evento' ? 'Evento' : 'Corso' }}</button>
                         </th>
                         <th class="px-5 py-3 text-left hidden sm:table-cell">Sala</th>
                         <th class="px-5 py-3 text-left">Presenti/Assenti</th>
