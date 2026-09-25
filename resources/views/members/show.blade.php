@@ -274,9 +274,16 @@
             </div>
 
             <div>
-                <x-section-header>Presenze</x-section-header>
-                <livewire:member-attendance-table :member-id="$member->id" />
+                <x-section-header>Lezioni dei corsi</x-section-header>
+                <livewire:member-attendance-table :member-id="$member->id" type="corso" />
             </div>
+
+            @if ($member->enrollments->contains(fn ($enrollment) => $enrollment->course->isEvento()))
+                <div>
+                    <x-section-header>Lezioni degli eventi</x-section-header>
+                    <livewire:member-attendance-table :member-id="$member->id" type="evento" />
+                </div>
+            @endif
         </div>
 
         {{-- Tab: Pagamenti — completion gauge and transactions --}}

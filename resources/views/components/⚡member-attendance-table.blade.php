@@ -10,21 +10,28 @@ new class extends Component
 
     public int $memberId;
 
+    /**
+     * "corso" or "evento": the list only ever shows one of the two, so
+     * lessons of courses and events never mix in the same list.
+     */
+    public string $type = 'corso';
+
     public function with(): array
     {
         // Same rule as everywhere else: a lesson before the member's
         // enrollment_date is one they couldn't have attended, so it must
         // never show up here as an absence.
         $attendances = Attendance::query()
+            ->with(['lesson.course' => fn ($q) => $q->withTrashed()->with('discipline')])
             ->join('enrollments', 'attendances.enrollment_id', '=', 'enrollments.id')
             ->join('lessons', 'attendances.lesson_id', '=', 'lessons.id')
             ->join('courses', 'lessons.course_id', '=', 'courses.id')
-            ->join('disciplines', 'courses.discipline_id', '=', 'disciplines.id')
             ->where('enrollments.user_id', $this->memberId)
+            ->where('courses.type', $this->type)
             ->whereColumn('lessons.date', '>=', 'enrollments.enrollment_date')
-            ->select(['attendances.*', 'lessons.date as lesson_date', 'disciplines.name as discipline_name', 'lessons.course_id'])
+            ->select(['attendances.*', 'lessons.date as lesson_date', 'lessons.course_id'])
             ->orderByDesc('lessons.date')
-            ->paginate(10);
+            ->paginate(10, pageName: $this->type.'Page');
 
         return ['attendances' => $attendances];
     }
@@ -38,7 +45,7 @@ new class extends Component
                 <thead>
                     <tr class="border-b border-gray-100 dark:border-white/10 text-xs font-semibold uppercase tracking-wide text-gray-400">
                         <th class="px-5 py-3 text-left">Data</th>
-                        <th class="px-5 py-3 text-left">Corso</th>
+                        <th class="px-5 py-3 text-left">{{ $type === 'evento' ? 'Evento' : 'Corso' }}</th>
                         <th class="px-5 py-3 text-right">Presenza</th>
                     </tr>
                 </thead>
@@ -52,7 +59,7 @@ new class extends Component
                             <td class="px-5 py-3 text-gray-700 dark:text-gray-300 whitespace-nowrap">
                                 {{ \Illuminate\Support\Carbon::parse($attendance->lesson_date)->translatedFormat('d M Y') }}
                             </td>
-                            <td class="px-5 py-3 text-gray-700 dark:text-gray-300">{{ $attendance->discipline_name }}</td>
+                            <td class="px-5 py-3 text-gray-700 dark:text-gray-300">{{ $attendance->lesson->course->displayName() }}</td>
                             <td class="px-5 py-3 text-right">
                                 <span class="inline-flex items-center gap-3">
                                     @if ($attendance->present)
