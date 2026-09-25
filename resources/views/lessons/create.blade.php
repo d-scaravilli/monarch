@@ -9,7 +9,7 @@
                 <x-input-label for="course_id" value="Corso" />
                 <select id="course_id" name="course_id" class="w-full rounded-xl border-gray-200 bg-gray-50 dark:border-white/10 dark:bg-white/5 dark:text-gray-100">
                     @foreach ($courses as $course)
-                        <option value="{{ $course->id }}" @selected(old('course_id', $selectedCourseId) == $course->id)>{{ $course->discipline->name }} ({{ $course->year }})</option>
+                        <option value="{{ $course->id }}" @selected(old('course_id', $selectedCourseId) == $course->id)>{{ $course->displayName() }} ({{ $course->year }})</option>
                     @endforeach
                 </select>
                 <x-input-error :messages="$errors->get('course_id')" class="mt-1" />

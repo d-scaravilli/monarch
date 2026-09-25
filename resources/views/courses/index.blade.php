@@ -28,7 +28,7 @@
                                 </span>
                                 <div class="min-w-0">
                                     <p class="font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-1.5">
-                                        {{ $course->discipline->name }}
+                                        {{ $course->displayName() }}
                                         <x-badge :color="$course->isEvento() ? 'purple' : 'gray'">{{ $course->isEvento() ? 'Evento' : 'Corso' }}</x-badge>
                                     </p>
                                     <p class="text-sm text-gray-500 dark:text-gray-400">{{ $course->room->name }} &middot; {{ $course->year }}</p>

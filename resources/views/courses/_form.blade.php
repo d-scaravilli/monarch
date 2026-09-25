@@ -29,6 +29,13 @@
         <x-input-error :messages="$errors->get('type')" class="mt-1" />
     </div>
 
+    <div x-show="type === 'evento'" x-cloak class="space-y-2">
+        <x-input-label for="title" value="Titolo evento" />
+        <x-text-input id="title" name="title" value="{{ old('title', $course->title ?? '') }}" class="w-full py-3 text-base" placeholder="Es. Stage estivo di Aikido" />
+        <p class="text-xs text-gray-400">Obbligatorio: è il nome con cui l'evento viene mostrato, al posto della disciplina.</p>
+        <x-input-error :messages="$errors->get('title')" class="mt-1" />
+    </div>
+
     <div x-data="{ newDiscipline: false }" class="space-y-2">
         <x-input-label for="discipline_id" value="Disciplina" />
         <template x-if="!newDiscipline">

@@ -61,6 +61,7 @@ class CourseController extends Controller
             'discipline_id' => $discipline->id,
             'room_id' => $room->id,
             'type' => $data['type'],
+            'title' => $data['type'] === 'evento' ? $data['title'] : null,
             'icon' => empty($data['icon']) ? null : $data['icon'],
             'year' => $data['year'],
             'description' => $data['description'] ?? null,
@@ -209,6 +210,7 @@ class CourseController extends Controller
             'discipline_id' => $discipline->id,
             'room_id' => $room->id,
             'type' => $data['type'],
+            'title' => $data['type'] === 'evento' ? $data['title'] : null,
             'icon' => empty($data['icon']) ? null : $data['icon'],
             'year' => $data['year'],
             'description' => $data['description'] ?? null,
@@ -233,7 +235,7 @@ class CourseController extends Controller
     }
 
     /**
-     * @return array{room_id: ?int, type: string, year: string, description: ?string, annual_cost: float, monthly_cost: float, enrollment_cost: ?float, instructors: array<int>, schedules: array<int, array{weekday: int, start_time: string, end_time: string}>, event_dates: array<int, string>}
+     * @return array{room_id: ?int, type: string, title: ?string, year: string, description: ?string, annual_cost: float, monthly_cost: float, enrollment_cost: ?float, instructors: array<int>, schedules: array<int, array{weekday: int, start_time: string, end_time: string}>, event_dates: array<int, string>}
      */
     private function validateCourse(Request $request): array
     {
@@ -244,6 +246,7 @@ class CourseController extends Controller
             'new_room_name' => 'nullable|string|max:255|required_without:room_id',
             'new_room_capacity' => 'nullable|integer|min:1|required_with:new_room_name',
             'type' => 'required|in:corso,evento',
+            'title' => 'nullable|required_if:type,evento|string|max:255',
             'icon' => 'nullable|string|in:'.implode(',', CourseIcons::choices()),
             'year' => 'required|string|max:100',
             'description' => 'nullable|string',

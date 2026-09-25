@@ -13,7 +13,7 @@
                     <option value="">Seleziona...</option>
                     @foreach ($enrollments as $enrollment)
                         <option value="{{ route('enrollments.payments.store', $enrollment) }}">
-                            {{ $enrollment->user->name }} &middot; {{ $enrollment->course->discipline->name }} ({{ $enrollment->course->year }})
+                            {{ $enrollment->user->name }} &middot; {{ $enrollment->course->displayName() }} ({{ $enrollment->course->year }})
                         </option>
                     @endforeach
                 </select>

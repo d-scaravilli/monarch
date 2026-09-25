@@ -84,7 +84,7 @@
                                     <tr>
                                         <td class="px-5 py-3.5">
                                             <a href="{{ route('courses.show', $row['course']) }}" class="font-medium text-gray-900 dark:text-gray-100 hover:underline">
-                                                {{ $row['course']->discipline->name }}
+                                                {{ $row['course']->displayName() }}
                                             </a>
                                         </td>
                                         <td class="px-5 py-3.5 text-right text-gray-600 dark:text-gray-300">€{{ number_format($row['expected'], 2) }}</td>

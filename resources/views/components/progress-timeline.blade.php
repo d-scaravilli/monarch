@@ -35,7 +35,7 @@
                                     {{ $note->created_at->translatedFormat('d M Y') }}
                                     &middot; {{ $note->author->name }}
                                     @if ($note->lesson?->course?->discipline)
-                                        &middot; {{ $note->lesson->course->discipline->name }}
+                                        &middot; {{ $note->lesson->course->displayName() }}
                                     @endif
                                 </span>
                             </div>

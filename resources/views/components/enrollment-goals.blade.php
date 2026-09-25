@@ -12,7 +12,7 @@
 @endphp
 
 <div>
-    <p class="font-semibold text-gray-900 dark:text-gray-100">{{ $enrollment->course->discipline->name }} &middot; {{ $enrollment->course->year }}</p>
+    <p class="font-semibold text-gray-900 dark:text-gray-100">{{ $enrollment->course->displayName() }} &middot; {{ $enrollment->course->year }}</p>
     <p class="text-xs text-gray-400 mb-4">Percorso e note</p>
 
     <div class="grid gap-4 lg:grid-cols-2 items-start">

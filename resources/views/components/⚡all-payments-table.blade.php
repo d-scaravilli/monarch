@@ -45,6 +45,7 @@ new class extends Component
             ->when($this->search, function ($q) {
                 $q->where(function ($q2) {
                     $q2->whereHas('enrollment.user', fn ($q3) => $q3->where('name', 'like', "%{$this->search}%"))
+                        ->orWhereHas('enrollment.course', fn ($q3) => $q3->where('title', 'like', "%{$this->search}%"))
                         ->orWhereHas('enrollment.course.discipline', fn ($q3) => $q3->where('name', 'like', "%{$this->search}%"));
                 });
             })
@@ -85,7 +86,7 @@ new class extends Component
                     @forelse ($payments as $payment)
                         <tr wire:key="payment-{{ $payment->id }}">
                             <td class="px-5 py-3.5 font-medium text-gray-900 dark:text-gray-100 whitespace-nowrap">{{ $payment->enrollment->user->name }}</td>
-                            <td class="px-5 py-3.5 text-gray-500 dark:text-gray-400 whitespace-nowrap">{{ $payment->enrollment->course->discipline->name }} ({{ $payment->enrollment->course->year }})</td>
+                            <td class="px-5 py-3.5 text-gray-500 dark:text-gray-400 whitespace-nowrap">{{ $payment->enrollment->course->displayName() }} ({{ $payment->enrollment->course->year }})</td>
                             <td class="px-5 py-3.5 text-gray-500 dark:text-gray-400 whitespace-nowrap">{{ $payment->date->translatedFormat('d M Y') }}</td>
                             <td class="px-5 py-3.5 text-gray-500 dark:text-gray-400 hidden sm:table-cell">{{ $payment->method }}</td>
                             <td class="px-5 py-3.5 text-gray-500 dark:text-gray-400 hidden lg:table-cell max-w-xs truncate">{{ $payment->notes ?: '—' }}</td>

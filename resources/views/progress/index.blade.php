@@ -23,8 +23,8 @@
                                 <p class="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">{{ $member->name }}</p>
                             </div>
                             <div class="flex flex-wrap justify-end gap-1 shrink-0">
-                                @foreach ($member->enrollments->pluck('course.discipline.name')->unique() as $disciplineName)
-                                    <x-badge>{{ $disciplineName }}</x-badge>
+                                @foreach ($member->enrollments->map(fn ($enrollment) => $enrollment->course->displayName())->unique() as $courseName)
+                                    <x-badge>{{ $courseName }}</x-badge>
                                 @endforeach
                             </div>
                             <x-heroicon-o-chevron-right class="h-4 w-4 shrink-0 text-gray-300" />

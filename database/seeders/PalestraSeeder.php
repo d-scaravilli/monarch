@@ -150,11 +150,11 @@ class PalestraSeeder extends Seeder
         // One "evento" course, so the corso/evento distinction has
         // something real to show out of the box: specific dates instead
         // of a recurring schedule, plus a one-time enrollment fee.
-        $eventDiscipline = Discipline::factory()->create(['name' => 'Seminario Autunnale']);
         $eventCourse = Course::create([
-            'discipline_id' => $eventDiscipline->id,
+            'discipline_id' => $disciplines->first()->id,
             'room_id' => $rooms->random()->id,
             'type' => 'evento',
+            'title' => 'Seminario Autunnale',
             'year' => now()->addMonths(2)->translatedFormat('d').'-'.now()->addMonths(2)->addDay()->translatedFormat('d M Y'),
             'description' => "Due giornate intensive dedicate alle tecniche avanzate, aperte a tutti i livelli. Si consiglia abbigliamento comodo e attrezzatura propria, se disponibile — per chi non ne ha, sarà possibile noleggiarla in loco.\n\nIl seminario è tenuto da istruttori ospiti e prevede sia sessioni pratiche che momenti teorici.",
             'annual_cost' => 0,

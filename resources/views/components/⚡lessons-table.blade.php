@@ -116,7 +116,7 @@ new class extends Component
                     <select wire:model.live="courseId" class="rounded-xl border-gray-200 bg-gray-50 dark:border-white/10 dark:bg-white/5 dark:text-gray-100">
                         <option value="">Tutti</option>
                         @foreach ($courses as $course)
-                            <option value="{{ $course->id }}">{{ $course->discipline->name }} ({{ $course->year }})</option>
+                            <option value="{{ $course->id }}">{{ $course->displayName() }} ({{ $course->year }})</option>
                         @endforeach
                     </select>
                 </div>
@@ -173,7 +173,7 @@ new class extends Component
                     @forelse ($lessons as $lesson)
                         <tr wire:key="lesson-{{ $lesson->id }}">
                             <td class="px-5 py-3.5 text-gray-700 dark:text-gray-300 whitespace-nowrap">{{ $lesson->date->translatedFormat('d M Y') }}</td>
-                            <td class="px-5 py-3.5 text-gray-700 dark:text-gray-300">{{ $lesson->course->discipline->name }}</td>
+                            <td class="px-5 py-3.5 text-gray-700 dark:text-gray-300">{{ $lesson->course->displayName() }}</td>
                             <td class="px-5 py-3.5 text-gray-500 dark:text-gray-400 hidden sm:table-cell">{{ $lesson->course->room->name }}</td>
                             <td class="px-5 py-3.5">
                                 @if ($lesson->cancelled)

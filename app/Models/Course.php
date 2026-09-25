@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Database\Factories\CourseFactory;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,6 +21,7 @@ class Course extends Model
         'discipline_id',
         'room_id',
         'type',
+        'title',
         'icon',
         'year',
         'description',
@@ -39,6 +42,37 @@ class Course extends Model
     public function isEvento(): bool
     {
         return $this->type === 'evento';
+    }
+
+    /**
+     * The name shown everywhere for this course: an evento has its own
+     * mandatory title, a corso is simply named after its discipline.
+     */
+    public function displayName(): string
+    {
+        if ($this->isEvento() && filled($this->title)) {
+            return $this->title;
+        }
+
+        return $this->discipline->name;
+    }
+
+    /**
+     * @param  Builder<Course>  $query
+     */
+    #[Scope]
+    protected function corsi(Builder $query): void
+    {
+        $query->where('type', 'corso');
+    }
+
+    /**
+     * @param  Builder<Course>  $query
+     */
+    #[Scope]
+    protected function eventi(Builder $query): void
+    {
+        $query->where('type', 'evento');
     }
 
     public function discipline(): BelongsTo

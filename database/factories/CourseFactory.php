@@ -18,4 +18,16 @@ class CourseFactory extends Factory
             'monthly_cost' => fake()->randomElement([35, 45, 50, 60]),
         ];
     }
+
+    /**
+     * An "evento": specific dates, and its own mandatory title shown in
+     * place of the discipline name.
+     */
+    public function evento(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'type' => 'evento',
+            'title' => fake()->unique()->words(3, true),
+        ]);
+    }
 }

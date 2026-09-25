@@ -3,7 +3,7 @@
 <x-modal :name="'edit-payment-'.$payment->id" max-width="lg">
     <div class="p-6">
         <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Modifica pagamento</h2>
-        <p class="text-sm text-gray-500 dark:text-gray-400">{{ $payment->enrollment->user->name }} &middot; {{ $payment->enrollment->course->discipline->name }}</p>
+        <p class="text-sm text-gray-500 dark:text-gray-400">{{ $payment->enrollment->user->name }} &middot; {{ $payment->enrollment->course->displayName() }}</p>
 
         <form method="POST" action="{{ route('payments.update', $payment) }}" class="mt-5 space-y-4">
             @csrf

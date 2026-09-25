@@ -4,8 +4,10 @@ namespace Tests\Feature;
 
 use App\Models\Attendance;
 use App\Models\Course;
+use App\Models\Discipline;
 use App\Models\Enrollment;
 use App\Models\Lesson;
+use App\Models\Room;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Spatie\Permission\Models\Role;
@@ -138,5 +140,76 @@ class CourseTest extends TestCase
 
         $response->assertOk();
         $this->assertStringNotContainsString($unregisteredLesson->date->translatedFormat('d M'), $this->chartCategories($response->getContent()));
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function coursePayload(array $overrides = []): array
+    {
+        return array_merge([
+            'discipline_id' => Discipline::factory()->create(['name' => 'Aikido'])->id,
+            'room_id' => Room::factory()->create()->id,
+            'type' => 'corso',
+            'year' => '2025/2026',
+            'annual_cost' => 0,
+            'monthly_cost' => 0,
+        ], $overrides);
+    }
+
+    /**
+     * An evento has no name of its own other than its title — creating
+     * one without it must fail validation.
+     */
+    public function test_an_evento_requires_a_title(): void
+    {
+        Role::create(['name' => 'admin']);
+        $admin = User::factory()->create();
+        $admin->assignRole('admin');
+
+        $response = $this->actingAs($admin)->post(route('courses.store'), $this->coursePayload(['type' => 'evento']));
+
+        $response->assertSessionHasErrors('title');
+        $this->assertDatabaseCount('courses', 0);
+    }
+
+    /**
+     * A corso keeps being named after its discipline: no title needed,
+     * and any stray one submitted from the (hidden) field is discarded.
+     */
+    public function test_a_corso_needs_no_title_and_ignores_one(): void
+    {
+        Role::create(['name' => 'admin']);
+        $admin = User::factory()->create();
+        $admin->assignRole('admin');
+
+        $this->actingAs($admin)->post(route('courses.store'), $this->coursePayload(['title' => 'Ignorato']))
+            ->assertSessionHasNoErrors();
+
+        $course = Course::sole();
+        $this->assertNull($course->title);
+        $this->assertSame('Aikido', $course->displayName());
+    }
+
+    /**
+     * An evento's title replaces the discipline name in the page header
+     * and in the courses list.
+     */
+    public function test_an_evento_is_shown_by_its_title(): void
+    {
+        Role::create(['name' => 'admin']);
+        Role::create(['name' => 'instructor']);
+        Role::create(['name' => 'member']);
+        $admin = User::factory()->create();
+        $admin->assignRole('admin');
+
+        $this->actingAs($admin)->post(route('courses.store'), $this->coursePayload(['type' => 'evento', 'title' => 'Stage estivo']))
+            ->assertSessionHasNoErrors();
+
+        $course = Course::sole();
+        $this->assertSame('Stage estivo', $course->displayName());
+
+        $this->get(route('courses.show', $course))->assertOk()->assertSee('Stage estivo');
+        $this->get(route('courses.index'))->assertOk()->assertSee('Stage estivo')->assertDontSee('Aikido');
     }
 }

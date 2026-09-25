@@ -64,7 +64,7 @@
                         @foreach ($dayLessons->take($view === 'week' ? 20 : 3) as $lesson)
                             <a href="{{ route('courses.lessons.attendance.edit', [$lesson->course, $lesson]) }}"
                                class="block truncate rounded-md px-1.5 py-1 text-xs font-medium {{ $accent['soft'] }} {{ $accent['text'] }} dark:bg-white/10 dark:text-gray-200">
-                                {{ $lesson->course->discipline->name }}
+                                {{ $lesson->course->displayName() }}
                             </a>
                         @endforeach
                         @if ($view === 'month' && $dayLessons->count() > 3)

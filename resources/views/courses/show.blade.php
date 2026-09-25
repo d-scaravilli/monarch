@@ -6,7 +6,7 @@
 @endphp
 
 <x-app-layout>
-    <x-slot name="header">{{ $course->discipline->name }}</x-slot>
+    <x-slot name="header">{{ $course->displayName() }}</x-slot>
 
     <div class="space-y-6" x-data="{ showPayments: false }">
         @if ($course->trashed())
@@ -51,7 +51,7 @@
                     </span>
                     <div>
                         <p class="text-lg font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
-                            {{ $course->discipline->name }}
+                            {{ $course->displayName() }}
                             <x-badge :color="$course->isEvento() ? 'purple' : 'gray'">{{ $course->isEvento() ? 'Evento' : 'Corso' }}</x-badge>
                         </p>
                         <p class="text-sm text-gray-500 dark:text-gray-400">{{ $course->room->name }} &middot; {{ $course->year }}</p>

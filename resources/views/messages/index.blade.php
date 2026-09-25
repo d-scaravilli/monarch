@@ -192,7 +192,7 @@
                                         <option value="">Seleziona...</option>
                                         @foreach ($coursePool as $course)
                                             <option value="{{ $course->id }}" @selected(old('course_id') == $course->id)>
-                                                {{ $course->discipline->name }} ({{ $course->year }})
+                                                {{ $course->displayName() }} ({{ $course->year }})
                                             </option>
                                         @endforeach
                                     </select>

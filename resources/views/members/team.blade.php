@@ -27,7 +27,7 @@
                     <select name="course_id" onchange="this.form.submit()" class="rounded-xl border-gray-200 bg-gray-50 dark:border-white/10 dark:bg-white/5 dark:text-gray-100">
                         <option value="">Tutti</option>
                         @foreach ($courses as $course)
-                            <option value="{{ $course->id }}" @selected(request('course_id') == $course->id)>{{ $course->discipline->name }} ({{ $course->year }})</option>
+                            <option value="{{ $course->id }}" @selected(request('course_id') == $course->id)>{{ $course->displayName() }} ({{ $course->year }})</option>
                         @endforeach
                     </select>
                 </div>
@@ -70,7 +70,7 @@
                         @if ($member->enrollments->isNotEmpty())
                             <div class="mt-3 flex flex-wrap justify-center gap-1.5">
                                 @foreach ($member->enrollments->take(3) as $enrollment)
-                                    <x-badge>{{ $enrollment->course->discipline->name }}</x-badge>
+                                    <x-badge>{{ $enrollment->course->displayName() }}</x-badge>
                                 @endforeach
                             </div>
                         @endif

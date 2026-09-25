@@ -261,7 +261,7 @@
                         <a href="{{ route('courses.show', $enrollment->course) }}" class="block px-5 py-3.5">
                             <div class="flex items-center justify-between">
                                 <div>
-                                    <p class="font-medium text-gray-900 dark:text-gray-100">{{ $enrollment->course->discipline->name }} &middot; {{ $enrollment->course->year }}</p>
+                                    <p class="font-medium text-gray-900 dark:text-gray-100">{{ $enrollment->course->displayName() }} &middot; {{ $enrollment->course->year }}</p>
                                     <p class="text-xs text-gray-400">Dal {{ $enrollment->enrollment_date->translatedFormat('d M Y') }}</p>
                                 </div>
                                 <x-badge :color="$enrollment->status === 'active' ? 'green' : 'gray'">{{ $enrollment->status }}</x-badge>
@@ -311,7 +311,7 @@
                                 <button type="button" @click="open = open === {{ $enrollment->id }} ? null : {{ $enrollment->id }}"
                                         class="w-full flex items-center justify-between gap-3 px-5 py-3.5 text-left">
                                     <div class="min-w-0">
-                                        <p class="font-medium text-gray-900 dark:text-gray-100 truncate">{{ $enrollment->course->discipline->name }} &middot; {{ $enrollment->course->year }}</p>
+                                        <p class="font-medium text-gray-900 dark:text-gray-100 truncate">{{ $enrollment->course->displayName() }} &middot; {{ $enrollment->course->year }}</p>
                                         <p class="text-xs text-gray-400">Pagato €{{ number_format($enrollment->paidAmount(), 2) }} di €{{ number_format($enrollment->dueAmount(), 2) }}</p>
                                     </div>
                                     <div class="flex items-center gap-2 shrink-0">

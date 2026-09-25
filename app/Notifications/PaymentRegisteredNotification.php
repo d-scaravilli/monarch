@@ -50,6 +50,6 @@ class PaymentRegisteredNotification extends Notification
 
     private function body(): string
     {
-        return '€'.number_format((float) $this->payment->amount, 2).' · '.$this->payment->enrollment->course->discipline->name;
+        return '€'.number_format((float) $this->payment->amount, 2).' · '.$this->payment->enrollment->course->displayName();
     }
 }

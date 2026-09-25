@@ -38,7 +38,7 @@
                         <select name="course_id" onchange="this.form.submit()" class="min-w-0 flex-1 rounded-xl border-gray-200 bg-gray-50 text-sm dark:border-white/10 dark:bg-white/5 dark:text-gray-100 sm:flex-none">
                             <option value="">Tutti i corsi</option>
                             @foreach ($courses as $course)
-                                <option value="{{ $course->id }}" @selected(request('course_id') == $course->id)>{{ $course->discipline->name }}</option>
+                                <option value="{{ $course->id }}" @selected(request('course_id') == $course->id)>{{ $course->displayName() }}</option>
                             @endforeach
                         </select>
                         <select name="room_id" onchange="this.form.submit()" class="min-w-0 flex-1 rounded-xl border-gray-200 bg-gray-50 text-sm dark:border-white/10 dark:bg-white/5 dark:text-gray-100 sm:flex-none">
