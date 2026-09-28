@@ -1,0 +1,4022 @@
+[
+ {
+  "slug": "saint-seiya",
+  "name": "Saint Seiya",
+  "subtitle": "I Cavalieri dello Zodiaco",
+  "theme": "t-ss",
+  "status": "completo",
+  "intro": "Schede per i cavalieri più conosciuti, con i colori della serie animata classica (1986) e le note sulle versioni manga. Controlla sempre la tua reference: statue e Myth Cloth usano spesso colori diversi.",
+  "armor_label": "Cloth",
+  "default_bases": [
+   "base-rock",
+   "base-marble"
+  ],
+  "groups": [
+   {
+    "slug": "bronzo",
+    "name": "Cavalieri di Bronzo"
+   },
+   {
+    "slug": "argento",
+    "name": "Cavalieri d'Argento"
+   },
+   {
+    "slug": "oro",
+    "name": "Cavalieri d'Oro"
+   },
+   {
+    "slug": "altri",
+    "name": "Altri personaggi"
+   }
+  ],
+  "characters": [
+   {
+    "slug": "seiya",
+    "group": "bronzo",
+    "name": "Seiya",
+    "alias_it": "Pegasus",
+    "subtitle": "Pegaso",
+    "search_query": "Pegasus Seiya",
+    "versions_note": "La cloth di Pegaso cambia molto tra anime e manga. Nell'anime diventa argento neutro con dettagli rossi e la tuta è rossa; nel manga ha una tinta blu e la tuta è bianca. Scegli la versione della tua stampa qui sopra: colori della cloth e della tuta si aggiornano.",
+    "no_face": false,
+    "no_eyes": false,
+    "bases": [
+     "base-rock",
+     "base-marble"
+    ],
+    "tips": [
+     "Le ali della cloth: drybrush di Sterling Silver Light sui bordi delle piume.",
+     "Prima di tutto verifica quale versione è la tua stampa: la forma dell'elmo e delle ali cambia a ogni versione."
+    ],
+    "zones": [
+     {
+      "position": 1,
+      "name": "Pelle",
+      "tab": null,
+      "recipe": "skin-tan",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 2,
+      "name": "Capelli",
+      "tab": null,
+      "recipe": "hair-auburn",
+      "target_hex": "#6b3a26",
+      "note": null
+     },
+     {
+      "position": 3,
+      "name": "Occhi",
+      "tab": null,
+      "recipe": null,
+      "target_hex": null,
+      "note": null,
+      "inline_steps": [
+       {
+        "position": 1,
+        "role": "Contorno",
+        "usage": "Linea superiore e fessura.",
+        "optional": false,
+        "technique": "punta",
+        "coverage": null,
+        "mix": [
+         {
+          "paint": "72.043",
+          "drops": 1
+         }
+        ]
+       },
+       {
+        "position": 2,
+        "role": "Bianco",
+        "usage": "Mai bianco puro.",
+        "optional": false,
+        "technique": null,
+        "coverage": null,
+        "mix": [
+         {
+          "paint": "72.034",
+          "drops": 1
+         }
+        ]
+       },
+       {
+        "position": 3,
+        "role": "Iride castana",
+        "usage": "Tocca la palpebra superiore.",
+        "optional": false,
+        "technique": null,
+        "coverage": null,
+        "mix": [
+         {
+          "paint": "72.040",
+          "drops": 1
+         }
+        ]
+       },
+       {
+        "position": 4,
+        "role": "Pupilla",
+        "usage": "",
+        "optional": false,
+        "technique": "punta",
+        "coverage": null,
+        "mix": [
+         {
+          "paint": "72.051",
+          "drops": 1
+         }
+        ]
+       },
+       {
+        "position": 5,
+        "role": "Punto luce",
+        "usage": "Micro riflesso, uguale nei due occhi.",
+        "optional": true,
+        "technique": "punta",
+        "coverage": 3,
+        "mix": [
+         {
+          "paint": "72.001",
+          "drops": 1
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "position": 4,
+      "name": "Gemme",
+      "tab": null,
+      "recipe": "gem-red",
+      "target_hex": null,
+      "note": null
+     }
+    ],
+    "versions": [
+     {
+      "slug": "a1",
+      "position": 1,
+      "label": "Anime V1",
+      "subtitle": "Santuario",
+      "note": "Nella serie del 1986 la prima cloth sembra argento chiaro, quasi bianco, più che argento cromato. Dettagli rossi, tuta rossa.",
+      "zones": [
+       {
+        "position": 1,
+        "name": "Cloth",
+        "tab": null,
+        "recipe": "cm-pearl",
+        "target_hex": null,
+        "note": null
+       },
+       {
+        "position": 2,
+        "name": "Parti rosse della cloth",
+        "tab": null,
+        "recipe": "cm-red",
+        "target_hex": null,
+        "note": null
+       },
+       {
+        "position": 3,
+        "name": "Tuta",
+        "tab": null,
+        "recipe": "fab-red",
+        "target_hex": null,
+        "note": null
+       }
+      ]
+     },
+     {
+      "slug": "a2",
+      "position": 2,
+      "label": "Anime V2",
+      "subtitle": "Asgard e Poseidone · manga V4",
+      "note": "Con l'avanzare della serie la cloth diventa più argento. Esiste anche una versione dorata, quando Seiya raggiunge il settimo senso.",
+      "zones": [
+       {
+        "position": 1,
+        "name": "Cloth",
+        "tab": null,
+        "recipe": "metal-silver",
+        "target_hex": null,
+        "note": null
+       },
+       {
+        "position": 2,
+        "name": "Parti rosse della cloth",
+        "tab": null,
+        "recipe": "cm-red",
+        "target_hex": null,
+        "note": null
+       },
+       {
+        "position": 3,
+        "name": "Tuta",
+        "tab": null,
+        "recipe": "fab-red",
+        "target_hex": null,
+        "note": null
+       }
+      ]
+     },
+     {
+      "slug": "a3",
+      "position": 3,
+      "label": "Anime V3",
+      "subtitle": "Hades · manga V5",
+      "note": "Argento, con i dettagli rossi.",
+      "zones": [
+       {
+        "position": 1,
+        "name": "Cloth",
+        "tab": null,
+        "recipe": "metal-silver",
+        "target_hex": null,
+        "note": null
+       },
+       {
+        "position": 2,
+        "name": "Parti rosse della cloth",
+        "tab": null,
+        "recipe": "cm-red",
+        "target_hex": null,
+        "note": null
+       },
+       {
+        "position": 3,
+        "name": "Tuta",
+        "tab": null,
+        "recipe": "fab-red",
+        "target_hex": null,
+        "note": null
+       }
+      ]
+     },
+     {
+      "slug": "m",
+      "position": 4,
+      "label": "Manga",
+      "subtitle": "e figure Original Color",
+      "note": "Kurumada la colora di argento con riflessi blu ferro. Tuta bianca e colori del personaggio più freddi.",
+      "zones": [
+       {
+        "position": 1,
+        "name": "Cloth",
+        "tab": null,
+        "recipe": "cm-ironblue",
+        "target_hex": null,
+        "note": null
+       },
+       {
+        "position": 2,
+        "name": "Tuta",
+        "tab": null,
+        "recipe": "fab-white",
+        "target_hex": null,
+        "note": null
+       }
+      ]
+     },
+     {
+      "slug": "gold",
+      "position": 5,
+      "label": "Versione dorata",
+      "subtitle": "Settimo senso",
+      "note": "La cloth V2 diventa d'oro quando Seiya raggiunge il settimo senso: esistono figure dedicate.",
+      "zones": [
+       {
+        "position": 1,
+        "name": "Cloth",
+        "tab": null,
+        "recipe": "metal-gold",
+        "target_hex": null,
+        "note": null
+       },
+       {
+        "position": 2,
+        "name": "Tuta",
+        "tab": null,
+        "recipe": "fab-red",
+        "target_hex": null,
+        "note": null
+       }
+      ]
+     },
+     {
+      "slug": "god",
+      "position": 6,
+      "label": "God Cloth",
+      "subtitle": "Hades Elysion",
+      "note": "Nel manga la God Cloth è oro puro; nel film Tenkai-hen è argento puro; negli OVA di Elysion ha colori simili alle cloth precedenti.",
+      "zones": [
+       {
+        "position": 1,
+        "name": "Cloth (OVA e film)",
+        "tab": null,
+        "recipe": "metal-silver",
+        "target_hex": null,
+        "note": null
+       },
+       {
+        "position": 2,
+        "name": "Cloth (manga)",
+        "tab": null,
+        "recipe": "metal-gold",
+        "target_hex": null,
+        "note": null
+       },
+       {
+        "position": 3,
+        "name": "Tuta",
+        "tab": null,
+        "recipe": "fab-red",
+        "target_hex": null,
+        "note": null
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "slug": "shiryu",
+    "group": "bronzo",
+    "name": "Shiryu",
+    "alias_it": "Sirio il Dragone",
+    "subtitle": "Dragone",
+    "search_query": "Dragon Shiryu",
+    "versions_note": "Nell'anime il colore del personaggio è il verde e la tuta della prima cloth è lavanda chiaro. Nel manga la cloth tende al nero-verde e la tuta è bianca. Nel manga la cloth cambia due volte già nell'arco del Santuario.",
+    "no_face": false,
+    "no_eyes": false,
+    "bases": [
+     "base-rock",
+     "base-grass"
+    ],
+    "tips": [
+     "Lo scudo del Dragone è una superficie grande: perfetta per provare il metallo colorato con la velatura.",
+     "I capelli arrivano alle ginocchia: usa il drybrush per far risaltare le ciocche."
+    ],
+    "zones": [
+     {
+      "position": 1,
+      "name": "Pelle",
+      "tab": null,
+      "recipe": "skin-tan",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 2,
+      "name": "Capelli",
+      "tab": null,
+      "recipe": "hair-black",
+      "target_hex": "#1e2433",
+      "note": null
+     },
+     {
+      "position": 3,
+      "name": "Occhi",
+      "tab": null,
+      "recipe": null,
+      "target_hex": null,
+      "note": null,
+      "inline_steps": [
+       {
+        "position": 1,
+        "role": "Contorno",
+        "usage": "",
+        "optional": false,
+        "technique": "punta",
+        "coverage": null,
+        "mix": [
+         {
+          "paint": "72.043",
+          "drops": 1
+         }
+        ]
+       },
+       {
+        "position": 2,
+        "role": "Bianco",
+        "usage": "",
+        "optional": false,
+        "technique": null,
+        "coverage": null,
+        "mix": [
+         {
+          "paint": "72.034",
+          "drops": 1
+         }
+        ]
+       },
+       {
+        "position": 3,
+        "role": "Iride",
+        "usage": "Blu scurissimo, quasi nero.",
+        "optional": false,
+        "technique": null,
+        "coverage": null,
+        "mix": [
+         {
+          "paint": "72.022",
+          "drops": 2
+         },
+         {
+          "paint": "72.051",
+          "drops": 1
+         }
+        ]
+       },
+       {
+        "position": 4,
+        "role": "Pupilla",
+        "usage": "",
+        "optional": false,
+        "technique": "punta",
+        "coverage": null,
+        "mix": [
+         {
+          "paint": "72.051",
+          "drops": 1
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "position": 4,
+      "name": "Abito cinese (senza cloth)",
+      "tab": "vestiti",
+      "recipe": "fab-white",
+      "target_hex": null,
+      "note": "Quando non indossa la cloth porta un abito cinese bianco."
+     },
+     {
+      "position": 5,
+      "name": "Tatuaggio del drago",
+      "tab": "dettagli",
+      "recipe": "fx-tattoo",
+      "target_hex": null,
+      "note": "Solo se la tua figura è a torso nudo."
+     }
+    ],
+    "versions": [
+     {
+      "slug": "a1",
+      "position": 1,
+      "label": "Anime V1",
+      "subtitle": "Santuario",
+      "note": "Cloth verde, tuta lavanda chiaro.",
+      "zones": [
+       {
+        "position": 1,
+        "name": "Cloth e scudo",
+        "tab": null,
+        "recipe": "cm-green",
+        "target_hex": null,
+        "note": null
+       },
+       {
+        "position": 2,
+        "name": "Tuta",
+        "tab": null,
+        "recipe": "fab-lavender",
+        "target_hex": null,
+        "note": null
+       }
+      ]
+     },
+     {
+      "slug": "a23",
+      "position": 2,
+      "label": "Anime V2 e V3",
+      "subtitle": "Poseidone e Hades",
+      "note": "Il verde resta il colore del Dragone. Le sfumature cambiano tra le versioni: confronta la tua reference.",
+      "zones": [
+       {
+        "position": 1,
+        "name": "Cloth e scudo",
+        "tab": null,
+        "recipe": "cm-green",
+        "target_hex": null,
+        "note": null
+       }
+      ]
+     },
+     {
+      "slug": "m",
+      "position": 3,
+      "label": "Manga",
+      "subtitle": "e figure Original Color",
+      "note": "Cloth molto scura, tra il nero e il verde, con tuta bianca.",
+      "zones": [
+       {
+        "position": 1,
+        "name": "Cloth e scudo",
+        "tab": null,
+        "recipe": "cm-darkgreen",
+        "target_hex": null,
+        "note": null
+       },
+       {
+        "position": 2,
+        "name": "Tuta",
+        "tab": null,
+        "recipe": "fab-white",
+        "target_hex": null,
+        "note": null
+       }
+      ]
+     },
+     {
+      "slug": "god",
+      "position": 4,
+      "label": "God Cloth",
+      "subtitle": "Hades Elysion",
+      "note": "Nel manga le God Cloth sono d'oro; negli OVA mantengono i colori delle cloth precedenti.",
+      "zones": [
+       {
+        "position": 1,
+        "name": "Cloth (OVA)",
+        "tab": null,
+        "recipe": "cm-green",
+        "target_hex": null,
+        "note": null
+       },
+       {
+        "position": 2,
+        "name": "Cloth (manga)",
+        "tab": null,
+        "recipe": "metal-gold",
+        "target_hex": null,
+        "note": null
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "slug": "hyoga",
+    "group": "bronzo",
+    "name": "Hyoga",
+    "alias_it": "Crystal",
+    "subtitle": "Cigno",
+    "search_query": "Cygnus Hyoga",
+    "versions_note": "Anime: cloth bianca-argento con tuta blu. Nel manga è il contrario: tuta bianca e cloth più azzurra.",
+    "no_face": false,
+    "no_eyes": false,
+    "bases": [
+     "base-snow",
+     "fx-ice"
+    ],
+    "tips": [
+     "Una cloth bianca sul primer nero richiede pazienza: prima Grigio Muraglia, poi Bianco Osso, poi il colore vero."
+    ],
+    "zones": [
+     {
+      "position": 1,
+      "name": "Pelle",
+      "tab": null,
+      "recipe": "skin-pale",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 2,
+      "name": "Capelli",
+      "tab": null,
+      "recipe": "hair-blond",
+      "target_hex": "#e6c66a",
+      "note": null
+     },
+     {
+      "position": 3,
+      "name": "Occhi",
+      "tab": null,
+      "recipe": null,
+      "target_hex": null,
+      "note": null,
+      "inline_steps": [
+       {
+        "position": 1,
+        "role": "Contorno",
+        "usage": "",
+        "optional": false,
+        "technique": "punta",
+        "coverage": null,
+        "mix": [
+         {
+          "paint": "72.043",
+          "drops": 1
+         }
+        ]
+       },
+       {
+        "position": 2,
+        "role": "Bianco",
+        "usage": "",
+        "optional": false,
+        "technique": null,
+        "coverage": null,
+        "mix": [
+         {
+          "paint": "72.034",
+          "drops": 1
+         }
+        ]
+       },
+       {
+        "position": 3,
+        "role": "Iride",
+        "usage": "Azzurri.",
+        "optional": false,
+        "technique": null,
+        "coverage": null,
+        "mix": [
+         {
+          "paint": "72.022",
+          "drops": 1
+         },
+         {
+          "paint": "72.001",
+          "drops": 1
+         }
+        ]
+       },
+       {
+        "position": 4,
+        "role": "Pupilla",
+        "usage": "",
+        "optional": false,
+        "technique": "punta",
+        "coverage": null,
+        "mix": [
+         {
+          "paint": "72.051",
+          "drops": 1
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "position": 4,
+      "name": "Effetto ghiaccio",
+      "tab": "dettagli",
+      "recipe": "fx-ice",
+      "target_hex": null,
+      "note": null
+     }
+    ],
+    "versions": [
+     {
+      "slug": "a1",
+      "position": 1,
+      "label": "Anime V1",
+      "subtitle": "Santuario",
+      "note": "Cloth bianca-argento, tuta blu-azzurra. L'elmo è una tiara con grandi ali.",
+      "zones": [
+       {
+        "position": 1,
+        "name": "Cloth",
+        "tab": null,
+        "recipe": "cm-pearl",
+        "target_hex": null,
+        "note": null
+       },
+       {
+        "position": 2,
+        "name": "Tuta",
+        "tab": null,
+        "recipe": "fab-lightblue",
+        "target_hex": null,
+        "note": null
+       }
+      ]
+     },
+     {
+      "slug": "a23",
+      "position": 2,
+      "label": "Anime V2 e V3",
+      "subtitle": "Poseidone e Hades",
+      "note": "Sempre bianca-argento, più slanciata. Un velo azzurro aiuta a darle l'aspetto di ghiaccio.",
+      "zones": [
+       {
+        "position": 1,
+        "name": "Cloth",
+        "tab": null,
+        "recipe": "cm-icy",
+        "target_hex": null,
+        "note": null
+       },
+       {
+        "position": 2,
+        "name": "Tuta",
+        "tab": null,
+        "recipe": "fab-lightblue",
+        "target_hex": null,
+        "note": null
+       }
+      ]
+     },
+     {
+      "slug": "m",
+      "position": 3,
+      "label": "Manga",
+      "subtitle": "e figure Original Color",
+      "note": "Cloth azzurra, tuta bianca.",
+      "zones": [
+       {
+        "position": 1,
+        "name": "Cloth",
+        "tab": null,
+        "recipe": "cm-icy",
+        "target_hex": null,
+        "note": null
+       },
+       {
+        "position": 2,
+        "name": "Tuta",
+        "tab": null,
+        "recipe": "fab-white",
+        "target_hex": null,
+        "note": null
+       }
+      ]
+     },
+     {
+      "slug": "god",
+      "position": 4,
+      "label": "God Cloth",
+      "subtitle": "Hades Elysion",
+      "note": "Nel manga oro; negli OVA colori simili alle cloth precedenti.",
+      "zones": [
+       {
+        "position": 1,
+        "name": "Cloth (OVA)",
+        "tab": null,
+        "recipe": "cm-pearl",
+        "target_hex": null,
+        "note": null
+       },
+       {
+        "position": 2,
+        "name": "Cloth (manga)",
+        "tab": null,
+        "recipe": "metal-gold",
+        "target_hex": null,
+        "note": null
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "slug": "shun",
+    "group": "bronzo",
+    "name": "Shun",
+    "alias_it": null,
+    "subtitle": "Andromeda",
+    "search_query": "Andromeda Shun",
+    "versions_note": "Anime: prima cloth rosa acceso con tuta verde; dopo la rinascita la cloth diventa più bordeaux che rosa e la tuta rosa chiaro. Manga: rosa metallico delicato, capelli castani e occhi azzurri.",
+    "no_face": false,
+    "no_eyes": false,
+    "bases": [
+     "base-rock"
+    ],
+    "tips": [
+     "Le catene: base Gun Metal, wash con Sterling Silver Shade, poi un drybrush di Sterling Silver Light.",
+     "Il rosa sul primer nero: prima una mano di Bianco Osso, altrimenti viene sporco."
+    ],
+    "zones": [
+     {
+      "position": 1,
+      "name": "Pelle",
+      "tab": null,
+      "recipe": "skin-pale",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 2,
+      "name": "Capelli",
+      "tab": null,
+      "recipe": "hair-green",
+      "target_hex": "#6fa863",
+      "note": null
+     },
+     {
+      "position": 3,
+      "name": "Occhi",
+      "tab": null,
+      "recipe": null,
+      "target_hex": null,
+      "note": null,
+      "inline_steps": [
+       {
+        "position": 1,
+        "role": "Contorno",
+        "usage": "",
+        "optional": false,
+        "technique": "punta",
+        "coverage": null,
+        "mix": [
+         {
+          "paint": "72.043",
+          "drops": 1
+         }
+        ]
+       },
+       {
+        "position": 2,
+        "role": "Bianco",
+        "usage": "",
+        "optional": false,
+        "technique": null,
+        "coverage": null,
+        "mix": [
+         {
+          "paint": "72.034",
+          "drops": 1
+         }
+        ]
+       },
+       {
+        "position": 3,
+        "role": "Iride",
+        "usage": "Verdi (anime).",
+        "optional": false,
+        "technique": null,
+        "coverage": null,
+        "mix": [
+         {
+          "paint": "72.030",
+          "drops": 1
+         },
+         {
+          "paint": "72.034",
+          "drops": 1
+         }
+        ]
+       },
+       {
+        "position": 4,
+        "role": "Pupilla",
+        "usage": "",
+        "optional": false,
+        "technique": "punta",
+        "coverage": null,
+        "mix": [
+         {
+          "paint": "72.051",
+          "drops": 1
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "position": 4,
+      "name": "Catene",
+      "tab": null,
+      "recipe": "metal-steel",
+      "target_hex": null,
+      "note": null
+     }
+    ],
+    "versions": [
+     {
+      "slug": "a1",
+      "position": 1,
+      "label": "Anime V1",
+      "subtitle": "Santuario",
+      "note": "Il rosa più acceso della serie. Tuta verde.",
+      "zones": [
+       {
+        "position": 1,
+        "name": "Cloth",
+        "tab": null,
+        "recipe": "cm-pink",
+        "target_hex": null,
+        "note": null
+       },
+       {
+        "position": 2,
+        "name": "Tuta",
+        "tab": null,
+        "recipe": "fab-green",
+        "target_hex": null,
+        "note": null
+       }
+      ]
+     },
+     {
+      "slug": "a23",
+      "position": 2,
+      "label": "Anime V2 e V3",
+      "subtitle": "Dopo la rinascita",
+      "note": "Cloth più bordeaux che rosa, tuta rosa chiaro.",
+      "zones": [
+       {
+        "position": 1,
+        "name": "Cloth",
+        "tab": null,
+        "recipe": "cm-burgundy",
+        "target_hex": null,
+        "note": null
+       },
+       {
+        "position": 2,
+        "name": "Tuta",
+        "tab": null,
+        "recipe": "fab-lightpink",
+        "target_hex": null,
+        "note": null
+       }
+      ]
+     },
+     {
+      "slug": "m",
+      "position": 3,
+      "label": "Manga",
+      "subtitle": "e figure Original Color",
+      "note": "Rosa metallico più delicato, capelli castani, occhi azzurri.",
+      "zones": [
+       {
+        "position": 1,
+        "name": "Cloth",
+        "tab": null,
+        "recipe": "cm-pink",
+        "target_hex": null,
+        "note": null
+       },
+       {
+        "position": 2,
+        "name": "Capelli",
+        "tab": null,
+        "recipe": "hair-brown",
+        "target_hex": "#8a5a3a",
+        "note": null
+       },
+       {
+        "position": 3,
+        "name": "Occhi",
+        "tab": null,
+        "recipe": null,
+        "target_hex": null,
+        "note": null,
+        "inline_steps": [
+         {
+          "position": 1,
+          "role": "Contorno",
+          "usage": "",
+          "optional": false,
+          "technique": "punta",
+          "coverage": null,
+          "mix": [
+           {
+            "paint": "72.043",
+            "drops": 1
+           }
+          ]
+         },
+         {
+          "position": 2,
+          "role": "Bianco",
+          "usage": "",
+          "optional": false,
+          "technique": null,
+          "coverage": null,
+          "mix": [
+           {
+            "paint": "72.034",
+            "drops": 1
+           }
+          ]
+         },
+         {
+          "position": 3,
+          "role": "Iride",
+          "usage": "Azzurri (manga).",
+          "optional": false,
+          "technique": null,
+          "coverage": null,
+          "mix": [
+           {
+            "paint": "72.022",
+            "drops": 1
+           },
+           {
+            "paint": "72.001",
+            "drops": 1
+           }
+          ]
+         },
+         {
+          "position": 4,
+          "role": "Pupilla",
+          "usage": "",
+          "optional": false,
+          "technique": "punta",
+          "coverage": null,
+          "mix": [
+           {
+            "paint": "72.051",
+            "drops": 1
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "position": 4,
+        "name": "Tuta",
+        "tab": null,
+        "recipe": "fab-white",
+        "target_hex": null,
+        "note": null
+       }
+      ]
+     },
+     {
+      "slug": "god",
+      "position": 4,
+      "label": "God Cloth",
+      "subtitle": "Hades Elysion",
+      "note": "Nel manga oro; negli OVA colori simili alle cloth precedenti.",
+      "zones": [
+       {
+        "position": 1,
+        "name": "Cloth (OVA)",
+        "tab": null,
+        "recipe": "cm-pink",
+        "target_hex": null,
+        "note": null
+       },
+       {
+        "position": 2,
+        "name": "Cloth (manga)",
+        "tab": null,
+        "recipe": "metal-gold",
+        "target_hex": null,
+        "note": null
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "slug": "ikki",
+    "group": "bronzo",
+    "name": "Ikki",
+    "alias_it": "Phoenix",
+    "subtitle": "Fenice",
+    "search_query": "Phoenix Ikki",
+    "versions_note": "È la cloth che cambia di più. Manga: tutta arancione. Anime V1: bianca-argento e rosa con dettagli arancio. Anime V2 e seguenti: argento e blu notte.",
+    "no_face": false,
+    "no_eyes": false,
+    "bases": [
+     "base-lava",
+     "fx-fire"
+    ],
+    "tips": [
+     "Scegli la versione prima di iniziare: anime e manga hanno colori completamente diversi.",
+     "Per la basetta: fiamme o lava."
+    ],
+    "zones": [
+     {
+      "position": 1,
+      "name": "Pelle",
+      "tab": null,
+      "recipe": "skin-tan",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 2,
+      "name": "Capelli",
+      "tab": null,
+      "recipe": "hair-navy",
+      "target_hex": "#22335e",
+      "note": null
+     },
+     {
+      "position": 3,
+      "name": "Occhi",
+      "tab": null,
+      "recipe": null,
+      "target_hex": null,
+      "note": null,
+      "inline_steps": [
+       {
+        "position": 1,
+        "role": "Contorno",
+        "usage": "",
+        "optional": false,
+        "technique": "punta",
+        "coverage": null,
+        "mix": [
+         {
+          "paint": "72.043",
+          "drops": 1
+         }
+        ]
+       },
+       {
+        "position": 2,
+        "role": "Bianco",
+        "usage": "",
+        "optional": false,
+        "technique": null,
+        "coverage": null,
+        "mix": [
+         {
+          "paint": "72.034",
+          "drops": 1
+         }
+        ]
+       },
+       {
+        "position": 3,
+        "role": "Iride",
+        "usage": "Blu scuri.",
+        "optional": false,
+        "technique": null,
+        "coverage": null,
+        "mix": [
+         {
+          "paint": "72.022",
+          "drops": 2
+         },
+         {
+          "paint": "72.051",
+          "drops": 1
+         }
+        ]
+       },
+       {
+        "position": 4,
+        "role": "Pupilla",
+        "usage": "",
+        "optional": false,
+        "technique": "punta",
+        "coverage": null,
+        "mix": [
+         {
+          "paint": "72.051",
+          "drops": 1
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "position": 4,
+      "name": "Cicatrice sulla fronte",
+      "tab": null,
+      "recipe": null,
+      "target_hex": null,
+      "note": null,
+      "inline_steps": [
+       {
+        "position": 1,
+        "role": "Cicatrice",
+        "usage": "Linea sottile tra gli occhi.",
+        "optional": false,
+        "technique": "spigoli",
+        "coverage": null,
+        "mix": [
+         {
+          "paint": "72.071",
+          "drops": 2
+         },
+         {
+          "paint": "72.010",
+          "drops": 1
+         }
+        ]
+       },
+       {
+        "position": 2,
+        "role": "Luce",
+        "usage": "Su un solo lato della cicatrice.",
+        "optional": false,
+        "technique": "sottile",
+        "coverage": 30,
+        "mix": [
+         {
+          "paint": "72.098",
+          "drops": 1
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    "versions": [
+     {
+      "slug": "a1",
+      "position": 1,
+      "label": "Anime V1",
+      "subtitle": "Santuario",
+      "note": "Parte alta bianca-argento, parte bassa rosa, dettagli arancio, tuta blu.",
+      "zones": [
+       {
+        "position": 1,
+        "name": "Cloth parte alta",
+        "tab": null,
+        "recipe": "cm-pearl",
+        "target_hex": null,
+        "note": null
+       },
+       {
+        "position": 2,
+        "name": "Cloth parte bassa",
+        "tab": null,
+        "recipe": "cm-pink",
+        "target_hex": null,
+        "note": null
+       },
+       {
+        "position": 3,
+        "name": "Dettagli arancio",
+        "tab": null,
+        "recipe": "fab-orange",
+        "target_hex": null,
+        "note": null
+       },
+       {
+        "position": 4,
+        "name": "Tuta",
+        "tab": null,
+        "recipe": "fab-blue",
+        "target_hex": null,
+        "note": null
+       }
+      ]
+     },
+     {
+      "slug": "a23",
+      "position": 2,
+      "label": "Anime V2 e V3",
+      "subtitle": "Poseidone e Hades",
+      "note": "Tutta argento e blu notte.",
+      "zones": [
+       {
+        "position": 1,
+        "name": "Cloth argento",
+        "tab": null,
+        "recipe": "metal-silver",
+        "target_hex": null,
+        "note": null
+       },
+       {
+        "position": 2,
+        "name": "Cloth blu notte",
+        "tab": null,
+        "recipe": "cm-blue",
+        "target_hex": null,
+        "note": null
+       },
+       {
+        "position": 3,
+        "name": "Tuta",
+        "tab": null,
+        "recipe": "fab-blue",
+        "target_hex": null,
+        "note": null
+       }
+      ]
+     },
+     {
+      "slug": "m",
+      "position": 3,
+      "label": "Manga",
+      "subtitle": "e figure Original Color",
+      "note": "Arancione acceso, tuta bianca.",
+      "zones": [
+       {
+        "position": 1,
+        "name": "Cloth",
+        "tab": null,
+        "recipe": "cm-orange",
+        "target_hex": null,
+        "note": null
+       },
+       {
+        "position": 2,
+        "name": "Tuta",
+        "tab": null,
+        "recipe": "fab-white",
+        "target_hex": null,
+        "note": null
+       }
+      ]
+     },
+     {
+      "slug": "god",
+      "position": 4,
+      "label": "God Cloth",
+      "subtitle": "Hades Elysion",
+      "note": "Nel manga oro; negli OVA colori simili alle cloth precedenti.",
+      "zones": [
+       {
+        "position": 1,
+        "name": "Cloth (OVA)",
+        "tab": null,
+        "recipe": "metal-silver",
+        "target_hex": null,
+        "note": null
+       },
+       {
+        "position": 2,
+        "name": "Cloth (manga)",
+        "tab": null,
+        "recipe": "metal-gold",
+        "target_hex": null,
+        "note": null
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "slug": "marin",
+    "group": "argento",
+    "name": "Marin",
+    "alias_it": "Castalia",
+    "subtitle": "Aquila",
+    "search_query": "Eagle Marin",
+    "versions_note": "Capelli rossi nell'anime, maschera argentata.",
+    "no_face": false,
+    "no_eyes": true,
+    "bases": null,
+    "tips": [
+     "La maschera è liscia: l'argento va steso in mani sottilissime per non lasciare segni del pennello."
+    ],
+    "zones": [
+     {
+      "position": 1,
+      "name": "Pelle",
+      "tab": null,
+      "recipe": "skin-pale",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 2,
+      "name": "Capelli",
+      "tab": null,
+      "recipe": "hair-red",
+      "target_hex": "#b8452e",
+      "note": null
+     },
+     {
+      "position": 3,
+      "name": "Maschera",
+      "tab": null,
+      "recipe": null,
+      "target_hex": null,
+      "note": null,
+      "inline_steps": [
+       {
+        "position": 1,
+        "role": "Base",
+        "usage": "Due mani sottilissime, senza segni del pennello.",
+        "optional": false,
+        "technique": "coprente",
+        "coverage": 100,
+        "mix": [
+         {
+          "paint": "77.121",
+          "drops": 1
+         }
+        ]
+       },
+       {
+        "position": 2,
+        "role": "Luce",
+        "usage": "Fronte e zigomi della maschera.",
+        "optional": false,
+        "technique": "sottile",
+        "coverage": 30,
+        "mix": [
+         {
+          "paint": "77.101",
+          "drops": 1
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "position": 4,
+      "name": "Cloth",
+      "tab": null,
+      "recipe": "metal-silver",
+      "target_hex": null,
+      "note": null
+     }
+    ],
+    "versions": []
+   },
+   {
+    "slug": "shaina",
+    "group": "argento",
+    "name": "Shaina",
+    "alias_it": "Tisifone",
+    "subtitle": "Ofiuco",
+    "search_query": "Ophiuchus Shaina",
+    "versions_note": "Nell'anime capelli verdi, nel manga neri.",
+    "no_face": false,
+    "no_eyes": true,
+    "bases": null,
+    "tips": [
+     "Thunder Claw: una velatura di Blu Ultramar sulle dita dà l'effetto elettrico."
+    ],
+    "zones": [
+     {
+      "position": 1,
+      "name": "Pelle",
+      "tab": null,
+      "recipe": "skin-pale",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 2,
+      "name": "Capelli",
+      "tab": null,
+      "recipe": "hair-green",
+      "target_hex": "#4e8a4a",
+      "note": null
+     },
+     {
+      "position": 3,
+      "name": "Maschera",
+      "tab": null,
+      "recipe": null,
+      "target_hex": null,
+      "note": null,
+      "inline_steps": [
+       {
+        "position": 1,
+        "role": "Base",
+        "usage": "",
+        "optional": false,
+        "technique": "coprente",
+        "coverage": 100,
+        "mix": [
+         {
+          "paint": "77.121",
+          "drops": 1
+         }
+        ]
+       },
+       {
+        "position": 2,
+        "role": "Luce",
+        "usage": "",
+        "optional": false,
+        "technique": "sottile",
+        "coverage": 30,
+        "mix": [
+         {
+          "paint": "77.101",
+          "drops": 1
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "position": 4,
+      "name": "Cloth",
+      "tab": null,
+      "recipe": "metal-silver",
+      "target_hex": null,
+      "note": null
+     }
+    ],
+    "versions": []
+   },
+   {
+    "slug": "misty",
+    "group": "argento",
+    "name": "Misty",
+    "alias_it": null,
+    "subtitle": "Lucertola",
+    "search_query": "Lizard Misty",
+    "versions_note": null,
+    "no_face": false,
+    "no_eyes": false,
+    "bases": null,
+    "tips": [],
+    "zones": [
+     {
+      "position": 1,
+      "name": "Pelle",
+      "tab": null,
+      "recipe": "skin-pale",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 2,
+      "name": "Capelli",
+      "tab": null,
+      "recipe": "hair-blond",
+      "target_hex": "#ebd387",
+      "note": null
+     },
+     {
+      "position": 3,
+      "name": "Cloth",
+      "tab": null,
+      "recipe": "metal-silver",
+      "target_hex": null,
+      "note": null
+     }
+    ],
+    "versions": []
+   },
+   {
+    "slug": "mu",
+    "group": "oro",
+    "name": "Mu",
+    "alias_it": "Mur",
+    "subtitle": "Ariete",
+    "search_query": "Aries Mu",
+    "versions_note": "Capelli lilla, due puntini sulla fronte tipici del suo popolo.",
+    "no_face": false,
+    "no_eyes": false,
+    "bases": null,
+    "tips": [],
+    "zones": [
+     {
+      "position": 1,
+      "name": "Pelle",
+      "tab": null,
+      "recipe": "skin-pale",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 2,
+      "name": "Capelli",
+      "tab": null,
+      "recipe": "hair-lilac",
+      "target_hex": "#b89cc9",
+      "note": null
+     },
+     {
+      "position": 3,
+      "name": "Puntini sulla fronte",
+      "tab": null,
+      "recipe": null,
+      "target_hex": null,
+      "note": null,
+      "inline_steps": [
+       {
+        "position": 1,
+        "role": "Puntini",
+        "usage": "Due puntini. Controlla il colore sulla tua reference.",
+        "optional": false,
+        "technique": "punta",
+        "coverage": 3,
+        "mix": [
+         {
+          "paint": "72.071",
+          "drops": 1
+         },
+         {
+          "paint": "72.010",
+          "drops": 1
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "position": 4,
+      "name": "Gold Cloth",
+      "tab": null,
+      "recipe": "metal-gold",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 5,
+      "name": "Mantello",
+      "tab": null,
+      "recipe": "fab-white",
+      "target_hex": null,
+      "note": null
+     }
+    ],
+    "versions": []
+   },
+   {
+    "slug": "aldebaran",
+    "group": "oro",
+    "name": "Aldebaran",
+    "alias_it": "Toro",
+    "subtitle": "Toro",
+    "search_query": "Taurus Aldebaran",
+    "versions_note": "Nell'anime ha la pelle scura; nel manga è biondo.",
+    "no_face": false,
+    "no_eyes": false,
+    "bases": null,
+    "tips": [
+     "In molte versioni un corno dell'elmo è spezzato: dentro la frattura Imperial Gold Shade, sui bordi Light."
+    ],
+    "zones": [
+     {
+      "position": 1,
+      "name": "Pelle",
+      "tab": null,
+      "recipe": "skin-dark",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 2,
+      "name": "Capelli",
+      "tab": null,
+      "recipe": "hair-darkbrown",
+      "target_hex": "#3a2a22",
+      "note": null
+     },
+     {
+      "position": 3,
+      "name": "Gold Cloth",
+      "tab": null,
+      "recipe": "metal-gold",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 4,
+      "name": "Mantello",
+      "tab": null,
+      "recipe": "fab-white",
+      "target_hex": null,
+      "note": null
+     }
+    ],
+    "versions": []
+   },
+   {
+    "slug": "saga",
+    "group": "oro",
+    "name": "Saga",
+    "alias_it": "Gemini",
+    "subtitle": "Gemelli",
+    "search_query": "Gemini Saga",
+    "versions_note": "Anime: capelli blu. Nella versione malvagia capelli grigi e occhi rossi. Nell'arco di Hades torna con una Surplice.",
+    "no_face": false,
+    "no_eyes": false,
+    "bases": null,
+    "tips": [
+     "L'elmo ha due volti: dipingine uno con più Shade per differenziarli."
+    ],
+    "zones": [
+     {
+      "position": 1,
+      "name": "Pelle",
+      "tab": null,
+      "recipe": "skin-pale",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 2,
+      "name": "Capelli",
+      "tab": null,
+      "recipe": "hair-blue",
+      "target_hex": "#3a5a9e",
+      "note": null
+     },
+     {
+      "position": 3,
+      "name": "Capelli (versione malvagia)",
+      "tab": null,
+      "recipe": "hair-grey",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 4,
+      "name": "Occhi (versione malvagia)",
+      "tab": null,
+      "recipe": null,
+      "target_hex": null,
+      "note": null,
+      "inline_steps": [
+       {
+        "position": 1,
+        "role": "Iride",
+        "usage": "Rossi.",
+        "optional": false,
+        "technique": null,
+        "coverage": null,
+        "mix": [
+         {
+          "paint": "72.010",
+          "drops": 1
+         }
+        ]
+       },
+       {
+        "position": 2,
+        "role": "Pupilla",
+        "usage": "",
+        "optional": false,
+        "technique": "punta",
+        "coverage": null,
+        "mix": [
+         {
+          "paint": "72.051",
+          "drops": 1
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    "versions": [
+     {
+      "slug": "gold",
+      "position": 1,
+      "label": "Gold Cloth",
+      "subtitle": "Santuario",
+      "note": null,
+      "zones": [
+       {
+        "position": 1,
+        "name": "Gold Cloth",
+        "tab": null,
+        "recipe": "metal-gold",
+        "target_hex": null,
+        "note": null
+       },
+       {
+        "position": 2,
+        "name": "Mantello",
+        "tab": null,
+        "recipe": "fab-white",
+        "target_hex": null,
+        "note": null
+       }
+      ]
+     },
+     {
+      "slug": "surplice",
+      "position": 2,
+      "label": "Surplice",
+      "subtitle": "Arco di Hades",
+      "note": "Torna in vita come Specter, con una Surplice nera.",
+      "zones": [
+       {
+        "position": 1,
+        "name": "Surplice",
+        "tab": null,
+        "recipe": "metal-surplice",
+        "target_hex": null,
+        "note": null
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "slug": "kanon",
+    "group": "oro",
+    "name": "Kanon",
+    "alias_it": null,
+    "subtitle": "Gemelli",
+    "search_query": "Gemini Kanon",
+    "versions_note": "Nell'anime ha capelli più verdi di Saga (teal).",
+    "no_face": false,
+    "no_eyes": false,
+    "bases": null,
+    "tips": [],
+    "zones": [
+     {
+      "position": 1,
+      "name": "Pelle",
+      "tab": null,
+      "recipe": "skin-pale",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 2,
+      "name": "Capelli",
+      "tab": null,
+      "recipe": "hair-teal",
+      "target_hex": "#3e8c88",
+      "note": null
+     }
+    ],
+    "versions": [
+     {
+      "slug": "gold",
+      "position": 1,
+      "label": "Gold Cloth",
+      "subtitle": "Hades",
+      "note": null,
+      "zones": [
+       {
+        "position": 1,
+        "name": "Gold Cloth",
+        "tab": null,
+        "recipe": "metal-gold",
+        "target_hex": null,
+        "note": null
+       }
+      ]
+     },
+     {
+      "slug": "scale",
+      "position": 2,
+      "label": "Scaglia",
+      "subtitle": "Poseidone (Sea Dragon)",
+      "note": "Come Generale di Poseidone indossa una Scaglia di oricalco.",
+      "zones": [
+       {
+        "position": 1,
+        "name": "Scaglia",
+        "tab": null,
+        "recipe": "metal-orichalcum",
+        "target_hex": null,
+        "note": null
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "slug": "deathmask",
+    "group": "oro",
+    "name": "Deathmask",
+    "alias_it": "Cancer",
+    "subtitle": "Cancro",
+    "search_query": "Cancer Deathmask",
+    "versions_note": "Anime: capelli e occhi blu. Manga: capelli grigi e occhi rossi.",
+    "no_face": false,
+    "no_eyes": false,
+    "bases": null,
+    "tips": [
+     "Se la basetta ha i volti delle anime: Bianco Osso, wash di Sterling Silver Shade, luce di Bianco Teschio."
+    ],
+    "zones": [
+     {
+      "position": 1,
+      "name": "Pelle",
+      "tab": null,
+      "recipe": "skin-tan",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 2,
+      "name": "Capelli",
+      "tab": null,
+      "recipe": "hair-blue",
+      "target_hex": "#3d63a8",
+      "note": null
+     },
+     {
+      "position": 3,
+      "name": "Occhi",
+      "tab": null,
+      "recipe": null,
+      "target_hex": null,
+      "note": null,
+      "inline_steps": [
+       {
+        "position": 1,
+        "role": "Contorno",
+        "usage": "",
+        "optional": false,
+        "technique": "punta",
+        "coverage": null,
+        "mix": [
+         {
+          "paint": "72.043",
+          "drops": 1
+         }
+        ]
+       },
+       {
+        "position": 2,
+        "role": "Bianco",
+        "usage": "",
+        "optional": false,
+        "technique": null,
+        "coverage": null,
+        "mix": [
+         {
+          "paint": "72.034",
+          "drops": 1
+         }
+        ]
+       },
+       {
+        "position": 3,
+        "role": "Iride",
+        "usage": "Blu.",
+        "optional": false,
+        "technique": null,
+        "coverage": null,
+        "mix": [
+         {
+          "paint": "72.022",
+          "drops": 1
+         },
+         {
+          "paint": "72.001",
+          "drops": 1
+         }
+        ]
+       },
+       {
+        "position": 4,
+        "role": "Pupilla",
+        "usage": "",
+        "optional": false,
+        "technique": "punta",
+        "coverage": null,
+        "mix": [
+         {
+          "paint": "72.051",
+          "drops": 1
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    "versions": [
+     {
+      "slug": "gold",
+      "position": 1,
+      "label": "Gold Cloth",
+      "subtitle": "Santuario",
+      "note": null,
+      "zones": [
+       {
+        "position": 1,
+        "name": "Gold Cloth",
+        "tab": null,
+        "recipe": "metal-gold",
+        "target_hex": null,
+        "note": null
+       },
+       {
+        "position": 2,
+        "name": "Mantello",
+        "tab": null,
+        "recipe": "fab-white",
+        "target_hex": null,
+        "note": null
+       }
+      ]
+     },
+     {
+      "slug": "surplice",
+      "position": 2,
+      "label": "Surplice",
+      "subtitle": "Arco di Hades",
+      "note": "Torna in vita come Specter, con una Surplice nera.",
+      "zones": [
+       {
+        "position": 1,
+        "name": "Surplice",
+        "tab": null,
+        "recipe": "metal-surplice",
+        "target_hex": null,
+        "note": null
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "slug": "aiolia",
+    "group": "oro",
+    "name": "Aiolia",
+    "alias_it": "Ioria",
+    "subtitle": "Leone",
+    "search_query": "Leo Aiolia",
+    "versions_note": "Nell'anime castano chiaro, nel manga biondo.",
+    "no_face": false,
+    "no_eyes": false,
+    "bases": null,
+    "tips": [
+     "Lightning Plasma: velature di Bianco Teschio e Giallo Soleggiato sulla basetta."
+    ],
+    "zones": [
+     {
+      "position": 1,
+      "name": "Pelle",
+      "tab": null,
+      "recipe": "skin-tan",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 2,
+      "name": "Capelli",
+      "tab": null,
+      "recipe": "hair-lightbrown",
+      "target_hex": "#9a6a3e",
+      "note": null
+     },
+     {
+      "position": 3,
+      "name": "Gold Cloth",
+      "tab": null,
+      "recipe": "metal-gold",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 4,
+      "name": "Mantello",
+      "tab": null,
+      "recipe": "fab-white",
+      "target_hex": null,
+      "note": null
+     }
+    ],
+    "versions": []
+   },
+   {
+    "slug": "shaka",
+    "group": "oro",
+    "name": "Shaka",
+    "alias_it": "Virgo",
+    "subtitle": "Vergine",
+    "search_query": "Virgo Shaka",
+    "versions_note": "Biondo sia nel manga sia nell'anime. Occhi quasi sempre chiusi (azzurri nell'anime, verdi nel manga). Punto rosso sulla fronte.",
+    "no_face": false,
+    "no_eyes": false,
+    "bases": null,
+    "tips": [],
+    "zones": [
+     {
+      "position": 1,
+      "name": "Pelle",
+      "tab": null,
+      "recipe": "skin-pale",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 2,
+      "name": "Capelli",
+      "tab": null,
+      "recipe": "hair-blond",
+      "target_hex": "#e9cd6e",
+      "note": null
+     },
+     {
+      "position": 3,
+      "name": "Occhi chiusi",
+      "tab": null,
+      "recipe": null,
+      "target_hex": null,
+      "note": null,
+      "inline_steps": [
+       {
+        "position": 1,
+        "role": "Linea delle ciglia",
+        "usage": "Una linea curva sottile per occhio.",
+        "optional": false,
+        "technique": "punta",
+        "coverage": null,
+        "mix": [
+         {
+          "paint": "72.043",
+          "drops": 1
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "position": 4,
+      "name": "Punto sulla fronte",
+      "tab": null,
+      "recipe": null,
+      "target_hex": null,
+      "note": null,
+      "inline_steps": [
+       {
+        "position": 1,
+        "role": "Punto",
+        "usage": "Un punto preciso.",
+        "optional": false,
+        "technique": "punta",
+        "coverage": 3,
+        "mix": [
+         {
+          "paint": "72.010",
+          "drops": 1
+         }
+        ]
+       },
+       {
+        "position": 2,
+        "role": "Riflesso",
+        "usage": "Microriflesso.",
+        "optional": false,
+        "technique": "punta",
+        "coverage": null,
+        "mix": [
+         {
+          "paint": "72.001",
+          "drops": 1
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "position": 5,
+      "name": "Rosario",
+      "tab": null,
+      "recipe": "wood",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 6,
+      "name": "Gold Cloth",
+      "tab": null,
+      "recipe": "metal-gold",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 7,
+      "name": "Mantello",
+      "tab": null,
+      "recipe": "fab-white",
+      "target_hex": null,
+      "note": null
+     }
+    ],
+    "versions": []
+   },
+   {
+    "slug": "dohko",
+    "group": "oro",
+    "name": "Dohko",
+    "alias_it": "Il Vecchio Maestro",
+    "subtitle": "Bilancia",
+    "search_query": "Libra Dohko",
+    "versions_note": "Giovane: capelli castano-rossicci scuri (anime). Anziano: piccolo e con la pelle viola.",
+    "no_face": false,
+    "no_eyes": false,
+    "bases": null,
+    "tips": [
+     "Le dodici armi della Bilancia: alterna Oro antico e Oro normale per non farle sembrare tutte uguali."
+    ],
+    "zones": [
+     {
+      "position": 1,
+      "name": "Pelle (giovane)",
+      "tab": null,
+      "recipe": "skin-tan",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 2,
+      "name": "Pelle (anziano)",
+      "tab": null,
+      "recipe": "skin-purple",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 3,
+      "name": "Capelli",
+      "tab": null,
+      "recipe": "hair-auburn",
+      "target_hex": "#5e2e24",
+      "note": null
+     },
+     {
+      "position": 4,
+      "name": "Gold Cloth e armi",
+      "tab": null,
+      "recipe": "metal-gold",
+      "target_hex": null,
+      "note": null
+     }
+    ],
+    "versions": []
+   },
+   {
+    "slug": "milo",
+    "group": "oro",
+    "name": "Milo",
+    "alias_it": "Scorpio",
+    "subtitle": "Scorpione",
+    "search_query": "Scorpio Milo",
+    "versions_note": "Anime: capelli viola. Manga: biondo.",
+    "no_face": false,
+    "no_eyes": false,
+    "bases": null,
+    "tips": [],
+    "zones": [
+     {
+      "position": 1,
+      "name": "Pelle",
+      "tab": null,
+      "recipe": "skin-tan",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 2,
+      "name": "Capelli",
+      "tab": null,
+      "recipe": "hair-purple",
+      "target_hex": "#5b3e86",
+      "note": null
+     },
+     {
+      "position": 3,
+      "name": "Unghia rossa (Scarlet Needle)",
+      "tab": "dettagli",
+      "recipe": null,
+      "target_hex": null,
+      "note": null,
+      "inline_steps": [
+       {
+        "position": 1,
+        "role": "Base",
+        "usage": "",
+        "optional": false,
+        "technique": "coprente",
+        "coverage": 100,
+        "mix": [
+         {
+          "paint": "72.010",
+          "drops": 1
+         }
+        ]
+       },
+       {
+        "position": 2,
+        "role": "Luce",
+        "usage": "",
+        "optional": false,
+        "technique": "sottile",
+        "coverage": 30,
+        "mix": [
+         {
+          "paint": "72.010",
+          "drops": 1
+         },
+         {
+          "paint": "72.008",
+          "drops": 1
+         }
+        ]
+       },
+       {
+        "position": 3,
+        "role": "Riflesso",
+        "usage": "",
+        "optional": false,
+        "technique": "punta",
+        "coverage": null,
+        "mix": [
+         {
+          "paint": "72.001",
+          "drops": 1
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "position": 4,
+      "name": "Gold Cloth",
+      "tab": null,
+      "recipe": "metal-gold",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 5,
+      "name": "Mantello",
+      "tab": null,
+      "recipe": "fab-white",
+      "target_hex": null,
+      "note": null
+     }
+    ],
+    "versions": []
+   },
+   {
+    "slug": "aiolos",
+    "group": "oro",
+    "name": "Aiolos",
+    "alias_it": "Micene",
+    "subtitle": "Sagittario",
+    "search_query": "Sagittarius Aiolos",
+    "versions_note": "Capelli castani. La Gold Cloth ha grandi ali.",
+    "no_face": false,
+    "no_eyes": false,
+    "bases": null,
+    "tips": [
+     "Ali: Imperial Gold Base, Shade tra le piume, poi drybrush di Imperial Gold Light sulle punte."
+    ],
+    "zones": [
+     {
+      "position": 1,
+      "name": "Pelle",
+      "tab": null,
+      "recipe": "skin-tan",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 2,
+      "name": "Capelli",
+      "tab": null,
+      "recipe": "hair-brown",
+      "target_hex": "#6a4430",
+      "note": null
+     },
+     {
+      "position": 3,
+      "name": "Gold Cloth e ali",
+      "tab": null,
+      "recipe": "metal-gold",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 4,
+      "name": "Mantello",
+      "tab": null,
+      "recipe": "fab-white",
+      "target_hex": null,
+      "note": null
+     }
+    ],
+    "versions": []
+   },
+   {
+    "slug": "shura",
+    "group": "oro",
+    "name": "Shura",
+    "alias_it": "Capricorn",
+    "subtitle": "Capricorno",
+    "search_query": "Capricorn Shura",
+    "versions_note": "Anime: capelli verde scuro. Manga: neri.",
+    "no_face": false,
+    "no_eyes": false,
+    "bases": null,
+    "tips": [],
+    "zones": [
+     {
+      "position": 1,
+      "name": "Pelle",
+      "tab": null,
+      "recipe": "skin-tan",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 2,
+      "name": "Capelli",
+      "tab": null,
+      "recipe": "hair-darkgreen",
+      "target_hex": "#24533d",
+      "note": null
+     }
+    ],
+    "versions": [
+     {
+      "slug": "gold",
+      "position": 1,
+      "label": "Gold Cloth",
+      "subtitle": "Santuario",
+      "note": null,
+      "zones": [
+       {
+        "position": 1,
+        "name": "Gold Cloth",
+        "tab": null,
+        "recipe": "metal-gold",
+        "target_hex": null,
+        "note": null
+       },
+       {
+        "position": 2,
+        "name": "Mantello",
+        "tab": null,
+        "recipe": "fab-white",
+        "target_hex": null,
+        "note": null
+       }
+      ]
+     },
+     {
+      "slug": "surplice",
+      "position": 2,
+      "label": "Surplice",
+      "subtitle": "Arco di Hades",
+      "note": "Torna in vita come Specter, con una Surplice nera.",
+      "zones": [
+       {
+        "position": 1,
+        "name": "Surplice",
+        "tab": null,
+        "recipe": "metal-surplice",
+        "target_hex": null,
+        "note": null
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "slug": "camus",
+    "group": "oro",
+    "name": "Camus",
+    "alias_it": "Acquarius",
+    "subtitle": "Acquario",
+    "search_query": "Aquarius Camus",
+    "versions_note": "Anime: capelli blu-verdi. Manga: rossi.",
+    "no_face": false,
+    "no_eyes": false,
+    "bases": [
+     "base-snow",
+     "fx-ice"
+    ],
+    "tips": [],
+    "zones": [
+     {
+      "position": 1,
+      "name": "Pelle",
+      "tab": null,
+      "recipe": "skin-pale",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 2,
+      "name": "Capelli",
+      "tab": null,
+      "recipe": "hair-teal",
+      "target_hex": "#2e7f84",
+      "note": null
+     },
+     {
+      "position": 3,
+      "name": "Effetto ghiaccio",
+      "tab": "dettagli",
+      "recipe": "fx-ice",
+      "target_hex": null,
+      "note": null
+     }
+    ],
+    "versions": [
+     {
+      "slug": "gold",
+      "position": 1,
+      "label": "Gold Cloth",
+      "subtitle": "Santuario",
+      "note": null,
+      "zones": [
+       {
+        "position": 1,
+        "name": "Gold Cloth",
+        "tab": null,
+        "recipe": "metal-gold",
+        "target_hex": null,
+        "note": null
+       },
+       {
+        "position": 2,
+        "name": "Mantello",
+        "tab": null,
+        "recipe": "fab-white",
+        "target_hex": null,
+        "note": null
+       }
+      ]
+     },
+     {
+      "slug": "surplice",
+      "position": 2,
+      "label": "Surplice",
+      "subtitle": "Arco di Hades",
+      "note": "Torna in vita come Specter, con una Surplice nera.",
+      "zones": [
+       {
+        "position": 1,
+        "name": "Surplice",
+        "tab": null,
+        "recipe": "metal-surplice",
+        "target_hex": null,
+        "note": null
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "slug": "aphrodite",
+    "group": "oro",
+    "name": "Aphrodite",
+    "alias_it": "Fish",
+    "subtitle": "Pesci",
+    "search_query": "Pisces Aphrodite",
+    "versions_note": "Anime: capelli azzurri (blu-verdi nell'arco del Santuario). Manga: biondo. Neo sotto l'occhio.",
+    "no_face": false,
+    "no_eyes": false,
+    "bases": null,
+    "tips": [],
+    "zones": [
+     {
+      "position": 1,
+      "name": "Pelle",
+      "tab": null,
+      "recipe": "skin-pale",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 2,
+      "name": "Capelli",
+      "tab": null,
+      "recipe": "hair-lightblue",
+      "target_hex": "#8ec3e0",
+      "note": null
+     },
+     {
+      "position": 3,
+      "name": "Neo",
+      "tab": null,
+      "recipe": null,
+      "target_hex": null,
+      "note": null,
+      "inline_steps": [
+       {
+        "position": 1,
+        "role": "Neo",
+        "usage": "Un puntino sotto l'occhio.",
+        "optional": false,
+        "technique": "punta",
+        "coverage": null,
+        "mix": [
+         {
+          "paint": "72.043",
+          "drops": 1
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "position": 4,
+      "name": "Rosa",
+      "tab": "dettagli",
+      "recipe": "rose",
+      "target_hex": null,
+      "note": null
+     }
+    ],
+    "versions": [
+     {
+      "slug": "gold",
+      "position": 1,
+      "label": "Gold Cloth",
+      "subtitle": "Santuario",
+      "note": null,
+      "zones": [
+       {
+        "position": 1,
+        "name": "Gold Cloth",
+        "tab": null,
+        "recipe": "metal-gold",
+        "target_hex": null,
+        "note": null
+       },
+       {
+        "position": 2,
+        "name": "Mantello",
+        "tab": null,
+        "recipe": "fab-white",
+        "target_hex": null,
+        "note": null
+       }
+      ]
+     },
+     {
+      "slug": "surplice",
+      "position": 2,
+      "label": "Surplice",
+      "subtitle": "Arco di Hades",
+      "note": "Torna in vita come Specter, con una Surplice nera.",
+      "zones": [
+       {
+        "position": 1,
+        "name": "Surplice",
+        "tab": null,
+        "recipe": "metal-surplice",
+        "target_hex": null,
+        "note": null
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "slug": "shion",
+    "group": "oro",
+    "name": "Shion",
+    "alias_it": "Gran Sacerdote",
+    "subtitle": "Ariete",
+    "search_query": "Aries Shion",
+    "versions_note": "Capelli verde chiaro e due puntini sulla fronte, come Mu.",
+    "no_face": false,
+    "no_eyes": false,
+    "bases": null,
+    "tips": [],
+    "zones": [
+     {
+      "position": 1,
+      "name": "Pelle",
+      "tab": null,
+      "recipe": "skin-pale",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 2,
+      "name": "Capelli",
+      "tab": null,
+      "recipe": "hair-lightgreen",
+      "target_hex": "#a9cf8e",
+      "note": null
+     }
+    ],
+    "versions": [
+     {
+      "slug": "gold",
+      "position": 1,
+      "label": "Gold Cloth",
+      "subtitle": null,
+      "note": null,
+      "zones": [
+       {
+        "position": 1,
+        "name": "Gold Cloth",
+        "tab": null,
+        "recipe": "metal-gold",
+        "target_hex": null,
+        "note": null
+       }
+      ]
+     },
+     {
+      "slug": "surplice",
+      "position": 2,
+      "label": "Surplice",
+      "subtitle": "Arco di Hades",
+      "note": "Torna in vita come Specter, con una Surplice nera.",
+      "zones": [
+       {
+        "position": 1,
+        "name": "Surplice",
+        "tab": null,
+        "recipe": "metal-surplice",
+        "target_hex": null,
+        "note": null
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "slug": "saori",
+    "group": "altri",
+    "name": "Saori",
+    "alias_it": "Athena / Lady Isabel",
+    "subtitle": "Dea Athena",
+    "search_query": "Saori Kido Athena",
+    "versions_note": "Capelli viola, vestito bianco, bastone di Nike dorato.",
+    "no_face": false,
+    "no_eyes": false,
+    "bases": null,
+    "tips": [
+     "Per un viola vivo come nell'anime conviene comprare Royal Purple 72.016."
+    ],
+    "zones": [
+     {
+      "position": 1,
+      "name": "Pelle",
+      "tab": null,
+      "recipe": "skin-pale",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 2,
+      "name": "Capelli",
+      "tab": null,
+      "recipe": "hair-purple",
+      "target_hex": "#7e57a8",
+      "note": null
+     },
+     {
+      "position": 3,
+      "name": "Vestito",
+      "tab": null,
+      "recipe": "fab-white",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 4,
+      "name": "Bastone e scudo",
+      "tab": "armatura",
+      "recipe": "metal-gold",
+      "target_hex": null,
+      "note": null
+     }
+    ],
+    "versions": []
+   },
+   {
+    "slug": "kiki",
+    "group": "altri",
+    "name": "Kiki",
+    "alias_it": null,
+    "subtitle": "Allievo di Mu",
+    "search_query": "Kiki Saint Seiya",
+    "versions_note": "Capelli arancio-rossi.",
+    "no_face": false,
+    "no_eyes": false,
+    "bases": null,
+    "tips": [],
+    "zones": [
+     {
+      "position": 1,
+      "name": "Pelle",
+      "tab": null,
+      "recipe": "skin-pale",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 2,
+      "name": "Capelli",
+      "tab": null,
+      "recipe": "hair-orange",
+      "target_hex": "#c4552c",
+      "note": null
+     }
+    ],
+    "versions": []
+   }
+  ],
+  "armor_types": [
+   {
+    "slug": "gold",
+    "position": 1,
+    "title": "Cloth d'oro",
+    "who": "Tutti i Cavalieri d'Oro",
+    "description": "Il sistema TMM Imperial Gold fa quasi tutto il lavoro.",
+    "recipes": [
+     "metal-gold",
+     "metal-goldanime",
+     "metal-oldgold"
+    ],
+    "guide": "gold"
+   },
+   {
+    "slug": "silver",
+    "position": 2,
+    "title": "Cloth d'argento",
+    "who": "Marin, Shaina, Misty e gli altri",
+    "description": "Il sistema TMM Sterling Silver, con Gun Metal sotto per dare profondità.",
+    "recipes": [
+     "metal-silver",
+     "cm-icy"
+    ],
+    "guide": "silver"
+   },
+   {
+    "slug": "bronze",
+    "position": 3,
+    "title": "Cloth di bronzo metalliche",
+    "who": "Pegaso, Dragone, Cigno, Andromeda, Fenice",
+    "description": "Argento come base e il colore del cavaliere in velatura sopra. È il modo per avere cloth colorate che brillano.",
+    "recipes": [
+     "cm-method",
+     "cm-green",
+     "cm-pink",
+     "cm-purple",
+     "cm-red",
+     "cm-pearl",
+     "cm-orange"
+    ],
+    "guide": "bronze"
+   },
+   {
+    "slug": "bronze-flat",
+    "position": 4,
+    "title": "Cloth di bronzo opache (stile cartone)",
+    "who": "Se vuoi l'aspetto piatto dell'anime",
+    "description": "Nell'anime molte cloth sembrano colori pieni con luci bianche: si dipingono come una stoffa, con base, ombra e luce.",
+    "recipes": [
+     "fab-white",
+     "fab-pink",
+     "fab-green",
+     "fab-lightblue"
+    ],
+    "guide": null
+   },
+   {
+    "slug": "god",
+    "position": 5,
+    "title": "God Cloth",
+    "who": "Bronzi nell'arco di Hades (Elysion)",
+    "description": "Bianco perla con dettagli d'oro e il colore del cavaliere in piccoli punti.",
+    "recipes": [
+     "cm-pearl",
+     "metal-gold"
+    ],
+    "guide": null
+   },
+   {
+    "slug": "scale",
+    "position": 6,
+    "title": "Scaglie di Poseidone",
+    "who": "Generali di Poseidone",
+    "description": "Oricalco: oro spinto verso l'arancio.",
+    "recipes": [
+     "metal-orichalcum"
+    ],
+    "guide": null
+   },
+   {
+    "slug": "surplice",
+    "position": 7,
+    "title": "Surplici di Hades",
+    "who": "Specter",
+    "description": "Metallo scurissimo con riflessi viola.",
+    "recipes": [
+     "metal-surplice"
+    ],
+    "guide": null
+   },
+   {
+    "slug": "black",
+    "position": 8,
+    "title": "Cloth nere",
+    "who": "Black Saints",
+    "description": "Nero metallico con spigoli d'argento.",
+    "recipes": [
+     "metal-black"
+    ],
+    "guide": null
+   },
+   {
+    "slug": "godrobe",
+    "position": 9,
+    "title": "God Robe di Asgard",
+    "who": "Guerrieri di Asgard",
+    "description": "Ogni God Robe ha il suo colore: usa il metodo del metallo colorato con la tinta della tua reference.",
+    "recipes": [
+     "cm-method",
+     "cm-blue"
+    ],
+    "guide": null
+   }
+  ],
+  "guides": [
+   {
+    "slug": "gold",
+    "position": 1,
+    "title": "Cloth d'oro, passo passo",
+    "intro": "Il procedimento più importante per i Cavalieri d'Oro. Con lo Shade TMM il risultato è buono già alla prima prova.",
+    "steps": [
+     {
+      "position": 1,
+      "title": "Primer nero",
+      "description": "Già fatto con la bomboletta.",
+      "mix": []
+     },
+     {
+      "position": 2,
+      "title": "Prima mano d'oro (facoltativa)",
+      "description": "Oro Lucidato su tutta l'armatura: copre il nero e risparmia i TMM.",
+      "mix": [
+       {
+        "paint": "72.055",
+        "drops": 1
+       }
+      ]
+     },
+     {
+      "position": 3,
+      "title": "Base",
+      "description": "Imperial Gold Base, due mani sottili.",
+      "mix": [
+       {
+        "paint": "77.123",
+        "drops": 1
+       }
+      ]
+     },
+     {
+      "position": 4,
+      "title": "Ombra",
+      "description": "Imperial Gold Shade negli incavi e sotto le placche. È un wash: stendilo e lascialo scorrere. Aspetta un'ora.",
+      "mix": [
+       {
+        "paint": "77.143",
+        "drops": 1
+       }
+      ]
+     },
+     {
+      "position": 5,
+      "title": "Recupera la base",
+      "description": "Imperial Gold Base di nuovo sulle parti in rilievo, lasciando lo scuro negli incavi.",
+      "mix": [
+       {
+        "paint": "77.123",
+        "drops": 1
+       }
+      ]
+     },
+     {
+      "position": 6,
+      "title": "Luce intermedia",
+      "description": "Base e Light mischiate, sulle superfici rivolte verso l'alto.",
+      "mix": [
+       {
+        "paint": "77.123",
+        "drops": 1
+       },
+       {
+        "paint": "77.103",
+        "drops": 1
+       }
+      ]
+     },
+     {
+      "position": 7,
+      "title": "Luce",
+      "description": "Imperial Gold Light sui rilievi e sui bordi superiori.",
+      "mix": [
+       {
+        "paint": "77.103",
+        "drops": 1
+       }
+      ]
+     },
+     {
+      "position": 8,
+      "title": "Punti luce",
+      "description": "Qualche puntino di Sterling Silver Light sugli spigoli più alti.",
+      "mix": [
+       {
+        "paint": "77.101",
+        "drops": 1
+       }
+      ]
+     },
+     {
+      "position": 9,
+      "title": "Gemme",
+      "description": "Ricetta della gemma rossa.",
+      "mix": [
+       {
+        "paint": "72.010",
+        "drops": 1
+       }
+      ]
+     },
+     {
+      "position": 10,
+      "title": "Facoltativo",
+      "description": "Velatura di Giallo Soleggiato per un oro più «anime».",
+      "mix": [
+       {
+        "paint": "72.006",
+        "drops": 1
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "slug": "silver",
+    "position": 2,
+    "title": "Cloth d'argento, passo passo",
+    "intro": null,
+    "steps": [
+     {
+      "position": 1,
+      "title": "Base scura",
+      "description": "Gun Metal su tutta l'armatura.",
+      "mix": [
+       {
+        "paint": "72.054",
+        "drops": 1
+       }
+      ]
+     },
+     {
+      "position": 2,
+      "title": "Argento",
+      "description": "Sterling Silver Base sulle superfici, lasciando Gun Metal negli incavi.",
+      "mix": [
+       {
+        "paint": "77.121",
+        "drops": 1
+       }
+      ]
+     },
+     {
+      "position": 3,
+      "title": "Ombra",
+      "description": "Sterling Silver Shade negli incavi.",
+      "mix": [
+       {
+        "paint": "77.141",
+        "drops": 1
+       }
+      ]
+     },
+     {
+      "position": 4,
+      "title": "Recupera",
+      "description": "Sterling Silver Base di nuovo sui rilievi.",
+      "mix": [
+       {
+        "paint": "77.121",
+        "drops": 1
+       }
+      ]
+     },
+     {
+      "position": 5,
+      "title": "Luce",
+      "description": "Sterling Silver Light sugli spigoli.",
+      "mix": [
+       {
+        "paint": "77.101",
+        "drops": 1
+       }
+      ]
+     },
+     {
+      "position": 6,
+      "title": "Facoltativo",
+      "description": "Velatura leggerissima di Blu Ultramar per l'argento azzurrato dell'anime.",
+      "mix": [
+       {
+        "paint": "72.022",
+        "drops": 1
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "slug": "bronze",
+    "position": 3,
+    "title": "Cloth di bronzo colorata, passo passo",
+    "intro": "Esempio con Andromeda; per gli altri cambia solo il colore della velatura.",
+    "steps": [
+     {
+      "position": 1,
+      "title": "Argento",
+      "description": "Sterling Silver Base su tutta la cloth.",
+      "mix": [
+       {
+        "paint": "77.121",
+        "drops": 1
+       }
+      ]
+     },
+     {
+      "position": 2,
+      "title": "Prima velatura",
+      "description": "Rosso Sanguina + Bianco Teschio molto diluiti, su tutta la cloth.",
+      "mix": [
+       {
+        "paint": "72.010",
+        "drops": 1
+       },
+       {
+        "paint": "72.001",
+        "drops": 1
+       }
+      ]
+     },
+     {
+      "position": 3,
+      "title": "Altre velature",
+      "description": "Altre 2–4 passate, aspettando che ognuna asciughi, finché il colore ti piace.",
+      "mix": [
+       {
+        "paint": "72.010",
+        "drops": 1
+       },
+       {
+        "paint": "72.001",
+        "drops": 1
+       }
+      ]
+     },
+     {
+      "position": 4,
+      "title": "Ombra",
+      "description": "Velatura di Rosso Sanguina puro negli incavi.",
+      "mix": [
+       {
+        "paint": "72.010",
+        "drops": 1
+       }
+      ]
+     },
+     {
+      "position": 5,
+      "title": "Luce",
+      "description": "Sterling Silver Light sugli spigoli, per riportare il brillante.",
+      "mix": [
+       {
+        "paint": "77.101",
+        "drops": 1
+       }
+      ]
+     },
+     {
+      "position": 6,
+      "title": "Catene",
+      "description": "Ricetta Acciaio e catene.",
+      "mix": [
+       {
+        "paint": "72.054",
+        "drops": 1
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "slug": "face",
+    "position": 4,
+    "title": "Volto, passo passo",
+    "intro": "La faccia è la parte che si guarda per prima: con calma e con il colore ben diluito.",
+    "steps": [
+     {
+      "position": 1,
+      "title": "Sottofondo",
+      "description": "Bianco Osso diluito sopra il primer nero.",
+      "mix": [
+       {
+        "paint": "72.034",
+        "drops": 1
+       }
+      ]
+     },
+     {
+      "position": 2,
+      "title": "Base",
+      "description": "Pelle Elfi, due o tre mani sottili.",
+      "mix": [
+       {
+        "paint": "72.004",
+        "drops": 1
+       }
+      ]
+     },
+     {
+      "position": 3,
+      "title": "Occhi",
+      "description": "Contorno, bianco, iride, pupilla (vedi Tecniche).",
+      "mix": [
+       {
+        "paint": "72.043",
+        "drops": 1
+       }
+      ]
+     },
+     {
+      "position": 4,
+      "title": "Ombra",
+      "description": "Pelle Barbaro in orbite, sotto il naso, sotto il labbro, sotto il mento e sul collo.",
+      "mix": [
+       {
+        "paint": "72.071",
+        "drops": 1
+       }
+      ]
+     },
+     {
+      "position": 5,
+      "title": "Ripresa",
+      "description": "Pelle Elfi sulle zone centrali, per ammorbidire.",
+      "mix": [
+       {
+        "paint": "72.004",
+        "drops": 1
+       }
+      ]
+     },
+     {
+      "position": 6,
+      "title": "Luce",
+      "description": "Pelle su fronte, naso, zigomi e mento.",
+      "mix": [
+       {
+        "paint": "72.099",
+        "drops": 1
+       }
+      ]
+     },
+     {
+      "position": 7,
+      "title": "Luce estrema",
+      "description": "Carne Elfica su punti piccoli.",
+      "mix": [
+       {
+        "paint": "72.098",
+        "drops": 1
+       }
+      ]
+     },
+     {
+      "position": 8,
+      "title": "Colore del volto",
+      "description": "Velatura del rossore sulle guance e colore delle labbra.",
+      "mix": [
+       {
+        "paint": "72.099",
+        "drops": 3
+       },
+       {
+        "paint": "72.010",
+        "drops": 1
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "slug": "rock",
+    "position": 5,
+    "title": "Basetta rocciosa, passo passo",
+    "intro": "Il modo più veloce per un bel risultato e per esercitarsi con il drybrush.",
+    "steps": [
+     {
+      "position": 1,
+      "title": "Base",
+      "description": "Grigio Muraglia + Nero.",
+      "mix": [
+       {
+        "paint": "72.049",
+        "drops": 1
+       },
+       {
+        "paint": "72.051",
+        "drops": 1
+       }
+      ]
+     },
+     {
+      "position": 2,
+      "title": "Wash",
+      "description": "Sterling Silver Shade nelle fessure.",
+      "mix": [
+       {
+        "paint": "77.141",
+        "drops": 1
+       }
+      ]
+     },
+     {
+      "position": 3,
+      "title": "Drybrush",
+      "description": "Grigio Muraglia.",
+      "mix": [
+       {
+        "paint": "72.049",
+        "drops": 1
+       }
+      ]
+     },
+     {
+      "position": 4,
+      "title": "Drybrush finale",
+      "description": "Grigio Muraglia + Bianco Teschio, solo sugli spigoli.",
+      "mix": [
+       {
+        "paint": "72.049",
+        "drops": 1
+       },
+       {
+        "paint": "72.001",
+        "drops": 1
+       }
+      ]
+     },
+     {
+      "position": 5,
+      "title": "Dettagli",
+      "description": "Qualche macchia d'erba o terra.",
+      "mix": [
+       {
+        "paint": "72.028",
+        "drops": 1
+       }
+      ]
+     },
+     {
+      "position": 6,
+      "title": "Bordo",
+      "description": "Bordo della basetta nero pulito: fa subito più ordinato.",
+      "mix": [
+       {
+        "paint": "72.051",
+        "drops": 1
+       }
+      ]
+     }
+    ]
+   }
+  ],
+  "links": [
+   {
+    "title": "Seiyapedia (wiki)",
+    "url": "https://saintseiya.fandom.com/wiki/Gold_Saints",
+    "description": "Enciclopedia dei personaggi, in inglese."
+   },
+   {
+    "title": "Myth Cloth EX: foto",
+    "url": "https://www.google.com/search?tbm=isch&q=Myth+Cloth+EX+Saint+Seiya",
+    "description": "Le action figure ufficiali: ottime reference di colore."
+   },
+   {
+    "title": "Statue in resina dipinte",
+    "url": "https://www.google.com/search?tbm=isch&q=Saint+Seiya+resin+statue+painted",
+    "description": "Come altri pittori hanno dipinto statue simili alla tua."
+   },
+   {
+    "title": "Gold Cloth dipinte a pennello",
+    "url": "https://www.youtube.com/results?search_query=Saint+Seiya+gold+cloth+painting",
+    "description": "Video di pittura delle armature d'oro."
+   }
+  ]
+ },
+ {
+  "slug": "power-rangers",
+  "name": "Power Rangers",
+  "subtitle": "Mighty Morphin",
+  "theme": "t-pr",
+  "status": "anteprima",
+  "intro": "Anteprima: le tavolozze delle tute classiche. Le tute sono tessuto colorato con parti bianche e visore nero lucido: un ottimo progetto per esercitarsi sui colori pieni.",
+  "armor_label": "Armatura",
+  "default_bases": [
+   "base-rock",
+   "base-earth"
+  ],
+  "groups": [
+   {
+    "slug": "ranger",
+    "name": "Ranger"
+   }
+  ],
+  "characters": [
+   {
+    "slug": "red",
+    "group": "ranger",
+    "name": "Ranger Rosso",
+    "alias_it": null,
+    "subtitle": "Mighty Morphin",
+    "search_query": "Mighty Morphin Red Ranger",
+    "versions_note": null,
+    "no_face": true,
+    "no_eyes": false,
+    "bases": null,
+    "tips": [
+     "Per un rosso più vivo compra Scarlet Red 72.012."
+    ],
+    "zones": [
+     {
+      "position": 1,
+      "name": "Tuta",
+      "tab": null,
+      "recipe": "fab-red",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 2,
+      "name": "Parti bianche",
+      "tab": null,
+      "recipe": "fab-white",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 3,
+      "name": "Visore",
+      "tab": "dettagli",
+      "recipe": "visor",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 4,
+      "name": "Fibbia",
+      "tab": null,
+      "recipe": "metal-silver",
+      "target_hex": null,
+      "note": null
+     }
+    ],
+    "versions": []
+   },
+   {
+    "slug": "blue",
+    "group": "ranger",
+    "name": "Ranger Blu",
+    "alias_it": null,
+    "subtitle": "Mighty Morphin",
+    "search_query": "Mighty Morphin Blue Ranger",
+    "versions_note": null,
+    "no_face": true,
+    "no_eyes": false,
+    "bases": null,
+    "tips": [],
+    "zones": [
+     {
+      "position": 1,
+      "name": "Tuta",
+      "tab": null,
+      "recipe": "fab-blue",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 2,
+      "name": "Parti bianche",
+      "tab": null,
+      "recipe": "fab-white",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 3,
+      "name": "Visore",
+      "tab": "dettagli",
+      "recipe": "visor",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 4,
+      "name": "Fibbia",
+      "tab": null,
+      "recipe": "metal-silver",
+      "target_hex": null,
+      "note": null
+     }
+    ],
+    "versions": []
+   },
+   {
+    "slug": "yellow",
+    "group": "ranger",
+    "name": "Ranger Giallo",
+    "alias_it": null,
+    "subtitle": "Mighty Morphin",
+    "search_query": "Mighty Morphin Yellow Ranger",
+    "versions_note": null,
+    "no_face": true,
+    "no_eyes": false,
+    "bases": null,
+    "tips": [
+     "Il giallo sul nero ha bisogno di due mani di Bianco Osso prima."
+    ],
+    "zones": [
+     {
+      "position": 1,
+      "name": "Tuta",
+      "tab": null,
+      "recipe": "fab-yellow",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 2,
+      "name": "Parti bianche",
+      "tab": null,
+      "recipe": "fab-white",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 3,
+      "name": "Visore",
+      "tab": "dettagli",
+      "recipe": "visor",
+      "target_hex": null,
+      "note": null
+     }
+    ],
+    "versions": []
+   },
+   {
+    "slug": "pink",
+    "group": "ranger",
+    "name": "Ranger Rosa",
+    "alias_it": null,
+    "subtitle": "Mighty Morphin",
+    "search_query": "Mighty Morphin Pink Ranger",
+    "versions_note": null,
+    "no_face": true,
+    "no_eyes": false,
+    "bases": null,
+    "tips": [
+     "Per un rosa vivo compra Squid Pink 72.013."
+    ],
+    "zones": [
+     {
+      "position": 1,
+      "name": "Tuta",
+      "tab": null,
+      "recipe": "fab-pink",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 2,
+      "name": "Parti bianche",
+      "tab": null,
+      "recipe": "fab-white",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 3,
+      "name": "Visore",
+      "tab": "dettagli",
+      "recipe": "visor",
+      "target_hex": null,
+      "note": null
+     }
+    ],
+    "versions": []
+   },
+   {
+    "slug": "black",
+    "group": "ranger",
+    "name": "Ranger Nero",
+    "alias_it": null,
+    "subtitle": "Mighty Morphin",
+    "search_query": "Mighty Morphin Black Ranger",
+    "versions_note": null,
+    "no_face": true,
+    "no_eyes": false,
+    "bases": null,
+    "tips": [],
+    "zones": [
+     {
+      "position": 1,
+      "name": "Tuta",
+      "tab": null,
+      "recipe": "fab-black",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 2,
+      "name": "Parti bianche",
+      "tab": null,
+      "recipe": "fab-white",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 3,
+      "name": "Visore",
+      "tab": "dettagli",
+      "recipe": "visor",
+      "target_hex": null,
+      "note": null
+     }
+    ],
+    "versions": []
+   },
+   {
+    "slug": "green",
+    "group": "ranger",
+    "name": "Ranger Verde",
+    "alias_it": null,
+    "subtitle": "Mighty Morphin",
+    "search_query": "Mighty Morphin Green Ranger",
+    "versions_note": null,
+    "no_face": true,
+    "no_eyes": false,
+    "bases": null,
+    "tips": [
+     "Lo scudo d'oro è perfetto per usare il sistema TMM Imperial Gold."
+    ],
+    "zones": [
+     {
+      "position": 1,
+      "name": "Tuta",
+      "tab": null,
+      "recipe": "fab-green",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 2,
+      "name": "Parti bianche",
+      "tab": null,
+      "recipe": "fab-white",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 3,
+      "name": "Scudo dorato",
+      "tab": null,
+      "recipe": "metal-gold",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 4,
+      "name": "Visore",
+      "tab": "dettagli",
+      "recipe": "visor",
+      "target_hex": null,
+      "note": null
+     }
+    ],
+    "versions": []
+   }
+  ],
+  "armor_types": [],
+  "guides": [],
+  "links": [
+   {
+    "title": "Reference Power Rangers",
+    "url": "https://www.google.com/search?tbm=isch&q=Mighty+Morphin+Power+Rangers+statue+painted",
+    "description": "Statue dipinte."
+   }
+  ]
+ },
+ {
+  "slug": "marvel",
+  "name": "Marvel",
+  "subtitle": "Supereroi",
+  "theme": "t-mv",
+  "status": "anteprima",
+  "intro": "Anteprima: tavolozze per i supereroi più classici. Molte ricette sono le stesse dei cavalieri: tessuti, metalli, metalli colorati.",
+  "armor_label": "Armatura",
+  "default_bases": [
+   "base-rock",
+   "base-earth"
+  ],
+  "groups": [
+   {
+    "slug": "eroi",
+    "name": "Eroi"
+   }
+  ],
+  "characters": [
+   {
+    "slug": "spiderman",
+    "group": "eroi",
+    "name": "Spider-Man",
+    "alias_it": null,
+    "subtitle": "Costume classico",
+    "search_query": "Spider-Man statue painted",
+    "versions_note": null,
+    "no_face": true,
+    "no_eyes": false,
+    "bases": null,
+    "tips": [
+     "Prima la ragnatela o prima il rosso? Prima i colori pieni, poi la ragnatela sopra."
+    ],
+    "zones": [
+     {
+      "position": 1,
+      "name": "Rosso",
+      "tab": "vestiti",
+      "recipe": "fab-red",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 2,
+      "name": "Blu",
+      "tab": "vestiti",
+      "recipe": "fab-blue",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 3,
+      "name": "Ragnatela",
+      "tab": "vestiti",
+      "recipe": null,
+      "target_hex": null,
+      "note": null,
+      "inline_steps": [
+       {
+        "position": 1,
+        "role": "Linee",
+        "usage": "Linee sottilissime, colore ben diluito. Con calma.",
+        "optional": false,
+        "technique": null,
+        "coverage": null,
+        "mix": [
+         {
+          "paint": "72.051",
+          "drops": 1
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "position": 4,
+      "name": "Lenti della maschera",
+      "tab": "dettagli",
+      "recipe": null,
+      "target_hex": null,
+      "note": null,
+      "inline_steps": [
+       {
+        "position": 1,
+        "role": "Bianco",
+        "usage": "",
+        "optional": false,
+        "technique": null,
+        "coverage": null,
+        "mix": [
+         {
+          "paint": "72.034",
+          "drops": 1
+         },
+         {
+          "paint": "72.001",
+          "drops": 1
+         }
+        ]
+       },
+       {
+        "position": 2,
+        "role": "Contorno",
+        "usage": "",
+        "optional": false,
+        "technique": "punta",
+        "coverage": null,
+        "mix": [
+         {
+          "paint": "72.051",
+          "drops": 1
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    "versions": []
+   },
+   {
+    "slug": "ironman",
+    "group": "eroi",
+    "name": "Iron Man",
+    "alias_it": null,
+    "subtitle": "Armatura",
+    "search_query": "Iron Man statue painted",
+    "versions_note": null,
+    "no_face": true,
+    "no_eyes": false,
+    "bases": null,
+    "tips": [
+     "Il rosso di Iron Man viene benissimo con il metodo del metallo colorato: argento, poi velature di rosso."
+    ],
+    "zones": [
+     {
+      "position": 1,
+      "name": "Rosso metallico",
+      "tab": null,
+      "recipe": "cm-red",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 2,
+      "name": "Oro",
+      "tab": "armatura",
+      "recipe": "metal-gold",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 3,
+      "name": "Reattore e occhi",
+      "tab": "dettagli",
+      "recipe": "fx-cosmo",
+      "target_hex": null,
+      "note": null
+     }
+    ],
+    "versions": []
+   },
+   {
+    "slug": "cap",
+    "group": "eroi",
+    "name": "Captain America",
+    "alias_it": null,
+    "subtitle": "Costume classico",
+    "search_query": "Captain America statue painted",
+    "versions_note": null,
+    "no_face": false,
+    "no_eyes": false,
+    "bases": null,
+    "tips": [
+     "Scudo: cerchi rossi e bianchi, stella d'argento al centro su fondo blu."
+    ],
+    "zones": [
+     {
+      "position": 1,
+      "name": "Blu",
+      "tab": "vestiti",
+      "recipe": "fab-blue",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 2,
+      "name": "Rosso",
+      "tab": "vestiti",
+      "recipe": "fab-red",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 3,
+      "name": "Bianco",
+      "tab": "vestiti",
+      "recipe": "fab-white",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 4,
+      "name": "Stella",
+      "tab": "armatura",
+      "recipe": "metal-silver",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 5,
+      "name": "Cinghie",
+      "tab": "dettagli",
+      "recipe": "fab-leather",
+      "target_hex": null,
+      "note": null
+     }
+    ],
+    "versions": []
+   },
+   {
+    "slug": "hulk",
+    "group": "eroi",
+    "name": "Hulk",
+    "alias_it": null,
+    "subtitle": "Classico",
+    "search_query": "Hulk statue painted",
+    "versions_note": null,
+    "no_face": false,
+    "no_eyes": false,
+    "bases": null,
+    "tips": [
+     "I muscoli di Hulk sono perfetti per imparare ombra e luce."
+    ],
+    "zones": [
+     {
+      "position": 1,
+      "name": "Pelle",
+      "tab": null,
+      "recipe": "skin-green",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 2,
+      "name": "Capelli",
+      "tab": null,
+      "recipe": "hair-black",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 3,
+      "name": "Pantaloni",
+      "tab": null,
+      "recipe": "fab-purple",
+      "target_hex": null,
+      "note": null
+     }
+    ],
+    "versions": []
+   },
+   {
+    "slug": "thor",
+    "group": "eroi",
+    "name": "Thor",
+    "alias_it": null,
+    "subtitle": "Classico",
+    "search_query": "Thor statue painted",
+    "versions_note": null,
+    "no_face": false,
+    "no_eyes": false,
+    "bases": null,
+    "tips": [],
+    "zones": [
+     {
+      "position": 1,
+      "name": "Pelle",
+      "tab": null,
+      "recipe": "skin-pale",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 2,
+      "name": "Capelli",
+      "tab": null,
+      "recipe": "hair-blond",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 3,
+      "name": "Armatura",
+      "tab": null,
+      "recipe": "metal-silver",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 4,
+      "name": "Mantello",
+      "tab": null,
+      "recipe": "fab-red",
+      "target_hex": null,
+      "note": null
+     },
+     {
+      "position": 5,
+      "name": "Martello",
+      "tab": null,
+      "recipe": "metal-steel",
+      "target_hex": null,
+      "note": null
+     }
+    ],
+    "versions": []
+   }
+  ],
+  "armor_types": [],
+  "guides": [],
+  "links": [
+   {
+    "title": "Reference Marvel",
+    "url": "https://www.google.com/search?tbm=isch&q=Marvel+statue+painted+resin",
+    "description": "Statue dipinte."
+   }
+  ]
+ }
+]

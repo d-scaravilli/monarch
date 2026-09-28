@@ -1,0 +1,5824 @@
+[
+ {
+  "slug": "skin-tan",
+  "category": "pelle",
+  "title": "Pelle abbronzata (set Tanned Skin)",
+  "who": "Seiya, Shiryu, Ikki, Aiolia, Milo, Aiolos · eroi con pelle calda",
+  "tip": "È il set 72.380 usato come lo ha pensato Vallejo: un'ombra, una base e due luci. Prima dai una mano di Bianco Osso sopra il primer nero.",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Su tutta la pelle, due o tre mani sottili.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.004",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Orbite, sotto il naso, sotto il labbro inferiore, collo, tra i muscoli.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.071",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Ombra profonda",
+    "usage": "Solo nei punti più scuri: attaccatura dei capelli, tra le labbra, sotto il mento.",
+    "optional": true,
+    "technique": "sottile",
+    "coverage": 10,
+    "mix": [
+     {
+      "paint": "72.071",
+      "drops": 2
+     },
+     {
+      "paint": "72.043",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Ripresa della base",
+    "usage": "Ripassa un po' di base al confine con l'ombra, per ammorbidire lo stacco.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 50,
+    "mix": [
+     {
+      "paint": "72.004",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 5,
+    "role": "Luce",
+    "usage": "Fronte, dorso del naso, zigomi, mento, sopra i muscoli.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.099",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 6,
+    "role": "Luce estrema",
+    "usage": "Aree piccole: punta del naso, centro della fronte, sopra gli zigomi.",
+    "optional": true,
+    "technique": "sottile",
+    "coverage": 10,
+    "mix": [
+     {
+      "paint": "72.098",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 7,
+    "role": "Punto luce",
+    "usage": "Minuscoli puntini sui punti più alti. Facoltativo.",
+    "optional": true,
+    "technique": "punta",
+    "coverage": 3,
+    "mix": [
+     {
+      "paint": "72.098",
+      "drops": 2
+     },
+     {
+      "paint": "72.034",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "skin-pale",
+  "category": "pelle",
+  "title": "Pelle chiara",
+  "who": "Hyoga, Shun, Mu, Shaka, Camus, Aphrodite, Saori",
+  "tip": "Stessa logica, tutto spostato verso il chiaro. Luci delicate.",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Su tutta la pelle.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.099",
+      "drops": 1
+     },
+     {
+      "paint": "72.098",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Orbite, sotto il naso, collo.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.004",
+      "drops": 1
+     },
+     {
+      "paint": "72.099",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Ripresa della base",
+    "usage": "Al confine con l'ombra, per ammorbidire.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 50,
+    "mix": [
+     {
+      "paint": "72.099",
+      "drops": 1
+     },
+     {
+      "paint": "72.098",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Luce",
+    "usage": "Fronte, naso, zigomi.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.098",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 5,
+    "role": "Luce estrema",
+    "usage": "Punti più alti, pochissimo.",
+    "optional": true,
+    "technique": "sottile",
+    "coverage": 10,
+    "mix": [
+     {
+      "paint": "72.098",
+      "drops": 3
+     },
+     {
+      "paint": "72.034",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "skin-cold",
+  "category": "pelle",
+  "title": "Pelle pallida fredda",
+  "who": "Personaggi malati, vampiri, spettri, dei",
+  "tip": "Poco grigio basta: troppo spegne la pelle.",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Su tutta la pelle.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.098",
+      "drops": 3
+     },
+     {
+      "paint": "72.049",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Incavi.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.004",
+      "drops": 2
+     },
+     {
+      "paint": "72.049",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Rilievi.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.098",
+      "drops": 2
+     },
+     {
+      "paint": "72.001",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "skin-dark",
+  "category": "pelle",
+  "title": "Pelle scura",
+  "who": "Aldebaran, personaggi con pelle scura",
+  "tip": "Ombre marroni, mai nere. Le luci restano calde.",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Su tutta la pelle.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.071",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Incavi e zone basse.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.071",
+      "drops": 2
+     },
+     {
+      "paint": "72.043",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Rilievi principali.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.071",
+      "drops": 1
+     },
+     {
+      "paint": "72.004",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Luce estrema",
+    "usage": "Punti più alti.",
+    "optional": true,
+    "technique": "sottile",
+    "coverage": 10,
+    "mix": [
+     {
+      "paint": "72.004",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "skin-purple",
+  "category": "pelle",
+  "title": "Pelle viola",
+  "who": "Dohko anziano, creature, demoni",
+  "tip": "Il viola si ottiene con rosso e blu; la pelle chiara lo rende naturale.",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Su tutta la pelle.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.010",
+      "drops": 1
+     },
+     {
+      "paint": "72.022",
+      "drops": 1
+     },
+     {
+      "paint": "72.098",
+      "drops": 2
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Incavi.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.010",
+      "drops": 1
+     },
+     {
+      "paint": "72.022",
+      "drops": 1
+     },
+     {
+      "paint": "72.071",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Rilievi.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.010",
+      "drops": 1
+     },
+     {
+      "paint": "72.022",
+      "drops": 1
+     },
+     {
+      "paint": "72.098",
+      "drops": 5
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "skin-green",
+  "category": "pelle",
+  "title": "Pelle verde",
+  "who": "Hulk, orchi, creature",
+  "tip": "Le ombre con Verde Scuro, le luci con giallo e osso.",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Su tutta la pelle.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.030",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Incavi, tra i muscoli.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.028",
+      "drops": 1
+     },
+     {
+      "paint": "72.030",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Rilievi dei muscoli.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.030",
+      "drops": 2
+     },
+     {
+      "paint": "72.006",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Luce estrema",
+    "usage": "Punti più alti.",
+    "optional": true,
+    "technique": "sottile",
+    "coverage": 10,
+    "mix": [
+     {
+      "paint": "72.030",
+      "drops": 1
+     },
+     {
+      "paint": "72.006",
+      "drops": 1
+     },
+     {
+      "paint": "72.034",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "face",
+  "category": "occhi",
+  "title": "Labbra, guance e sopracciglia",
+  "who": "Tutti i volti",
+  "tip": "Da stendere come velatura: molto diluiti, più passate.",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Rossore guance",
+    "usage": "Velatura leggerissima sugli zigomi.",
+    "optional": false,
+    "technique": "velatura",
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "72.099",
+      "drops": 3
+     },
+     {
+      "paint": "72.010",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Labbra",
+    "usage": "Solo il labbro inferiore; quello superiore resta in ombra.",
+    "optional": false,
+    "technique": null,
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "72.071",
+      "drops": 2
+     },
+     {
+      "paint": "72.010",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Sopracciglia",
+    "usage": "Linea sottile; per capelli colorati usa il colore dei capelli.",
+    "optional": false,
+    "technique": "spigoli",
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "72.043",
+      "drops": 2
+     },
+     {
+      "paint": "72.040",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Cicatrice",
+    "usage": "Linea sottile, poi una luce di Carne Elfica su un solo lato.",
+    "optional": false,
+    "technique": "spigoli",
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "72.071",
+      "drops": 2
+     },
+     {
+      "paint": "72.010",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "eyes",
+  "category": "occhi",
+  "title": "Occhi",
+  "who": "Tutti",
+  "tip": "Vedi la tecnica Gli occhi.",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Contorno",
+    "usage": "Linea superiore e fessura.",
+    "optional": false,
+    "technique": "punta",
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "72.043",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Bianco dell'occhio",
+    "usage": "Mai bianco puro.",
+    "optional": false,
+    "technique": null,
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "72.034",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Iride azzurra",
+    "usage": "Occhi azzurri.",
+    "optional": false,
+    "technique": null,
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "72.022",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Iride blu scura",
+    "usage": "Occhi blu intensi.",
+    "optional": false,
+    "technique": null,
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "72.022",
+      "drops": 2
+     },
+     {
+      "paint": "72.051",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 5,
+    "role": "Iride castana",
+    "usage": "Occhi castani.",
+    "optional": false,
+    "technique": null,
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "72.040",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 6,
+    "role": "Iride verde",
+    "usage": "Occhi verdi.",
+    "optional": false,
+    "technique": null,
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "72.030",
+      "drops": 1
+     },
+     {
+      "paint": "72.034",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 7,
+    "role": "Iride rossa",
+    "usage": "Occhi rossi (personaggi malvagi).",
+    "optional": false,
+    "technique": null,
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "72.010",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 8,
+    "role": "Pupilla",
+    "usage": "Punto al centro.",
+    "optional": false,
+    "technique": "punta",
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "72.051",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 9,
+    "role": "Riflesso",
+    "usage": "Micro punto, uguale in entrambi gli occhi.",
+    "optional": false,
+    "technique": "punta",
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "72.001",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "hair-brown",
+  "category": "capelli",
+  "title": "Castano",
+  "who": "Aiolos, eroi castani",
+  "tip": "Dopo la base funziona benissimo un drybrush leggero con la luce sulle ciocche.",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Tutti i capelli.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.040",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Tra le ciocche e sotto.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.043",
+      "drops": 2
+     },
+     {
+      "paint": "72.051",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Parte alta delle ciocche.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.040",
+      "drops": 2
+     },
+     {
+      "paint": "72.034",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Luce estrema",
+    "usage": "Solo le punte.",
+    "optional": true,
+    "technique": "sottile",
+    "coverage": 10,
+    "mix": [
+     {
+      "paint": "72.040",
+      "drops": 1
+     },
+     {
+      "paint": "72.034",
+      "drops": 2
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "hair-auburn",
+  "category": "capelli",
+  "title": "Castano ramato",
+  "who": "Seiya (anime), Dohko giovane",
+  "tip": "Un castano con una punta di rosso.",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Tutti i capelli.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.040",
+      "drops": 2
+     },
+     {
+      "paint": "72.010",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Tra le ciocche.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.043",
+      "drops": 2
+     },
+     {
+      "paint": "72.010",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Parte alta.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.040",
+      "drops": 2
+     },
+     {
+      "paint": "72.008",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Luce estrema",
+    "usage": "Punte.",
+    "optional": true,
+    "technique": "sottile",
+    "coverage": 10,
+    "mix": [
+     {
+      "paint": "72.036",
+      "drops": 1
+     },
+     {
+      "paint": "72.034",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "hair-lightbrown",
+  "category": "capelli",
+  "title": "Castano chiaro",
+  "who": "Aiolia (anime)",
+  "tip": "",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Tutti i capelli.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.036",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Tra le ciocche.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.040",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Parte alta.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.036",
+      "drops": 2
+     },
+     {
+      "paint": "72.034",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Luce estrema",
+    "usage": "Punte.",
+    "optional": true,
+    "technique": "sottile",
+    "coverage": 10,
+    "mix": [
+     {
+      "paint": "72.034",
+      "drops": 2
+     },
+     {
+      "paint": "72.036",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "hair-darkbrown",
+  "category": "capelli",
+  "title": "Castano scurissimo",
+  "who": "Aldebaran",
+  "tip": "",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Tutti i capelli.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.043",
+      "drops": 2
+     },
+     {
+      "paint": "72.051",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Tra le ciocche.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.051",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Parte alta.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.043",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Luce estrema",
+    "usage": "Punte.",
+    "optional": true,
+    "technique": "sottile",
+    "coverage": 10,
+    "mix": [
+     {
+      "paint": "72.040",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "hair-black",
+  "category": "capelli",
+  "title": "Nero con riflessi blu",
+  "who": "Shiryu, Hulk, personaggi dai capelli neri",
+  "tip": "I capelli neri non si dipingono neri: blu-grigio scurissimo, altrimenti si perde la forma.",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Tutti i capelli.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.051",
+      "drops": 3
+     },
+     {
+      "paint": "72.022",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Tra le ciocche.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.051",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Parte alta delle ciocche.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.051",
+      "drops": 1
+     },
+     {
+      "paint": "72.022",
+      "drops": 1
+     },
+     {
+      "paint": "72.049",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Luce estrema",
+    "usage": "Riflessi sottili sulle curve.",
+    "optional": true,
+    "technique": "sottile",
+    "coverage": 10,
+    "mix": [
+     {
+      "paint": "72.022",
+      "drops": 1
+     },
+     {
+      "paint": "72.049",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "hair-navy",
+  "category": "capelli",
+  "title": "Blu notte",
+  "who": "Ikki (anime)",
+  "tip": "",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Tutti i capelli.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.022",
+      "drops": 2
+     },
+     {
+      "paint": "72.051",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Tra le ciocche.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.022",
+      "drops": 1
+     },
+     {
+      "paint": "72.051",
+      "drops": 2
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Parte alta.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.022",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Luce estrema",
+    "usage": "Punte.",
+    "optional": true,
+    "technique": "sottile",
+    "coverage": 10,
+    "mix": [
+     {
+      "paint": "72.022",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "hair-blue",
+  "category": "capelli",
+  "title": "Blu",
+  "who": "Saga, Deathmask (anime)",
+  "tip": "",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Tutti i capelli.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.022",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Tra le ciocche.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.022",
+      "drops": 2
+     },
+     {
+      "paint": "72.051",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Parte alta.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.022",
+      "drops": 2
+     },
+     {
+      "paint": "72.001",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Luce estrema",
+    "usage": "Punte.",
+    "optional": true,
+    "technique": "sottile",
+    "coverage": 10,
+    "mix": [
+     {
+      "paint": "72.022",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 2
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "hair-lightblue",
+  "category": "capelli",
+  "title": "Azzurro",
+  "who": "Aphrodite (anime)",
+  "tip": "Con il blu e tanto bianco viene un azzurro un po' spento. Per un azzurro vivo compra Electric Blue 72.023.",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Tutti i capelli.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.022",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 3
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Tra le ciocche.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.022",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Parte alta.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.022",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 6
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Luce estrema",
+    "usage": "Punte.",
+    "optional": true,
+    "technique": "sottile",
+    "coverage": 10,
+    "mix": [
+     {
+      "paint": "72.001",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "hair-teal",
+  "category": "capelli",
+  "title": "Verde acqua (teal)",
+  "who": "Camus, Kanon (anime)",
+  "tip": "Blu più verde, schiarito con bianco. Per un teal vivo compra Turquoise 72.024.",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Tutti i capelli.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.030",
+      "drops": 1
+     },
+     {
+      "paint": "72.022",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Tra le ciocche.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.028",
+      "drops": 1
+     },
+     {
+      "paint": "72.022",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Parte alta.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.030",
+      "drops": 1
+     },
+     {
+      "paint": "72.022",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 3
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Luce estrema",
+    "usage": "Punte.",
+    "optional": true,
+    "technique": "sottile",
+    "coverage": 10,
+    "mix": [
+     {
+      "paint": "72.030",
+      "drops": 1
+     },
+     {
+      "paint": "72.022",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 6
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "hair-green",
+  "category": "capelli",
+  "title": "Verde",
+  "who": "Shun, Shaina (anime)",
+  "tip": "",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Tutti i capelli.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.030",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Tra le ciocche.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.028",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Parte alta.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.030",
+      "drops": 2
+     },
+     {
+      "paint": "72.034",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Luce estrema",
+    "usage": "Punte.",
+    "optional": true,
+    "technique": "sottile",
+    "coverage": 10,
+    "mix": [
+     {
+      "paint": "72.030",
+      "drops": 1
+     },
+     {
+      "paint": "72.034",
+      "drops": 2
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "hair-darkgreen",
+  "category": "capelli",
+  "title": "Verde scuro",
+  "who": "Shura (anime)",
+  "tip": "",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Tutti i capelli.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.028",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Tra le ciocche.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.028",
+      "drops": 2
+     },
+     {
+      "paint": "72.051",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Parte alta.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.028",
+      "drops": 2
+     },
+     {
+      "paint": "72.030",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Luce estrema",
+    "usage": "Punte.",
+    "optional": true,
+    "technique": "sottile",
+    "coverage": 10,
+    "mix": [
+     {
+      "paint": "72.030",
+      "drops": 1
+     },
+     {
+      "paint": "72.034",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "hair-lightgreen",
+  "category": "capelli",
+  "title": "Verde chiaro",
+  "who": "Shion",
+  "tip": "",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Tutti i capelli.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.030",
+      "drops": 1
+     },
+     {
+      "paint": "72.034",
+      "drops": 2
+     },
+     {
+      "paint": "72.006",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Tra le ciocche.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.030",
+      "drops": 1
+     },
+     {
+      "paint": "72.034",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Parte alta.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.034",
+      "drops": 3
+     },
+     {
+      "paint": "72.030",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Luce estrema",
+    "usage": "Punte.",
+    "optional": true,
+    "technique": "sottile",
+    "coverage": 10,
+    "mix": [
+     {
+      "paint": "72.034",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "hair-blond",
+  "category": "capelli",
+  "title": "Biondo",
+  "who": "Hyoga, Shaka, Misty, Thor",
+  "tip": "Il giallo copre male sul nero: parti da una mano di Bianco Osso.",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Tutti i capelli.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.034",
+      "drops": 2
+     },
+     {
+      "paint": "72.006",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Tra le ciocche.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.006",
+      "drops": 1
+     },
+     {
+      "paint": "72.040",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Parte alta.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.034",
+      "drops": 3
+     },
+     {
+      "paint": "72.006",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Luce estrema",
+    "usage": "Punte.",
+    "optional": true,
+    "technique": "sottile",
+    "coverage": 10,
+    "mix": [
+     {
+      "paint": "72.034",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "hair-red",
+  "category": "capelli",
+  "title": "Rosso",
+  "who": "Marin (anime)",
+  "tip": "",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Tutti i capelli.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.010",
+      "drops": 2
+     },
+     {
+      "paint": "72.040",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Tra le ciocche.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.010",
+      "drops": 2
+     },
+     {
+      "paint": "72.043",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Parte alta.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.010",
+      "drops": 1
+     },
+     {
+      "paint": "72.008",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Luce estrema",
+    "usage": "Punte.",
+    "optional": true,
+    "technique": "sottile",
+    "coverage": 10,
+    "mix": [
+     {
+      "paint": "72.008",
+      "drops": 1
+     },
+     {
+      "paint": "72.034",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "hair-orange",
+  "category": "capelli",
+  "title": "Arancio-rosso",
+  "who": "Kiki",
+  "tip": "",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Tutti i capelli.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.008",
+      "drops": 2
+     },
+     {
+      "paint": "72.010",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Tra le ciocche.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.008",
+      "drops": 1
+     },
+     {
+      "paint": "72.040",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Parte alta.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.008",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Luce estrema",
+    "usage": "Punte.",
+    "optional": true,
+    "technique": "sottile",
+    "coverage": 10,
+    "mix": [
+     {
+      "paint": "72.008",
+      "drops": 1
+     },
+     {
+      "paint": "72.006",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "hair-purple",
+  "category": "capelli",
+  "title": "Viola",
+  "who": "Saori/Athena, Milo (anime)",
+  "tip": "Con rosso e blu il viola viene un po' spento. Per un viola vivo compra Royal Purple 72.016.",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Tutti i capelli.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.010",
+      "drops": 1
+     },
+     {
+      "paint": "72.022",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Tra le ciocche.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.010",
+      "drops": 1
+     },
+     {
+      "paint": "72.022",
+      "drops": 1
+     },
+     {
+      "paint": "72.051",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Parte alta.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.010",
+      "drops": 1
+     },
+     {
+      "paint": "72.022",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 2
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Luce estrema",
+    "usage": "Punte.",
+    "optional": true,
+    "technique": "sottile",
+    "coverage": 10,
+    "mix": [
+     {
+      "paint": "72.010",
+      "drops": 1
+     },
+     {
+      "paint": "72.022",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 4
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "hair-lilac",
+  "category": "capelli",
+  "title": "Lilla",
+  "who": "Mu",
+  "tip": "",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Tutti i capelli.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.010",
+      "drops": 1
+     },
+     {
+      "paint": "72.022",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 4
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Tra le ciocche.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.010",
+      "drops": 1
+     },
+     {
+      "paint": "72.022",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 2
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Parte alta.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.010",
+      "drops": 1
+     },
+     {
+      "paint": "72.022",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 7
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Luce estrema",
+    "usage": "Punte.",
+    "optional": true,
+    "technique": "sottile",
+    "coverage": 10,
+    "mix": [
+     {
+      "paint": "72.001",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "hair-grey",
+  "category": "capelli",
+  "title": "Grigio / argento",
+  "who": "Saga malvagio, anziani",
+  "tip": "",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Tutti i capelli.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.049",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Tra le ciocche.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.049",
+      "drops": 2
+     },
+     {
+      "paint": "72.051",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Parte alta.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.049",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Luce estrema",
+    "usage": "Punte.",
+    "optional": true,
+    "technique": "sottile",
+    "coverage": 10,
+    "mix": [
+     {
+      "paint": "72.001",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "metal-gold",
+  "category": "metalli",
+  "title": "Oro (sistema TMM Imperial Gold)",
+  "who": "Gold Cloth, scudi, ornamenti, Iron Man",
+  "tip": "Lo Shade è un wash: va diluito negli incavi e lascia vedere il metallo sotto. Luce e Base si possono mischiare per passaggi intermedi.",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Prima mano (facoltativa)",
+    "usage": "Oro Lucidato su tutta la zona: copre il nero e fa risparmiare i TMM.",
+    "optional": true,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.055",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Base",
+    "usage": "Su tutta la zona, due mani sottili.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "77.123",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Ombra (wash)",
+    "usage": "Negli incavi, sotto le placche, nelle zone rivolte verso il basso.",
+    "optional": false,
+    "technique": "wash",
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "77.143",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Luce intermedia",
+    "usage": "Sulle superfici rivolte verso l'alto.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 50,
+    "mix": [
+     {
+      "paint": "77.123",
+      "drops": 1
+     },
+     {
+      "paint": "77.103",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 5,
+    "role": "Luce",
+    "usage": "Rilievi e bordi superiori.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "77.103",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 6,
+    "role": "Punti luce",
+    "usage": "Micro punti sugli spigoli più esposti.",
+    "optional": true,
+    "technique": "punta",
+    "coverage": 3,
+    "mix": [
+     {
+      "paint": "77.101",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "metal-silver",
+  "category": "metalli",
+  "title": "Argento (sistema TMM Sterling Silver)",
+  "who": "Silver Cloth, maschere, armi, catene",
+  "tip": "Gun Metal sotto l'argento aiuta: dove non arriva l'argento resta già un'ombra metallica.",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base scura (facoltativa)",
+    "usage": "Su tutta la zona.",
+    "optional": true,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.054",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Base",
+    "usage": "Sulle superfici, lasciando il Gun Metal negli incavi.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "77.121",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Ombra (wash)",
+    "usage": "Negli incavi.",
+    "optional": false,
+    "technique": "wash",
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "77.141",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Luce",
+    "usage": "Rilievi e spigoli.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "77.101",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 5,
+    "role": "Punti luce",
+    "usage": "Micro punti.",
+    "optional": true,
+    "technique": "punta",
+    "coverage": 3,
+    "mix": [
+     {
+      "paint": "77.101",
+      "drops": 3
+     },
+     {
+      "paint": "72.001",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "metal-goldanime",
+  "category": "metalli",
+  "title": "Oro anime (più giallo)",
+  "who": "Gold Cloth in stile cartone",
+  "tip": "Meglio come velatura di Giallo Soleggiato sopra l'oro finito.",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Mix rapido",
+    "usage": "Oro più giallo.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "77.123",
+      "drops": 3
+     },
+     {
+      "paint": "72.006",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Velatura",
+    "usage": "1 goccia + 5 d'acqua sopra l'oro, più passate.",
+    "optional": false,
+    "technique": "velatura",
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "72.006",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "metal-oldgold",
+  "category": "metalli",
+  "title": "Oro antico",
+  "who": "Statue, ornamenti vissuti",
+  "tip": "",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Mix",
+    "usage": "Oro scurito con il suo Shade.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "77.123",
+      "drops": 2
+     },
+     {
+      "paint": "77.143",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Variante",
+    "usage": "Più marrone.",
+    "optional": true,
+    "technique": null,
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "72.055",
+      "drops": 2
+     },
+     {
+      "paint": "72.043",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "metal-bronze",
+  "category": "metalli",
+  "title": "Bronzo",
+  "who": "Dettagli, statue, armature antiche",
+  "tip": "Il bronzo è oro più marrone.",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Su tutta la zona.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.055",
+      "drops": 2
+     },
+     {
+      "paint": "72.040",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Incavi.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.055",
+      "drops": 1
+     },
+     {
+      "paint": "72.043",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Rilievi.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.055",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Luce estrema",
+    "usage": "Spigoli.",
+    "optional": true,
+    "technique": "sottile",
+    "coverage": 10,
+    "mix": [
+     {
+      "paint": "77.103",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "metal-copper",
+  "category": "metalli",
+  "title": "Rame",
+  "who": "Dettagli, cloth danneggiate",
+  "tip": "",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Su tutta la zona.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.055",
+      "drops": 2
+     },
+     {
+      "paint": "72.008",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Incavi.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.055",
+      "drops": 1
+     },
+     {
+      "paint": "72.010",
+      "drops": 1
+     },
+     {
+      "paint": "72.043",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Rilievi.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "77.123",
+      "drops": 3
+     },
+     {
+      "paint": "72.008",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Luce estrema",
+    "usage": "Spigoli.",
+    "optional": true,
+    "technique": "sottile",
+    "coverage": 10,
+    "mix": [
+     {
+      "paint": "77.103",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "metal-orichalcum",
+  "category": "metalli",
+  "title": "Oricalco (Scaglie di Poseidone)",
+  "who": "Generali di Poseidone",
+  "tip": "Oro spinto verso l'arancio. Per più colore, velatura di Arancio Fuoco sopra l'oro.",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Su tutta la zona.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "77.123",
+      "drops": 3
+     },
+     {
+      "paint": "72.008",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra (wash)",
+    "usage": "Incavi.",
+    "optional": false,
+    "technique": "wash",
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "77.143",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Rilievi.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "77.123",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Luce estrema",
+    "usage": "Spigoli.",
+    "optional": true,
+    "technique": "sottile",
+    "coverage": 10,
+    "mix": [
+     {
+      "paint": "77.103",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "metal-steel",
+  "category": "metalli",
+  "title": "Acciaio e catene",
+  "who": "Catene di Andromeda, armi, meccanismi",
+  "tip": "",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Su tutta la zona.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.054",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra (wash)",
+    "usage": "Tra gli anelli.",
+    "optional": false,
+    "technique": "wash",
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "77.141",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Rilievi.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.054",
+      "drops": 1
+     },
+     {
+      "paint": "77.121",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Luce estrema",
+    "usage": "Punti degli anelli.",
+    "optional": true,
+    "technique": "sottile",
+    "coverage": 10,
+    "mix": [
+     {
+      "paint": "77.101",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "metal-surplice",
+  "category": "metalli",
+  "title": "Nero-viola metallico (Surplici)",
+  "who": "Specter di Hades, armature oscure",
+  "tip": "Metallo scurissimo con riflessi viola: la velatura viola va data in più passate.",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Su tutta la zona.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.054",
+      "drops": 2
+     },
+     {
+      "paint": "72.051",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Velatura viola",
+    "usage": "1 goccia + 4 d'acqua, più passate.",
+    "optional": false,
+    "technique": "velatura",
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "72.010",
+      "drops": 1
+     },
+     {
+      "paint": "72.022",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Rilievi.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.054",
+      "drops": 1
+     },
+     {
+      "paint": "77.121",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Spigoli",
+    "usage": "Linea sottilissima.",
+    "optional": false,
+    "technique": "spigoli",
+    "coverage": 5,
+    "mix": [
+     {
+      "paint": "77.101",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "metal-black",
+  "category": "metalli",
+  "title": "Nero metallico (Cloth nere)",
+  "who": "Black Saints, armature nere",
+  "tip": "",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Su tutta la zona.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.051",
+      "drops": 2
+     },
+     {
+      "paint": "72.054",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Luce",
+    "usage": "Rilievi.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.054",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Spigoli",
+    "usage": "Linea sottile.",
+    "optional": false,
+    "technique": "spigoli",
+    "coverage": 5,
+    "mix": [
+     {
+      "paint": "77.121",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "cm-method",
+  "category": "colmet",
+  "title": "Come si fa un metallo colorato",
+  "who": "Cloth di bronzo anime, Iron Man, armature fantasy",
+  "tip": "Metodo migliore: argento pieno, poi il colore diluitissimo sopra in 3–5 passate (velatura). Metodo veloce: mischiare argento e colore, ma brilla meno.",
+  "steps": [
+   {
+    "position": 1,
+    "role": "1. Argento",
+    "usage": "Su tutta la zona, lascia asciugare.",
+    "optional": false,
+    "technique": null,
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "77.121",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "2. Velatura",
+    "usage": "Il colore che vuoi, 1 goccia + 4–5 d'acqua, più passate.",
+    "optional": false,
+    "technique": "velatura",
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "72.010",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "3. Ombra",
+    "usage": "Stessa velatura più scura, solo negli incavi.",
+    "optional": false,
+    "technique": "velatura",
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "72.010",
+      "drops": 2
+     },
+     {
+      "paint": "72.043",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "4. Luce",
+    "usage": "Spigoli, dopo la velatura: riporta il brillante.",
+    "optional": false,
+    "technique": "velatura",
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "77.101",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "cm-red",
+  "category": "colmet",
+  "title": "Rosso metallico",
+  "who": "Iron Man, dettagli di Pegasus anime",
+  "tip": "",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Mix rapido",
+    "usage": "Rosso metallico.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "77.121",
+      "drops": 1
+     },
+     {
+      "paint": "72.010",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Incavi.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "77.121",
+      "drops": 1
+     },
+     {
+      "paint": "72.010",
+      "drops": 2
+     },
+     {
+      "paint": "72.043",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Rilievi.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "77.121",
+      "drops": 2
+     },
+     {
+      "paint": "72.010",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "cm-green",
+  "category": "colmet",
+  "title": "Verde metallico",
+  "who": "Dragone",
+  "tip": "",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Mix rapido",
+    "usage": "Verde metallico.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.052",
+      "drops": 2
+     },
+     {
+      "paint": "72.030",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Incavi.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.054",
+      "drops": 2
+     },
+     {
+      "paint": "72.028",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Rilievi.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "77.101",
+      "drops": 2
+     },
+     {
+      "paint": "72.030",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "cm-pink",
+  "category": "colmet",
+  "title": "Rosa metallico",
+  "who": "Andromeda, parte bassa della Fenice anime",
+  "tip": "",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Mix rapido",
+    "usage": "Rosa metallico.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.052",
+      "drops": 2
+     },
+     {
+      "paint": "72.010",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Incavi.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.052",
+      "drops": 1
+     },
+     {
+      "paint": "72.010",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Rilievi.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "77.101",
+      "drops": 2
+     },
+     {
+      "paint": "72.010",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "cm-blue",
+  "category": "colmet",
+  "title": "Blu metallico",
+  "who": "Armature blu, Fenice (manga v2), God Robe",
+  "tip": "",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Mix rapido",
+    "usage": "Blu metallico scuro.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.054",
+      "drops": 2
+     },
+     {
+      "paint": "72.022",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Luce",
+    "usage": "Rilievi.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "77.121",
+      "drops": 2
+     },
+     {
+      "paint": "72.022",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Spigoli",
+    "usage": "Linea sottile.",
+    "optional": false,
+    "technique": "spigoli",
+    "coverage": 5,
+    "mix": [
+     {
+      "paint": "77.101",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "cm-icy",
+  "category": "colmet",
+  "title": "Argento azzurrato",
+  "who": "Cigno, Silver Cloth in stile anime, ghiaccio",
+  "tip": "",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Mix rapido",
+    "usage": "Argento freddo.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "77.121",
+      "drops": 4
+     },
+     {
+      "paint": "72.022",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Wash azzurrato negli incavi.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "77.141",
+      "drops": 2
+     },
+     {
+      "paint": "72.022",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Spigoli.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "77.101",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "cm-purple",
+  "category": "colmet",
+  "title": "Viola metallico",
+  "who": "Fenice anime, surplici",
+  "tip": "",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Mix rapido",
+    "usage": "Viola metallico scuro.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.054",
+      "drops": 2
+     },
+     {
+      "paint": "72.010",
+      "drops": 1
+     },
+     {
+      "paint": "72.022",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Luce",
+    "usage": "Rilievi.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "77.121",
+      "drops": 2
+     },
+     {
+      "paint": "72.010",
+      "drops": 1
+     },
+     {
+      "paint": "72.022",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "cm-orange",
+  "category": "colmet",
+  "title": "Arancio metallico",
+  "who": "Fenice (manga)",
+  "tip": "",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Mix rapido",
+    "usage": "Arancio metallico.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "77.123",
+      "drops": 1
+     },
+     {
+      "paint": "72.008",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Incavi.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "77.143",
+      "drops": 1
+     },
+     {
+      "paint": "72.008",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Rilievi.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "77.103",
+      "drops": 2
+     },
+     {
+      "paint": "72.008",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "cm-pearl",
+  "category": "colmet",
+  "title": "Bianco perla",
+  "who": "Cigno, God Cloth, Pegasus",
+  "tip": "",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Mix",
+    "usage": "Bianco perlato.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "77.121",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Incavi.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "77.141",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Rilievi.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "77.101",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Punti luce",
+    "usage": "Spigoli.",
+    "optional": true,
+    "technique": "punta",
+    "coverage": 3,
+    "mix": [
+     {
+      "paint": "72.001",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "cm-burgundy",
+  "category": "colmet",
+  "title": "Bordeaux metallico",
+  "who": "Andromeda dopo la rinascita",
+  "tip": "",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Mix rapido",
+    "usage": "Bordeaux metallico.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.052",
+      "drops": 1
+     },
+     {
+      "paint": "72.010",
+      "drops": 1
+     },
+     {
+      "paint": "72.043",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Velatura negli incavi.",
+    "optional": false,
+    "technique": "velatura",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.010",
+      "drops": 1
+     },
+     {
+      "paint": "72.043",
+      "drops": 2
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Rilievi.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "77.121",
+      "drops": 2
+     },
+     {
+      "paint": "72.010",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Spigoli",
+    "usage": "Linea sottile.",
+    "optional": false,
+    "technique": "spigoli",
+    "coverage": 5,
+    "mix": [
+     {
+      "paint": "77.101",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "cm-darkgreen",
+  "category": "colmet",
+  "title": "Verde-nero metallico",
+  "who": "Dragone (manga)",
+  "tip": "",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Mix rapido",
+    "usage": "Verde scurissimo metallico.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.054",
+      "drops": 2
+     },
+     {
+      "paint": "72.028",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Luce",
+    "usage": "Rilievi.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "77.121",
+      "drops": 2
+     },
+     {
+      "paint": "72.028",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Spigoli",
+    "usage": "Linea sottile.",
+    "optional": false,
+    "technique": "spigoli",
+    "coverage": 5,
+    "mix": [
+     {
+      "paint": "77.101",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "cm-ironblue",
+  "category": "colmet",
+  "title": "Argento blu ferro",
+  "who": "Pegaso (manga)",
+  "tip": "Argento con una tinta blu fredda. Per più blu, velatura di Blu Ultramar sopra.",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Mix rapido",
+    "usage": "Argento blu ferro.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "77.121",
+      "drops": 2
+     },
+     {
+      "paint": "72.054",
+      "drops": 1
+     },
+     {
+      "paint": "72.022",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra (wash)",
+    "usage": "Negli incavi.",
+    "optional": false,
+    "technique": "wash",
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "77.141",
+      "drops": 2
+     },
+     {
+      "paint": "72.022",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Rilievi e spigoli.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "77.101",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "fab-white",
+  "category": "tessuti",
+  "title": "Bianco",
+  "who": "Mantelli dei Gold Saint, vestito di Athena, dettagli",
+  "tip": "Il bianco non si fa mai bianco puro: ombre grigio-calde, bianco solo sui rilievi.",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Su tutto.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.034",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Fondo delle pieghe.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.049",
+      "drops": 1
+     },
+     {
+      "paint": "72.034",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Sommità delle pieghe.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.001",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "fab-red",
+  "category": "tessuti",
+  "title": "Rosso",
+  "who": "Tuta di Seiya, mantelli, Spider-Man, Ranger Rosso",
+  "tip": "Le ombre del rosso si fanno con il marrone, non con il nero.",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Su tutto.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.010",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Pieghe.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.010",
+      "drops": 2
+     },
+     {
+      "paint": "72.043",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Rilievi.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.010",
+      "drops": 2
+     },
+     {
+      "paint": "72.008",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Luce estrema",
+    "usage": "Spigoli delle pieghe.",
+    "optional": true,
+    "technique": "sottile",
+    "coverage": 10,
+    "mix": [
+     {
+      "paint": "72.010",
+      "drops": 1
+     },
+     {
+      "paint": "72.008",
+      "drops": 1
+     },
+     {
+      "paint": "72.034",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "fab-blue",
+  "category": "tessuti",
+  "title": "Blu",
+  "who": "Tute, Captain America, Ranger Blu",
+  "tip": "",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Su tutto.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.022",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Pieghe.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.022",
+      "drops": 2
+     },
+     {
+      "paint": "72.051",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Rilievi.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.022",
+      "drops": 2
+     },
+     {
+      "paint": "72.001",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Luce estrema",
+    "usage": "Spigoli.",
+    "optional": true,
+    "technique": "sottile",
+    "coverage": 10,
+    "mix": [
+     {
+      "paint": "72.022",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 2
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "fab-lightblue",
+  "category": "tessuti",
+  "title": "Azzurro",
+  "who": "Tuta di Hyoga",
+  "tip": "",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Su tutto.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.022",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 2
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Pieghe.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.022",
+      "drops": 1
+     },
+     {
+      "paint": "72.049",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Rilievi.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.022",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 4
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Luce estrema",
+    "usage": "Spigoli.",
+    "optional": true,
+    "technique": "sottile",
+    "coverage": 10,
+    "mix": [
+     {
+      "paint": "72.001",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "fab-green",
+  "category": "tessuti",
+  "title": "Verde",
+  "who": "Tuta di Shun, Ranger Verde",
+  "tip": "",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Su tutto.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.030",
+      "drops": 2
+     },
+     {
+      "paint": "72.028",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Pieghe.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.028",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Rilievi.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.030",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Luce estrema",
+    "usage": "Spigoli.",
+    "optional": true,
+    "technique": "sottile",
+    "coverage": 10,
+    "mix": [
+     {
+      "paint": "72.030",
+      "drops": 1
+     },
+     {
+      "paint": "72.034",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "fab-darkgreen",
+  "category": "tessuti",
+  "title": "Verde scuro",
+  "who": "Tuta di Shiryu",
+  "tip": "",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Su tutto.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.028",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Pieghe.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.028",
+      "drops": 2
+     },
+     {
+      "paint": "72.051",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Rilievi.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.028",
+      "drops": 1
+     },
+     {
+      "paint": "72.030",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "fab-pink",
+  "category": "tessuti",
+  "title": "Rosa",
+  "who": "Andromeda opaca, Ranger Rosa",
+  "tip": "Il rosa si fa con rosso e bianco. Sul primer nero serve prima una mano di Bianco Osso. Per un rosa vivo compra Squid Pink 72.013.",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Su tutto.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.010",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 3
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Pieghe.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.010",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Rilievi.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.010",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 6
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Luce estrema",
+    "usage": "Spigoli.",
+    "optional": true,
+    "technique": "sottile",
+    "coverage": 10,
+    "mix": [
+     {
+      "paint": "72.001",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "fab-lavender",
+  "category": "tessuti",
+  "title": "Lavanda",
+  "who": "Tuta di Shiryu (anime V1)",
+  "tip": "",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Su tutto.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.010",
+      "drops": 1
+     },
+     {
+      "paint": "72.022",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 5
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Pieghe.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.010",
+      "drops": 1
+     },
+     {
+      "paint": "72.022",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 2
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Rilievi.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.010",
+      "drops": 1
+     },
+     {
+      "paint": "72.022",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 9
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Luce estrema",
+    "usage": "Spigoli.",
+    "optional": true,
+    "technique": "sottile",
+    "coverage": 10,
+    "mix": [
+     {
+      "paint": "72.001",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "fab-lightpink",
+  "category": "tessuti",
+  "title": "Rosa chiaro",
+  "who": "Tuta di Shun (anime V2 e V3)",
+  "tip": "Sul primer nero serve prima una mano di Bianco Osso.",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Su tutto.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.010",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 6
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Pieghe.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.010",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 3
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Rilievi.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.001",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "fab-purple",
+  "category": "tessuti",
+  "title": "Viola",
+  "who": "Pantaloni di Hulk, mantelli",
+  "tip": "",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Su tutto.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.010",
+      "drops": 1
+     },
+     {
+      "paint": "72.022",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Pieghe.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.010",
+      "drops": 1
+     },
+     {
+      "paint": "72.022",
+      "drops": 1
+     },
+     {
+      "paint": "72.051",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Rilievi.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.010",
+      "drops": 1
+     },
+     {
+      "paint": "72.022",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 3
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "fab-black",
+  "category": "tessuti",
+  "title": "Nero leggibile",
+  "who": "Tute nere, Ranger Nero, costumi",
+  "tip": "Il nero puro non si legge: base grigio scurissimo, nero solo nelle ombre.",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Su tutto.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.051",
+      "drops": 3
+     },
+     {
+      "paint": "72.049",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Pieghe.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.051",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Rilievi.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.051",
+      "drops": 1
+     },
+     {
+      "paint": "72.049",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Luce estrema",
+    "usage": "Spigoli, pochissimo.",
+    "optional": true,
+    "technique": "sottile",
+    "coverage": 10,
+    "mix": [
+     {
+      "paint": "72.049",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "fab-yellow",
+  "category": "tessuti",
+  "title": "Giallo",
+  "who": "Ranger Giallo",
+  "tip": "Il giallo copre malissimo sul nero: due mani di Bianco Osso prima.",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Su tutto.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.006",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Pieghe.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.006",
+      "drops": 2
+     },
+     {
+      "paint": "72.040",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Rilievi.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.006",
+      "drops": 2
+     },
+     {
+      "paint": "72.001",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "fab-orange",
+  "category": "tessuti",
+  "title": "Arancio",
+  "who": "Dettagli della Fenice",
+  "tip": "",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Su tutto.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.008",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Pieghe.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.008",
+      "drops": 2
+     },
+     {
+      "paint": "72.043",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Rilievi.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.008",
+      "drops": 2
+     },
+     {
+      "paint": "72.006",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "fab-leather",
+  "category": "tessuti",
+  "title": "Cuoio",
+  "who": "Cinture, cinghie, sandali, faretra",
+  "tip": "",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Su tutto.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.040",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Ombra",
+    "usage": "Bordi e incavi.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.043",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Rilievi.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.040",
+      "drops": 2
+     },
+     {
+      "paint": "72.036",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Luce estrema",
+    "usage": "Graffi e bordi.",
+    "optional": true,
+    "technique": "sottile",
+    "coverage": 10,
+    "mix": [
+     {
+      "paint": "72.036",
+      "drops": 1
+     },
+     {
+      "paint": "72.034",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "gem-red",
+  "category": "dettagli",
+  "title": "Gemma rossa",
+  "who": "Gemme delle armature",
+  "tip": "Scuro in alto, chiaro in basso (al contrario del resto) e un puntino bianco in alto: così sembra trasparente. Alla fine una goccia di vernice lucida.",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Fondo",
+    "usage": "Tutta la gemma.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.010",
+      "drops": 1
+     },
+     {
+      "paint": "72.051",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Base",
+    "usage": "Metà inferiore.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.010",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Quarto inferiore.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.010",
+      "drops": 1
+     },
+     {
+      "paint": "72.008",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Riflesso",
+    "usage": "Un punto in alto a sinistra.",
+    "optional": false,
+    "technique": "punta",
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "72.001",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "gem-blue",
+  "category": "dettagli",
+  "title": "Gemma blu",
+  "who": "Varianti",
+  "tip": "Stesso metodo della gemma rossa.",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Fondo",
+    "usage": "Tutta la gemma.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.022",
+      "drops": 1
+     },
+     {
+      "paint": "72.051",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Base",
+    "usage": "Metà inferiore.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.022",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Quarto inferiore.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.022",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Riflesso",
+    "usage": "Punto in alto.",
+    "optional": false,
+    "technique": "punta",
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "72.001",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "gem-green",
+  "category": "dettagli",
+  "title": "Gemma verde",
+  "who": "Varianti",
+  "tip": "",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Fondo",
+    "usage": "Tutta la gemma.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.028",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Base",
+    "usage": "Metà inferiore.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.030",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Quarto inferiore.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.030",
+      "drops": 1
+     },
+     {
+      "paint": "72.006",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Riflesso",
+    "usage": "Punto in alto.",
+    "optional": false,
+    "technique": "punta",
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "72.001",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "rose",
+  "category": "dettagli",
+  "title": "Rosa rossa",
+  "who": "Aphrodite",
+  "tip": "Petali: base scura, poi il rosso solo sui bordi dei petali.",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Fondo",
+    "usage": "Tutto il fiore.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.010",
+      "drops": 1
+     },
+     {
+      "paint": "72.043",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Petali",
+    "usage": "Petali esterni.",
+    "optional": false,
+    "technique": null,
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "72.010",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Bordi",
+    "usage": "Solo i bordi.",
+    "optional": false,
+    "technique": null,
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "72.010",
+      "drops": 2
+     },
+     {
+      "paint": "72.008",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Stelo",
+    "usage": "Stelo e foglie.",
+    "optional": false,
+    "technique": null,
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "72.028",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "wood",
+  "category": "dettagli",
+  "title": "Legno e grani",
+  "who": "Rosario di Shaka, archi, manici",
+  "tip": "",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Tutto.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.043",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Venature",
+    "usage": "Linee sottili.",
+    "optional": false,
+    "technique": null,
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "72.040",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Rilievi.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.036",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "visor",
+  "category": "dettagli",
+  "title": "Visore nero lucido",
+  "who": "Caschi dei Power Rangers, occhiali",
+  "tip": "Alla fine vernice lucida solo sul visore: fa metà dell'effetto.",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Tutto il visore.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.051",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Riflesso",
+    "usage": "Una striscia curva in alto.",
+    "optional": false,
+    "technique": "punta",
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "72.049",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Punto luce",
+    "usage": "Un punto sul riflesso.",
+    "optional": true,
+    "technique": "punta",
+    "coverage": 3,
+    "mix": [
+     {
+      "paint": "72.001",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "fx-cosmo",
+  "category": "effetti",
+  "title": "Cosmo e aure",
+  "who": "Basette ed effetti di energia",
+  "tip": "Velature leggere, sempre per ultime.",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Cosmo d'oro",
+    "usage": "Velatura calda.",
+    "optional": false,
+    "technique": "velatura",
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "72.006",
+      "drops": 2
+     },
+     {
+      "paint": "72.008",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Cosmo blu",
+    "usage": "Velatura fredda.",
+    "optional": false,
+    "technique": "velatura",
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "72.022",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 2
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Cosmo viola",
+    "usage": "Hades, energie oscure.",
+    "optional": false,
+    "technique": null,
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "72.010",
+      "drops": 1
+     },
+     {
+      "paint": "72.022",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 2
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Cosmo rosso",
+    "usage": "Scorpione, rabbia.",
+    "optional": false,
+    "technique": null,
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "72.010",
+      "drops": 2
+     },
+     {
+      "paint": "72.008",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "fx-fire",
+  "category": "effetti",
+  "title": "Fuoco",
+  "who": "Fenice, esplosioni",
+  "tip": "Chiaro al centro, scuro ai bordi.",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Centro",
+    "usage": "Nucleo della fiamma.",
+    "optional": false,
+    "technique": null,
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "72.006",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Giallo",
+    "usage": "Attorno al centro.",
+    "optional": false,
+    "technique": null,
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "72.006",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Arancio",
+    "usage": "Corpo della fiamma.",
+    "optional": false,
+    "technique": null,
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "72.008",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Bordi",
+    "usage": "Punte esterne.",
+    "optional": false,
+    "technique": null,
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "72.010",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "fx-ice",
+  "category": "effetti",
+  "title": "Ghiaccio",
+  "who": "Hyoga, Camus",
+  "tip": "Parti da un azzurro e schiarisci verso le punte; alla fine vernice lucida.",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Fondo",
+    "usage": "Tutto il ghiaccio.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.022",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 3
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Luce",
+    "usage": "Verso le punte.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.022",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 8
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Punte",
+    "usage": "Spigoli e punte.",
+    "optional": false,
+    "technique": null,
+    "coverage": 3,
+    "mix": [
+     {
+      "paint": "72.001",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "fx-tattoo",
+  "category": "effetti",
+  "title": "Tatuaggio del drago",
+  "who": "Shiryu a torso nudo",
+  "tip": "Velatura sottile sulla schiena, non colore pieno.",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Contorno",
+    "usage": "Molto diluito.",
+    "optional": false,
+    "technique": "punta",
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "72.028",
+      "drops": 1
+     },
+     {
+      "paint": "72.022",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Riempimento",
+    "usage": "Velatura.",
+    "optional": false,
+    "technique": "velatura",
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "72.030",
+      "drops": 1
+     },
+     {
+      "paint": "72.022",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "base-earth",
+  "category": "basette",
+  "title": "Terra",
+  "who": "Basette, terreno",
+  "tip": "Base scura, poi drybrush sempre più chiari.",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Ombra",
+    "usage": "Base scura o wash.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.043",
+      "drops": 2
+     },
+     {
+      "paint": "72.051",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Base",
+    "usage": "Tutta la terra.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.043",
+      "drops": 1
+     },
+     {
+      "paint": "72.040",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Drybrush",
+    "usage": "Primo drybrush.",
+    "optional": false,
+    "technique": "drybrush",
+    "coverage": 40,
+    "mix": [
+     {
+      "paint": "72.040",
+      "drops": 1
+     },
+     {
+      "paint": "72.034",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Drybrush finale",
+    "usage": "Leggerissimo.",
+    "optional": false,
+    "technique": "drybrush",
+    "coverage": 40,
+    "mix": [
+     {
+      "paint": "72.034",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "base-sand",
+  "category": "basette",
+  "title": "Sabbia",
+  "who": "Arena, strade del Santuario",
+  "tip": "",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Ombra",
+    "usage": "Incavi.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.040",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Base",
+    "usage": "Tutto.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.034",
+      "drops": 2
+     },
+     {
+      "paint": "72.036",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Drybrush.",
+    "optional": false,
+    "technique": "drybrush",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.034",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "base-rock",
+  "category": "basette",
+  "title": "Roccia grigia",
+  "who": "Scogliere, montagne dei Cinque Picchi",
+  "tip": "Tutto a drybrush: veloce e d'effetto.",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Tutta la roccia.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.049",
+      "drops": 1
+     },
+     {
+      "paint": "72.051",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Wash",
+    "usage": "Lo Shade dell'argento funziona anche sulle rocce.",
+    "optional": false,
+    "technique": "wash",
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "77.141",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Drybrush",
+    "usage": "Primo drybrush.",
+    "optional": false,
+    "technique": "drybrush",
+    "coverage": 40,
+    "mix": [
+     {
+      "paint": "72.049",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Drybrush finale",
+    "usage": "Solo sugli spigoli.",
+    "optional": false,
+    "technique": "drybrush",
+    "coverage": 40,
+    "mix": [
+     {
+      "paint": "72.049",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "base-warmrock",
+  "category": "basette",
+  "title": "Pietra calda",
+  "who": "Scalinate, rovine greche",
+  "tip": "",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Tutto.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.049",
+      "drops": 2
+     },
+     {
+      "paint": "72.040",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Drybrush",
+    "usage": "Rilievi.",
+    "optional": false,
+    "technique": "drybrush",
+    "coverage": 40,
+    "mix": [
+     {
+      "paint": "72.049",
+      "drops": 1
+     },
+     {
+      "paint": "72.034",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Drybrush finale",
+    "usage": "Spigoli.",
+    "optional": false,
+    "technique": "drybrush",
+    "coverage": 40,
+    "mix": [
+     {
+      "paint": "72.034",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "base-marble",
+  "category": "basette",
+  "title": "Marmo",
+  "who": "Colonne greche, Templi delle Dodici Case",
+  "tip": "Venature: linee sottili e spezzate di Grigio Muraglia diluito, poi una velatura di Bianco Osso sopra per ammorbidirle.",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Ombra",
+    "usage": "Incavi e scanalature.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.034",
+      "drops": 2
+     },
+     {
+      "paint": "72.049",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Base",
+    "usage": "Tutto.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.034",
+      "drops": 2
+     },
+     {
+      "paint": "72.001",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Venature",
+    "usage": "Molto diluito.",
+    "optional": false,
+    "technique": null,
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "72.049",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Luce",
+    "usage": "Spigoli.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.001",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "base-grass",
+  "category": "basette",
+  "title": "Erba e muschio",
+  "who": "Basette naturali",
+  "tip": "",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Base",
+    "usage": "Tutto.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.028",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Luce",
+    "usage": "Drybrush.",
+    "optional": false,
+    "technique": "drybrush",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.030",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Punte",
+    "usage": "Drybrush leggero.",
+    "optional": false,
+    "technique": "drybrush",
+    "coverage": 3,
+    "mix": [
+     {
+      "paint": "72.030",
+      "drops": 1
+     },
+     {
+      "paint": "72.006",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Erba secca",
+    "usage": "Qua e là per variare.",
+    "optional": false,
+    "technique": null,
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "72.034",
+      "drops": 2
+     },
+     {
+      "paint": "72.006",
+      "drops": 1
+     },
+     {
+      "paint": "72.040",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "base-snow",
+  "category": "basette",
+  "title": "Neve",
+  "who": "Siberia (Hyoga), Asgard",
+  "tip": "",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Ombra",
+    "usage": "Incavi.",
+    "optional": false,
+    "technique": "sottile",
+    "coverage": 35,
+    "mix": [
+     {
+      "paint": "72.022",
+      "drops": 1
+     },
+     {
+      "paint": "72.049",
+      "drops": 1
+     },
+     {
+      "paint": "72.001",
+      "drops": 3
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Base",
+    "usage": "Tutto.",
+    "optional": false,
+    "technique": "coprente",
+    "coverage": 100,
+    "mix": [
+     {
+      "paint": "72.001",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Luce",
+    "usage": "Drybrush sui rilievi.",
+    "optional": false,
+    "technique": "drybrush",
+    "coverage": 30,
+    "mix": [
+     {
+      "paint": "72.001",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "base-lava",
+  "category": "basette",
+  "title": "Lava",
+  "who": "Isola della Regina Nera, Inferi",
+  "tip": "",
+  "steps": [
+   {
+    "position": 1,
+    "role": "Roccia",
+    "usage": "Tutto.",
+    "optional": false,
+    "technique": null,
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "72.051",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 2,
+    "role": "Crepe",
+    "usage": "Dentro le crepe.",
+    "optional": false,
+    "technique": null,
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "72.010",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 3,
+    "role": "Calore",
+    "usage": "Centro delle crepe.",
+    "optional": false,
+    "technique": null,
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "72.008",
+      "drops": 1
+     }
+    ]
+   },
+   {
+    "position": 4,
+    "role": "Nucleo",
+    "usage": "Punti più profondi.",
+    "optional": false,
+    "technique": null,
+    "coverage": null,
+    "mix": [
+     {
+      "paint": "72.006",
+      "drops": 1
+     }
+    ]
+   }
+  ]
+ }
+]

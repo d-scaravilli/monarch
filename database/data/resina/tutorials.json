@@ -1,0 +1,74 @@
+[
+ {
+  "position": 1,
+  "title": "Basi della pittura",
+  "query": "come dipingere miniature principianti tutorial italiano",
+  "description": "Le basi da zero, in italiano."
+ },
+ {
+  "position": 2,
+  "title": "Tavolozza bagnata",
+  "query": "wet palette fai da te miniature",
+  "description": "Come prepararla e usarla."
+ },
+ {
+  "position": 3,
+  "title": "Diluire il colore",
+  "query": "come diluire colori acrilici miniature",
+  "description": "La consistenza giusta."
+ },
+ {
+  "position": 4,
+  "title": "Wash",
+  "query": "wash miniature tutorial italiano",
+  "description": "Stendere la lavatura senza aloni."
+ },
+ {
+  "position": 5,
+  "title": "Drybrush",
+  "query": "drybrush tutorial miniature italiano",
+  "description": "Il pennello asciutto passo passo."
+ },
+ {
+  "position": 6,
+  "title": "True Metallic Metal",
+  "query": "Vallejo True Metallic Metal tutorial",
+  "description": "Il sistema Base, Shade, Light."
+ },
+ {
+  "position": 7,
+  "title": "Set Tanned Skin",
+  "query": "Vallejo Game Color Tanned Skin set tutorial",
+  "description": "Il video del set che hai."
+ },
+ {
+  "position": 8,
+  "title": "Occhi",
+  "query": "come dipingere occhi miniature tutorial",
+  "description": "Occhi puliti a mano libera."
+ },
+ {
+  "position": 9,
+  "title": "Edge highlight",
+  "query": "edge highlighting armor miniature tutorial",
+  "description": "Luci sugli spigoli."
+ },
+ {
+  "position": 10,
+  "title": "Metallo colorato (candy)",
+  "query": "candy metallic brush painting miniature",
+  "description": "Argento con velature di colore."
+ },
+ {
+  "position": 11,
+  "title": "Stampe in resina",
+  "query": "preparare stampa resina per verniciatura primer",
+  "description": "Lavaggio, levigatura, primer."
+ },
+ {
+  "position": 12,
+  "title": "Gold Cloth di Saint Seiya",
+  "query": "Saint Seiya gold cloth painting",
+  "description": "Armature d'oro dipinte."
+ }
+]

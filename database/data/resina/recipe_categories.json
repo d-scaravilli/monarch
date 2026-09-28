@@ -1,0 +1,38 @@
+[
+ {
+  "slug": "pelle",
+  "name": "Pelle"
+ },
+ {
+  "slug": "occhi",
+  "name": "Occhi e volto"
+ },
+ {
+  "slug": "capelli",
+  "name": "Capelli"
+ },
+ {
+  "slug": "metalli",
+  "name": "Metalli"
+ },
+ {
+  "slug": "colmet",
+  "name": "Metalli colorati"
+ },
+ {
+  "slug": "tessuti",
+  "name": "Tessuti e tute"
+ },
+ {
+  "slug": "dettagli",
+  "name": "Gemme e dettagli"
+ },
+ {
+  "slug": "effetti",
+  "name": "Effetti"
+ },
+ {
+  "slug": "basette",
+  "name": "Basette"
+ }
+]

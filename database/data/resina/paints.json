@@ -1,0 +1,254 @@
+[
+ {
+  "code": "72.001",
+  "name": "Bianco Teschio",
+  "name_en": "Dead White",
+  "hex": "#f3f1e8",
+  "line": "Game Color · set 72.299",
+  "type": "normal",
+  "usage": "Schiarire tutto, punti luce, riflessi negli occhi. Mai puro sulla pelle."
+ },
+ {
+  "code": "72.034",
+  "name": "Bianco Osso",
+  "name_en": "Bone White",
+  "hex": "#ded5b5",
+  "line": "Game Color · set 72.299",
+  "type": "normal",
+  "usage": "Schiarire in modo caldo, bianco degli occhi, sottofondo per colori chiari sul primer nero, marmo, sabbia."
+ },
+ {
+  "code": "72.006",
+  "name": "Giallo Soleggiato",
+  "name_en": "Sun Yellow",
+  "hex": "#f2c928",
+  "line": "Game Color · set 72.299",
+  "type": "normal",
+  "usage": "Capelli biondi, velature per l'oro, luci del verde, tute gialle."
+ },
+ {
+  "code": "72.008",
+  "name": "Arancio Fuoco",
+  "name_en": "Orange Fire",
+  "hex": "#e76c25",
+  "line": "Game Color · set 72.299",
+  "type": "normal",
+  "usage": "Rame, oricalco, fuoco, luci del rosso."
+ },
+ {
+  "code": "72.010",
+  "name": "Rosso Sanguina",
+  "name_en": "Bloody Red",
+  "hex": "#b82d35",
+  "line": "Game Color · set 72.299",
+  "type": "normal",
+  "usage": "Gemme, mantelli, tute rosse, labbra e guance in mix, base per il viola."
+ },
+ {
+  "code": "72.022",
+  "name": "Blu Ultramar",
+  "name_en": "Ultramarine Blue",
+  "hex": "#31559a",
+  "line": "Game Color · set 72.299",
+  "type": "normal",
+  "usage": "Occhi, capelli blu, tute, argento azzurrato, base per viola e teal."
+ },
+ {
+  "code": "72.030",
+  "name": "Verde Goblin",
+  "name_en": "Goblin Green",
+  "hex": "#4c8a45",
+  "line": "Game Color · set 72.299",
+  "type": "normal",
+  "usage": "Capelli verdi, cloth del Dragone, erba, luci del verde."
+ },
+ {
+  "code": "72.028",
+  "name": "Verde Scuro",
+  "name_en": "Dark Green",
+  "hex": "#24533d",
+  "line": "Game Color · set 72.299",
+  "type": "normal",
+  "usage": "Ombre del verde, capelli verde scuro, erba in ombra."
+ },
+ {
+  "code": "72.036",
+  "name": "Marrone Bronzato",
+  "name_en": "Bronze Fleshtone",
+  "hex": "#9a6743",
+  "line": "Game Color · set 72.299",
+  "type": "normal",
+  "usage": "Castano chiaro, legno, terra calda, pelle alternativa."
+ },
+ {
+  "code": "72.040",
+  "name": "Marrone Cuoio",
+  "name_en": "Leather Brown",
+  "hex": "#7b4b32",
+  "line": "Game Color · set 72.299",
+  "type": "normal",
+  "usage": "Capelli castani, cuoio, cinghie, terra, bronzo in mix."
+ },
+ {
+  "code": "72.043",
+  "name": "Marrone Bichos",
+  "name_en": "Beasty Brown",
+  "hex": "#5c3b31",
+  "line": "Game Color · set 72.299",
+  "type": "normal",
+  "usage": "Ombre calde, contorno occhi, terra scura, sopracciglia."
+ },
+ {
+  "code": "72.049",
+  "name": "Grigio Muraglia",
+  "name_en": "Stonewall Grey",
+  "hex": "#8f9697",
+  "line": "Game Color · set 72.299",
+  "type": "normal",
+  "usage": "Rocce, pietra, ombre del bianco, sottofondo sul primer nero."
+ },
+ {
+  "code": "72.051",
+  "name": "Nero",
+  "name_en": "Black",
+  "hex": "#17191c",
+  "line": "Game Color · set 72.299",
+  "type": "normal",
+  "usage": "Pupille, capelli neri, visori, ombre profonde. Poco alla volta!"
+ },
+ {
+  "code": "72.052",
+  "name": "Argento",
+  "name_en": "Silver",
+  "hex": "#aeb5b8",
+  "line": "Game Color · set 72.299",
+  "type": "metallic",
+  "usage": "Argento economico per prime mani, catene, base per metallici colorati."
+ },
+ {
+  "code": "72.054",
+  "name": "Grigio Metallico Scuro",
+  "name_en": "Gunmetal",
+  "hex": "#4c5155",
+  "line": "Game Color · set 72.299",
+  "type": "metallic",
+  "usage": "Base scura dell'argento, acciaio, surplici, armi."
+ },
+ {
+  "code": "72.055",
+  "name": "Oro Lucidato",
+  "name_en": "Polished Gold",
+  "hex": "#c69a38",
+  "line": "Game Color · set 72.299",
+  "type": "metallic",
+  "usage": "Prima mano dell'oro, bronzo e rame in mix."
+ },
+ {
+  "code": "72.098",
+  "name": "Carne Elfica",
+  "name_en": "Elfic Flesh",
+  "hex": "#e9c596",
+  "line": "Tanned Skin · set 72.380",
+  "type": "normal",
+  "usage": "Luce estrema della pelle; base della pelle molto chiara."
+ },
+ {
+  "code": "72.099",
+  "name": "Pelle",
+  "name_en": "Skin Tone",
+  "hex": "#c98f6a",
+  "line": "Tanned Skin · set 72.380",
+  "type": "normal",
+  "usage": "Luce della pelle abbronzata; base della pelle chiara."
+ },
+ {
+  "code": "72.004",
+  "name": "Pelle Elfi",
+  "name_en": "Elf Skin Tone",
+  "hex": "#b97857",
+  "line": "Tanned Skin · set 72.380",
+  "type": "normal",
+  "usage": "Base della pelle abbronzata."
+ },
+ {
+  "code": "72.071",
+  "name": "Pelle Barbaro",
+  "name_en": "Barbarian Skin",
+  "hex": "#85513d",
+  "line": "Tanned Skin · set 72.380",
+  "type": "normal",
+  "usage": "Ombra della pelle; base della pelle scura."
+ },
+ {
+  "code": "77.103",
+  "name": "Imperial Gold Light",
+  "name_en": "TMM Light",
+  "hex": "#efd36a",
+  "line": "True Metallic Metal · Imperial Gold",
+  "type": "metallic",
+  "usage": "Luci e spigoli dell'oro."
+ },
+ {
+  "code": "77.123",
+  "name": "Imperial Gold Base",
+  "name_en": "TMM Base",
+  "hex": "#c89b35",
+  "line": "True Metallic Metal · Imperial Gold",
+  "type": "metallic",
+  "usage": "Oro principale di Gold Cloth, scaglie, dettagli."
+ },
+ {
+  "code": "77.143",
+  "name": "Imperial Gold Shade",
+  "name_en": "TMM Shade (wash)",
+  "hex": "#765225",
+  "line": "True Metallic Metal · Imperial Gold",
+  "type": "wash",
+  "usage": "Wash satinato per gli incavi dell'oro. Non è metallico."
+ },
+ {
+  "code": "77.163",
+  "name": "Imperial Gold Airbrush",
+  "name_en": "TMM Airbrush",
+  "hex": "#c89b35",
+  "line": "True Metallic Metal · Imperial Gold",
+  "type": "airbrush",
+  "usage": "Base già diluita per aerografo. A pennello: mani sottilissime."
+ },
+ {
+  "code": "77.101",
+  "name": "Sterling Silver Light",
+  "name_en": "TMM Light",
+  "hex": "#e2e4e3",
+  "line": "True Metallic Metal · Sterling Silver",
+  "type": "metallic",
+  "usage": "Luci dell'argento; punti luce estremi anche sull'oro."
+ },
+ {
+  "code": "77.121",
+  "name": "Sterling Silver Base",
+  "name_en": "TMM Base",
+  "hex": "#aeb5b6",
+  "line": "True Metallic Metal · Sterling Silver",
+  "type": "metallic",
+  "usage": "Argento principale di Silver Cloth, maschere, armi."
+ },
+ {
+  "code": "77.141",
+  "name": "Sterling Silver Shade",
+  "name_en": "TMM Shade (wash)",
+  "hex": "#596064",
+  "line": "True Metallic Metal · Sterling Silver",
+  "type": "wash",
+  "usage": "Wash satinato per gli incavi dell'argento. Non è metallico."
+ },
+ {
+  "code": "77.161",
+  "name": "Sterling Silver Airbrush",
+  "name_en": "TMM Airbrush",
+  "hex": "#aeb5b6",
+  "line": "True Metallic Metal · Sterling Silver",
+  "type": "airbrush",
+  "usage": "Base già diluita per aerografo. A pennello: mani sottilissime."
+ }
+]

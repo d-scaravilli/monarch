@@ -1,0 +1,98 @@
+[
+ {
+  "position": 1,
+  "type": "piatto",
+  "size": "2",
+  "metallic_only": false
+ },
+ {
+  "position": 2,
+  "type": "piatto",
+  "size": "0",
+  "metallic_only": false
+ },
+ {
+  "position": 3,
+  "type": "angolato",
+  "size": "1",
+  "metallic_only": false
+ },
+ {
+  "position": 4,
+  "type": "tondo",
+  "size": "2",
+  "metallic_only": false
+ },
+ {
+  "position": 5,
+  "type": "tondo",
+  "size": "1",
+  "metallic_only": false
+ },
+ {
+  "position": 6,
+  "type": "tondo",
+  "size": "0",
+  "metallic_only": false
+ },
+ {
+  "position": 7,
+  "type": "tondo",
+  "size": "3/0",
+  "metallic_only": false
+ },
+ {
+  "position": 8,
+  "type": "tondo",
+  "size": "5/0",
+  "metallic_only": false
+ },
+ {
+  "position": 9,
+  "type": "tondo",
+  "size": "10/0",
+  "metallic_only": false
+ },
+ {
+  "position": 10,
+  "type": "liner",
+  "size": "3/0",
+  "metallic_only": false
+ },
+ {
+  "position": 11,
+  "type": "liner",
+  "size": "5/0",
+  "metallic_only": false
+ },
+ {
+  "position": 12,
+  "type": "spot",
+  "size": "20/0",
+  "metallic_only": false
+ },
+ {
+  "position": 13,
+  "type": "drybrush",
+  "size": "9",
+  "metallic_only": false
+ },
+ {
+  "position": 14,
+  "type": "drybrush",
+  "size": "7",
+  "metallic_only": false
+ },
+ {
+  "position": 15,
+  "type": "drybrush",
+  "size": "5",
+  "metallic_only": false
+ },
+ {
+  "position": 16,
+  "type": "drybrush",
+  "size": "3",
+  "metallic_only": false
+ }
+]
