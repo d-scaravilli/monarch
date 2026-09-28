@@ -26,3 +26,4 @@ Homestead.yaml
 Thumbs.db
 /storage/app/public/*
 !/storage/app/public/.gitignore
+/docs/resina/data
