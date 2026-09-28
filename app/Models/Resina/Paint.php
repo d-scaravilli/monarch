@@ -28,8 +28,11 @@ class Paint extends Model
         'position',
     ];
 
+    /**
+     * The TMM airbrush bottles are metallic too (see color.js).
+     */
     public function isMetallic(): bool
     {
-        return $this->type === 'metallic';
+        return in_array($this->type, ['metallic', 'airbrush'], true);
     }
 }
