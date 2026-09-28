@@ -7,6 +7,12 @@
     } elseif ($errors->any()) {
         $initialTab = 'general';
     }
+
+    $hasDangerZone = in_array($module->slug, ['palestra', 'resina'], true);
+    $resetDescription = match ($module->slug) {
+        'resina' => 'inventari dei colori, pennelli, avanzamento delle schede e del percorso, versioni scelte, miscele salvate, figure personali e le loro foto, per tutti gli utenti. Il catalogo condiviso (progetti, personaggi, ricette, guide), gli account utente e le impostazioni del modulo restano intatti',
+        default => 'iscrizioni, corsi/eventi, fasce orarie, lezioni, presenze, pagamenti, documenti e note. Account utente, sale e impostazioni del modulo restano intatti',
+    };
 @endphp
 
 <x-app-layout>
@@ -19,6 +25,8 @@
             @if ($module->slug === 'palestra')
                 <button type="button" @click="tab = 'rooms'" class="rounded-lg px-4 py-2 transition" :class="tab === 'rooms' ? 'bg-white dark:bg-gray-900 shadow-sm text-gray-900 dark:text-gray-100' : 'text-gray-500 dark:text-gray-400'">Sale</button>
                 <button type="button" @click="tab = 'directory'" class="rounded-lg px-4 py-2 transition" :class="tab === 'directory' ? 'bg-white dark:bg-gray-900 shadow-sm text-gray-900 dark:text-gray-100' : 'text-gray-500 dark:text-gray-400'">Anagrafica</button>
+            @endif
+            @if ($hasDangerZone)
                 <button type="button" @click="tab = 'danger'" class="rounded-lg px-4 py-2 transition" :class="tab === 'danger' ? 'bg-white dark:bg-gray-900 shadow-sm text-red-600 dark:text-red-400' : 'text-gray-500 dark:text-gray-400'">Zona pericolosa</button>
             @endif
         </div>
@@ -177,16 +185,16 @@
                     </x-card>
                 </a>
             </div>
+        @endif
 
+        @if ($hasDangerZone)
             <div x-show="tab === 'danger'" x-cloak class="space-y-4">
                 <x-card class="ring-1 ring-red-200 dark:ring-red-500/30 bg-red-50/50 dark:bg-red-500/5">
                     <div class="flex items-start justify-between gap-4">
                         <div>
                             <p class="font-medium text-gray-900 dark:text-gray-100">Azzera dati modulo</p>
                             <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                                Cancella iscrizioni, corsi/eventi, fasce orarie, lezioni, presenze, pagamenti,
-                                documenti e note. Account utente, sale e impostazioni del modulo restano intatti.
-                                Azione irreversibile.
+                                Cancella {{ $resetDescription }}. Azione irreversibile.
                             </p>
                         </div>
                         <button type="button" x-data="" x-on:click="$dispatch('open-modal', 'reset-module-data')"
@@ -196,26 +204,47 @@
                     </div>
                 </x-card>
 
-                <x-card class="ring-1 ring-red-200 dark:ring-red-500/30 bg-red-50/50 dark:bg-red-500/5">
-                    <div class="flex items-start justify-between gap-4">
-                        <div>
-                            <p class="font-medium text-gray-900 dark:text-gray-100">Elimina tutte le notifiche</p>
-                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                                Cancella tutte le notifiche salvate (quelle che alimentano la campanella), per
-                                tutti gli utenti. Non tocca messaggi, pagamenti, note o altri dati. Azione
-                                irreversibile.
-                            </p>
-                        </div>
-                        <form method="POST" action="{{ route('modules.settings.notifications.reset', $module) }}"
-                              onsubmit="return confirm('Eliminare tutte le notifiche salvate? L\'azione non può essere annullata.')">
-                            @csrf @method('DELETE')
-                            <button type="submit"
+                @if ($module->slug === 'resina')
+                    <x-card class="ring-1 ring-red-200 dark:ring-red-500/30 bg-red-50/50 dark:bg-red-500/5">
+                        <div class="flex items-start justify-between gap-4">
+                            <div>
+                                <p class="font-medium text-gray-900 dark:text-gray-100">Reimporta catalogo iniziale</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                                    Ricarica colori, ricette, progetti, personaggi, guide, percorso e tutorial dai dati
+                                    iniziali. <strong class="text-gray-700 dark:text-gray-200">Sovrascrive tutte le modifiche fatte al catalogo</strong>
+                                    sulle voci importate; le voci aggiunte a mano e i dati personali degli utenti restano.
+                                </p>
+                            </div>
+                            <button type="button" x-data="" x-on:click="$dispatch('open-modal', 'reimport-catalog')"
                                     class="shrink-0 inline-flex items-center gap-1.5 whitespace-nowrap rounded-xl bg-red-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-red-700">
-                                <x-heroicon-o-bell-slash class="h-4 w-4" /> Elimina notifiche
+                                <x-heroicon-o-arrow-path class="h-4 w-4" /> Reimporta catalogo
                             </button>
-                        </form>
-                    </div>
-                </x-card>
+                        </div>
+                    </x-card>
+                @endif
+
+                @if ($module->slug === 'palestra')
+                    <x-card class="ring-1 ring-red-200 dark:ring-red-500/30 bg-red-50/50 dark:bg-red-500/5">
+                        <div class="flex items-start justify-between gap-4">
+                            <div>
+                                <p class="font-medium text-gray-900 dark:text-gray-100">Elimina tutte le notifiche</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                                    Cancella tutte le notifiche salvate (quelle che alimentano la campanella), per
+                                    tutti gli utenti. Non tocca messaggi, pagamenti, note o altri dati. Azione
+                                    irreversibile.
+                                </p>
+                            </div>
+                            <form method="POST" action="{{ route('modules.settings.notifications.reset', $module) }}"
+                                  onsubmit="return confirm('Eliminare tutte le notifiche salvate? L\'azione non può essere annullata.')">
+                                @csrf @method('DELETE')
+                                <button type="submit"
+                                        class="shrink-0 inline-flex items-center gap-1.5 whitespace-nowrap rounded-xl bg-red-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-red-700">
+                                    <x-heroicon-o-bell-slash class="h-4 w-4" /> Elimina notifiche
+                                </button>
+                            </form>
+                        </div>
+                    </x-card>
+                @endif
             </div>
 
             <x-modal name="reset-module-data" max-width="lg">
@@ -225,10 +254,8 @@
                         Azzera dati modulo
                     </h2>
                     <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
-                        Stai per cancellare in modo permanente iscrizioni, corsi/eventi, fasce orarie, lezioni,
-                        presenze, pagamenti, documenti e note del modulo <strong>{{ $module->name }}</strong>.
-                        Account utente, sale e impostazioni del modulo non verranno toccati. Questa azione non
-                        può essere annullata.
+                        Stai per cancellare in modo permanente, nel modulo <strong>{{ $module->name }}</strong>:
+                        {{ $resetDescription }}. Questa azione non può essere annullata.
                     </p>
 
                     <form method="POST" action="{{ route('modules.settings.reset', $module) }}" class="mt-5 space-y-4">
@@ -248,6 +275,39 @@
                     </form>
                 </div>
             </x-modal>
+
+            @if ($module->slug === 'resina')
+                <x-modal name="reimport-catalog" max-width="lg">
+                    <div class="p-6" x-data="{ confirmText: '' }">
+                        <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                            <x-heroicon-o-exclamation-triangle class="h-5 w-5 text-red-500" />
+                            Reimporta catalogo iniziale
+                        </h2>
+                        <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                            Colori, ricette, progetti, personaggi, versioni, zone, guide, armature, percorso e tutorial
+                            tornano come nei dati iniziali. <strong>Ogni modifica fatta a queste voci andrà persa</strong>,
+                            e i passaggi delle ricette e delle guide importate vengono riscritti. Le voci aggiunte a mano
+                            e i dati personali degli utenti non vengono toccati.
+                        </p>
+
+                        <form method="POST" action="{{ route('modules.settings.reimport', $module) }}" class="mt-5 space-y-4">
+                            @csrf
+                            <div class="space-y-1.5">
+                                <x-input-label value="Digita \"{{ $module->name }}\" per confermare" />
+                                <x-text-input name="confirm_name" x-model="confirmText" class="w-full" autocomplete="off" />
+                            </div>
+                            <div class="flex items-center justify-end gap-3 pt-2">
+                                <x-secondary-button type="button" x-on:click="$dispatch('close')">Annulla</x-secondary-button>
+                                <button type="submit"
+                                        :disabled="confirmText !== {{ Illuminate\Support\Js::from($module->name) }}"
+                                        class="inline-flex items-center gap-1.5 rounded-xl bg-red-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-red-700 disabled:opacity-40 disabled:cursor-not-allowed">
+                                    Reimporta e sovrascrivi
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </x-modal>
+            @endif
         @endif
     </div>
 </x-app-layout>

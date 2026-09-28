@@ -49,6 +49,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/modules/{module}/settings/access', [ModuleSettingsController::class, 'grantAccess'])->name('modules.settings.access.store');
     Route::delete('/modules/{module}/settings/access/{user}', [ModuleSettingsController::class, 'revokeAccess'])->name('modules.settings.access.destroy');
     Route::delete('/modules/{module}/settings/reset', [ModuleSettingsController::class, 'resetData'])->name('modules.settings.reset');
+    Route::post('/modules/{module}/settings/reimport', [ModuleSettingsController::class, 'reimportCatalog'])->name('modules.settings.reimport');
     Route::delete('/modules/{module}/settings/notifications', [ModuleSettingsController::class, 'resetNotifications'])->name('modules.settings.notifications.reset');
 
     Route::get('/settings', [SettingsController::class, 'edit'])->name('settings.edit');
