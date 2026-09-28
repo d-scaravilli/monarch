@@ -50,6 +50,9 @@
         // Same pages for everyone; only the admin also edits the shared
         // catalog (inside those pages) and gets "Gestisci".
         $navItems[] = ['label' => 'Home', 'route' => 'resina.home', 'icon' => 'home', 'active' => request()->routeIs('resina.home'), 'mobile' => true];
+        $navItems[] = ['label' => 'Ricette', 'route' => 'resina.recipes.index', 'icon' => 'book-open', 'active' => request()->routeIs('resina.recipes.*'), 'mobile' => true];
+        $navItems[] = ['label' => 'Colori', 'route' => 'resina.paints.index', 'icon' => 'swatch', 'active' => request()->routeIs('resina.paints.*'), 'mobile' => true];
+        $navItems[] = ['label' => 'Pennelli', 'route' => 'resina.brushes.index', 'icon' => 'paint-brush', 'active' => request()->routeIs('resina.brushes.*'), 'mobile' => true];
         if ($isAdmin) {
             $navItems[] = ['label' => 'Gestisci', 'route' => 'modules.settings.edit', 'params' => [$currentModule], 'icon' => 'wrench-screwdriver', 'active' => request()->routeIs('modules.settings.*'), 'mobile' => true];
         }
@@ -94,6 +97,9 @@
         </script>
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @if ($currentModule?->slug === 'resina')
+            @vite('resources/js/resina/index.js')
+        @endif
         @livewireStyles
     </head>
     <body class="font-sans antialiased text-gray-900 bg-gray-50 dark:bg-gray-950 dark:text-gray-100">

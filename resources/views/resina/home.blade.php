@@ -14,7 +14,7 @@
             <x-section-header>La tua mensola</x-section-header>
             <x-card class="space-y-4">
                 <p class="text-sm text-gray-500 dark:text-gray-400">
-                    {{ $paints->flatten()->count() }} flaconi e {{ $brushCount }} pennelli.
+                    {{ $paints->flatten()->count() }} flaconi e {{ $brushCount }} pennelli. Tocca un flacone per vedere a cosa serve.
                 </p>
 
                 @foreach ($paints as $line => $linePaints)
@@ -27,18 +27,39 @@
                                     $code = $userPaint->paint?->code ?? $userPaint->code;
                                     $hex = $userPaint->paint?->hex ?? $userPaint->hex;
                                 @endphp
-                                <span class="inline-flex items-center gap-2 rounded-xl bg-gray-50 dark:bg-white/5 py-1.5 pl-1.5 pr-3" title="{{ $name }} {{ $code }}">
-                                    <span class="h-7 w-7 shrink-0 rounded-lg ring-1 ring-black/10 dark:ring-white/10" style="background: {{ $hex }}"></span>
+                                <a href="{{ route('resina.paints.index') }}" class="inline-flex items-center gap-2 rounded-xl bg-gray-50 py-1.5 pl-1.5 pr-3 hover:bg-gray-100 dark:bg-white/5 dark:hover:bg-white/10" title="{{ $name }} {{ $code }}">
+                                    <x-resina.swatch :hex="$hex" :type="$userPaint->paint?->type ?? $userPaint->type" />
                                     <span class="leading-tight">
                                         <span class="block text-xs font-medium text-gray-900 dark:text-gray-100">{{ $name }}</span>
                                         <span class="block text-[11px] text-gray-400">{{ $code }}</span>
                                     </span>
-                                </span>
+                                </a>
                             @endforeach
                         </div>
                     </div>
                 @endforeach
             </x-card>
+        </div>
+
+        <div>
+            <x-section-header>Strumenti</x-section-header>
+            <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                @foreach ([
+                    ['resina.recipes.index', 'book-open', 'Ricettario', 'Ricette in gocce: pelle, capelli, metalli, tessuti, basette.'],
+                    ['resina.paints.index', 'swatch', 'I miei colori', 'Inventario, codici e aggiunta di nuovi flaconi.'],
+                    ['resina.brushes.index', 'paint-brush', 'I miei pennelli', 'Il tuo kit e a cosa serve ogni pennello.'],
+                ] as [$route, $icon, $title, $text])
+                    <a href="{{ route($route) }}">
+                        <x-card class="flex h-full items-start gap-4 transition hover:ring-gray-300 dark:hover:ring-white/20">
+                            <x-module-badge :icon="$icon" :color="$currentModule?->color" size="h-10 w-10" />
+                            <div>
+                                <p class="font-semibold text-gray-900 dark:text-gray-100">{{ $title }}</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">{{ $text }}</p>
+                            </div>
+                        </x-card>
+                    </a>
+                @endforeach
+            </div>
         </div>
 
         <div>

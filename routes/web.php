@@ -27,7 +27,10 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgressController;
 use App\Http\Controllers\PushSubscriptionController;
+use App\Http\Controllers\Resina\BrushController as ResinaBrushController;
 use App\Http\Controllers\Resina\HomeController as ResinaHomeController;
+use App\Http\Controllers\Resina\PaintController as ResinaPaintController;
+use App\Http\Controllers\Resina\RecipeController as ResinaRecipeController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\SettingsController;
 use Illuminate\Support\Facades\Route;
@@ -131,6 +134,23 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::prefix('resina')->name('resina.')->middleware(['module:resina', 'resina.kit'])->group(function () {
         Route::get('/', [ResinaHomeController::class, 'index'])->name('home');
+
+        Route::get('/ricette', [ResinaRecipeController::class, 'index'])->name('recipes.index');
+        Route::get('/ricette/nuova', [ResinaRecipeController::class, 'create'])->name('recipes.create');
+        Route::post('/ricette', [ResinaRecipeController::class, 'store'])->name('recipes.store');
+        Route::get('/ricette/{recipe:slug}/modifica', [ResinaRecipeController::class, 'edit'])->name('recipes.edit');
+        Route::put('/ricette/{recipe:slug}', [ResinaRecipeController::class, 'update'])->name('recipes.update');
+        Route::delete('/ricette/{recipe:slug}', [ResinaRecipeController::class, 'destroy'])->name('recipes.destroy');
+
+        Route::get('/colori', [ResinaPaintController::class, 'index'])->name('paints.index');
+        Route::post('/colori', [ResinaPaintController::class, 'store'])->name('paints.store');
+        Route::post('/colori/comprato/{suggestion}', [ResinaPaintController::class, 'buy'])->name('paints.buy');
+
+        Route::get('/pennelli', [ResinaBrushController::class, 'index'])->name('brushes.index');
+        Route::post('/pennelli', [ResinaBrushController::class, 'store'])->name('brushes.store');
+        Route::post('/pennelli/ripristina', [ResinaBrushController::class, 'reset'])->name('brushes.reset');
+        Route::patch('/pennelli/{brush}', [ResinaBrushController::class, 'update'])->name('brushes.update');
+        Route::delete('/pennelli/{brush}', [ResinaBrushController::class, 'destroy'])->name('brushes.destroy');
     });
 
     Route::prefix('admin')->name('admin.')->middleware('module:amministrazione')->group(function () {
