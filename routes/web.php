@@ -27,6 +27,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgressController;
 use App\Http\Controllers\PushSubscriptionController;
+use App\Http\Controllers\Resina\HomeController as ResinaHomeController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\SettingsController;
 use Illuminate\Support\Facades\Route;
@@ -125,6 +126,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/rooms', [RoomController::class, 'index'])->name('rooms.index');
         Route::post('/rooms', [RoomController::class, 'store'])->name('rooms.store');
         Route::put('/rooms/{room}', [RoomController::class, 'update'])->name('rooms.update');
+    });
+
+    Route::prefix('resina')->name('resina.')->middleware(['module:resina', 'resina.kit'])->group(function () {
+        Route::get('/', [ResinaHomeController::class, 'index'])->name('home');
     });
 
     Route::prefix('admin')->name('admin.')->middleware('module:amministrazione')->group(function () {

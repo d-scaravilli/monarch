@@ -74,6 +74,7 @@ class DashboardController extends Controller
             // Dashboard is admin-only now.
             'palestra' => $user->hasAnyRole(['member', 'instructor']) ? redirect()->route('member.area') : redirect()->route('palestra.dashboard'),
             'amministrazione' => redirect()->route('admin.dashboard'),
+            'resina' => redirect()->route('resina.home'),
             default => redirect()->route('dashboard'),
         };
     }

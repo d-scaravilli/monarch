@@ -86,6 +86,7 @@ class ModuleTheme
             'fire', 'academic-cap', 'shield-check', 'calendar-days', 'users',
             'home', 'cube', 'trophy', 'sparkles', 'bolt', 'book-open',
             'wrench-screwdriver', 'banknotes', 'heart', 'beaker', 'puzzle-piece',
+            'paint-brush',
         ];
     }
 }

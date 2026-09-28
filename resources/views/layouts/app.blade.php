@@ -46,6 +46,13 @@
         // hidden — no "more" menu needed.
         $navItems[] = ['label' => 'Contabilità', 'route' => 'accounting.index', 'icon' => 'banknotes', 'active' => request()->routeIs('accounting.*'), 'mobile' => true];
         $navItems[] = ['label' => 'Gestisci', 'route' => 'modules.settings.edit', 'params' => [$currentModule], 'icon' => 'wrench-screwdriver', 'active' => request()->routeIs('modules.settings.*'), 'mobile' => true];
+    } elseif ($currentModule->slug === 'resina') {
+        // Same pages for everyone; only the admin also edits the shared
+        // catalog (inside those pages) and gets "Gestisci".
+        $navItems[] = ['label' => 'Home', 'route' => 'resina.home', 'icon' => 'home', 'active' => request()->routeIs('resina.home'), 'mobile' => true];
+        if ($isAdmin) {
+            $navItems[] = ['label' => 'Gestisci', 'route' => 'modules.settings.edit', 'params' => [$currentModule], 'icon' => 'wrench-screwdriver', 'active' => request()->routeIs('modules.settings.*'), 'mobile' => true];
+        }
     } elseif ($currentModule->slug === 'amministrazione') {
         $navItems[] = ['label' => 'Dashboard', 'route' => 'admin.dashboard', 'icon' => 'home', 'active' => request()->routeIs('admin.dashboard'), 'mobile' => true];
         $navItems[] = ['label' => 'Utenti', 'route' => 'admin.users.index', 'icon' => 'users', 'active' => request()->routeIs('admin.users.*'), 'mobile' => true];
