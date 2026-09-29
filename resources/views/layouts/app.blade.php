@@ -75,7 +75,7 @@
         <meta name="theme-color" content="#f9fafb">
         <meta name="vapid-public-key" content="{{ config('webpush.vapid.public_key') }}">
 
-        <title>{{ isset($header) ? $header.' - ' : '' }}{{ config('app.name', 'Monarch') }}</title>
+        <title>@isset($header){{ $header }} - @endisset{{ config('app.name', 'Monarch') }}</title>
 
         <link rel="manifest" href="/manifest.json">
         <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png?v={{ $appIconVersion }}">
