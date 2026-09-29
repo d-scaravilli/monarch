@@ -77,7 +77,7 @@
                         </div>
 
                         <div x-show="! s.owned" class="text-sm">
-                            <p class="text-xs text-gray-400" x-show="! s.best">Cerco la miscela più vicina con i tuoi colori…</p>
+                            <p class="flex items-center gap-2 text-xs text-gray-400" x-show="! s.best"><x-heroicon-o-arrow-path class="h-3.5 w-3.5 animate-spin" /> Calcolo…</p>
                             <template x-if="s.best">
                                 <div>
                                     <p class="mb-1 flex items-center gap-2 text-xs text-gray-500">

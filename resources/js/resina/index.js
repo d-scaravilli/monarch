@@ -6,6 +6,7 @@
 import * as color from './color.js';
 import * as steps from './steps.js';
 import * as brushes from './brushes.js';
+import { runMixJobs } from './mix-jobs.js';
 
 window.Resina = { color, steps, brushes };
 
@@ -263,34 +264,32 @@ function brushKit(payloadId) {
 
 /*
  * Suggested paints to buy, each with the closest mix you can already
- * make. The search is heavy (triples of paints), so results fill in
- * one card at a time without freezing the page.
+ * make. The search is heavy (triples of paints): it runs in the mix
+ * worker, and each card shows «Calcolo…» until its own result lands.
  */
 function shopSuggestions(payloadId) {
     const data = readPayload(payloadId);
-    const inventory = color.createPalette(data.paints.filter((p) => p.owned));
+    const owned = data.paints.filter((p) => p.owned);
+    const inventory = color.createPalette(owned);
 
     return {
         suggestions: data.suggestions.map((s) => ({ ...s, best: null })),
 
         init() {
-            const queue = this.suggestions.filter((s) => !s.owned);
-            const next = () => {
-                const suggestion = queue.shift();
-                if (!suggestion) return;
-                const best = color.findMixes(suggestion.hex, true, inventory)[0];
-                suggestion.best = best
-                    ? {
-                          closeness: color.closeness(best.d),
-                          ingredients: Object.keys(best.mix).map((key) => {
-                              const paint = inventory.byKey[key];
-                              return { key, drops: color.drops(best.mix[key]), name: paint.name, code: paint.code, style: paintStyle(paint) };
-                          }),
-                      }
-                    : null;
-                setTimeout(next, 0);
-            };
-            setTimeout(next, 50);
+            const jobs = this.suggestions.filter((s) => !s.owned).map((s) => ({ id: s.code, kind: 'find', hex: s.hex }));
+
+            runMixJobs(owned, jobs, (code, list) => {
+                const best = list[0];
+                const suggestion = this.suggestions.find((s) => s.code === code);
+                if (!suggestion || !best) return;
+                suggestion.best = {
+                    closeness: color.closeness(best.d),
+                    ingredients: Object.keys(best.mix).map((key) => {
+                        const paint = inventory.byKey[key];
+                        return { key, drops: color.drops(best.mix[key]), name: paint.name, code: paint.code, style: paintStyle(paint) };
+                    }),
+                };
+            });
         },
     };
 }
