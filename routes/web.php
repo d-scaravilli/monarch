@@ -27,10 +27,16 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgressController;
 use App\Http\Controllers\PushSubscriptionController;
+use App\Http\Controllers\Resina\ArmorTypeController as ResinaArmorTypeController;
 use App\Http\Controllers\Resina\BrushController as ResinaBrushController;
+use App\Http\Controllers\Resina\CharacterController as ResinaCharacterController;
+use App\Http\Controllers\Resina\CharacterVersionController as ResinaCharacterVersionController;
+use App\Http\Controllers\Resina\GuideController as ResinaGuideController;
 use App\Http\Controllers\Resina\HomeController as ResinaHomeController;
 use App\Http\Controllers\Resina\PaintController as ResinaPaintController;
+use App\Http\Controllers\Resina\ProjectController as ResinaProjectController;
 use App\Http\Controllers\Resina\RecipeController as ResinaRecipeController;
+use App\Http\Controllers\Resina\StepProgressController as ResinaStepProgressController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\SettingsController;
 use Illuminate\Support\Facades\Route;
@@ -151,6 +157,53 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/pennelli/ripristina', [ResinaBrushController::class, 'reset'])->name('brushes.reset');
         Route::patch('/pennelli/{brush}', [ResinaBrushController::class, 'update'])->name('brushes.update');
         Route::delete('/pennelli/{brush}', [ResinaBrushController::class, 'destroy'])->name('brushes.destroy');
+
+        Route::get('/progetti', [ResinaProjectController::class, 'index'])->name('projects.index');
+        Route::get('/progetti/nuovo', [ResinaProjectController::class, 'create'])->name('projects.create');
+        Route::post('/progetti', [ResinaProjectController::class, 'store'])->name('projects.store');
+
+        Route::scopeBindings()->prefix('/progetti/{project:slug}')->group(function () {
+            Route::get('/modifica', [ResinaProjectController::class, 'edit'])->name('projects.edit');
+            Route::put('/', [ResinaProjectController::class, 'update'])->name('projects.update');
+            Route::delete('/', [ResinaProjectController::class, 'destroy'])->name('projects.destroy');
+
+            Route::get('/personaggi/nuovo', [ResinaCharacterController::class, 'create'])->name('characters.create');
+            Route::post('/personaggi', [ResinaCharacterController::class, 'store'])->name('characters.store');
+            Route::get('/personaggi/{character:slug}/modifica', [ResinaCharacterController::class, 'edit'])->name('characters.edit');
+            Route::put('/personaggi/{character:slug}', [ResinaCharacterController::class, 'update'])->name('characters.update');
+            Route::delete('/personaggi/{character:slug}', [ResinaCharacterController::class, 'destroy'])->name('characters.destroy');
+
+            Route::get('/personaggi/{character:slug}/versioni/nuova', [ResinaCharacterVersionController::class, 'create'])->name('versions.create');
+            Route::post('/personaggi/{character:slug}/versioni', [ResinaCharacterVersionController::class, 'store'])->name('versions.store');
+            Route::get('/personaggi/{character:slug}/versioni/{version:slug}/modifica', [ResinaCharacterVersionController::class, 'edit'])->name('versions.edit');
+            Route::put('/personaggi/{character:slug}/versioni/{version:slug}', [ResinaCharacterVersionController::class, 'update'])->name('versions.update');
+            Route::delete('/personaggi/{character:slug}/versioni/{version:slug}', [ResinaCharacterVersionController::class, 'destroy'])->name('versions.destroy');
+
+            Route::get('/personaggi/{character:slug}/{tab?}', [ResinaCharacterController::class, 'show'])
+                ->whereIn('tab', ResinaCharacterController::TABS)
+                ->name('characters.show');
+
+            Route::get('/armature/nuova', [ResinaArmorTypeController::class, 'create'])->name('armor-types.create');
+            Route::post('/armature', [ResinaArmorTypeController::class, 'store'])->name('armor-types.store');
+            Route::get('/armature/{armorType:slug}/modifica', [ResinaArmorTypeController::class, 'edit'])->name('armor-types.edit');
+            Route::put('/armature/{armorType:slug}', [ResinaArmorTypeController::class, 'update'])->name('armor-types.update');
+            Route::delete('/armature/{armorType:slug}', [ResinaArmorTypeController::class, 'destroy'])->name('armor-types.destroy');
+
+            Route::get('/guide/nuova', [ResinaGuideController::class, 'create'])->name('guides.create');
+            Route::post('/guide', [ResinaGuideController::class, 'store'])->name('guides.store');
+            Route::get('/guide/{guide:slug}/modifica', [ResinaGuideController::class, 'edit'])->name('guides.edit');
+            Route::put('/guide/{guide:slug}', [ResinaGuideController::class, 'update'])->name('guides.update');
+            Route::delete('/guide/{guide:slug}', [ResinaGuideController::class, 'destroy'])->name('guides.destroy');
+
+            Route::get('/{tab?}', [ResinaProjectController::class, 'show'])
+                ->whereIn('tab', array_keys(ResinaProjectController::TABS))
+                ->name('projects.show');
+        });
+
+        // Shared by catalog characters and personal figures.
+        Route::post('/personaggi/{character}/versione', [ResinaCharacterController::class, 'chooseVersion'])->name('characters.version');
+        Route::post('/personaggi/{character}/fatto', [ResinaStepProgressController::class, 'toggle'])->name('progress.toggle');
+        Route::delete('/personaggi/{character}/fatto', [ResinaStepProgressController::class, 'reset'])->name('progress.reset');
     });
 
     Route::prefix('admin')->name('admin.')->middleware('module:amministrazione')->group(function () {

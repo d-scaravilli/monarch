@@ -11,10 +11,10 @@ use App\Models\Resina\Recipe;
 use App\Models\Resina\RecipeCategory;
 use App\Models\Resina\RecipeStep;
 use App\Services\Resina\ClientPayload;
+use App\Support\ResinaSlug;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
@@ -62,7 +62,7 @@ class RecipeController extends Controller
 
         $recipe = DB::transaction(function () use ($data) {
             $recipe = Recipe::create([
-                'slug' => $this->uniqueSlug($data['title']),
+                'slug' => ResinaSlug::unique(Recipe::query(), $data['title'], 'ricetta'),
                 'recipe_category_id' => $data['recipe_category_id'],
                 'title' => $data['title'],
                 'who' => $data['who'] ?? null,
@@ -77,10 +77,13 @@ class RecipeController extends Controller
         return redirect()->to(route('resina.recipes.index').'#r-'.$recipe->slug)->with('status', 'Ricetta creata.');
     }
 
+    /**
+     * Inline recipes (a zone's own steps) are edited here too, reached
+     * from the zone editor; they just have no category.
+     */
     public function edit(Request $request, Recipe $recipe): View
     {
         $this->authorizeAdmin($request);
-        abort_if($recipe->is_inline, 404);
 
         return $this->form($request, $recipe->load('steps.paints'));
     }
@@ -88,14 +91,13 @@ class RecipeController extends Controller
     public function update(Request $request, Recipe $recipe): RedirectResponse
     {
         $this->authorizeAdmin($request);
-        abort_if($recipe->is_inline, 404);
 
-        $data = $this->validateRecipe($request);
+        $data = $this->validateRecipe($request, $recipe->is_inline);
 
         DB::transaction(function () use ($recipe, $data) {
             // The slug never changes: zones, armor types and bases point to it.
             $recipe->update([
-                'recipe_category_id' => $data['recipe_category_id'],
+                'recipe_category_id' => $recipe->is_inline ? null : $data['recipe_category_id'],
                 'title' => $data['title'],
                 'who' => $data['who'] ?? null,
                 'tip' => $data['tip'] ?? null,
@@ -103,7 +105,7 @@ class RecipeController extends Controller
             $this->replaceSteps($recipe, $data['steps']);
         });
 
-        return redirect()->to(route('resina.recipes.index').'#r-'.$recipe->slug)->with('status', 'Ricetta aggiornata.');
+        return redirect()->to($this->backUrl($recipe))->with('status', 'Ricetta aggiornata.');
     }
 
     public function destroy(Request $request, Recipe $recipe): RedirectResponse
@@ -143,17 +145,18 @@ class RecipeController extends Controller
                 'techniques' => RecipeStep::TECHNIQUES,
             ],
             'usedBy' => $recipe->exists ? $this->usages($recipe) : [],
+            'backUrl' => $recipe->exists ? $this->backUrl($recipe) : route('resina.recipes.index'),
         ]);
     }
 
     /**
      * @return array{title: string, recipe_category_id: int, who: ?string, tip: ?string, steps: array<int, array<string, mixed>>}
      */
-    private function validateRecipe(Request $request): array
+    private function validateRecipe(Request $request, bool $inline = false): array
     {
         return $request->validate([
             'title' => 'required|string|max:255',
-            'recipe_category_id' => 'required|exists:resin_recipe_categories,id',
+            'recipe_category_id' => $inline ? 'nullable' : 'required|exists:resin_recipe_categories,id',
             'who' => 'nullable|string|max:255',
             'tip' => 'nullable|string|max:2000',
             'steps' => 'required|array|min:1|max:30',
@@ -209,6 +212,14 @@ class RecipeController extends Controller
     {
         $usedBy = [];
 
+        // Referenced by slug from the JS, not by any row (see guide.js).
+        if (in_array($recipe->slug, ['eyes', 'face'], true)) {
+            $usedBy[] = 'le zone automatiche di occhi e volto di ogni personaggio';
+        }
+        if (in_array($recipe->slug, ['base-rock', 'base-earth'], true)) {
+            $usedBy[] = 'le basette predefinite dei personaggi senza basette proprie';
+        }
+
         $zoneCharacters = Character::whereHas('zones', fn ($q) => $q->where('recipe_id', $recipe->id))->pluck('name');
         if ($zoneCharacters->isNotEmpty()) {
             $usedBy[] = 'zone di '.$zoneCharacters->unique()->take(5)->implode(', ').($zoneCharacters->count() > 5 ? '…' : '');
@@ -234,16 +245,21 @@ class RecipeController extends Controller
         return $usedBy;
     }
 
-    private function uniqueSlug(string $title): string
+    /**
+     * Where to go after saving: the recipe in the Ricettario, or for an
+     * inline recipe the edit page of the character its zone belongs to.
+     */
+    private function backUrl(Recipe $recipe): string
     {
-        $base = Str::slug($title) ?: 'ricetta';
-        $slug = $base;
-
-        for ($i = 2; Recipe::where('slug', $slug)->exists(); $i++) {
-            $slug = $base.'-'.$i;
+        if (! $recipe->is_inline) {
+            return route('resina.recipes.index').'#r-'.$recipe->slug;
         }
 
-        return $slug;
+        $character = $recipe->zones()->with('character.project')->first()?->character;
+
+        return $character?->project
+            ? route('resina.characters.edit', [$character->project, $character])
+            : route('resina.recipes.index');
     }
 
     private function authorizeAdmin(Request $request): void

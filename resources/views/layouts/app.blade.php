@@ -50,6 +50,7 @@
         // Same pages for everyone; only the admin also edits the shared
         // catalog (inside those pages) and gets "Gestisci".
         $navItems[] = ['label' => 'Home', 'route' => 'resina.home', 'icon' => 'home', 'active' => request()->routeIs('resina.home'), 'mobile' => true];
+        $navItems[] = ['label' => 'Progetti', 'route' => 'resina.projects.index', 'icon' => 'rectangle-stack', 'active' => request()->routeIs('resina.projects.*', 'resina.characters.*', 'resina.versions.*', 'resina.armor-types.*', 'resina.guides.*'), 'mobile' => true];
         $navItems[] = ['label' => 'Ricette', 'route' => 'resina.recipes.index', 'icon' => 'book-open', 'active' => request()->routeIs('resina.recipes.*'), 'mobile' => true];
         $navItems[] = ['label' => 'Colori', 'route' => 'resina.paints.index', 'icon' => 'swatch', 'active' => request()->routeIs('resina.paints.*'), 'mobile' => true];
         $navItems[] = ['label' => 'Pennelli', 'route' => 'resina.brushes.index', 'icon' => 'paint-brush', 'active' => request()->routeIs('resina.brushes.*'), 'mobile' => true];

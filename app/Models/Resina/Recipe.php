@@ -66,4 +66,14 @@ class Recipe extends Model
     {
         $query->where('is_inline', false);
     }
+
+    /**
+     * Inline recipes live and die with their zone: once no zone points
+     * to one any more (zone, version, character or project deleted), it
+     * goes too.
+     */
+    public static function deleteOrphanInline(): void
+    {
+        static::where('is_inline', true)->whereDoesntHave('zones')->delete();
+    }
 }

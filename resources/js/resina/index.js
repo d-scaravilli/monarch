@@ -7,105 +7,19 @@ import * as color from './color.js';
 import * as steps from './steps.js';
 import * as brushes from './brushes.js';
 import { runMixJobs } from './mix-jobs.js';
+import { characterSheet } from './character-sheet.js';
+import { guideEditor, rowsEditor, zoneEditor } from './editors.js';
+import { projectPage } from './project-page.js';
+import { decorateRecipe, ingredient, readPayload, sendJson, uid } from './view.js';
 
 window.Resina = { color, steps, brushes };
-
-function readPayload(id) {
-    const node = document.getElementById(id);
-    return node ? JSON.parse(node.textContent) : {};
-}
-
-function csrfToken() {
-    return document.querySelector('meta[name="csrf-token"]')?.content ?? '';
-}
-
-async function sendJson(method, url, body) {
-    const response = await fetch(url, {
-        method,
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json', 'X-CSRF-TOKEN': csrfToken() },
-        body: body ? JSON.stringify(body) : undefined,
-    });
-    if (!response.ok) throw new Error('HTTP ' + response.status);
-    return response.json();
-}
-
-/*
- * The zone a recipe is painted on when shown in the Ricettario: it
- * drives the brush size (recipeHTML() in the prototype).
- */
-export function recipeZone(recipe) {
-    return { name: recipe.title, tab: recipe.category === 'basette' ? 'basetta' : recipe.category === 'occhi' ? 'volto' : '' };
-}
-
-export function paintStyle(paint) {
-    return color.swStyle(paint.lin, paint.metal);
-}
-
-/*
- * Everything a step row shows, computed once: the templates only read
- * these fields. step = { role, usage, optional, technique, coverage,
- * mix, d? } (d = ΔE for automatic steps).
- */
-export function decorateStep(step, zone, palette, brushList, urls) {
-    const technique = step.technique && steps.TECHNIQUES[step.technique];
-    const chip = brushes.brushChip(step, zone, brushList, palette);
-    const mixKeys = Object.keys(step.mix || {}).filter((key) => palette.byKey[key]);
-
-    return {
-        role: step.role,
-        usage: step.usage,
-        optional: !!step.optional,
-        swatch: color.mixStyle(step.mix || {}, palette),
-        hex: color.mixHex(step.mix || {}, palette),
-        lightness: color.mixLightness(step.mix || {}, palette),
-        ingredients: mixKeys.map((key) => {
-            const paint = palette.byKey[key];
-            return { key, drops: color.drops(step.mix[key]), name: paint.name, code: paint.code, style: paintStyle(paint) };
-        }),
-        technique: technique ? { label: technique.label, href: urls.techniques ? urls.techniques + '#' + technique.anchor : null } : null,
-        brush: { label: chip.label + (chip.metallicNote ? ' · solo metallici' : ''), title: chip.title, href: urls.brushes },
-        coverage: step.coverage != null ? { pct: step.coverage, label: steps.coverageLabel(step.coverage) } : null,
-        closeness: step.d != null ? color.closeness(step.d) : null,
-        mixerHref: urls.mixer && mixKeys.length ? urls.mixer + '?mix=' + encodeURIComponent(JSON.stringify(step.mix)) : null,
-    };
-}
-
-/* The "toni" scale: the same steps, darkest to lightest. */
-export function toneScale(decorated) {
-    return decorated
-        .map((s) => ({ style: s.swatch, title: s.role, lightness: s.lightness }))
-        .sort((a, b) => a.lightness - b.lightness);
-}
 
 function recipeBook(payloadId) {
     const data = readPayload(payloadId);
     const palette = color.createPalette(data.paints);
 
-    const recipes = data.recipes.map((recipe) => {
-        const zone = recipeZone(recipe);
-        const view = recipe.steps.map((step) => decorateStep(step, zone, palette, data.brushes, data.urls));
-        const search = [
-            recipe.title,
-            recipe.who,
-            recipe.tip,
-            ...recipe.steps.map((s) => s.role + ' ' + Object.keys(s.mix).map((k) => (palette.byKey[k] ? palette.byKey[k].name + ' ' + palette.byKey[k].code : '')).join(' ')),
-        ].join(' ').toLowerCase();
-
-        return {
-            slug: recipe.slug,
-            title: recipe.title,
-            who: recipe.who,
-            tip: recipe.tip,
-            category: recipe.category,
-            view,
-            scale: toneScale(view),
-            search,
-            editHref: data.editUrl ? data.editUrl.replace('__SLUG__', recipe.slug) : null,
-        };
-    });
-
     return {
-        recipes,
+        recipes: data.recipes.map((recipe) => decorateRecipe(recipe, palette, data.brushes, data.urls, data.editUrl)),
         categories: [{ slug: 'tutte', name: 'Tutte' }, ...data.categories],
         category: 'tutte',
         query: '',
@@ -129,7 +43,7 @@ function recipeBook(payloadId) {
 }
 
 function blankStep() {
-    return { uid: Math.random().toString(36).slice(2), role: '', usage: '', optional: false, technique: '', coverage: '', paints: [{ paint_id: '', drops: 1 }] };
+    return { uid: uid(), role: '', usage: '', optional: false, technique: '', coverage: '', paints: [{ paint_id: '', drops: 1 }] };
 }
 
 /*
@@ -150,7 +64,7 @@ function recipeEditor(payloadId) {
 
     // Old input after a failed validation comes back as strings.
     const initial = (data.steps || []).map((s) => ({
-        uid: Math.random().toString(36).slice(2),
+        uid: uid(),
         role: s.role ?? '',
         usage: s.usage ?? '',
         optional: s.optional === true || s.optional === '1' || s.optional === 1,
@@ -187,8 +101,7 @@ function recipeEditor(payloadId) {
         roleChanged(step) {
             step.optional = steps.isOptionalRole(step.role);
             step.technique = steps.techniqueOf(step.role, step.usage) ?? '';
-            const coverage = steps.coverageOf(step.role);
-            step.coverage = coverage ?? '';
+            step.coverage = steps.coverageOf(step.role) ?? '';
         },
         usageChanged(step) {
             step.technique = steps.techniqueOf(step.role, step.usage) ?? '';
@@ -284,10 +197,7 @@ function shopSuggestions(payloadId) {
                 if (!suggestion || !best) return;
                 suggestion.best = {
                     closeness: color.closeness(best.d),
-                    ingredients: Object.keys(best.mix).map((key) => {
-                        const paint = inventory.byKey[key];
-                        return { key, drops: color.drops(best.mix[key]), name: paint.name, code: paint.code, style: paintStyle(paint) };
-                    }),
+                    ingredients: Object.keys(best.mix).map((key) => ingredient(key, best.mix[key], inventory)),
                 };
             });
         },
@@ -295,8 +205,14 @@ function shopSuggestions(payloadId) {
 }
 
 document.addEventListener('alpine:init', () => {
-    window.Alpine.data('resinaRecipeBook', recipeBook);
-    window.Alpine.data('resinaRecipeEditor', recipeEditor);
-    window.Alpine.data('resinaBrushKit', brushKit);
-    window.Alpine.data('resinaShopSuggestions', shopSuggestions);
+    const Alpine = window.Alpine;
+    Alpine.data('resinaRecipeBook', recipeBook);
+    Alpine.data('resinaRecipeEditor', recipeEditor);
+    Alpine.data('resinaBrushKit', brushKit);
+    Alpine.data('resinaShopSuggestions', shopSuggestions);
+    Alpine.data('resinaCharacterSheet', characterSheet);
+    Alpine.data('resinaProjectPage', projectPage);
+    Alpine.data('resinaRows', rowsEditor);
+    Alpine.data('resinaZoneEditor', zoneEditor);
+    Alpine.data('resinaGuideEditor', guideEditor);
 });

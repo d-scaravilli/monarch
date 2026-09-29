@@ -1,4 +1,7 @@
-@php $editing = $recipe->exists; @endphp
+@php
+    $editing = $recipe->exists;
+    $inline = $recipe->is_inline;
+@endphp
 
 <x-app-layout>
     <x-slot name="header">{{ $editing ? 'Modifica ricetta' : 'Nuova ricetta' }}</x-slot>
@@ -6,10 +9,14 @@
     <x-resina.payload id="resina-recipe-editor" :data="$payload" />
 
     <div class="max-w-3xl space-y-4">
-        <a href="{{ $editing ? route('resina.recipes.index').'#r-'.$recipe->slug : route('resina.recipes.index') }}"
+        <a href="{{ $backUrl }}"
            class="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200">
-            <x-heroicon-o-arrow-left class="h-4 w-4" /> Ricettario
+            <x-heroicon-o-arrow-left class="h-4 w-4" /> {{ $inline ? 'Personaggio' : 'Ricettario' }}
         </a>
+
+        @if ($inline)
+            <p class="text-sm text-gray-500 dark:text-gray-400">Questi sono i passaggi propri di una sola zona: non compaiono nel Ricettario.</p>
+        @endif
 
         @if ($errors->any())
             <div class="rounded-2xl bg-red-50 px-4 py-3 text-sm text-red-700 ring-1 ring-red-100 dark:bg-red-500/10 dark:text-red-400 dark:ring-red-500/20">
@@ -36,9 +43,9 @@
                 </div>
 
                 <div class="grid gap-4 sm:grid-cols-2">
-                    <div class="space-y-1.5">
+                    <div class="space-y-1.5" @if ($inline) hidden @endif>
                         <x-input-label for="recipe_category_id" value="Categoria" />
-                        <select id="recipe_category_id" name="recipe_category_id" required
+                        <select id="recipe_category_id" name="recipe_category_id" @required(! $inline) @disabled($inline)
                                 class="w-full rounded-xl border-gray-200 bg-gray-50 dark:border-white/10 dark:bg-white/5 dark:text-gray-100">
                             @foreach ($categories as $category)
                                 <option value="{{ $category->id }}" @selected((int) old('recipe_category_id', $recipe->recipe_category_id) === $category->id)>{{ $category->name }}</option>
@@ -175,11 +182,11 @@
 
             <div class="flex items-center gap-3">
                 <x-primary-button>{{ $editing ? 'Salva ricetta' : 'Crea ricetta' }}</x-primary-button>
-                <a href="{{ route('resina.recipes.index') }}" class="text-sm text-gray-500 hover:text-gray-800 dark:text-gray-400">Annulla</a>
+                <a href="{{ $backUrl }}" class="text-sm text-gray-500 hover:text-gray-800 dark:text-gray-400">Annulla</a>
             </div>
         </form>
 
-        @if ($editing)
+        @if ($editing && ! $inline)
             <x-card class="ring-1 ring-red-200 dark:ring-red-500/30 bg-red-50/50 dark:bg-red-500/5">
                 <div class="flex flex-wrap items-center justify-between gap-3">
                     <div>

@@ -63,24 +63,13 @@
         </div>
 
         <div>
-            <x-section-header>Progetti</x-section-header>
+            <div class="flex items-center justify-between">
+                <x-section-header>Progetti</x-section-header>
+                <a href="{{ route('resina.projects.index') }}" class="mb-2 text-xs font-medium text-gray-500 hover:text-gray-800 dark:text-gray-400">Tutti i progetti</a>
+            </div>
             <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 @foreach ($projects as $project)
-                    @php $theme = \App\Support\ResinaProjectTheme::for($project->theme); @endphp
-                    <x-card class="p-0 overflow-hidden">
-                        <div class="flex h-28 flex-col justify-between p-4" style="background: {{ $theme['band'] }}">
-                            <span class="self-start rounded-full bg-white/15 px-2.5 py-0.5 text-xs font-medium text-white">
-                                {{ $project->status === 'completo' ? 'Completo' : 'Anteprima' }}
-                            </span>
-                            <h3 class="text-lg font-semibold tracking-tight" style="color: {{ $theme['accent'] }}">{{ $project->name }}</h3>
-                        </div>
-                        <div class="p-4">
-                            <p class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ $project->subtitle }}</p>
-                            <p class="text-sm text-gray-500 dark:text-gray-400">
-                                {{ $project->characters_count }} schede{{ $project->armor_types_count ? ' · '.$project->armor_types_count.' tipi di armatura' : '' }}
-                            </p>
-                        </div>
-                    </x-card>
+                    <x-resina.project-card :project="$project" />
                 @endforeach
             </div>
         </div>

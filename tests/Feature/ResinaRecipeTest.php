@@ -143,11 +143,37 @@ class ResinaRecipeTest extends TestCase
         $this->assertModelMissing($unused);
     }
 
-    public function test_inline_zone_recipes_are_not_editable_from_the_recipe_book(): void
+    public function test_inline_zone_recipes_are_edited_from_their_zone_and_never_deleted(): void
     {
-        $inline = Recipe::where('is_inline', true)->firstOrFail();
+        $inline = Recipe::where('slug', 'inline-saint-seiya-seiya-base-3')->with('steps.paints')->firstOrFail();
+        $admin = $this->admin();
 
-        $this->actingAs($this->admin())->get(route('resina.recipes.edit', $inline))->assertNotFound();
+        $this->actingAs($admin)->get(route('resina.recipes.edit', $inline))
+            ->assertOk()
+            ->assertSee(route('resina.characters.edit', ['saint-seiya', 'seiya']));
+
+        $steps = $inline->steps->map(fn ($step) => [
+            'role' => $step->role, 'usage' => $step->usage, 'optional' => '0', 'technique' => $step->technique, 'coverage' => $step->coverage,
+            'paints' => $step->paints->map(fn ($paint) => ['paint_id' => $paint->id, 'drops' => $paint->pivot->drops])->all(),
+        ])->take(2)->all();
+
+        $this->actingAs($admin)->put(route('resina.recipes.update', $inline), ['title' => $inline->title, 'steps' => $steps])
+            ->assertRedirect(route('resina.characters.edit', ['saint-seiya', 'seiya']));
+
+        $this->assertSame(2, $inline->steps()->count());
+        $this->assertNull($inline->refresh()->recipe_category_id);
+        $this->actingAs($admin)->delete(route('resina.recipes.destroy', $inline))->assertNotFound();
+    }
+
+    public function test_recipes_behind_the_automatic_zones_cannot_be_deleted(): void
+    {
+        $admin = $this->admin();
+
+        foreach (['eyes', 'base-earth'] as $slug) {
+            $recipe = Recipe::where('slug', $slug)->firstOrFail();
+            $this->actingAs($admin)->delete(route('resina.recipes.destroy', $recipe))->assertSessionHasErrors('recipe');
+            $this->assertModelExists($recipe);
+        }
     }
 
     public function test_the_edit_form_carries_the_steps_for_the_editor(): void
