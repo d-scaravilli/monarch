@@ -12,6 +12,7 @@ use App\Models\Resina\Recipe;
 use App\Models\Resina\RecipeCategory;
 use App\Services\Resina\ClientPayload;
 use App\Support\ResinaProjectTheme;
+use App\Support\ResinaRows;
 use App\Support\ResinaSlug;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -242,7 +243,7 @@ class ProjectController extends Controller
     private function syncGroupsAndLinks(Project $project, array $data): void
     {
         $keptGroups = [];
-        foreach (array_values($data['groups'] ?? []) as $index => $row) {
+        foreach (ResinaRows::ordered($data['groups'] ?? []) as $index => $row) {
             $group = isset($row['id']) ? $project->groups()->find($row['id']) : null;
             if ($group) {
                 $group->update(['name' => $row['name'], 'position' => $index + 1]);
@@ -258,7 +259,7 @@ class ProjectController extends Controller
         $project->groups()->whereNotIn('id', $keptGroups)->delete();
 
         $project->links()->delete();
-        foreach (array_values($data['links'] ?? []) as $index => $row) {
+        foreach (ResinaRows::ordered($data['links'] ?? []) as $index => $row) {
             $project->links()->create([
                 'position' => $index + 1,
                 'title' => $row['title'],

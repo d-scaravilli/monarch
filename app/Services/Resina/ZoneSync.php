@@ -6,6 +6,7 @@ use App\Models\Resina\Character;
 use App\Models\Resina\CharacterVersion;
 use App\Models\Resina\Recipe;
 use App\Models\Resina\Zone;
+use App\Support\ResinaRows;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
@@ -29,7 +30,7 @@ class ZoneSync
         DB::transaction(function () use ($character, $version, $rows, $existing) {
             $keptIds = [];
 
-            foreach (array_values($rows) as $index => $row) {
+            foreach (ResinaRows::ordered($rows) as $index => $row) {
                 $zone = isset($row['id']) ? $existing->get((int) $row['id']) : null;
                 $recipeId = isset($row['recipe_id']) && $row['recipe_id'] !== '' ? (int) $row['recipe_id'] : null;
 

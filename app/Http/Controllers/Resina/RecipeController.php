@@ -11,6 +11,7 @@ use App\Models\Resina\Recipe;
 use App\Models\Resina\RecipeCategory;
 use App\Models\Resina\RecipeStep;
 use App\Services\Resina\ClientPayload;
+use App\Support\ResinaRows;
 use App\Support\ResinaSlug;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -184,7 +185,7 @@ class RecipeController extends Controller
     {
         $recipe->steps()->delete();
 
-        foreach (array_values($steps) as $index => $step) {
+        foreach (ResinaRows::ordered($steps) as $index => $step) {
             $model = $recipe->steps()->create([
                 'position' => $index + 1,
                 'role' => $step['role'],

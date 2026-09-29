@@ -8,6 +8,7 @@ use App\Models\Resina\GuideStep;
 use App\Models\Resina\Paint;
 use App\Models\Resina\Project;
 use App\Services\Resina\ClientPayload;
+use App\Support\ResinaRows;
 use App\Support\ResinaSlug;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -141,7 +142,7 @@ class GuideController extends Controller
     {
         $guide->steps()->delete();
 
-        foreach (array_values($steps) as $index => $step) {
+        foreach (ResinaRows::ordered($steps) as $index => $step) {
             $model = $guide->steps()->create([
                 'position' => $index + 1,
                 'title' => $step['title'],

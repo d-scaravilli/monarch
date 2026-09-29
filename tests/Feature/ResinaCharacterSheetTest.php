@@ -195,6 +195,20 @@ class ResinaCharacterSheetTest extends TestCase
         $this->assertSame(0, $seiya->baseZones()->where('name', 'Capelli')->count());
     }
 
+    public function test_a_new_zone_keeps_its_place_between_existing_ones(): void
+    {
+        $seiya = Character::where('slug', 'seiya')->firstOrFail();
+        [$first, $second] = $seiya->baseZones()->take(2)->get();
+        $row = fn (Zone $zone) => ['id' => $zone->id, 'name' => $zone->name, 'recipe_id' => $zone->recipe_id, 'target_hex' => $zone->target_hex];
+
+        $this->actingAs($this->admin())->put(route('resina.characters.update', ['saint-seiya', 'seiya']), [
+            'name' => 'Seiya',
+            'zones' => [$row($first), ['name' => 'Cintura', 'target_hex' => '#553311'], $row($second)],
+        ])->assertRedirect();
+
+        $this->assertSame([$first->name, 'Cintura', $second->name], $seiya->baseZones()->pluck('name')->all());
+    }
+
     public function test_a_zone_cannot_borrow_another_zones_inline_steps(): void
     {
         $foreignInline = Recipe::where('slug', 'inline-saint-seiya-shiryu-base-3')->value('id')
