@@ -31,12 +31,18 @@ use App\Http\Controllers\Resina\ArmorTypeController as ResinaArmorTypeController
 use App\Http\Controllers\Resina\BrushController as ResinaBrushController;
 use App\Http\Controllers\Resina\CharacterController as ResinaCharacterController;
 use App\Http\Controllers\Resina\CharacterVersionController as ResinaCharacterVersionController;
+use App\Http\Controllers\Resina\FinderController as ResinaFinderController;
 use App\Http\Controllers\Resina\GuideController as ResinaGuideController;
 use App\Http\Controllers\Resina\HomeController as ResinaHomeController;
+use App\Http\Controllers\Resina\MixerController as ResinaMixerController;
 use App\Http\Controllers\Resina\PaintController as ResinaPaintController;
+use App\Http\Controllers\Resina\PathController as ResinaPathController;
 use App\Http\Controllers\Resina\ProjectController as ResinaProjectController;
 use App\Http\Controllers\Resina\RecipeController as ResinaRecipeController;
+use App\Http\Controllers\Resina\ShopController as ResinaShopController;
 use App\Http\Controllers\Resina\StepProgressController as ResinaStepProgressController;
+use App\Http\Controllers\Resina\TechniqueController as ResinaTechniqueController;
+use App\Http\Controllers\Resina\TutorialController as ResinaTutorialController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\SettingsController;
 use Illuminate\Support\Facades\Route;
@@ -157,6 +163,28 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/pennelli/ripristina', [ResinaBrushController::class, 'reset'])->name('brushes.reset');
         Route::patch('/pennelli/{brush}', [ResinaBrushController::class, 'update'])->name('brushes.update');
         Route::delete('/pennelli/{brush}', [ResinaBrushController::class, 'destroy'])->name('brushes.destroy');
+
+        Route::get('/trova', [ResinaFinderController::class, 'index'])->name('finder');
+
+        Route::get('/mixer', [ResinaMixerController::class, 'index'])->name('mixer');
+        Route::put('/mixer', [ResinaMixerController::class, 'saveState'])->name('mixer.state');
+        Route::post('/mixer/miscele', [ResinaMixerController::class, 'store'])->name('mixes.store');
+        Route::delete('/mixer/miscele/{savedMix}', [ResinaMixerController::class, 'destroy'])->name('mixes.destroy');
+
+        Route::get('/percorso', [ResinaPathController::class, 'index'])->name('path.index');
+        Route::get('/percorso/modifica', [ResinaPathController::class, 'edit'])->name('path.edit');
+        Route::put('/percorso', [ResinaPathController::class, 'update'])->name('path.update');
+        Route::post('/percorso/{pathStep}/fatto', [ResinaPathController::class, 'toggle'])->name('path.toggle');
+
+        Route::get('/tecniche', [ResinaTechniqueController::class, 'index'])->name('techniques.index');
+
+        Route::get('/tutorial', [ResinaTutorialController::class, 'index'])->name('tutorials.index');
+        Route::get('/tutorial/modifica', [ResinaTutorialController::class, 'edit'])->name('tutorials.edit');
+        Route::put('/tutorial', [ResinaTutorialController::class, 'update'])->name('tutorials.update');
+
+        Route::get('/da-comprare', [ResinaShopController::class, 'index'])->name('shop.index');
+        Route::get('/da-comprare/modifica', [ResinaShopController::class, 'edit'])->name('shop.edit');
+        Route::put('/da-comprare', [ResinaShopController::class, 'update'])->name('shop.update');
 
         Route::get('/progetti', [ResinaProjectController::class, 'index'])->name('projects.index');
         Route::get('/progetti/nuovo', [ResinaProjectController::class, 'create'])->name('projects.create');

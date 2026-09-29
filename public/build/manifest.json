@@ -6,7 +6,7 @@
     "isDynamicEntry": true
   },
   "resources/css/app.css": {
-    "file": "assets/app-Bbn0fcLy.css",
+    "file": "assets/app-CzyICVL2.css",
     "name": "app",
     "names": [
       "app.css"
@@ -24,12 +24,12 @@
     ]
   },
   "resources/js/resina/index.js": {
-    "file": "assets/index-BFK0phD9.js",
+    "file": "assets/index-4r25SPpL.js",
     "name": "index",
     "src": "resources/js/resina/index.js",
     "isEntry": true,
     "assets": [
-      "assets/mix-worker-DQypklDN.js"
+      "assets/mix-worker-CaLHGTwr.js"
     ]
   }
 }

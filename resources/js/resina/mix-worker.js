@@ -1,7 +1,8 @@
 /*
  * Runs the heavy color searches off the main thread, so pages stay
  * responsive on phones. Message in: { paints, jobs: [{ id, kind, hex }] }
- * with kind "find" (findMixes with triples) or "auto" (autoBSL).
+ * with kind "find" (findMixes; triples unless three is false) or "auto"
+ * (autoBSL).
  * One message out per job, as soon as it's ready: { id, result }.
  */
 import { autoBSL, createPalette, findMixes } from './color.js';
@@ -11,7 +12,7 @@ self.onmessage = (event) => {
     const palette = createPalette(paints);
 
     for (const job of jobs) {
-        const result = job.kind === 'auto' ? autoBSL(job.hex, palette) : findMixes(job.hex, true, palette);
+        const result = job.kind === 'auto' ? autoBSL(job.hex, palette) : findMixes(job.hex, job.three !== false, palette);
         self.postMessage({ id: job.id, result });
     }
 };

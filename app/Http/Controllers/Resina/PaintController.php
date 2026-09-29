@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Resina\Paint;
 use App\Models\Resina\ShopSuggestion;
 use App\Models\User;
-use App\Services\Resina\ClientPayload;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -19,27 +18,13 @@ use Illuminate\View\View;
  */
 class PaintController extends Controller
 {
-    public function __construct(private ClientPayload $payload) {}
-
-    public function index(Request $request): View
+    /**
+     * The inventory itself is the Livewire table; suggested paints live
+     * on the "Da comprare" page.
+     */
+    public function index(): View
     {
-        $user = $request->user();
-        $ownedCodes = $this->ownedCodes($user);
-
-        return view('resina.paints.index', [
-            'payload' => [
-                'paints' => $this->payload->paints($user),
-                'suggestions' => ShopSuggestion::orderBy('position')->get()->map(fn (ShopSuggestion $suggestion) => [
-                    'id' => $suggestion->id,
-                    'code' => $suggestion->code,
-                    'name' => $suggestion->name,
-                    'hex' => $suggestion->hex,
-                    'why' => $suggestion->why,
-                    'owned' => in_array($suggestion->code, $ownedCodes, true),
-                    'buyUrl' => route('resina.paints.buy', $suggestion),
-                ])->all(),
-            ],
-        ]);
+        return view('resina.paints.index');
     }
 
     public function store(Request $request): RedirectResponse

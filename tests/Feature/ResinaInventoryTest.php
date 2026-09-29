@@ -25,14 +25,13 @@ class ResinaInventoryTest extends TestCase
         $this->module = Module::where('slug', 'resina')->firstOrFail();
     }
 
-    public function test_my_paints_page_lists_the_inventory_with_codes_and_suggestions(): void
+    public function test_my_paints_page_lists_the_inventory_with_codes_and_links_to_the_shop(): void
     {
         $this->actingAs($this->painter())->get(route('resina.paints.index'))
             ->assertOk()
             ->assertSee('Bianco Teschio')
             ->assertSee('72.001')
-            ->assertSee('Colori consigliati da comprare')
-            ->assertSee('Royal Purple');
+            ->assertSee(route('resina.shop.index'));
     }
 
     public function test_a_custom_paint_can_be_added(): void

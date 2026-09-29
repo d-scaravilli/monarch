@@ -10,6 +10,7 @@ import { runMixJobs } from './mix-jobs.js';
 import { characterSheet } from './character-sheet.js';
 import { guideEditor, rowsEditor, zoneEditor } from './editors.js';
 import { projectPage } from './project-page.js';
+import { beginnerPath, finder, mixer } from './tools.js';
 import { decorateRecipe, ingredient, readPayload, sendJson, uid } from './view.js';
 
 window.Resina = { color, steps, brushes };
@@ -215,4 +216,7 @@ document.addEventListener('alpine:init', () => {
     Alpine.data('resinaRows', rowsEditor);
     Alpine.data('resinaZoneEditor', zoneEditor);
     Alpine.data('resinaGuideEditor', guideEditor);
+    Alpine.data('resinaFinder', finder);
+    Alpine.data('resinaMixer', mixer);
+    Alpine.data('resinaPath', beginnerPath);
 });

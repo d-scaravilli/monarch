@@ -28,7 +28,7 @@ export function runMixJobs(paints, jobs, onResult) {
     const next = () => {
         const job = queue.shift();
         if (!job) return;
-        onResult(job.id, job.kind === 'auto' ? autoBSL(job.hex, palette) : findMixes(job.hex, true, palette));
+        onResult(job.id, job.kind === 'auto' ? autoBSL(job.hex, palette) : findMixes(job.hex, job.three !== false, palette));
         setTimeout(next, 0);
     };
     setTimeout(next, 0);
