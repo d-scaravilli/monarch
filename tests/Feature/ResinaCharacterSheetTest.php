@@ -37,7 +37,7 @@ class ResinaCharacterSheetTest extends TestCase
         $this->assertSame($payload['character']['versions'][0]['id'], $payload['chosenVersionId']);
         $this->assertSame('panoramica', $payload['tab']);
         $this->assertSame([], $payload['done']);
-        $this->assertNull($payload['copyUrl']);
+        $this->assertSame(route('resina.figures.copy', Character::where('slug', 'seiya')->value('id')), $payload['copyUrl']);
 
         $slugs = array_column($payload['recipes'], 'slug');
         foreach (['eyes', 'face', 'base-rock', 'base-marble', 'skin-tan', 'inline-saint-seiya-seiya-base-3'] as $slug) {

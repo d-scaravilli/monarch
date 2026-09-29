@@ -92,15 +92,20 @@
                 @foreach ($projects as $project)
                     <x-resina.project-card :project="$project" />
                 @endforeach
+                <x-resina.tool-card :href="route('resina.figures.index')" icon="plus" title="Un'altra figura?">
+                    Crea la tua scheda in «Le mie figure»: scegli le zone e i colori, le ricette si calcolano da sole.
+                </x-resina.tool-card>
             </div>
         </div>
 
         <div>
             <x-section-header>Strumenti</x-section-header>
             <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                <x-resina.tool-card :href="route('resina.photo.create')" icon="camera" title="Analizza una foto">Carica un'immagine, scegli il personaggio e ottieni la guida con colori e pennelli.</x-resina.tool-card>
                 <x-resina.tool-card :href="route('resina.brushes.index')" icon="paint-brush" title="I miei pennelli">Il tuo kit e a cosa serve ogni pennello.</x-resina.tool-card>
                 <x-resina.tool-card :href="route('resina.finder')" icon="eye-dropper" title="Trova un colore">Scegli un colore, ti dico come ottenerlo.</x-resina.tool-card>
                 <x-resina.tool-card :href="route('resina.mixer')" icon="beaker" title="Mixer">Prova le miscele prima di sprecare colore.</x-resina.tool-card>
+                <x-resina.tool-card :href="route('resina.figures.index')" icon="user-circle" title="Le mie figure">Crea la scheda colori di qualsiasi figura.</x-resina.tool-card>
                 <x-resina.tool-card :href="route('resina.paints.index')" icon="swatch" title="I miei colori">Inventario, codici e aggiunta di nuovi flaconi.</x-resina.tool-card>
                 <x-resina.tool-card :href="route('resina.shop.index')" icon="shopping-bag" title="Da comprare">Cosa ti manca, in ordine di importanza.</x-resina.tool-card>
                 <x-resina.tool-card :href="route('resina.tutorials.index')" icon="play-circle" title="Tutorial video">Ricerche YouTube già pronte.</x-resina.tool-card>

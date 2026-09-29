@@ -47,7 +47,7 @@
                             </optgroup>
                         </template>
                     </select>
-                    <a x-show="inlineFor(row)" :href="inlineFor(row)?.editUrl" class="text-xs font-medium text-gray-500 underline">Modifica i passaggi propri</a>
+                    <a x-show="inlineFor(row)?.editUrl" :href="inlineFor(row)?.editUrl" class="text-xs font-medium text-gray-500 underline">Modifica i passaggi propri</a>
                 </div>
                 <div class="space-y-1">
                     <label class="text-xs font-medium text-gray-500">Scheda</label>

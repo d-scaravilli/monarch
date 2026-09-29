@@ -116,11 +116,11 @@ class ResinaModuleTest extends TestCase
 
     public function test_resetting_wipes_everyones_personal_data_and_photos_but_keeps_the_catalog(): void
     {
-        Storage::fake('public');
+        Storage::fake('local');
         $painter = $this->painter();
         app(StarterKit::class)->ensureFor($painter);
 
-        $photo = UploadedFile::fake()->image('figura.jpg')->store('resina/figures', 'public');
+        $photo = UploadedFile::fake()->image('figura.jpg')->store('resina/figures', 'local');
         $figure = Character::factory()->personal($painter)->create(['reference_image_path' => $photo, 'source' => 'foto']);
         $figureRecipe = Recipe::factory()->inline()->create();
         Zone::factory()->create(['character_id' => $figure->id, 'recipe_id' => $figureRecipe->id]);
@@ -135,7 +135,7 @@ class ResinaModuleTest extends TestCase
 
         $this->assertModelMissing($figure);
         $this->assertModelMissing($figureRecipe);
-        Storage::disk('public')->assertMissing($photo);
+        Storage::disk('local')->assertMissing($photo);
         $this->assertSame(0, $painter->resinPaints()->count());
         $this->assertSame(0, Brush::count());
         $this->assertSame(0, StepProgress::count());

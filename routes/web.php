@@ -31,12 +31,14 @@ use App\Http\Controllers\Resina\ArmorTypeController as ResinaArmorTypeController
 use App\Http\Controllers\Resina\BrushController as ResinaBrushController;
 use App\Http\Controllers\Resina\CharacterController as ResinaCharacterController;
 use App\Http\Controllers\Resina\CharacterVersionController as ResinaCharacterVersionController;
+use App\Http\Controllers\Resina\FigureController as ResinaFigureController;
 use App\Http\Controllers\Resina\FinderController as ResinaFinderController;
 use App\Http\Controllers\Resina\GuideController as ResinaGuideController;
 use App\Http\Controllers\Resina\HomeController as ResinaHomeController;
 use App\Http\Controllers\Resina\MixerController as ResinaMixerController;
 use App\Http\Controllers\Resina\PaintController as ResinaPaintController;
 use App\Http\Controllers\Resina\PathController as ResinaPathController;
+use App\Http\Controllers\Resina\PhotoAnalysisController as ResinaPhotoAnalysisController;
 use App\Http\Controllers\Resina\ProjectController as ResinaProjectController;
 use App\Http\Controllers\Resina\RecipeController as ResinaRecipeController;
 use App\Http\Controllers\Resina\ShopController as ResinaShopController;
@@ -228,7 +230,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 ->name('projects.show');
         });
 
+        Route::get('/figure', [ResinaFigureController::class, 'index'])->name('figures.index');
+        Route::post('/figure', [ResinaFigureController::class, 'store'])->name('figures.store');
+        Route::get('/figure/{figure}/foto/{variant}', [ResinaFigureController::class, 'image'])->whereIn('variant', ['originale', 'miniatura'])->name('figures.image');
+        Route::put('/figure/{figure}', [ResinaFigureController::class, 'update'])->name('figures.update');
+        Route::delete('/figure/{figure}', [ResinaFigureController::class, 'destroy'])->name('figures.destroy');
+        Route::get('/figure/{figure}/{tab?}', [ResinaFigureController::class, 'show'])
+            ->whereIn('tab', ResinaCharacterController::TABS)
+            ->name('figures.show');
+
+        Route::get('/analizza', [ResinaPhotoAnalysisController::class, 'create'])->name('photo.create');
+        Route::post('/analizza', [ResinaPhotoAnalysisController::class, 'store'])->name('photo.store');
+
         // Shared by catalog characters and personal figures.
+        Route::post('/personaggi/{character}/copia', [ResinaFigureController::class, 'copy'])->name('figures.copy');
         Route::post('/personaggi/{character}/versione', [ResinaCharacterController::class, 'chooseVersion'])->name('characters.version');
         Route::post('/personaggi/{character}/fatto', [ResinaStepProgressController::class, 'toggle'])->name('progress.toggle');
         Route::delete('/personaggi/{character}/fatto', [ResinaStepProgressController::class, 'reset'])->name('progress.reset');

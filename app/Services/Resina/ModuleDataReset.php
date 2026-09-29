@@ -52,6 +52,6 @@ class ModuleDataReset
         });
 
         // Files last: if the transaction failed, the photos must still be there.
-        Storage::disk('public')->delete($imagePaths);
+        Storage::disk('local')->delete($imagePaths);
     }
 }

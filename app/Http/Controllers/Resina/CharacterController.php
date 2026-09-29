@@ -44,7 +44,7 @@ class CharacterController extends Controller
             'payload' => $this->payload->characterSheet($user, $character, $project, [
                 'tab' => in_array($tab, self::TABS, true) ? $tab : 'panoramica',
                 'baseUrl' => route('resina.characters.show', [$project, $character]),
-                'copyUrl' => null,
+                'copyUrl' => route('resina.figures.copy', $character),
             ]),
         ]);
     }
@@ -154,7 +154,7 @@ class CharacterController extends Controller
      * @param  Collection<int, Zone>  $zones
      * @return array<string, mixed>
      */
-    public static function zoneEditorPayload(array $rows, $zones): array
+    public static function zoneEditorPayload(array $rows, $zones, bool $canEditInline = true): array
     {
         return [
             'rows' => array_values($rows),
@@ -168,7 +168,7 @@ class CharacterController extends Controller
             'inline' => $zones->filter(fn (Zone $zone) => $zone->recipe?->is_inline)
                 ->mapWithKeys(fn (Zone $zone) => [$zone->recipe_id => [
                     'title' => 'Passaggi propri della zona',
-                    'editUrl' => route('resina.recipes.edit', $zone->recipe),
+                    'editUrl' => $canEditInline ? route('resina.recipes.edit', $zone->recipe) : null,
                 ]])->all(),
             'tabs' => [
                 'pelle' => 'Pelle', 'volto' => 'Occhi e volto', 'vestiti' => 'Tuta e vestiti', 'armatura' => 'Armatura',

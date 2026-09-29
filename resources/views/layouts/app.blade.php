@@ -54,6 +54,8 @@
         // sidebar and the sheet.
         $navItems[] = ['label' => 'Home', 'route' => 'resina.home', 'icon' => 'home', 'active' => request()->routeIs('resina.home'), 'mobile' => true, 'section' => 'Dipingere'];
         $navItems[] = ['label' => 'Progetti', 'route' => 'resina.projects.index', 'icon' => 'rectangle-stack', 'active' => request()->routeIs('resina.projects.*', 'resina.characters.*', 'resina.versions.*', 'resina.armor-types.*', 'resina.guides.*'), 'mobile' => true, 'section' => 'Dipingere'];
+        $navItems[] = ['label' => 'Le mie figure', 'route' => 'resina.figures.index', 'icon' => 'user-circle', 'active' => request()->routeIs('resina.figures.*'), 'mobile' => false, 'section' => 'Dipingere'];
+        $navItems[] = ['label' => 'Analizza foto', 'route' => 'resina.photo.create', 'icon' => 'camera', 'active' => request()->routeIs('resina.photo.*'), 'mobile' => false, 'section' => 'Dipingere'];
         $navItems[] = ['label' => 'Ricette', 'route' => 'resina.recipes.index', 'icon' => 'book-open', 'active' => request()->routeIs('resina.recipes.*'), 'mobile' => true, 'section' => 'Dipingere'];
         $navItems[] = ['label' => 'Trova colore', 'route' => 'resina.finder', 'icon' => 'eye-dropper', 'active' => request()->routeIs('resina.finder'), 'mobile' => false, 'section' => 'Dipingere'];
         $navItems[] = ['label' => 'Mixer', 'route' => 'resina.mixer', 'icon' => 'beaker', 'active' => request()->routeIs('resina.mixer'), 'mobile' => true, 'section' => 'Dipingere'];
