@@ -9,6 +9,8 @@ use App\Models\Enrollment;
 use App\Models\MemberNote;
 use App\Models\Module;
 use App\Models\User;
+use App\Services\Resina\CatalogImporter as ResinaCatalogImporter;
+use App\Services\Resina\ModuleDataReset as ResinaModuleDataReset;
 use App\Support\ModuleTheme;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -101,16 +103,14 @@ class ModuleSettingsController extends Controller
     }
 
     /**
-     * "Zona pericolosa": wipes every piece of data the Palestra module
-     * generates — enrollments, courses/eventi (and, via cascade, their
-     * schedules/lessons/attendances/payments), documents and notes for
-     * its members. Never touches user accounts (Amministrazione's job),
-     * rooms, or the module's own settings (name/color/image).
+     * "Zona pericolosa": wipes the data a module generates, never user
+     * accounts (Amministrazione's job) or the module's own settings
+     * (name/color/image). What "data" means is up to each module.
      */
     public function resetData(Request $request, Module $module): RedirectResponse
     {
         $this->authorizeModuleManagement($request, $module);
-        abort_unless($module->slug === 'palestra', 404);
+        abort_unless(in_array($module->slug, ['palestra', 'resina'], true), 404);
 
         $data = $request->validate([
             'confirm_name' => 'required|string',
@@ -118,6 +118,46 @@ class ModuleSettingsController extends Controller
 
         abort_unless($data['confirm_name'] === $module->name, 422);
 
+        match ($module->slug) {
+            'palestra' => $this->resetPalestraData($module),
+            'resina' => app(ResinaModuleDataReset::class)->reset(),
+        };
+
+        AuditLog::record('module.reset', "Dati del modulo \"{$module->name}\" azzerati da {$request->user()->name}.");
+
+        return redirect()->route('modules.settings.edit', $module)->with('status', 'Dati del modulo azzerati.');
+    }
+
+    /**
+     * "3D - Resina" only: loads database/data/resina again over the
+     * shared catalog. Overwrites every edit made to the imported rows;
+     * personal data stays untouched.
+     */
+    public function reimportCatalog(Request $request, Module $module): RedirectResponse
+    {
+        $this->authorizeModuleManagement($request, $module);
+        abort_unless($module->slug === 'resina', 404);
+
+        $data = $request->validate([
+            'confirm_name' => 'required|string',
+        ]);
+
+        abort_unless($data['confirm_name'] === $module->name, 422);
+
+        app(ResinaCatalogImporter::class)->import();
+
+        AuditLog::record('module.reimport', "Catalogo iniziale del modulo \"{$module->name}\" reimportato da {$request->user()->name}.");
+
+        return redirect()->route('modules.settings.edit', $module)->with('status', 'Catalogo iniziale reimportato.');
+    }
+
+    /**
+     * Palestra: enrollments, courses/eventi (and, via cascade, their
+     * schedules/lessons/attendances/payments), documents and notes for
+     * its members. Rooms stay.
+     */
+    private function resetPalestraData(Module $module): void
+    {
         // $module->users() is who was *granted access* to the module (an
         // admin decision, made from the "Accessi" tab) — not who actually
         // has data in it. A member enrolled the normal way, through
@@ -146,10 +186,6 @@ class ModuleSettingsController extends Controller
             // attendances and payments — see their migrations.
             Course::withTrashed()->forceDelete();
         });
-
-        AuditLog::record('module.reset', "Dati del modulo \"{$module->name}\" azzerati da {$request->user()->name}.");
-
-        return redirect()->route('modules.settings.edit', $module)->with('status', 'Dati del modulo azzerati.');
     }
 
     /**

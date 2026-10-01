@@ -1,0 +1,33 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('resin_guide_steps', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('guide_id')->constrained('resin_guides')->cascadeOnDelete();
+            $table->unsignedSmallInteger('position');
+            $table->string('title');
+            $table->text('description')->nullable();
+            $table->timestamps();
+
+            $table->index(['guide_id', 'position']);
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('resin_guide_steps');
+    }
+};

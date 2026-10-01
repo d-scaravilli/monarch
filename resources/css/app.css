@@ -5,3 +5,43 @@
 [x-cloak] {
     display: none !important;
 }
+
+/*
+ * "3D - Resina" long-form content (Tecniche): the prototype's text and
+ * SVG diagrams, restyled for light and dark theme.
+ */
+@layer components {
+    .resina-prose h3 {
+        @apply mb-2 text-base font-semibold text-gray-900 dark:text-gray-100;
+    }
+    .resina-prose p {
+        @apply mb-2 text-sm text-gray-700 dark:text-gray-300;
+    }
+    .resina-prose ol {
+        @apply mb-2 list-decimal space-y-1.5 pl-5 text-sm text-gray-700 dark:text-gray-300;
+    }
+    .resina-prose ul {
+        @apply mb-2 list-disc space-y-1.5 pl-5 text-sm text-gray-700 dark:text-gray-300;
+    }
+    .resina-prose b {
+        @apply font-semibold text-gray-900 dark:text-gray-100;
+    }
+    .resina-prose .code {
+        @apply whitespace-nowrap rounded bg-gray-100 px-1 font-mono text-[11px] text-gray-600 dark:bg-white/10 dark:text-gray-300;
+    }
+    .resina-prose .note {
+        @apply mt-3 rounded-xl bg-amber-50 px-3.5 py-2.5 text-sm text-amber-900 dark:bg-amber-500/10 dark:text-amber-200;
+    }
+    .resina-prose .note b {
+        @apply text-amber-950 dark:text-amber-100;
+    }
+    .resina-svg {
+        @apply rounded-xl bg-gray-50 p-2 dark:bg-white/5;
+    }
+    .resina-svg text {
+        @apply fill-gray-600 text-[11px] dark:fill-gray-300;
+    }
+    .resina-svg line {
+        @apply stroke-gray-400;
+    }
+}

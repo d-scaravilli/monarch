@@ -6,7 +6,7 @@
     "isDynamicEntry": true
   },
   "resources/css/app.css": {
-    "file": "assets/app-CZH1v7cW.css",
+    "file": "assets/app-Bui0Qn5h.css",
     "name": "app",
     "names": [
       "app.css"
@@ -21,6 +21,15 @@
     "isEntry": true,
     "dynamicImports": [
       "node_modules/apexcharts/dist/apexcharts.esm.js"
+    ]
+  },
+  "resources/js/resina/index.js": {
+    "file": "assets/index-dH38PEhL.js",
+    "name": "index",
+    "src": "resources/js/resina/index.js",
+    "isEntry": true,
+    "assets": [
+      "assets/mix-worker-CaLHGTwr.js"
     ]
   }
 }

@@ -3,6 +3,14 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Resina\Brush as ResinBrush;
+use App\Models\Resina\Character as ResinCharacter;
+use App\Models\Resina\CharacterVersion as ResinCharacterVersion;
+use App\Models\Resina\PathStep as ResinPathStep;
+use App\Models\Resina\SavedMix as ResinSavedMix;
+use App\Models\Resina\StepProgress as ResinStepProgress;
+use App\Models\Resina\UserPaint as ResinUserPaint;
+use App\Models\Resina\UserProfile as ResinUserProfile;
 use App\Notifications\NewMessageNotification;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -93,6 +101,59 @@ class User extends Authenticatable
     public function receivedMessages(): HasMany
     {
         return $this->hasMany(MessageRecipient::class);
+    }
+
+    public function resinProfile(): HasOne
+    {
+        return $this->hasOne(ResinUserProfile::class);
+    }
+
+    /**
+     * The user's own bottles in "3D - Resina": the starter paints plus
+     * any custom ones added later.
+     */
+    public function resinPaints(): HasMany
+    {
+        return $this->hasMany(ResinUserPaint::class);
+    }
+
+    public function resinBrushes(): HasMany
+    {
+        return $this->hasMany(ResinBrush::class)->orderBy('position');
+    }
+
+    /**
+     * "Le mie figure": personal characters, never part of the catalog.
+     */
+    public function resinFigures(): HasMany
+    {
+        return $this->hasMany(ResinCharacter::class);
+    }
+
+    public function resinStepProgress(): HasMany
+    {
+        return $this->hasMany(ResinStepProgress::class);
+    }
+
+    public function resinSavedMixes(): HasMany
+    {
+        return $this->hasMany(ResinSavedMix::class)->latest();
+    }
+
+    /**
+     * The version picked for each catalog character (one per character).
+     */
+    public function resinCharacterVersions(): BelongsToMany
+    {
+        return $this->belongsToMany(ResinCharacterVersion::class, 'resin_user_character_versions', 'user_id', 'character_version_id')
+            ->withPivot('character_id')
+            ->withTimestamps();
+    }
+
+    public function resinCompletedPathSteps(): BelongsToMany
+    {
+        return $this->belongsToMany(ResinPathStep::class, 'resin_user_path_progress', 'user_id', 'path_step_id')
+            ->withPivot('done_at');
     }
 
     public function avatarUrl(): ?string

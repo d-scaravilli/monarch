@@ -1,0 +1,2069 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pennello &amp; Resina – il laboratorio per dipingere le tue stampe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Cinzel:wght@600;700&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF0F3; --card:#FFFFFF; --ink:#1B1F2A; --muted:#596173; --line:#D6D9E0; --chip:#F2F3F6;
+  --accent:#2E4F92; --accent-ink:#FFFFFF; --accent-soft:#E2E8F5; --band:#1C2542; --band-ink:#F2F0FA; --band-muted:#B9BFDB; --band-accent:#F6E4B0;
+  --ok:#2F7A46; --ok-soft:rgba(47,122,70,.13); --warn:#9A5B12; --warn-soft:rgba(154,91,18,.13); --mid:#6B5A12; --mid-soft:#F3ECCF;
+  --head:'Bricolage Grotesque', 'Figtree', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  --sans:'Figtree', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  --epic:'Cinzel', 'Trajan Pro', Georgia, 'Times New Roman', serif;
+  --r:14px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#13151B; --card:#1C1F28; --ink:#E7E9EF; --muted:#A2A8B7; --line:#2D313D; --chip:#252934;
+    --accent:#8FB0F2; --accent-ink:#10131A; --accent-soft:#233050; --band:#161C33;
+    --ok:#6CC58A; --warn:#E3A45B; --mid:#E0CD7A; --mid-soft:#3A3421;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#13151B; --card:#1C1F28; --ink:#E7E9EF; --muted:#A2A8B7; --line:#2D313D; --chip:#252934;
+  --accent:#8FB0F2; --accent-ink:#10131A; --accent-soft:#233050; --band:#161C33;
+  --ok:#6CC58A; --warn:#E3A45B; --mid:#E0CD7A; --mid-soft:#3A3421;
+}
+/* Theme of the Saint Seiya project */
+body.t-ss{--accent:#8A6414; --accent-ink:#FFF8E6; --accent-soft:#F4E7C6; --band:#1F2548}
+body.t-pr{--band-accent:#FFD2CC;--accent:#B3261E; --accent-soft:#F7DEDC; --band:#2A1414}
+body.t-mv{--band-accent:#FFD0D5;--accent:#A31F2B; --accent-soft:#F6DCDE; --band:#1B1D2B}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) body.t-ss{--accent:#E3B95B; --accent-ink:#1A1405; --accent-soft:#3A3120}
+  :root:not([data-theme="light"]) body.t-pr{--accent:#F08A82; --accent-ink:#1A0806; --accent-soft:#3F2220}
+  :root:not([data-theme="light"]) body.t-mv{--accent:#F0858F; --accent-ink:#1A0709; --accent-soft:#3E2126}
+}
+:root[data-theme="dark"] body.t-ss{--accent:#E3B95B; --accent-ink:#1A1405; --accent-soft:#3A3120}
+:root[data-theme="dark"] body.t-pr{--accent:#F08A82; --accent-ink:#1A0806; --accent-soft:#3F2220}
+:root[data-theme="dark"] body.t-mv{--accent:#F0858F; --accent-ink:#1A0709; --accent-soft:#3E2126}
+
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 70px);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55}
+img,svg{max-width:100%}
+a{color:var(--accent)}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.86em}
+.wrap{max-width:1120px;margin:0 auto;padding:0 18px}
+
+/* ---------- App bar ---------- */
+.appbar{position:sticky;top:0;z-index:20;background:var(--card);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px);margin-top:calc(-1 * env(safe-area-inset-top,0px))}
+.appbar .wrap{display:flex;align-items:center;gap:14px;min-height:58px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-family:var(--head);font-weight:800;font-size:1.12rem;white-space:nowrap}
+.brand svg{width:30px;height:30px;flex:none}
+.mainnav{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;flex:1}
+.mainnav::-webkit-scrollbar{display:none}
+.mainnav a{padding:7px 10px;border-radius:999px;text-decoration:none;color:var(--muted);font-weight:600;font-size:.93rem;white-space:nowrap}
+.mainnav a:hover{color:var(--ink);background:var(--chip)}
+.mainnav a.on{background:var(--accent);color:var(--accent-ink)}
+@media (max-width:760px){
+  .appbar .wrap{flex-wrap:wrap;gap:4px;padding-top:6px;padding-bottom:6px}
+  .mainnav{flex-basis:100%}
+}
+
+main{padding:26px 0 70px;min-height:70vh}
+.view{display:none}
+.view.on{display:block}
+
+/* ---------- Type ---------- */
+h1,h2,h3{font-family:var(--head);line-height:1.15;margin:0}
+h1{font-size:clamp(2.1rem,6vw,3.6rem);font-weight:800;letter-spacing:-.02em}
+h2{font-size:clamp(1.5rem,3.4vw,2.1rem);font-weight:800;margin-bottom:6px}
+h3{font-size:1.15rem;font-weight:800;margin-bottom:6px}
+.t-ss .epic, .epic{font-family:var(--epic);font-weight:700;letter-spacing:.02em}
+p.intro{color:var(--muted);max-width:70ch;margin:0 0 22px}
+.muted{color:var(--muted)}
+.small{font-size:.88rem}
+.sec{margin:34px 0 14px}
+.sec:first-child{margin-top:0}
+.backlink{display:inline-block;margin-bottom:14px;font-weight:600;text-decoration:none}
+
+/* ---------- Home hero ---------- */
+.hero{padding:10px 0 8px}
+.hero p.lead{font-size:1.12rem;max-width:62ch;color:var(--muted);margin:12px 0 20px}
+.cta{display:flex;flex-wrap:wrap;gap:10px}
+.shelfbox{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px 18px 10px;margin-top:26px}
+.shelfbox h2{font-size:1.2rem}
+.shelf{display:flex;flex-wrap:wrap;gap:18px 30px;margin-top:12px}
+.shelf-group h3{font-family:var(--sans);font-size:.82rem;font-weight:600;color:var(--muted);margin:0 0 8px}
+.bottles{display:flex;flex-wrap:wrap;gap:8px}
+.bottle{background:none;border:0;padding:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;width:64px}
+.bottle .sw{width:40px;height:40px;border-radius:50% 50% 50% 50%/58% 58% 42% 42%;box-shadow:inset -4px -6px 10px rgba(0,0,0,.22), inset 3px 4px 6px rgba(255,255,255,.28)}
+.bottle .n{font-size:.68rem;line-height:1.15;text-align:center;margin-top:5px}
+.bottle .n small{display:block;color:var(--muted);font-size:.62rem}
+.bottle:hover .sw{transform:translateY(-2px)}
+
+/* ---------- Generic blocks ---------- */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.gauto{grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+@media (max-width:820px){.g3{grid-template-columns:1fr 1fr}}
+@media (max-width:620px){.g2,.g3{grid-template-columns:1fr}}
+a.tile{display:block;text-decoration:none;color:var(--ink)}
+a.tile:hover{border-color:var(--accent)}
+.tile .ic{font-size:1.5rem;line-height:1;margin-bottom:8px}
+.tile p{margin:.2em 0 0;color:var(--muted);font-size:.92rem}
+.proj{position:relative;overflow:hidden;padding:0}
+.proj .top{padding:18px;color:var(--band-ink);min-height:118px;display:flex;flex-direction:column;justify-content:flex-end}
+.proj .top h3{font-size:1.35rem;margin:0}
+.proj .body{padding:14px 18px 16px}
+.pill{display:inline-block;border-radius:999px;padding:2px 10px;font-size:.75rem;font-weight:700;background:var(--chip);color:var(--muted)}
+.pill.ok{background:var(--ok-soft);color:var(--ok)}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--card);border-radius:10px;padding:8px 14px;cursor:pointer;font-weight:600;font-size:.93rem;text-decoration:none;color:var(--ink)}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.sm{padding:5px 10px;font-size:.84rem;border-radius:8px}
+.note{border-left:4px solid var(--accent);background:var(--accent-soft);padding:10px 14px;border-radius:0 10px 10px 0;margin:10px 0;max-width:72ch}
+.progress{height:8px;border-radius:999px;background:var(--chip);overflow:hidden;margin:10px 0 6px}
+.progress i{display:block;height:100%;background:var(--accent);border-radius:999px}
+
+/* ---------- Paint name + swatches ---------- */
+.sw{display:inline-block;flex:none;border-radius:50%;border:1px solid rgba(0,0,0,.14)}
+.dot{display:inline-block;width:14px;height:14px;border-radius:50%;border:1px solid rgba(0,0,0,.18);vertical-align:-2px;margin-right:5px;flex:none}
+.pn{white-space:nowrap}
+.pn small,.code{font-size:.72em;color:var(--muted);font-weight:600;margin-left:4px;font-variant-numeric:tabular-nums;letter-spacing:.01em}
+.f{display:flex;flex-wrap:wrap;gap:4px 6px;align-items:center;margin:3px 0;font-size:.94rem}
+.ing{background:var(--chip);border-radius:999px;padding:2px 10px 2px 6px;display:inline-flex;align-items:center}
+.plus{color:var(--muted);font-weight:700}
+.badge{display:inline-block;border-radius:999px;padding:1px 10px;font-size:.76rem;font-weight:700}
+.b-ok{background:var(--ok-soft);color:var(--ok)}
+.b-mid{background:var(--mid-soft);color:var(--mid)}
+.b-far{background:var(--warn-soft);color:var(--warn)}
+.tag{display:inline-block;font-size:.72rem;font-weight:700;border-radius:6px;padding:1px 7px;background:var(--chip);color:var(--muted);vertical-align:1px}
+
+/* ---------- Filters ---------- */
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.filters button{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 14px;cursor:pointer;font-weight:500}
+.filters button.on{border-color:var(--accent);background:var(--accent-soft);font-weight:700}
+input[type=search],input[type=text],select{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:10px;padding:9px 12px}
+input[type=search]{width:100%;max-width:420px;margin-bottom:14px}
+input[type=color]{width:60px;height:46px;border:1px solid var(--line);border-radius:10px;padding:2px;background:var(--card);cursor:pointer}
+label.chk{display:inline-flex;gap:6px;align-items:center;font-size:.9rem}
+
+/* ---------- Recipe groups ---------- */
+.group{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px 18px 6px;margin-bottom:16px}
+.group header{display:flex;gap:16px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;margin-bottom:8px}
+.group .who{font-size:.9rem;color:var(--muted)}
+.strip{display:flex;height:32px;border-radius:8px;overflow:hidden;min-width:160px;flex:1;max-width:300px;border:1px solid var(--line)}
+.strip i{flex:1}
+.tip{background:var(--chip);border-radius:10px;padding:10px 14px;font-size:.92rem;margin:4px 0 12px}
+.step{display:grid;grid-template-columns:52px 1fr auto;gap:14px;align-items:center;padding:11px 0;border-top:1px solid var(--line)}
+.step>.sw{width:48px;height:48px}
+.step b.role{display:block}
+.use{font-size:.88rem;color:var(--muted)}
+.hexbox{text-align:right}
+.hexbox code{display:block;margin-bottom:6px}
+@media (max-width:620px){
+  .step{grid-template-columns:40px 1fr}
+  .step>.sw{width:38px;height:38px}
+  .hexbox{grid-column:2;text-align:left;display:flex;gap:10px;align-items:center}
+  .hexbox code{margin:0}
+}
+
+/* ---------- Finder / Mixer ---------- */
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.presets{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.presets button{display:flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--chip);border-radius:999px;padding:4px 12px 4px 5px;cursor:pointer;font-size:.86rem}
+.presets .dot{width:20px;height:20px;margin:0}
+.results{display:grid;gap:12px;margin-top:14px}
+.res{display:grid;grid-template-columns:110px 1fr auto;gap:16px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px}
+.pair{display:flex;height:62px;border-radius:10px;overflow:hidden;border:1px solid var(--line)}
+.pair i{flex:1}
+@media (max-width:620px){.res{grid-template-columns:80px 1fr}.res .act{grid-column:1/-1}}
+.mixgrid{display:grid;grid-template-columns:1.2fr 1fr;gap:16px}
+@media (max-width:780px){.mixgrid{grid-template-columns:1fr}}
+.mixrows{display:grid;gap:8px;margin:14px 0}
+.mixrow{display:grid;grid-template-columns:26px 1fr auto auto;gap:10px;align-items:center;background:var(--chip);border-radius:10px;padding:8px 10px}
+.mixrow .sw{width:24px;height:24px}
+.stepper{display:flex;align-items:center;gap:4px}
+.stepper button{width:32px;height:32px;border-radius:8px;border:1px solid var(--line);background:var(--card);cursor:pointer;font-weight:700}
+.stepper output{min-width:62px;text-align:center;font-variant-numeric:tabular-nums}
+.x{border:0;background:none;cursor:pointer;color:var(--muted);font-size:1.25rem;line-height:1}
+.bigsw{width:100%;height:150px;border-radius:14px;border:1px solid var(--line);display:flex;align-items:flex-end;padding:12px}
+.bigsw code{background:rgba(0,0,0,.55);color:#fff;border-radius:6px;padding:3px 8px}
+.saved{display:grid;gap:8px;margin-top:12px}
+.saved>div{display:flex;align-items:center;gap:10px;background:var(--chip);border-radius:10px;padding:8px 10px}
+.saved .t{flex:1;min-width:0}
+
+/* ---------- Technique articles ---------- */
+.tech{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,300px);gap:22px;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px;margin-bottom:16px}
+.tech.noimg{grid-template-columns:1fr}
+.tech figure{margin:0;align-self:start}
+.tech figcaption{font-size:.82rem;color:var(--muted);margin-top:6px}
+.tech p{margin:.3em 0 .7em;max-width:70ch}
+.tech ol,.tech ul{margin:.3em 0 .8em;padding-left:1.3em;max-width:70ch}
+.tech li{margin:.25em 0}
+@media (max-width:780px){.tech{grid-template-columns:1fr}}
+.svgbox{background:var(--chip);border-radius:12px;padding:10px}
+.svgbox svg{display:block;width:100%;height:auto}
+.svgt{fill:var(--ink);font-family:var(--sans);font-size:12px}
+.svgl{stroke:var(--muted);stroke-width:1;fill:none}
+
+/* ---------- Sequences ---------- */
+.seq{counter-reset:s;list-style:none;padding:0;margin:0}
+.seq>li{counter-increment:s;display:grid;grid-template-columns:40px 1fr auto;gap:12px;padding:12px 0;border-top:1px solid var(--line);align-items:start}
+.seq>li::before{content:counter(s);width:32px;height:32px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:flex;align-items:center;justify-content:center;font-weight:700}
+.seq>li.done::before{content:"✓"}
+.seq>li.done .stitle{text-decoration:line-through;color:var(--muted)}
+.seq input[type=checkbox]{width:22px;height:22px;accent-color:var(--accent);margin-top:5px}
+
+/* ---------- Table ---------- */
+.tablewrap{overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:var(--r)}
+table{border-collapse:collapse;width:100%;min-width:680px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:middle}
+th{font-size:.84rem;color:var(--muted);font-weight:600}
+td .sw{width:30px;height:30px}
+
+/* ---------- Links ---------- */
+.linkgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.linkgrid a{display:block;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:13px 15px;text-decoration:none;color:var(--ink)}
+.linkgrid a:hover{border-color:var(--accent)}
+.linkgrid a b{display:block;color:var(--accent);margin-bottom:2px}
+.linkgrid a span{font-size:.86rem;color:var(--muted)}
+
+/* ---------- Project band ---------- */
+.band{background:radial-gradient(ellipse at 15% 0%, rgba(255,255,255,.12), transparent 55%), var(--band);color:var(--band-ink);border-radius:18px;padding:26px 24px 20px;position:relative;overflow:hidden;margin-bottom:18px}
+.band h1{font-size:clamp(1.9rem,5vw,3rem);color:var(--band-accent)}
+.t-ss .band h1{font-family:var(--epic)}
+.band p{color:var(--band-muted);max-width:66ch;margin:8px 0 0}
+.band .stars{position:absolute;inset:0;opacity:.5;pointer-events:none;width:100%;height:100%}
+.band .wrapin{position:relative}
+.subnav{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;margin:0 0 20px;border-bottom:1px solid var(--line)}
+.subnav::-webkit-scrollbar{display:none}
+.subnav a{padding:10px 14px;text-decoration:none;color:var(--muted);font-weight:600;border-bottom:3px solid transparent;white-space:nowrap}
+.subnav a.on{color:var(--ink);border-color:var(--accent)}
+
+/* ---------- Character cards ---------- */
+.chars{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.ch{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;text-decoration:none;color:var(--ink)}
+.ch:hover{border-color:var(--accent)}
+.ch .pal{display:flex;height:54px}
+.ch .pal i{flex:1}
+.ch .in{padding:12px 14px 14px}
+.ch .in b{font-size:1.08rem;display:block}
+.ch .in span{font-size:.85rem;color:var(--muted)}
+.grouptitle{margin:22px 0 10px;font-size:1.05rem}
+.bigpal{display:flex;flex-wrap:wrap;gap:0;border-radius:12px;overflow:hidden;border:1px solid var(--line);margin:14px 0 18px}
+.bigpal div{flex:1 1 110px;min-height:84px;padding:8px 10px;display:flex;flex-direction:column;justify-content:flex-end;font-size:.78rem;font-weight:700}
+.zone{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px 18px 6px;margin-bottom:14px}
+.zone header{display:flex;gap:12px;align-items:center;margin-bottom:8px;flex-wrap:wrap}
+.zone header .sw{width:36px;height:36px}
+.zone header .sub{font-size:.88rem;color:var(--muted)}
+.auto-note{font-size:.84rem;color:var(--muted);margin:0 0 8px}
+.buy{display:flex;gap:10px;align-items:center;background:var(--mid-soft);border-radius:10px;padding:8px 12px;margin:8px 0 12px;font-size:.9rem}
+.buy .sw{width:26px;height:26px}
+.tipslist{margin:0;padding-left:1.2em}
+.tipslist li{margin:.35em 0}
+.editor{display:grid;gap:10px}
+.zrow{display:grid;grid-template-columns:1fr 1.4fr auto auto;gap:8px;align-items:center}
+@media (max-width:700px){.zrow{grid-template-columns:1fr 1fr}}
+
+/* ---------- Steps v2 ---------- */
+.step{display:grid;grid-template-columns:30px 48px 1fr auto;gap:12px;align-items:start;padding:12px 0;border-top:1px solid var(--line)}
+.step .num{width:28px;height:28px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem;margin-top:8px}
+.step.isopt .num{background:var(--chip);color:var(--muted);border:1px dashed var(--muted)}
+.step>.sw{width:46px;height:46px}
+.step.done{opacity:.55}
+.step.done .num{background:var(--ok);color:#fff}
+.step.done .role{text-decoration:line-through}
+.shead{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.tag.opt{background:transparent;border:1px dashed var(--muted)}
+.tag.ttag{background:var(--accent-soft);color:var(--ink);text-decoration:none}
+.tag.ttag:hover{text-decoration:underline}
+.covrow{display:flex;align-items:center;gap:8px;margin-top:5px;font-size:.78rem;color:var(--muted)}
+.cov{width:80px;height:6px;border-radius:999px;background:var(--chip);overflow:hidden;border:1px solid var(--line)}
+.cov i{display:block;height:100%;background:var(--accent)}
+.hexbox{display:flex;flex-direction:column;align-items:flex-end;gap:6px;text-align:right}
+.hexbox code{margin:0}
+.done-chk{font-size:.84rem;white-space:nowrap}
+.done-chk input{width:18px;height:18px;accent-color:var(--ok)}
+@media (max-width:620px){
+  .step{grid-template-columns:28px 38px 1fr}
+  .step>.sw{width:36px;height:36px}
+  .hexbox{grid-column:3;flex-direction:row;flex-wrap:wrap;align-items:center;text-align:left}
+}
+.scalebox{display:flex;flex-direction:column;gap:3px;font-size:.72rem;color:var(--muted);min-width:150px;flex:1;max-width:280px;margin-left:auto}
+.scale{display:flex;height:26px;border-radius:7px;overflow:hidden;border:1px solid var(--line)}
+.scale i{flex:1}
+.order-note{font-size:.86rem;color:var(--muted);margin:0 0 4px}
+.verbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:14px 0 0}
+.verbar button small{font-weight:500}
+.ctabs a .cnt{font-size:.72rem;background:var(--chip);border-radius:999px;padding:1px 7px;margin-left:4px;color:var(--muted)}
+.ctabs a .cnt.ok{background:var(--ok-soft);color:var(--ok)}
+.ctabs{position:sticky;top:calc(58px + env(safe-area-inset-top,0px));background:var(--bg);z-index:5}
+@media (max-width:760px){.ctabs{top:calc(92px + env(safe-area-inset-top,0px))}}
+.tag.brush{background:var(--chip);color:var(--ink);text-decoration:none;border:1px solid var(--line)}
+.drop{display:flex;align-items:center;justify-content:center;min-height:110px;border:2px dashed var(--line);border-radius:12px;cursor:pointer;color:var(--muted);text-align:center;padding:14px;margin-bottom:10px}
+.drop.over,.drop:hover{border-color:var(--accent);color:var(--ink)}
+#anCanvas{width:100%;height:auto;border-radius:10px;cursor:crosshair;display:block}
+#anCanvas[hidden]{display:none}
+.anrow{display:grid;grid-template-columns:38px 1fr 170px 160px auto;gap:10px;align-items:center;background:var(--chip);border-radius:10px;padding:8px 10px}
+@media (max-width:760px){.anrow{grid-template-columns:38px 1fr}.anrow select,.anrow input{grid-column:1/-1}}
+textarea{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:10px;padding:9px 12px;resize:vertical}
+.thumb{max-width:220px;max-height:220px;border-radius:12px;border:1px solid var(--line);display:block;margin:12px 0}
+details.editor summary{cursor:pointer}
+.brrow{grid-template-columns:1fr 1fr auto auto}
+footer{color:var(--muted);font-size:.84rem;text-align:center;padding:10px 18px 40px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header class="appbar">
+  <div class="wrap">
+    <a class="brand" href="#/" aria-label="Pennello e Resina, home">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="3" y="3" width="26" height="26" rx="8" fill="var(--accent)"/><path d="M9 23c2-1 3-3 3-5l8-8 2 2-8 8c-2 0-4 1-5 3z" fill="var(--accent-ink)"/><circle cx="22.5" cy="9.5" r="2.2" fill="var(--accent-ink)"/></svg>
+      Pennello &amp; Resina
+    </a>
+    <nav class="mainnav" aria-label="Menu principale">
+      <a href="#/progetti" data-nav="progetti">Progetti</a>
+      <a href="#/percorso" data-nav="percorso">Percorso</a>
+      <a href="#/analizza" data-nav="analizza">Analizza foto</a>
+      <a href="#/trova" data-nav="trova">Trova</a>
+      <a href="#/mixer" data-nav="mixer">Mixer</a>
+      <a href="#/ricette" data-nav="ricette">Ricette</a>
+      <a href="#/tecniche" data-nav="tecniche">Tecniche</a>
+      <a href="#/colori" data-nav="colori">Colori</a>
+      <a href="#/pennelli" data-nav="pennelli">Pennelli</a>
+      <a href="#/figure" data-nav="figure">Figure</a>
+    </nav>
+  </div>
+</header>
+
+<main><div class="wrap">
+
+<!-- HOME -->
+<section class="view" id="v-home"></section>
+
+<!-- PROGETTI -->
+<section class="view" id="v-progetti"></section>
+
+<!-- PROGETTO -->
+<section class="view" id="v-project"></section>
+
+<!-- SCHEDA PERSONAGGIO -->
+<section class="view" id="v-char"></section>
+
+<!-- PERCORSO -->
+<section class="view" id="v-percorso"></section>
+
+<!-- TROVA -->
+<section class="view" id="v-trova">
+  <h2>Trova un colore</h2>
+  <p class="intro">Scegli il colore che vuoi ottenere, anche copiandolo da un'immagine di riferimento. La pagina prova migliaia di combinazioni dei tuoi colori e ti mostra le ricette più vicine, in gocce. Se il colore è impossibile da ottenere bene, ti dice anche quale Vallejo comprare.</p>
+  <div class="card">
+    <div class="row">
+      <input type="color" id="fTarget" value="#d9a07a" aria-label="Colore da ottenere">
+      <input type="text" id="fHex" value="#D9A07A" aria-label="Codice esadecimale" style="width:120px">
+      <label class="chk"><input type="checkbox" id="fThree" checked> Fino a 3 colori</label>
+      <button class="btn primary" id="fGo">Calcola la ricetta</button>
+    </div>
+    <div class="presets" id="fPresets"></div>
+  </div>
+  <div id="fBuy"></div>
+  <div class="results" id="fResults"></div>
+  <p class="small muted" style="margin-top:14px">Vicinanza: <span class="badge b-ok">quasi identico</span> non vedrai differenza · <span class="badge b-mid">vicino</span> differenza leggera · <span class="badge b-far">approssimativo</span> è il meglio possibile con i tuoi colori.</p>
+</section>
+
+<!-- MIXER -->
+<section class="view" id="v-mixer">
+  <h2>Mixer</h2>
+  <p class="intro">Prova le tue combinazioni prima di sprecare colore: aggiungi i colori, cambia le gocce e guarda il risultato. Le ricette salvate restano su questo browser.</p>
+  <div class="mixgrid">
+    <div class="card">
+      <div class="row">
+        <select id="mAdd" aria-label="Colore da aggiungere" style="flex:1;min-width:200px"></select>
+        <button class="btn" id="mAddBtn">Aggiungi</button>
+        <button class="btn" id="mClear">Svuota</button>
+      </div>
+      <div class="mixrows" id="mRows"></div>
+      <p class="small muted" id="mEmpty">Il mixer è vuoto. Aggiungi un colore dal menu, oppure tocca un flacone nella home.</p>
+    </div>
+    <div class="card">
+      <div class="bigsw" id="mBig"><code id="mHex">—</code></div>
+      <p id="mInfo" class="small" style="margin:12px 0"></p>
+      <div class="row">
+        <input type="text" id="mName" placeholder="Nome della ricetta" style="flex:1;min-width:150px">
+        <button class="btn primary" id="mSave">Salva ricetta</button>
+      </div>
+      <div class="saved" id="mSaved"></div>
+    </div>
+  </div>
+</section>
+
+<!-- RICETTE -->
+<section class="view" id="v-ricette"></section>
+
+<!-- COLORI -->
+<section class="view" id="v-colori"></section>
+
+<!-- COMPRARE -->
+<section class="view" id="v-comprare"></section>
+
+<!-- TUTORIAL -->
+<section class="view" id="v-tutorial"></section>
+
+<section class="view" id="v-pennelli"></section>
+<section class="view" id="v-analizza"></section>
+
+<!-- FIGURE -->
+<section class="view" id="v-figure"></section>
+<section class="view" id="v-figura"></section>
+
+<!-- TECNICHE (statica) -->
+<section class="view" id="v-tecniche">
+  <h2>Tecniche</h2>
+  <p class="intro">Tutto quello che serve partendo da zero, nell'ordine in cui ti servirà. Ogni tecnica vale per qualsiasi progetto: cavalieri, supereroi o qualunque altra figura.</p>
+
+  <article class="tech noimg" id="t-prep"><div>
+    <h3>Preparare la stampa in resina</h3>
+    <ol>
+      <li>Lava la stampa in alcol isopropilico (IPA) e falla polimerizzare del tutto con la luce UV. Se la resina resta appiccicosa, il colore non attacca.</li>
+      <li>Togli i supporti e leviga i segni con carta abrasiva bagnata (grana 400, poi 800). Usa guanti e mascherina: la polvere di resina non va respirata né toccata.</li>
+      <li>Lava con acqua tiepida e sapone per piatti, poi lascia asciugare bene.</li>
+    </ol>
+  </div></article>
+
+  <article class="tech noimg" id="t-primer"><div>
+    <h3>Il primer a bomboletta</h3>
+    <ol>
+      <li>Agita la bomboletta 1–2 minuti.</li>
+      <li>Tieni 20–30 cm di distanza e fai passate brevi, iniziando e finendo fuori dalla figura, con la mano sempre in movimento.</li>
+      <li>Meglio due mani leggere che una grossa: una mano spessa copre i dettagli.</li>
+      <li>Evita giornate fredde o umide. Lascia asciugare almeno qualche ora, meglio una notte.</li>
+    </ol>
+    <div class="note"><b>Il tuo primer è nero.</b> È perfetto sotto oro e argento, perché li rende più profondi. I colori chiari (pelle, bianchi, gialli, rosa) invece coprono a fatica: sulle loro zone dai prima una mano di <b>Bianco Osso</b> <span class="code">72.034</span> o <b>Grigio Muraglia</b> <span class="code">72.049</span> diluiti, poi il colore vero.</div>
+  </div></article>
+
+  <article class="tech" id="t-tavolozza"><div>
+    <h3>La tavolozza bagnata</h3>
+    <p>Tiene il colore umido per ore. Sul fondo c'è una spugna bagnata (umida, non fradicia), sopra la carta da tavolozza. Se la carta finisce, va bene la carta da forno.</p>
+    <ul>
+      <li>Se il colore diventa acquoso, la spugna è troppo bagnata: strizzala.</li>
+      <li>Se si secca, aggiungi un po' d'acqua sotto la carta.</li>
+      <li><b>I metallici non vanno sulla tavolozza bagnata</b>: i brillantini si spargono e sporcano gli altri colori. Usa un piattino di ceramica.</li>
+      <li>Chiudi col coperchio a fine sessione: il colore resta usabile anche il giorno dopo.</li>
+    </ul>
+  </div>
+  <figure><div class="svgbox">
+    <svg viewBox="0 0 300 180" role="img" aria-label="Strati della tavolozza bagnata">
+      <rect x="20" y="90" width="260" height="60" rx="8" fill="#9aa3b5"/>
+      <rect x="32" y="96" width="236" height="26" rx="4" fill="#E9C66A"/>
+      <rect x="32" y="88" width="236" height="8" rx="2" fill="#fafafa" stroke="#bbb"/>
+      <circle cx="80" cy="84" r="9" fill="#c98f6a"/><circle cx="130" cy="84" r="9" fill="#b82d35"/><circle cx="180" cy="84" r="9" fill="#31559a"/>
+      <text class="svgt" x="210" y="40">colore</text><line class="svgl" x1="206" y1="44" x2="186" y2="76"/>
+      <text class="svgt" x="10" y="40">carta da tavolozza</text><line class="svgl" x1="60" y1="44" x2="60" y2="86"/>
+      <text class="svgt" x="85" y="172">spugna umida nel contenitore</text>
+    </svg></div>
+    <figcaption>Contenitore, spugna bagnata, carta, colore.</figcaption>
+  </figure></article>
+
+  <article class="tech" id="t-diluire"><div>
+    <h3>Diluire e caricare il pennello</h3>
+    <p>La regola più importante: <b>il colore deve essere fluido come latte</b>. Colore denso copre i dettagli e lascia pennellate visibili.</p>
+    <ul>
+      <li>Metti le gocce sulla tavolozza e aggiungi circa lo stesso volume d'acqua. Per luci e velature, ancora di più.</li>
+      <li>Intingi solo la punta, mai fino alla ghiera metallica.</li>
+      <li>Togli l'eccesso strisciando il pennello sul bordo della tavolozza, girandolo per rifare la punta.</li>
+      <li>Due o tre mani sottili, aspettando che ognuna asciughi. Vedere il nero sotto dopo la prima mano è normale.</li>
+      <li>Non lasciare mai il pennello in piedi nell'acqua sulla punta.</li>
+    </ul>
+  </div>
+  <figure><div class="svgbox">
+    <svg viewBox="0 0 300 150" role="img" aria-label="Pennello caricato correttamente">
+      <rect x="10" y="67" width="150" height="16" rx="8" fill="#6b4b2e"/>
+      <rect x="160" y="65" width="40" height="20" fill="#b9bcc4"/>
+      <path d="M200 65 Q250 67 285 75 Q250 83 200 85 Z" fill="#e8d9b8"/>
+      <path d="M245 68 Q268 71 285 75 Q268 79 245 82 Z" fill="#c98f6a"/>
+      <text class="svgt" x="200" y="112">colore solo sulla punta</text>
+      <text class="svgt" x="130" y="48">ghiera: niente colore qui</text>
+    </svg></div>
+    <figcaption>Il colore sta nel primo terzo delle setole.</figcaption>
+  </figure></article>
+
+  <article class="tech noimg" id="t-mischiare"><div>
+    <h3>Come si mischiano i colori</h3>
+    <ol>
+      <li>Conta le gocce direttamente dal flacone sulla tavolozza: una goccia è una parte. Le ricette scritte "2 gocce + 1 goccia" si possono anche raddoppiare, basta mantenere la proporzione.</li>
+      <li>Unisci le gocce con uno stuzzicadenti o un pennello vecchio e mescola finché il colore è uniforme, senza striature.</li>
+      <li>Aggiungi l'acqua dopo aver mescolato.</li>
+      <li>Prepara un po' più del necessario: rifare esattamente lo stesso colore è difficile.</li>
+      <li>Prova il colore su un bordo della tavolozza o su un pezzo di stampa scartato. Asciutto diventa un po' più scuro.</li>
+    </ol>
+    <div class="note"><b>Nero e blu sono fortissimi.</b> Aggiungi il colore scuro al chiaro una goccia alla volta, mai il contrario. Per le ombre di pelle e colori caldi usa i marroni: il nero rende tutto grigio e sporco.</div>
+  </div></article>
+
+  <article class="tech" id="t-bsl"><div>
+    <h3>Base, ombra e luce</h3>
+    <p>Immagina una lampada sopra la testa della figura. Le parti che sporgono e guardano in alto (fronte, naso, zigomi, spalle, bordi delle armature) prendono luce. Le parti sotto e dentro (orbite, sotto il naso, sotto il mento, pieghe, incavi) restano in ombra. Vallejo chiama questo metodo <b>BSL</b>: Base, Shadow, Light.</p>
+    <ol>
+      <li>Stendi la <b>base</b> ovunque.</li>
+      <li>Metti l'<b>ombra</b> negli incavi e nelle zone basse.</li>
+      <li>Ripassa la <b>base</b> lasciando l'ombra solo in fondo.</li>
+      <li>Metti la <b>luce</b> su un'area più piccola, solo sui rilievi.</li>
+      <li>Aggiungi piccoli punti di <b>luce estrema</b> sui punti più alti.</li>
+    </ol>
+    <p>Ogni strato copre meno superficie del precedente, come una piramide.</p>
+  </div>
+  <figure><div class="svgbox">
+    <svg viewBox="0 0 300 200" role="img" aria-label="Sfera con ombra, base e luce">
+      <defs><clipPath id="clipS"><circle cx="110" cy="100" r="80"/></clipPath></defs>
+      <circle cx="110" cy="100" r="80" fill="#85513d"/>
+      <g clip-path="url(#clipS)"><circle cx="100" cy="85" r="68" fill="#b97857"/><circle cx="92" cy="70" r="42" fill="#c98f6a"/><circle cx="86" cy="58" r="18" fill="#e9c596"/></g>
+      <text class="svgt" x="176" y="22">luce dall'alto</text>
+      <circle cx="198" cy="58" r="5" fill="#e9c596"/><text class="svgt" x="208" y="62">luce estrema</text>
+      <circle cx="198" cy="88" r="5" fill="#c98f6a"/><text class="svgt" x="208" y="92">luce</text>
+      <circle cx="198" cy="118" r="5" fill="#b97857"/><text class="svgt" x="208" y="122">base</text>
+      <circle cx="198" cy="156" r="5" fill="#85513d"/><text class="svgt" x="208" y="160">ombra</text>
+    </svg></div>
+    <figcaption>Qui con i quattro colori del set Tanned Skin.</figcaption>
+  </figure></article>
+
+  <article class="tech" id="t-tmm"><div>
+    <h3>Il sistema True Metallic Metal (TMM)</h3>
+    <p>I tuoi due set TMM applicano lo stesso metodo BSL al metallo. Ogni famiglia ha quattro flaconi:</p>
+    <ul>
+      <li><b>Base</b> (Imperial Gold <span class="code">77.123</span>, Sterling Silver <span class="code">77.121</span>): il metallo principale, su tutta la superficie.</li>
+      <li><b>Shade</b> (<span class="code">77.143</span>, <span class="code">77.141</span>): <b>non è un metallo, è un wash</b>. È una versione scura, satinata e trasparente della Base: va negli incavi e lascia vedere il brillante sotto. Hai quindi già i wash per oro e argento.</li>
+      <li><b>Light</b> (<span class="code">77.103</span>, <span class="code">77.101</span>): versione più chiara e luminosa, per rilievi e spigoli. Si può mischiare con la Base in varie proporzioni per luci intermedie.</li>
+      <li><b>Airbrush</b> (<span class="code">77.163</span>, <span class="code">77.161</span>): la Base già diluita per aerografo. A pennello puoi usarla per mani molto sottili e lisce su superfici grandi, ma copre meno: per iniziare usa la Base normale.</li>
+    </ul>
+  </div>
+  <figure><div class="svgbox">
+    <svg viewBox="0 0 300 170" role="img" aria-label="Placca d'oro con Shade, Base e Light">
+      <path d="M40 40 Q150 10 260 40 L240 130 Q150 150 60 130 Z" fill="#c89b35"/>
+      <path d="M60 128 Q150 146 240 128 L236 112 Q150 128 64 112 Z" fill="#765225" opacity=".85"/>
+      <path d="M40 40 Q150 10 260 40" stroke="#efd36a" stroke-width="5" fill="none"/>
+      <path d="M90 34 Q150 20 210 34" stroke="#e2e4e3" stroke-width="2" fill="none"/>
+      <text class="svgt" x="118" y="164">Shade in basso, Light in alto</text>
+    </svg></div>
+    <figcaption>Base su tutto, Shade sotto, Light sui bordi alti.</figcaption>
+  </figure></article>
+
+  <article class="tech" id="t-wash"><div>
+    <h3>Il wash (lavatura)</h3>
+    <p>È un colore scuro <b>molto liquido e trasparente</b>. Lo stendi su tutta la zona: scivola via dai rilievi e si deposita da solo negli incavi, nelle fessure e intorno ai dettagli. Crea le ombre in automatico, senza bisogno di saper sfumare. È la tecnica che dà il risultato migliore con il minimo sforzo.</p>
+    <ol>
+      <li>Aspetta che la base sia asciutta del tutto.</li>
+      <li>Carica bene il pennello e stendi il wash sulla zona.</li>
+      <li>Se si forma una pozza su una parte piatta, toccala con il pennello asciutto e pulito per assorbire l'eccesso.</li>
+      <li>Non ripassare mentre asciuga. Aspetta almeno 30–60 minuti.</li>
+      <li>Poi ripassa la base solo sui rilievi, lasciando lo scuro negli incavi.</li>
+    </ol>
+    <div class="note">Per oro e argento usa gli <b>Shade TMM</b>. Per pelle, cuoio, rocce e stoffe ti serve un wash vero (vedi "Da comprare"), oppure quello fatto in casa: 1 goccia di colore + 6–10 gocce d'acqua + una punta minuscola di sapone per piatti.</div>
+  </div>
+  <figure><div class="svgbox">
+    <svg viewBox="0 0 300 220" role="img" aria-label="Sezione di una superficie prima e dopo il wash">
+      <text class="svgt" x="10" y="18">prima</text>
+      <path d="M10 70 L60 70 L75 95 L95 95 L110 70 L170 70 L180 90 L195 90 L205 70 L290 70 L290 100 L10 100 Z" fill="#c89b35"/>
+      <text class="svgt" x="10" y="128">dopo il wash</text>
+      <path d="M10 180 L60 180 L75 205 L95 205 L110 180 L170 180 L180 200 L195 200 L205 180 L290 180 L290 210 L10 210 Z" fill="#c89b35"/>
+      <path d="M66 186 L75 205 L95 205 L104 186 Q85 192 66 186 Z" fill="#765225"/>
+      <path d="M175 184 L180 200 L195 200 L201 184 Q188 190 175 184 Z" fill="#765225"/>
+      <text class="svgt" x="120" y="150">lo scuro resta negli incavi</text>
+    </svg></div>
+    <figcaption>Il liquido si raccoglie da solo dove serve l'ombra.</figcaption>
+  </figure></article>
+
+  <article class="tech" id="t-drybrush"><div>
+    <h3>Drybrush (pennello asciutto)</h3>
+    <p>Il contrario del wash: un colore chiaro, quasi senza acqua, che tocca <b>solo spigoli e rilievi</b>. Perfetto per rocce, terra, capelli a ciocche, piume e per far risaltare velocemente i bordi delle armature.</p>
+    <ol>
+      <li>Usa un pennello vecchio o piatto: il drybrush consuma le setole.</li>
+      <li>Prendi pochissimo colore, <b>senza acqua</b>.</li>
+      <li>Strofina il pennello su un tovagliolo di carta finché quasi non lascia più segno.</li>
+      <li>Spazzola la figura con colpi veloci e leggeri, avanti e indietro.</li>
+      <li>Ripeti con un colore più chiaro, ancora più leggero.</li>
+    </ol>
+  </div>
+  <figure><div class="svgbox">
+    <svg viewBox="0 0 300 150" role="img" aria-label="Drybrush su una superficie rocciosa">
+      <path d="M10 120 L40 70 L60 90 L90 45 L120 85 L150 60 L180 95 L215 50 L250 85 L290 65 L290 140 L10 140 Z" fill="#4c5155"/>
+      <path d="M34 80 L40 70 L47 78 M84 55 L90 45 L97 55 M145 67 L150 60 L156 68 M209 60 L215 50 L222 60" stroke="#d4d6d2" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <text class="svgt" x="10" y="20">il colore resta solo sulle punte</text>
+    </svg></div>
+    <figcaption>Poco colore, pennello quasi asciutto, colpi leggeri.</figcaption>
+  </figure></article>
+
+  <article class="tech noimg" id="t-velatura"><div>
+    <h3>Velatura (glaze)</h3>
+    <p>Colore diluitissimo (1 goccia di colore con 4–6 d'acqua, meglio con Glaze Medium) steso in più passate trasparenti. Non copre: <b>tinge</b>. Serve per:</p>
+    <ul>
+      <li>il rossore di guance e labbra;</li>
+      <li>ammorbidire il passaggio tra ombra e luce;</li>
+      <li>colorare il metallo senza perdere il brillante: cloth di bronzo colorate, armature rosse tipo Iron Man, argento azzurrato;</li>
+      <li>scaldare l'oro con un velo di Giallo Soleggiato o Arancio Fuoco.</li>
+    </ul>
+    <p>Il pennello deve essere umido ma non gocciolante: se lascia una pozza, asciugalo un po' sul tovagliolo.</p>
+  </div></article>
+
+  <article class="tech" id="t-spigoli"><div>
+    <h3>Luce sugli spigoli (edge highlight)</h3>
+    <p>Una linea sottile di colore chiaro lungo i bordi delle placche. È il tocco finale che fa sembrare le armature metallo vero.</p>
+    <ul>
+      <li>Colore ben diluito ma non acquoso.</li>
+      <li>Appoggia il <b>fianco</b> della punta sul bordo, non la punta dritta.</li>
+      <li>Solo sui bordi rivolti verso l'alto o verso chi guarda: non devi farli tutti.</li>
+      <li>Se tremi, appoggia i polsi uno contro l'altro o sul tavolo.</li>
+    </ul>
+  </div>
+  <figure><div class="svgbox">
+    <svg viewBox="0 0 300 170" role="img" aria-label="Placca con luce sugli spigoli">
+      <path d="M40 40 Q150 10 260 40 L240 130 Q150 150 60 130 Z" fill="#aeb5b6"/>
+      <path d="M60 50 Q150 25 240 50 L225 118 Q150 134 75 118 Z" fill="#8f9697"/>
+      <path d="M40 40 Q150 10 260 40" stroke="#f4f5f4" stroke-width="3" fill="none"/>
+      <path d="M260 40 L240 130" stroke="#e2e4e3" stroke-width="2" fill="none"/>
+      <circle cx="150" cy="80" r="14" fill="#b82d35"/><circle cx="145" cy="75" r="3" fill="#fff"/>
+      <text class="svgt" x="80" y="165">linea chiara sul bordo superiore</text>
+    </svg></div>
+    <figcaption>Placca con edge highlight e gemma.</figcaption>
+  </figure></article>
+
+  <article class="tech noimg" id="t-metallici"><div>
+    <h3>Lavorare con i metallici</h3>
+    <ul>
+      <li><b>Agita tantissimo</b> il flacone, anche un minuto: il metallo si deposita sul fondo. Aiuta una pallina d'acciaio o di vetro da 3–5 mm dentro il flacone.</li>
+      <li>Diluisci pochissimo: troppa acqua separa i brillantini.</li>
+      <li>Usa un pennello dedicato e sciacqualo spesso: i brillantini consumano la punta.</li>
+      <li>Si possono mischiare con colori normali (bronzo, rame, argento azzurrato), ma più colore normale metti, meno brilla. Per colorare il metallo è meglio la velatura sopra.</li>
+      <li>L'<b>Oro Lucidato</b> <span class="code">72.055</span> e l'<b>Argento</b> <span class="code">72.052</span> del set base vanno bene come prima mano o per i dettagli: così risparmi i TMM, che sono più belli.</li>
+    </ul>
+  </div></article>
+
+  <article class="tech" id="t-occhi"><div>
+    <h3>Gli occhi</h3>
+    <p>Nelle figure in stile anime gli occhi sono grandi e disegnati, quindi più facili che su una miniatura realistica. Falli subito dopo la base della pelle: se sbagli, ricopri con la pelle e riprovi.</p>
+    <ol>
+      <li>Contorno e fessura con Marrone Bichos <span class="code">72.043</span> (non nero puro).</li>
+      <li>Bianco dell'occhio con Bianco Osso <span class="code">72.034</span>: il bianco puro sembra finto.</li>
+      <li>Iride: un punto di colore che tocca la palpebra superiore.</li>
+      <li>Pupilla: punto nero al centro dell'iride.</li>
+      <li>Facoltativo: un micro punto di Bianco Teschio come riflesso, nella stessa posizione su entrambi gli occhi.</li>
+    </ol>
+  </div>
+  <figure><div class="svgbox">
+    <svg viewBox="0 0 300 120" role="img" aria-label="Quattro fasi per dipingere un occhio">
+      <g transform="translate(10 30)"><path d="M0 25 Q30 0 60 25 Q30 45 0 25Z" fill="#c98f6a" stroke="#5c3b31" stroke-width="3"/></g>
+      <g transform="translate(82 30)"><path d="M0 25 Q30 0 60 25 Q30 45 0 25Z" fill="#ded5b5" stroke="#5c3b31" stroke-width="3"/></g>
+      <g transform="translate(154 30)"><path d="M0 25 Q30 0 60 25 Q30 45 0 25Z" fill="#ded5b5" stroke="#5c3b31" stroke-width="3"/><circle cx="30" cy="22" r="10" fill="#4F6FB5"/></g>
+      <g transform="translate(226 30)"><path d="M0 25 Q30 0 60 25 Q30 45 0 25Z" fill="#ded5b5" stroke="#5c3b31" stroke-width="3"/><circle cx="30" cy="22" r="10" fill="#4F6FB5"/><circle cx="30" cy="22" r="4.5" fill="#17191c"/><circle cx="34" cy="18" r="2" fill="#fff"/></g>
+      <text class="svgt" x="36" y="100">1</text><text class="svgt" x="108" y="100">2</text><text class="svgt" x="180" y="100">3</text><text class="svgt" x="246" y="100">4–5</text>
+    </svg></div>
+    <figcaption>Contorno, bianco, iride, pupilla e riflesso.</figcaption>
+  </figure></article>
+
+  <article class="tech noimg" id="t-vernice"><div>
+    <h3>Vernice finale</h3>
+    <p>Protegge il colore dalle dita e dalla polvere. Attenzione: la <b>vernice opaca spegne i metallici</b>. Su pelle, capelli e tessuti usa vernice opaca; sulle armature vernice lucida o satinata, oppure niente. Dalla solo quando tutto è asciutto da almeno 24 ore.</p>
+  </div></article>
+
+  <article class="tech noimg" id="t-errori"><div>
+    <h3>Errori tipici di chi inizia</h3>
+    <ul>
+      <li>Colore troppo denso: è l'errore numero uno. Diluisci.</li>
+      <li>Voler fare tutto in una sera: ogni strato deve asciugare.</li>
+      <li>Nero puro per le ombre di pelle e oro: meglio i marroni o lo Shade TMM.</li>
+      <li>Iniziare dalla statua grande: prima stampa una testa e un pezzo di armatura di prova.</li>
+      <li>Guardare la figura da 5 cm: si giudica da 30–40 cm, come la vedrà chi la guarda in vetrina.</li>
+      <li>Non fotografare il lavoro: una foto ravvicinata mostra subito cosa migliorare.</li>
+    </ul>
+  </div></article>
+</section>
+
+</div></main>
+
+<footer>I colori a schermo sono simulati e indicativi: dipendono dal monitor, dalla luce e da quanto diluisci. Le ricette sono ricette pratiche, non formule ufficiali Vallejo: prova sempre la miscela sulla tavolozza prima della figura.</footer>
+<script>
+/* =========================================================
+   DATI – modifica qui per aggiungere colori, ricette, progetti
+   ========================================================= */
+
+/* I colori che possiedi. hex = valore indicativo a schermo. */
+var BASE_PAINTS = [
+ {id:"dw", code:"72.001", it:"Bianco Teschio", en:"Dead White", hex:"#f3f1e8", line:"Game Color · set 72.299", use:"Schiarire tutto, punti luce, riflessi negli occhi. Mai puro sulla pelle."},
+ {id:"bo", code:"72.034", it:"Bianco Osso", en:"Bone White", hex:"#ded5b5", line:"Game Color · set 72.299", use:"Schiarire in modo caldo, bianco degli occhi, sottofondo per colori chiari sul primer nero, marmo, sabbia."},
+ {id:"sy", code:"72.006", it:"Giallo Soleggiato", en:"Sun Yellow", hex:"#f2c928", line:"Game Color · set 72.299", use:"Capelli biondi, velature per l'oro, luci del verde, tute gialle."},
+ {id:"of", code:"72.008", it:"Arancio Fuoco", en:"Orange Fire", hex:"#e76c25", line:"Game Color · set 72.299", use:"Rame, oricalco, fuoco, luci del rosso."},
+ {id:"br", code:"72.010", it:"Rosso Sanguina", en:"Bloody Red", hex:"#b82d35", line:"Game Color · set 72.299", use:"Gemme, mantelli, tute rosse, labbra e guance in mix, base per il viola."},
+ {id:"ub", code:"72.022", it:"Blu Ultramar", en:"Ultramarine Blue", hex:"#31559a", line:"Game Color · set 72.299", use:"Occhi, capelli blu, tute, argento azzurrato, base per viola e teal."},
+ {id:"gg", code:"72.030", it:"Verde Goblin", en:"Goblin Green", hex:"#4c8a45", line:"Game Color · set 72.299", use:"Capelli verdi, cloth del Dragone, erba, luci del verde."},
+ {id:"dg", code:"72.028", it:"Verde Scuro", en:"Dark Green", hex:"#24533d", line:"Game Color · set 72.299", use:"Ombre del verde, capelli verde scuro, erba in ombra."},
+ {id:"bf", code:"72.036", it:"Marrone Bronzato", en:"Bronze Fleshtone", hex:"#9a6743", line:"Game Color · set 72.299", use:"Castano chiaro, legno, terra calda, pelle alternativa."},
+ {id:"lb", code:"72.040", it:"Marrone Cuoio", en:"Leather Brown", hex:"#7b4b32", line:"Game Color · set 72.299", use:"Capelli castani, cuoio, cinghie, terra, bronzo in mix."},
+ {id:"bb", code:"72.043", it:"Marrone Bichos", en:"Beasty Brown", hex:"#5c3b31", line:"Game Color · set 72.299", use:"Ombre calde, contorno occhi, terra scura, sopracciglia."},
+ {id:"sg", code:"72.049", it:"Grigio Muraglia", en:"Stonewall Grey", hex:"#8f9697", line:"Game Color · set 72.299", use:"Rocce, pietra, ombre del bianco, sottofondo sul primer nero."},
+ {id:"bk", code:"72.051", it:"Nero", en:"Black", hex:"#17191c", line:"Game Color · set 72.299", use:"Pupille, capelli neri, visori, ombre profonde. Poco alla volta!"},
+ {id:"ps", code:"72.052", it:"Argento", en:"Silver", hex:"#aeb5b8", line:"Game Color · set 72.299", metal:1, use:"Argento economico per prime mani, catene, base per metallici colorati."},
+ {id:"gm", code:"72.054", it:"Grigio Metallico Scuro", en:"Gunmetal", hex:"#4c5155", line:"Game Color · set 72.299", metal:1, use:"Base scura dell'argento, acciaio, surplici, armi."},
+ {id:"pg", code:"72.055", it:"Oro Lucidato", en:"Polished Gold", hex:"#c69a38", line:"Game Color · set 72.299", metal:1, use:"Prima mano dell'oro, bronzo e rame in mix."},
+ {id:"ef", code:"72.098", it:"Carne Elfica", en:"Elfic Flesh", hex:"#e9c596", line:"Tanned Skin · set 72.380", use:"Luce estrema della pelle; base della pelle molto chiara."},
+ {id:"st", code:"72.099", it:"Pelle", en:"Skin Tone", hex:"#c98f6a", line:"Tanned Skin · set 72.380", use:"Luce della pelle abbronzata; base della pelle chiara."},
+ {id:"es", code:"72.004", it:"Pelle Elfi", en:"Elf Skin Tone", hex:"#b97857", line:"Tanned Skin · set 72.380", use:"Base della pelle abbronzata."},
+ {id:"bs", code:"72.071", it:"Pelle Barbaro", en:"Barbarian Skin", hex:"#85513d", line:"Tanned Skin · set 72.380", use:"Ombra della pelle; base della pelle scura."},
+ {id:"igl", code:"77.103", it:"Imperial Gold Light", en:"TMM Light", hex:"#efd36a", line:"True Metallic Metal · Imperial Gold", metal:1, use:"Luci e spigoli dell'oro."},
+ {id:"igb", code:"77.123", it:"Imperial Gold Base", en:"TMM Base", hex:"#c89b35", line:"True Metallic Metal · Imperial Gold", metal:1, use:"Oro principale di Gold Cloth, scaglie, dettagli."},
+ {id:"igs", code:"77.143", it:"Imperial Gold Shade", en:"TMM Shade (wash)", hex:"#765225", line:"True Metallic Metal · Imperial Gold", wash:1, use:"Wash satinato per gli incavi dell'oro. Non è metallico."},
+ {id:"iga", code:"77.163", it:"Imperial Gold Airbrush", en:"TMM Airbrush", hex:"#c89b35", line:"True Metallic Metal · Imperial Gold", metal:1, aero:1, use:"Base già diluita per aerografo. A pennello: mani sottilissime."},
+ {id:"ssl", code:"77.101", it:"Sterling Silver Light", en:"TMM Light", hex:"#e2e4e3", line:"True Metallic Metal · Sterling Silver", metal:1, use:"Luci dell'argento; punti luce estremi anche sull'oro."},
+ {id:"ssb", code:"77.121", it:"Sterling Silver Base", en:"TMM Base", hex:"#aeb5b6", line:"True Metallic Metal · Sterling Silver", metal:1, use:"Argento principale di Silver Cloth, maschere, armi."},
+ {id:"sss", code:"77.141", it:"Sterling Silver Shade", en:"TMM Shade (wash)", hex:"#596064", line:"True Metallic Metal · Sterling Silver", wash:1, use:"Wash satinato per gli incavi dell'argento. Non è metallico."},
+ {id:"ssa", code:"77.161", it:"Sterling Silver Airbrush", en:"TMM Airbrush", hex:"#aeb5b6", line:"True Metallic Metal · Sterling Silver", metal:1, aero:1, use:"Base già diluita per aerografo. A pennello: mani sottilissime."}
+];
+
+/* Colori Vallejo che potresti comprare (hex indicativo). */
+var BUY = [
+ {code:"72.016", it:"Royal Purple", hex:"#5b3a86", why:"Viola vivo: Saori, Milo, surplici, Fenice anime."},
+ {code:"72.014", it:"Warlord Purple", hex:"#8e2f67", why:"Magenta: rosa scuri, Andromeda rinata, effetti."},
+ {code:"72.013", it:"Squid Pink", hex:"#d98aa8", why:"Rosa: Andromeda, Ranger Rosa, labbra."},
+ {code:"72.021", it:"Magic Blue", hex:"#2f6eb5", why:"Blu brillante: tute, occhi, Deathmask."},
+ {code:"72.023", it:"Electric Blue", hex:"#5aa6d6", why:"Azzurro: Hyoga, Aphrodite, ghiaccio, energia."},
+ {code:"72.024", it:"Turquoise", hex:"#1f8a8a", why:"Teal: Camus, Kanon."},
+ {code:"72.119", it:"Aquamarine", hex:"#45b3a3", why:"Acquamarina: effetti di ghiaccio e cosmo freddo."},
+ {code:"72.012", it:"Scarlet Red", hex:"#c4262c", why:"Rosso vivo: costumi Marvel, Ranger Rosso."},
+ {code:"72.007", it:"Gold Yellow", hex:"#f0a91e", why:"Giallo caldo: Ranger Giallo, cosmo dorato."},
+ {code:"72.003", it:"Pale Flesh", hex:"#efd1b3", why:"Pelle pallida: Shun, Saori, Aphrodite."},
+ {code:"72.107", it:"Athena Skin", hex:"#e6b797", why:"Pelle chiara rosata."},
+ {code:"72.101", it:"Off-White", hex:"#ece9da", why:"Bianco più morbido per mantelli e cloth bianche."}
+];
+
+/* Categorie del ricettario generico */
+var RCATS = [["tutte","Tutte"],["pelle","Pelle"],["occhi","Occhi e volto"],["capelli","Capelli"],["metalli","Metalli"],["colmet","Metalli colorati"],["tessuti","Tessuti e tute"],["dettagli","Gemme e dettagli"],["effetti","Effetti"],["basette","Basette"]];
+
+/* Ricette: s = [ruolo, {id:gocce}, uso] */
+var RECIPES = [
+ /* ---- PELLE ---- */
+ {id:"skin-tan",cat:"pelle",title:"Pelle abbronzata (set Tanned Skin)",who:"Seiya, Shiryu, Ikki, Aiolia, Milo, Aiolos · eroi con pelle calda",tip:"È il set 72.380 usato come lo ha pensato Vallejo: un'ombra, una base e due luci. Prima dai una mano di Bianco Osso sopra il primer nero.",s:[
+  ["Ombra profonda",{bs:2,bb:1},"Solo nei punti più scuri: attaccatura dei capelli, tra le labbra, sotto il mento."],
+  ["Ombra",{bs:1},"Orbite, sotto il naso, sotto il labbro inferiore, collo, tra i muscoli."],
+  ["Base",{es:1},"Su tutta la pelle, due o tre mani sottili."],
+  ["Ripresa della base",{es:1},"Ripassa un po' di base al confine con l'ombra, per ammorbidire lo stacco."],
+  ["Luce",{st:1},"Fronte, dorso del naso, zigomi, mento, sopra i muscoli."],
+  ["Luce estrema",{ef:1},"Aree piccole: punta del naso, centro della fronte, sopra gli zigomi."],
+  ["Punto luce",{ef:2,bo:1},"Minuscoli puntini sui punti più alti. Facoltativo."]]},
+ {id:"skin-pale",cat:"pelle",title:"Pelle chiara",who:"Hyoga, Shun, Mu, Shaka, Camus, Aphrodite, Saori",tip:"Stessa logica, tutto spostato verso il chiaro. Luci delicate.",s:[
+  ["Ombra",{es:1,st:1},"Orbite, sotto il naso, collo."],
+  ["Base",{st:1,ef:1},"Su tutta la pelle."],
+  ["Ripresa della base",{st:1,ef:1},"Al confine con l'ombra, per ammorbidire."],
+  ["Luce",{ef:1},"Fronte, naso, zigomi."],
+  ["Luce estrema",{ef:3,bo:1},"Punti più alti, pochissimo."]]},
+ {id:"skin-cold",cat:"pelle",title:"Pelle pallida fredda",who:"Personaggi malati, vampiri, spettri, dei",tip:"Poco grigio basta: troppo spegne la pelle.",s:[
+  ["Ombra",{es:2,sg:1},"Incavi."],
+  ["Base",{ef:3,sg:1},"Su tutta la pelle."],
+  ["Luce",{ef:2,dw:1},"Rilievi."]]},
+ {id:"skin-dark",cat:"pelle",title:"Pelle scura",who:"Aldebaran, personaggi con pelle scura",tip:"Ombre marroni, mai nere. Le luci restano calde.",s:[
+  ["Ombra",{bs:2,bb:1},"Incavi e zone basse."],
+  ["Base",{bs:1},"Su tutta la pelle."],
+  ["Luce",{bs:1,es:1},"Rilievi principali."],
+  ["Luce estrema",{es:1},"Punti più alti."]]},
+ {id:"skin-purple",cat:"pelle",title:"Pelle viola",who:"Dohko anziano, creature, demoni",tip:"Il viola si ottiene con rosso e blu; la pelle chiara lo rende naturale.",s:[
+  ["Ombra",{br:1,ub:1,bs:1},"Incavi."],
+  ["Base",{br:1,ub:1,ef:2},"Su tutta la pelle."],
+  ["Luce",{br:1,ub:1,ef:5},"Rilievi."]]},
+ {id:"skin-green",cat:"pelle",title:"Pelle verde",who:"Hulk, orchi, creature",tip:"Le ombre con Verde Scuro, le luci con giallo e osso.",s:[
+  ["Ombra",{dg:1,gg:1},"Incavi, tra i muscoli."],
+  ["Base",{gg:1},"Su tutta la pelle."],
+  ["Luce",{gg:2,sy:1},"Rilievi dei muscoli."],
+  ["Luce estrema",{gg:1,sy:1,bo:1},"Punti più alti."]]},
+ {id:"face",cat:"occhi",title:"Labbra, guance e sopracciglia",who:"Tutti i volti",tip:"Da stendere come velatura: molto diluiti, più passate.",s:[
+  ["Rossore guance",{st:3,br:1},"Velatura leggerissima sugli zigomi."],
+  ["Labbra",{bs:2,br:1},"Solo il labbro inferiore; quello superiore resta in ombra."],
+  ["Sopracciglia",{bb:2,lb:1},"Linea sottile; per capelli colorati usa il colore dei capelli."],
+  ["Cicatrice",{bs:2,br:1},"Linea sottile, poi una luce di Carne Elfica su un solo lato."]]},
+ {id:"eyes",cat:"occhi",title:"Occhi",who:"Tutti",tip:"Vedi la tecnica Gli occhi.",s:[
+  ["Contorno",{bb:1},"Linea superiore e fessura."],
+  ["Bianco dell'occhio",{bo:1},"Mai bianco puro."],
+  ["Iride azzurra",{ub:1,dw:1},"Occhi azzurri."],
+  ["Iride blu scura",{ub:2,bk:1},"Occhi blu intensi."],
+  ["Iride castana",{lb:1},"Occhi castani."],
+  ["Iride verde",{gg:1,bo:1},"Occhi verdi."],
+  ["Iride rossa",{br:1},"Occhi rossi (personaggi malvagi)."],
+  ["Pupilla",{bk:1},"Punto al centro."],
+  ["Riflesso",{dw:1},"Micro punto, uguale in entrambi gli occhi."]]},
+ /* ---- CAPELLI ---- */
+ {id:"hair-brown",cat:"capelli",title:"Castano",who:"Aiolos, eroi castani",tip:"Dopo la base funziona benissimo un drybrush leggero con la luce sulle ciocche.",s:[
+  ["Ombra",{bb:2,bk:1},"Tra le ciocche e sotto."],["Base",{lb:1},"Tutti i capelli."],["Luce",{lb:2,bo:1},"Parte alta delle ciocche."],["Luce estrema",{lb:1,bo:2},"Solo le punte."]]},
+ {id:"hair-auburn",cat:"capelli",title:"Castano ramato",who:"Seiya (anime), Dohko giovane",tip:"Un castano con una punta di rosso.",s:[
+  ["Ombra",{bb:2,br:1},"Tra le ciocche."],["Base",{lb:2,br:1},"Tutti i capelli."],["Luce",{lb:2,of:1},"Parte alta."],["Luce estrema",{bf:1,bo:1},"Punte."]]},
+ {id:"hair-lightbrown",cat:"capelli",title:"Castano chiaro",who:"Aiolia (anime)",tip:"",s:[
+  ["Ombra",{lb:1},"Tra le ciocche."],["Base",{bf:1},"Tutti i capelli."],["Luce",{bf:2,bo:1},"Parte alta."],["Luce estrema",{bo:2,bf:1},"Punte."]]},
+ {id:"hair-darkbrown",cat:"capelli",title:"Castano scurissimo",who:"Aldebaran",tip:"",s:[
+  ["Ombra",{bk:1},"Tra le ciocche."],["Base",{bb:2,bk:1},"Tutti i capelli."],["Luce",{bb:1},"Parte alta."],["Luce estrema",{lb:1},"Punte."]]},
+ {id:"hair-black",cat:"capelli",title:"Nero con riflessi blu",who:"Shiryu, Hulk, personaggi dai capelli neri",tip:"I capelli neri non si dipingono neri: blu-grigio scurissimo, altrimenti si perde la forma.",s:[
+  ["Ombra",{bk:1},"Tra le ciocche."],["Base",{bk:3,ub:1},"Tutti i capelli."],["Luce",{bk:1,ub:1,sg:1},"Parte alta delle ciocche."],["Luce estrema",{ub:1,sg:1,dw:1},"Riflessi sottili sulle curve."]]},
+ {id:"hair-navy",cat:"capelli",title:"Blu notte",who:"Ikki (anime)",tip:"",s:[
+  ["Ombra",{ub:1,bk:2},"Tra le ciocche."],["Base",{ub:2,bk:1},"Tutti i capelli."],["Luce",{ub:1},"Parte alta."],["Luce estrema",{ub:1,dw:1},"Punte."]]},
+ {id:"hair-blue",cat:"capelli",title:"Blu",who:"Saga, Deathmask (anime)",tip:"",s:[
+  ["Ombra",{ub:2,bk:1},"Tra le ciocche."],["Base",{ub:1},"Tutti i capelli."],["Luce",{ub:2,dw:1},"Parte alta."],["Luce estrema",{ub:1,dw:2},"Punte."]]},
+ {id:"hair-lightblue",cat:"capelli",title:"Azzurro",who:"Aphrodite (anime)",tip:"Con il blu e tanto bianco viene un azzurro un po' spento. Per un azzurro vivo compra Electric Blue 72.023.",s:[
+  ["Ombra",{ub:1,dw:1},"Tra le ciocche."],["Base",{ub:1,dw:3},"Tutti i capelli."],["Luce",{ub:1,dw:6},"Parte alta."],["Luce estrema",{dw:1},"Punte."]]},
+ {id:"hair-teal",cat:"capelli",title:"Verde acqua (teal)",who:"Camus, Kanon (anime)",tip:"Blu più verde, schiarito con bianco. Per un teal vivo compra Turquoise 72.024.",s:[
+  ["Ombra",{dg:1,ub:1},"Tra le ciocche."],["Base",{gg:1,ub:1,dw:1},"Tutti i capelli."],["Luce",{gg:1,ub:1,dw:3},"Parte alta."],["Luce estrema",{gg:1,ub:1,dw:6},"Punte."]]},
+ {id:"hair-green",cat:"capelli",title:"Verde",who:"Shun, Shaina (anime)",tip:"",s:[
+  ["Ombra",{dg:1},"Tra le ciocche."],["Base",{gg:1},"Tutti i capelli."],["Luce",{gg:2,bo:1},"Parte alta."],["Luce estrema",{gg:1,bo:2},"Punte."]]},
+ {id:"hair-darkgreen",cat:"capelli",title:"Verde scuro",who:"Shura (anime)",tip:"",s:[
+  ["Ombra",{dg:2,bk:1},"Tra le ciocche."],["Base",{dg:1},"Tutti i capelli."],["Luce",{dg:2,gg:1},"Parte alta."],["Luce estrema",{gg:1,bo:1},"Punte."]]},
+ {id:"hair-lightgreen",cat:"capelli",title:"Verde chiaro",who:"Shion",tip:"",s:[
+  ["Ombra",{gg:1,bo:1},"Tra le ciocche."],["Base",{gg:1,bo:2,sy:1},"Tutti i capelli."],["Luce",{bo:3,gg:1},"Parte alta."],["Luce estrema",{bo:1,dw:1},"Punte."]]},
+ {id:"hair-blond",cat:"capelli",title:"Biondo",who:"Hyoga, Shaka, Misty, Thor",tip:"Il giallo copre male sul nero: parti da una mano di Bianco Osso.",s:[
+  ["Ombra",{sy:1,lb:1},"Tra le ciocche."],["Base",{bo:2,sy:1},"Tutti i capelli."],["Luce",{bo:3,sy:1,dw:1},"Parte alta."],["Luce estrema",{bo:1,dw:1},"Punte."]]},
+ {id:"hair-red",cat:"capelli",title:"Rosso",who:"Marin (anime)",tip:"",s:[
+  ["Ombra",{br:2,bb:1},"Tra le ciocche."],["Base",{br:2,lb:1},"Tutti i capelli."],["Luce",{br:1,of:1},"Parte alta."],["Luce estrema",{of:1,bo:1},"Punte."]]},
+ {id:"hair-orange",cat:"capelli",title:"Arancio-rosso",who:"Kiki",tip:"",s:[
+  ["Ombra",{of:1,lb:1},"Tra le ciocche."],["Base",{of:2,br:1},"Tutti i capelli."],["Luce",{of:1},"Parte alta."],["Luce estrema",{of:1,sy:1},"Punte."]]},
+ {id:"hair-purple",cat:"capelli",title:"Viola",who:"Saori/Athena, Milo (anime)",tip:"Con rosso e blu il viola viene un po' spento. Per un viola vivo compra Royal Purple 72.016.",s:[
+  ["Ombra",{br:1,ub:1,bk:1},"Tra le ciocche."],["Base",{br:1,ub:1},"Tutti i capelli."],["Luce",{br:1,ub:1,dw:2},"Parte alta."],["Luce estrema",{br:1,ub:1,dw:4},"Punte."]]},
+ {id:"hair-lilac",cat:"capelli",title:"Lilla",who:"Mu",tip:"",s:[
+  ["Ombra",{br:1,ub:1,dw:2},"Tra le ciocche."],["Base",{br:1,ub:1,dw:4},"Tutti i capelli."],["Luce",{br:1,ub:1,dw:7},"Parte alta."],["Luce estrema",{dw:1},"Punte."]]},
+ {id:"hair-grey",cat:"capelli",title:"Grigio / argento",who:"Saga malvagio, anziani",tip:"",s:[
+  ["Ombra",{sg:2,bk:1},"Tra le ciocche."],["Base",{sg:1},"Tutti i capelli."],["Luce",{sg:1,dw:1},"Parte alta."],["Luce estrema",{dw:1},"Punte."]]},
+ /* ---- METALLI ---- */
+ {id:"metal-gold",cat:"metalli",title:"Oro (sistema TMM Imperial Gold)",who:"Gold Cloth, scudi, ornamenti, Iron Man",tip:"Lo Shade è un wash: va diluito negli incavi e lascia vedere il metallo sotto. Luce e Base si possono mischiare per passaggi intermedi.",s:[
+  ["Prima mano (facoltativa)",{pg:1},"Oro Lucidato su tutta la zona: copre il nero e fa risparmiare i TMM."],
+  ["Base",{igb:1},"Su tutta la zona, due mani sottili."],
+  ["Ombra (wash)",{igs:1},"Negli incavi, sotto le placche, nelle zone rivolte verso il basso."],
+  ["Luce intermedia",{igb:1,igl:1},"Sulle superfici rivolte verso l'alto."],
+  ["Luce",{igl:1},"Rilievi e bordi superiori."],
+  ["Punti luce",{ssl:1},"Micro punti sugli spigoli più esposti."]]},
+ {id:"metal-silver",cat:"metalli",title:"Argento (sistema TMM Sterling Silver)",who:"Silver Cloth, maschere, armi, catene",tip:"Gun Metal sotto l'argento aiuta: dove non arriva l'argento resta già un'ombra metallica.",s:[
+  ["Base scura (facoltativa)",{gm:1},"Su tutta la zona."],
+  ["Base",{ssb:1},"Sulle superfici, lasciando il Gun Metal negli incavi."],
+  ["Ombra (wash)",{sss:1},"Negli incavi."],
+  ["Luce",{ssl:1},"Rilievi e spigoli."],
+  ["Punti luce",{ssl:3,dw:1},"Micro punti."]]},
+ {id:"metal-goldanime",cat:"metalli",title:"Oro anime (più giallo)",who:"Gold Cloth in stile cartone",tip:"Meglio come velatura di Giallo Soleggiato sopra l'oro finito.",s:[
+  ["Mix rapido",{igb:3,sy:1},"Oro più giallo."],["Velatura",{sy:1},"1 goccia + 5 d'acqua sopra l'oro, più passate."]]},
+ {id:"metal-oldgold",cat:"metalli",title:"Oro antico",who:"Statue, ornamenti vissuti",tip:"",s:[
+  ["Mix",{igb:2,igs:1},"Oro scurito con il suo Shade."],["Variante",{pg:2,bb:1},"Più marrone."]]},
+ {id:"metal-bronze",cat:"metalli",title:"Bronzo",who:"Dettagli, statue, armature antiche",tip:"Il bronzo è oro più marrone.",s:[
+  ["Ombra",{pg:1,bb:1},"Incavi."],["Base",{pg:2,lb:1},"Su tutta la zona."],["Luce",{pg:1},"Rilievi."],["Luce estrema",{igl:1},"Spigoli."]]},
+ {id:"metal-copper",cat:"metalli",title:"Rame",who:"Dettagli, cloth danneggiate",tip:"",s:[
+  ["Ombra",{pg:1,br:1,bb:1},"Incavi."],["Base",{pg:2,of:1},"Su tutta la zona."],["Luce",{igb:3,of:1},"Rilievi."],["Luce estrema",{igl:1},"Spigoli."]]},
+ {id:"metal-orichalcum",cat:"metalli",title:"Oricalco (Scaglie di Poseidone)",who:"Generali di Poseidone",tip:"Oro spinto verso l'arancio. Per più colore, velatura di Arancio Fuoco sopra l'oro.",s:[
+  ["Ombra (wash)",{igs:1},"Incavi."],["Base",{igb:3,of:1},"Su tutta la zona."],["Luce",{igb:1},"Rilievi."],["Luce estrema",{igl:1},"Spigoli."]]},
+ {id:"metal-steel",cat:"metalli",title:"Acciaio e catene",who:"Catene di Andromeda, armi, meccanismi",tip:"",s:[
+  ["Base",{gm:1},"Su tutta la zona."],["Ombra (wash)",{sss:1},"Tra gli anelli."],["Luce",{gm:1,ssb:1},"Rilievi."],["Luce estrema",{ssl:1},"Punti degli anelli."]]},
+ {id:"metal-surplice",cat:"metalli",title:"Nero-viola metallico (Surplici)",who:"Specter di Hades, armature oscure",tip:"Metallo scurissimo con riflessi viola: la velatura viola va data in più passate.",s:[
+  ["Base",{gm:2,bk:1},"Su tutta la zona."],["Velatura viola",{br:1,ub:1},"1 goccia + 4 d'acqua, più passate."],["Luce",{gm:1,ssb:1},"Rilievi."],["Spigoli",{ssl:1},"Linea sottilissima."]]},
+ {id:"metal-black",cat:"metalli",title:"Nero metallico (Cloth nere)",who:"Black Saints, armature nere",tip:"",s:[
+  ["Base",{bk:2,gm:1},"Su tutta la zona."],["Luce",{gm:1},"Rilievi."],["Spigoli",{ssb:1},"Linea sottile."]]},
+ /* ---- METALLI COLORATI ---- */
+ {id:"cm-method",cat:"colmet",title:"Come si fa un metallo colorato",who:"Cloth di bronzo anime, Iron Man, armature fantasy",tip:"Metodo migliore: argento pieno, poi il colore diluitissimo sopra in 3–5 passate (velatura). Metodo veloce: mischiare argento e colore, ma brilla meno.",s:[
+  ["1. Argento",{ssb:1},"Su tutta la zona, lascia asciugare."],
+  ["2. Velatura",{br:1},"Il colore che vuoi, 1 goccia + 4–5 d'acqua, più passate."],
+  ["3. Ombra",{br:2,bb:1},"Stessa velatura più scura, solo negli incavi."],
+  ["4. Luce",{ssl:1},"Spigoli, dopo la velatura: riporta il brillante."]]},
+ {id:"cm-red",cat:"colmet",title:"Rosso metallico",who:"Iron Man, dettagli di Pegasus anime",tip:"",s:[
+  ["Mix rapido",{ssb:1,br:1},"Rosso metallico."],["Ombra",{ssb:1,br:2,bb:1},"Incavi."],["Luce",{ssb:2,br:1},"Rilievi."]]},
+ {id:"cm-green",cat:"colmet",title:"Verde metallico",who:"Dragone",tip:"",s:[
+  ["Mix rapido",{ps:2,gg:1},"Verde metallico."],["Ombra",{gm:2,dg:1},"Incavi."],["Luce",{ssl:2,gg:1},"Rilievi."]]},
+ {id:"cm-pink",cat:"colmet",title:"Rosa metallico",who:"Andromeda, parte bassa della Fenice anime",tip:"",s:[
+  ["Mix rapido",{ps:2,br:1,dw:1},"Rosa metallico."],["Ombra",{ps:1,br:1},"Incavi."],["Luce",{ssl:2,br:1,dw:1},"Rilievi."]]},
+ {id:"cm-blue",cat:"colmet",title:"Blu metallico",who:"Armature blu, Fenice (manga v2), God Robe",tip:"",s:[
+  ["Mix rapido",{gm:2,ub:1},"Blu metallico scuro."],["Luce",{ssb:2,ub:1},"Rilievi."],["Spigoli",{ssl:1},"Linea sottile."]]},
+ {id:"cm-icy",cat:"colmet",title:"Argento azzurrato",who:"Cigno, Silver Cloth in stile anime, ghiaccio",tip:"",s:[
+  ["Mix rapido",{ssb:4,ub:1},"Argento freddo."],["Ombra",{sss:2,ub:1},"Wash azzurrato negli incavi."],["Luce",{ssl:1},"Spigoli."]]},
+ {id:"cm-purple",cat:"colmet",title:"Viola metallico",who:"Fenice anime, surplici",tip:"",s:[
+  ["Mix rapido",{gm:2,br:1,ub:1},"Viola metallico scuro."],["Luce",{ssb:2,br:1,ub:1},"Rilievi."]]},
+ {id:"cm-orange",cat:"colmet",title:"Arancio metallico",who:"Fenice (manga)",tip:"",s:[
+  ["Mix rapido",{igb:1,of:1},"Arancio metallico."],["Ombra",{igs:1,of:1},"Incavi."],["Luce",{igl:2,of:1},"Rilievi."]]},
+ {id:"cm-pearl",cat:"colmet",title:"Bianco perla",who:"Cigno, God Cloth, Pegasus",tip:"",s:[
+  ["Mix",{ssb:1,dw:1},"Bianco perlato."],["Ombra",{sss:1},"Incavi."],["Luce",{ssl:1,dw:1},"Rilievi."],["Punti luce",{dw:1},"Spigoli."]]},
+
+ {id:"cm-burgundy",cat:"colmet",title:"Bordeaux metallico",who:"Andromeda dopo la rinascita",tip:"",s:[
+  ["Mix rapido",{ps:1,br:1,bb:1},"Bordeaux metallico."],["Ombra",{br:1,bb:2},"Velatura negli incavi."],["Luce",{ssb:2,br:1},"Rilievi."],["Spigoli",{ssl:1},"Linea sottile."]]},
+ {id:"cm-darkgreen",cat:"colmet",title:"Verde-nero metallico",who:"Dragone (manga)",tip:"",s:[
+  ["Mix rapido",{gm:2,dg:1},"Verde scurissimo metallico."],["Luce",{ssb:2,dg:1},"Rilievi."],["Spigoli",{ssl:1},"Linea sottile."]]},
+ {id:"cm-ironblue",cat:"colmet",title:"Argento blu ferro",who:"Pegaso (manga)",tip:"Argento con una tinta blu fredda. Per più blu, velatura di Blu Ultramar sopra.",s:[
+  ["Mix rapido",{ssb:2,gm:1,ub:1},"Argento blu ferro."],["Ombra (wash)",{sss:2,ub:1},"Negli incavi."],["Luce",{ssl:1},"Rilievi e spigoli."]]},
+ /* ---- TESSUTI ---- */
+ {id:"fab-white",cat:"tessuti",title:"Bianco",who:"Mantelli dei Gold Saint, vestito di Athena, dettagli",tip:"Il bianco non si fa mai bianco puro: ombre grigio-calde, bianco solo sui rilievi.",s:[
+  ["Ombra",{sg:1,bo:1},"Fondo delle pieghe."],["Base",{bo:1,dw:1},"Su tutto."],["Luce",{dw:1},"Sommità delle pieghe."]]},
+ {id:"fab-red",cat:"tessuti",title:"Rosso",who:"Tuta di Seiya, mantelli, Spider-Man, Ranger Rosso",tip:"Le ombre del rosso si fanno con il marrone, non con il nero.",s:[
+  ["Ombra",{br:2,bb:1},"Pieghe."],["Base",{br:1},"Su tutto."],["Luce",{br:2,of:1},"Rilievi."],["Luce estrema",{br:1,of:1,bo:1},"Spigoli delle pieghe."]]},
+ {id:"fab-blue",cat:"tessuti",title:"Blu",who:"Tute, Captain America, Ranger Blu",tip:"",s:[
+  ["Ombra",{ub:2,bk:1},"Pieghe."],["Base",{ub:1},"Su tutto."],["Luce",{ub:2,dw:1},"Rilievi."],["Luce estrema",{ub:1,dw:2},"Spigoli."]]},
+ {id:"fab-lightblue",cat:"tessuti",title:"Azzurro",who:"Tuta di Hyoga",tip:"",s:[
+  ["Ombra",{ub:1,sg:1},"Pieghe."],["Base",{ub:1,dw:2},"Su tutto."],["Luce",{ub:1,dw:4},"Rilievi."],["Luce estrema",{dw:1},"Spigoli."]]},
+ {id:"fab-green",cat:"tessuti",title:"Verde",who:"Tuta di Shun, Ranger Verde",tip:"",s:[
+  ["Ombra",{dg:1},"Pieghe."],["Base",{gg:2,dg:1},"Su tutto."],["Luce",{gg:1},"Rilievi."],["Luce estrema",{gg:1,bo:1},"Spigoli."]]},
+ {id:"fab-darkgreen",cat:"tessuti",title:"Verde scuro",who:"Tuta di Shiryu",tip:"",s:[
+  ["Ombra",{dg:2,bk:1},"Pieghe."],["Base",{dg:1},"Su tutto."],["Luce",{dg:1,gg:1},"Rilievi."]]},
+ {id:"fab-pink",cat:"tessuti",title:"Rosa",who:"Andromeda opaca, Ranger Rosa",tip:"Il rosa si fa con rosso e bianco. Sul primer nero serve prima una mano di Bianco Osso. Per un rosa vivo compra Squid Pink 72.013.",s:[
+  ["Ombra",{br:1,dw:1},"Pieghe."],["Base",{br:1,dw:3},"Su tutto."],["Luce",{br:1,dw:6},"Rilievi."],["Luce estrema",{dw:1},"Spigoli."]]},
+ {id:"fab-lavender",cat:"tessuti",title:"Lavanda",who:"Tuta di Shiryu (anime V1)",tip:"",s:[
+  ["Ombra",{br:1,ub:1,dw:2},"Pieghe."],["Base",{br:1,ub:1,dw:5},"Su tutto."],["Luce",{br:1,ub:1,dw:9},"Rilievi."],["Luce estrema",{dw:1},"Spigoli."]]},
+ {id:"fab-lightpink",cat:"tessuti",title:"Rosa chiaro",who:"Tuta di Shun (anime V2 e V3)",tip:"Sul primer nero serve prima una mano di Bianco Osso.",s:[
+  ["Ombra",{br:1,dw:3},"Pieghe."],["Base",{br:1,dw:6},"Su tutto."],["Luce",{dw:1},"Rilievi."]]},
+ {id:"fab-purple",cat:"tessuti",title:"Viola",who:"Pantaloni di Hulk, mantelli",tip:"",s:[
+  ["Ombra",{br:1,ub:1,bk:1},"Pieghe."],["Base",{br:1,ub:1,dw:1},"Su tutto."],["Luce",{br:1,ub:1,dw:3},"Rilievi."]]},
+ {id:"fab-black",cat:"tessuti",title:"Nero leggibile",who:"Tute nere, Ranger Nero, costumi",tip:"Il nero puro non si legge: base grigio scurissimo, nero solo nelle ombre.",s:[
+  ["Ombra",{bk:1},"Pieghe."],["Base",{bk:3,sg:1},"Su tutto."],["Luce",{bk:1,sg:1},"Rilievi."],["Luce estrema",{sg:1},"Spigoli, pochissimo."]]},
+ {id:"fab-yellow",cat:"tessuti",title:"Giallo",who:"Ranger Giallo",tip:"Il giallo copre malissimo sul nero: due mani di Bianco Osso prima.",s:[
+  ["Ombra",{sy:2,lb:1},"Pieghe."],["Base",{sy:1},"Su tutto."],["Luce",{sy:2,dw:1},"Rilievi."]]},
+ {id:"fab-orange",cat:"tessuti",title:"Arancio",who:"Dettagli della Fenice",tip:"",s:[
+  ["Ombra",{of:2,bb:1},"Pieghe."],["Base",{of:1},"Su tutto."],["Luce",{of:2,sy:1},"Rilievi."]]},
+ {id:"fab-leather",cat:"tessuti",title:"Cuoio",who:"Cinture, cinghie, sandali, faretra",tip:"",s:[
+  ["Ombra",{bb:1},"Bordi e incavi."],["Base",{lb:1},"Su tutto."],["Luce",{lb:2,bf:1},"Rilievi."],["Luce estrema",{bf:1,bo:1},"Graffi e bordi."]]},
+ /* ---- DETTAGLI ---- */
+ {id:"gem-red",cat:"dettagli",title:"Gemma rossa",who:"Gemme delle armature",tip:"Scuro in alto, chiaro in basso (al contrario del resto) e un puntino bianco in alto: così sembra trasparente. Alla fine una goccia di vernice lucida.",s:[
+  ["Fondo",{br:1,bk:1},"Tutta la gemma."],["Base",{br:1},"Metà inferiore."],["Luce",{br:1,of:1},"Quarto inferiore."],["Riflesso",{dw:1},"Un punto in alto a sinistra."]]},
+ {id:"gem-blue",cat:"dettagli",title:"Gemma blu",who:"Varianti",tip:"Stesso metodo della gemma rossa.",s:[
+  ["Fondo",{ub:1,bk:1},"Tutta la gemma."],["Base",{ub:1},"Metà inferiore."],["Luce",{ub:1,dw:1},"Quarto inferiore."],["Riflesso",{dw:1},"Punto in alto."]]},
+ {id:"gem-green",cat:"dettagli",title:"Gemma verde",who:"Varianti",tip:"",s:[
+  ["Fondo",{dg:1},"Tutta la gemma."],["Base",{gg:1},"Metà inferiore."],["Luce",{gg:1,sy:1},"Quarto inferiore."],["Riflesso",{dw:1},"Punto in alto."]]},
+ {id:"rose",cat:"dettagli",title:"Rosa rossa",who:"Aphrodite",tip:"Petali: base scura, poi il rosso solo sui bordi dei petali.",s:[
+  ["Fondo",{br:1,bb:1},"Tutto il fiore."],["Petali",{br:1},"Petali esterni."],["Bordi",{br:2,of:1},"Solo i bordi."],["Stelo",{dg:1},"Stelo e foglie."]]},
+ {id:"wood",cat:"dettagli",title:"Legno e grani",who:"Rosario di Shaka, archi, manici",tip:"",s:[
+  ["Base",{bb:1},"Tutto."],["Venature",{lb:1},"Linee sottili."],["Luce",{bf:1},"Rilievi."]]},
+ {id:"visor",cat:"dettagli",title:"Visore nero lucido",who:"Caschi dei Power Rangers, occhiali",tip:"Alla fine vernice lucida solo sul visore: fa metà dell'effetto.",s:[
+  ["Base",{bk:1},"Tutto il visore."],["Riflesso",{sg:1},"Una striscia curva in alto."],["Punto luce",{dw:1},"Un punto sul riflesso."]]},
+ /* ---- EFFETTI ---- */
+ {id:"fx-cosmo",cat:"effetti",title:"Cosmo e aure",who:"Basette ed effetti di energia",tip:"Velature leggere, sempre per ultime.",s:[
+  ["Cosmo d'oro",{sy:2,of:1},"Velatura calda."],["Cosmo blu",{ub:1,dw:2},"Velatura fredda."],["Cosmo viola",{br:1,ub:1,dw:2},"Hades, energie oscure."],["Cosmo rosso",{br:2,of:1},"Scorpione, rabbia."]]},
+ {id:"fx-fire",cat:"effetti",title:"Fuoco",who:"Fenice, esplosioni",tip:"Chiaro al centro, scuro ai bordi.",s:[
+  ["Centro",{sy:1,dw:1},"Nucleo della fiamma."],["Giallo",{sy:1},"Attorno al centro."],["Arancio",{of:1},"Corpo della fiamma."],["Bordi",{br:1},"Punte esterne."]]},
+ {id:"fx-ice",cat:"effetti",title:"Ghiaccio",who:"Hyoga, Camus",tip:"Parti da un azzurro e schiarisci verso le punte; alla fine vernice lucida.",s:[
+  ["Fondo",{ub:1,dw:3},"Tutto il ghiaccio."],["Luce",{ub:1,dw:8},"Verso le punte."],["Punte",{dw:1},"Spigoli e punte."]]},
+ {id:"fx-tattoo",cat:"effetti",title:"Tatuaggio del drago",who:"Shiryu a torso nudo",tip:"Velatura sottile sulla schiena, non colore pieno.",s:[
+  ["Contorno",{dg:1,ub:1},"Molto diluito."],["Riempimento",{gg:1,ub:1,dw:1},"Velatura."]]},
+ /* ---- BASETTE ---- */
+ {id:"base-earth",cat:"basette",title:"Terra",who:"Basette, terreno",tip:"Base scura, poi drybrush sempre più chiari.",s:[
+  ["Ombra",{bb:2,bk:1},"Base scura o wash."],["Base",{bb:1,lb:1},"Tutta la terra."],["Drybrush",{lb:1,bo:1},"Primo drybrush."],["Drybrush finale",{bo:1},"Leggerissimo."]]},
+ {id:"base-sand",cat:"basette",title:"Sabbia",who:"Arena, strade del Santuario",tip:"",s:[
+  ["Ombra",{lb:1},"Incavi."],["Base",{bo:2,bf:1},"Tutto."],["Luce",{bo:1},"Drybrush."]]},
+ {id:"base-rock",cat:"basette",title:"Roccia grigia",who:"Scogliere, montagne dei Cinque Picchi",tip:"Tutto a drybrush: veloce e d'effetto.",s:[
+  ["Base",{sg:1,bk:1},"Tutta la roccia."],["Wash",{sss:1},"Lo Shade dell'argento funziona anche sulle rocce."],["Drybrush",{sg:1},"Primo drybrush."],["Drybrush finale",{sg:1,dw:1},"Solo sugli spigoli."]]},
+ {id:"base-warmrock",cat:"basette",title:"Pietra calda",who:"Scalinate, rovine greche",tip:"",s:[
+  ["Base",{sg:2,lb:1},"Tutto."],["Drybrush",{sg:1,bo:1},"Rilievi."],["Drybrush finale",{bo:1},"Spigoli."]]},
+ {id:"base-marble",cat:"basette",title:"Marmo",who:"Colonne greche, Templi delle Dodici Case",tip:"Venature: linee sottili e spezzate di Grigio Muraglia diluito, poi una velatura di Bianco Osso sopra per ammorbidirle.",s:[
+  ["Ombra",{bo:2,sg:1},"Incavi e scanalature."],["Base",{bo:2,dw:1},"Tutto."],["Venature",{sg:1},"Molto diluito."],["Luce",{dw:1},"Spigoli."]]},
+ {id:"base-grass",cat:"basette",title:"Erba e muschio",who:"Basette naturali",tip:"",s:[
+  ["Base",{dg:1},"Tutto."],["Luce",{gg:1},"Drybrush."],["Punte",{gg:1,sy:1},"Drybrush leggero."],["Erba secca",{bo:2,sy:1,lb:1},"Qua e là per variare."]]},
+ {id:"base-snow",cat:"basette",title:"Neve",who:"Siberia (Hyoga), Asgard",tip:"",s:[
+  ["Ombra",{ub:1,sg:1,dw:3},"Incavi."],["Base",{dw:1},"Tutto."],["Luce",{dw:1},"Drybrush sui rilievi."]]},
+ {id:"base-lava",cat:"basette",title:"Lava",who:"Isola della Regina Nera, Inferi",tip:"",s:[
+  ["Roccia",{bk:1},"Tutto."],["Crepe",{br:1},"Dentro le crepe."],["Calore",{of:1},"Centro delle crepe."],["Nucleo",{sy:1},"Punti più profondi."]]}
+];
+
+/* ============ PROGETTI ============
+   Zona: {z:nome, r:id ricetta, t:colore ideale, n:nota, s:[passi inline]}
+   Se c'è solo t, la ricetta viene calcolata in automatico. */
+var PROJECTS = [
+ {id:"saint-seiya", name:"Saint Seiya", sub:"I Cavalieri dello Zodiaco", theme:"t-ss", status:"completo", armorLabel:"Cloth", defBase:["base-rock","base-marble"],
+  intro:"Schede per i cavalieri più conosciuti, con i colori della serie animata classica (1986) e le note sulle versioni manga. Controlla sempre la tua reference: statue e Myth Cloth usano spesso colori diversi.",
+  groups:[["bronzo","Cavalieri di Bronzo"],["argento","Cavalieri d'Argento"],["oro","Cavalieri d'Oro"],["altri","Altri personaggi"]],
+  chars:[
+   {id:"seiya",g:"bronzo",n:"Seiya",al:"Pegasus",c:"Pegaso",q:"Pegasus Seiya",b:["base-rock","base-marble"],
+    v:"La cloth di Pegaso cambia molto tra anime e manga. Nell'anime diventa argento neutro con dettagli rossi e la tuta è rossa; nel manga ha una tinta blu e la tuta è bianca. Scegli la versione della tua stampa qui sopra: colori della cloth e della tuta si aggiornano.",
+    z:[{z:"Pelle",r:"skin-tan"},{z:"Capelli",r:"hair-auburn",t:"#6b3a26"},{z:"Occhi",s:[["Contorno",{bb:1},"Linea superiore e fessura."],["Bianco",{bo:1},"Mai bianco puro."],["Iride castana",{lb:1},"Tocca la palpebra superiore."],["Pupilla",{bk:1},""],["Punto luce",{dw:1},"Micro riflesso, uguale nei due occhi."]]},{z:"Gemme",r:"gem-red"}],
+    cv:[
+     {id:"a1",label:"Anime V1",sub:"Santuario",n:"Nella serie del 1986 la prima cloth sembra argento chiaro, quasi bianco, più che argento cromato. Dettagli rossi, tuta rossa.",z:[{z:"Cloth",r:"cm-pearl"},{z:"Parti rosse della cloth",r:"cm-red"},{z:"Tuta",r:"fab-red"}]},
+     {id:"a2",label:"Anime V2",sub:"Asgard e Poseidone · manga V4",n:"Con l'avanzare della serie la cloth diventa più argento. Esiste anche una versione dorata, quando Seiya raggiunge il settimo senso.",z:[{z:"Cloth",r:"metal-silver"},{z:"Parti rosse della cloth",r:"cm-red"},{z:"Tuta",r:"fab-red"}]},
+     {id:"a3",label:"Anime V3",sub:"Hades · manga V5",n:"Argento, con i dettagli rossi.",z:[{z:"Cloth",r:"metal-silver"},{z:"Parti rosse della cloth",r:"cm-red"},{z:"Tuta",r:"fab-red"}]},
+     {id:"m",label:"Manga",sub:"e figure Original Color",n:"Kurumada la colora di argento con riflessi blu ferro. Tuta bianca e colori del personaggio più freddi.",z:[{z:"Cloth",r:"cm-ironblue"},{z:"Tuta",r:"fab-white"}]},
+     {id:"gold",label:"Versione dorata",sub:"Settimo senso",n:"La cloth V2 diventa d'oro quando Seiya raggiunge il settimo senso: esistono figure dedicate.",z:[{z:"Cloth",r:"metal-gold"},{z:"Tuta",r:"fab-red"}]},
+     {id:"god",label:"God Cloth",sub:"Hades Elysion",n:"Nel manga la God Cloth è oro puro; nel film Tenkai-hen è argento puro; negli OVA di Elysion ha colori simili alle cloth precedenti.",z:[{z:"Cloth (OVA e film)",r:"metal-silver"},{z:"Cloth (manga)",r:"metal-gold"},{z:"Tuta",r:"fab-red"}]}],
+    tips:["Le ali della cloth: drybrush di Sterling Silver Light sui bordi delle piume.","Prima di tutto verifica quale versione è la tua stampa: la forma dell'elmo e delle ali cambia a ogni versione."]},
+   {id:"shiryu",g:"bronzo",n:"Shiryu",al:"Sirio il Dragone",c:"Dragone",q:"Dragon Shiryu",b:["base-rock","base-grass"],
+    v:"Nell'anime il colore del personaggio è il verde e la tuta della prima cloth è lavanda chiaro. Nel manga la cloth tende al nero-verde e la tuta è bianca. Nel manga la cloth cambia due volte già nell'arco del Santuario.",
+    z:[{z:"Pelle",r:"skin-tan"},{z:"Capelli",r:"hair-black",t:"#1e2433"},{z:"Occhi",s:[["Contorno",{bb:1},""],["Bianco",{bo:1},""],["Iride",{ub:2,bk:1},"Blu scurissimo, quasi nero."],["Pupilla",{bk:1},""]]},{z:"Abito cinese (senza cloth)",k:"vestiti",r:"fab-white",n:"Quando non indossa la cloth porta un abito cinese bianco."},{z:"Tatuaggio del drago",k:"dettagli",r:"fx-tattoo",n:"Solo se la tua figura è a torso nudo."}],
+    cv:[
+     {id:"a1",label:"Anime V1",sub:"Santuario",n:"Cloth verde, tuta lavanda chiaro.",z:[{z:"Cloth e scudo",r:"cm-green"},{z:"Tuta",r:"fab-lavender"}]},
+     {id:"a23",label:"Anime V2 e V3",sub:"Poseidone e Hades",n:"Il verde resta il colore del Dragone. Le sfumature cambiano tra le versioni: confronta la tua reference.",z:[{z:"Cloth e scudo",r:"cm-green"}]},
+     {id:"m",label:"Manga",sub:"e figure Original Color",n:"Cloth molto scura, tra il nero e il verde, con tuta bianca.",z:[{z:"Cloth e scudo",r:"cm-darkgreen"},{z:"Tuta",r:"fab-white"}]},
+     {id:"god",label:"God Cloth",sub:"Hades Elysion",n:"Nel manga le God Cloth sono d'oro; negli OVA mantengono i colori delle cloth precedenti.",z:[{z:"Cloth (OVA)",r:"cm-green"},{z:"Cloth (manga)",r:"metal-gold"}]}],
+    tips:["Lo scudo del Dragone è una superficie grande: perfetta per provare il metallo colorato con la velatura.","I capelli arrivano alle ginocchia: usa il drybrush per far risaltare le ciocche."]},
+   {id:"hyoga",g:"bronzo",n:"Hyoga",al:"Crystal",c:"Cigno",q:"Cygnus Hyoga",b:["base-snow","fx-ice"],
+    v:"Anime: cloth bianca-argento con tuta blu. Nel manga è il contrario: tuta bianca e cloth più azzurra.",
+    z:[{z:"Pelle",r:"skin-pale"},{z:"Capelli",r:"hair-blond",t:"#e6c66a"},{z:"Occhi",s:[["Contorno",{bb:1},""],["Bianco",{bo:1},""],["Iride",{ub:1,dw:1},"Azzurri."],["Pupilla",{bk:1},""]]},{z:"Effetto ghiaccio",k:"dettagli",r:"fx-ice"}],
+    cv:[
+     {id:"a1",label:"Anime V1",sub:"Santuario",n:"Cloth bianca-argento, tuta blu-azzurra. L'elmo è una tiara con grandi ali.",z:[{z:"Cloth",r:"cm-pearl"},{z:"Tuta",r:"fab-lightblue"}]},
+     {id:"a23",label:"Anime V2 e V3",sub:"Poseidone e Hades",n:"Sempre bianca-argento, più slanciata. Un velo azzurro aiuta a darle l'aspetto di ghiaccio.",z:[{z:"Cloth",r:"cm-icy"},{z:"Tuta",r:"fab-lightblue"}]},
+     {id:"m",label:"Manga",sub:"e figure Original Color",n:"Cloth azzurra, tuta bianca.",z:[{z:"Cloth",r:"cm-icy"},{z:"Tuta",r:"fab-white"}]},
+     {id:"god",label:"God Cloth",sub:"Hades Elysion",n:"Nel manga oro; negli OVA colori simili alle cloth precedenti.",z:[{z:"Cloth (OVA)",r:"cm-pearl"},{z:"Cloth (manga)",r:"metal-gold"}]}],
+    tips:["Una cloth bianca sul primer nero richiede pazienza: prima Grigio Muraglia, poi Bianco Osso, poi il colore vero."]},
+   {id:"shun",g:"bronzo",n:"Shun",al:"",c:"Andromeda",q:"Andromeda Shun",b:["base-rock"],
+    v:"Anime: prima cloth rosa acceso con tuta verde; dopo la rinascita la cloth diventa più bordeaux che rosa e la tuta rosa chiaro. Manga: rosa metallico delicato, capelli castani e occhi azzurri.",
+    z:[{z:"Pelle",r:"skin-pale"},{z:"Capelli",r:"hair-green",t:"#6fa863"},{z:"Occhi",s:[["Contorno",{bb:1},""],["Bianco",{bo:1},""],["Iride",{gg:1,bo:1},"Verdi (anime)."],["Pupilla",{bk:1},""]]},{z:"Catene",r:"metal-steel"}],
+    cv:[
+     {id:"a1",label:"Anime V1",sub:"Santuario",n:"Il rosa più acceso della serie. Tuta verde.",z:[{z:"Cloth",r:"cm-pink"},{z:"Tuta",r:"fab-green"}]},
+     {id:"a23",label:"Anime V2 e V3",sub:"Dopo la rinascita",n:"Cloth più bordeaux che rosa, tuta rosa chiaro.",z:[{z:"Cloth",r:"cm-burgundy"},{z:"Tuta",r:"fab-lightpink"}]},
+     {id:"m",label:"Manga",sub:"e figure Original Color",n:"Rosa metallico più delicato, capelli castani, occhi azzurri.",z:[{z:"Cloth",r:"cm-pink"},{z:"Capelli",r:"hair-brown",t:"#8a5a3a"},{z:"Occhi",s:[["Contorno",{bb:1},""],["Bianco",{bo:1},""],["Iride",{ub:1,dw:1},"Azzurri (manga)."],["Pupilla",{bk:1},""]]},{z:"Tuta",r:"fab-white"}]},
+     {id:"god",label:"God Cloth",sub:"Hades Elysion",n:"Nel manga oro; negli OVA colori simili alle cloth precedenti.",z:[{z:"Cloth (OVA)",r:"cm-pink"},{z:"Cloth (manga)",r:"metal-gold"}]}],
+    tips:["Le catene: base Gun Metal, wash con Sterling Silver Shade, poi un drybrush di Sterling Silver Light.","Il rosa sul primer nero: prima una mano di Bianco Osso, altrimenti viene sporco."]},
+   {id:"ikki",g:"bronzo",n:"Ikki",al:"Phoenix",c:"Fenice",q:"Phoenix Ikki",b:["base-lava","fx-fire"],
+    v:"È la cloth che cambia di più. Manga: tutta arancione. Anime V1: bianca-argento e rosa con dettagli arancio. Anime V2 e seguenti: argento e blu notte.",
+    z:[{z:"Pelle",r:"skin-tan"},{z:"Capelli",r:"hair-navy",t:"#22335e"},{z:"Occhi",s:[["Contorno",{bb:1},""],["Bianco",{bo:1},""],["Iride",{ub:2,bk:1},"Blu scuri."],["Pupilla",{bk:1},""]]},{z:"Cicatrice sulla fronte",s:[["Cicatrice",{bs:2,br:1},"Linea sottile tra gli occhi."],["Luce",{ef:1},"Su un solo lato della cicatrice."]]}],
+    cv:[
+     {id:"a1",label:"Anime V1",sub:"Santuario",n:"Parte alta bianca-argento, parte bassa rosa, dettagli arancio, tuta blu.",z:[{z:"Cloth parte alta",r:"cm-pearl"},{z:"Cloth parte bassa",r:"cm-pink"},{z:"Dettagli arancio",r:"fab-orange"},{z:"Tuta",r:"fab-blue"}]},
+     {id:"a23",label:"Anime V2 e V3",sub:"Poseidone e Hades",n:"Tutta argento e blu notte.",z:[{z:"Cloth argento",r:"metal-silver"},{z:"Cloth blu notte",r:"cm-blue"},{z:"Tuta",r:"fab-blue"}]},
+     {id:"m",label:"Manga",sub:"e figure Original Color",n:"Arancione acceso, tuta bianca.",z:[{z:"Cloth",r:"cm-orange"},{z:"Tuta",r:"fab-white"}]},
+     {id:"god",label:"God Cloth",sub:"Hades Elysion",n:"Nel manga oro; negli OVA colori simili alle cloth precedenti.",z:[{z:"Cloth (OVA)",r:"metal-silver"},{z:"Cloth (manga)",r:"metal-gold"}]}],
+    tips:["Scegli la versione prima di iniziare: anime e manga hanno colori completamente diversi.","Per la basetta: fiamme o lava."]},
+   {id:"marin",g:"argento",n:"Marin",al:"Castalia",c:"Aquila",q:"Eagle Marin",v:"Capelli rossi nell'anime, maschera argentata.",
+    z:[{z:"Pelle",r:"skin-pale"},{z:"Capelli",r:"hair-red",t:"#b8452e"},{z:"Maschera",s:[["Base",{ssb:1},"Due mani sottilissime, senza segni del pennello."],["Luce",{ssl:1},"Fronte e zigomi della maschera."]]},{z:"Cloth",r:"metal-silver"}],noEyes:1,
+    tips:["La maschera è liscia: l'argento va steso in mani sottilissime per non lasciare segni del pennello."]},
+   {id:"shaina",g:"argento",n:"Shaina",al:"Tisifone",c:"Ofiuco",q:"Ophiuchus Shaina",v:"Nell'anime capelli verdi, nel manga neri.",
+    z:[{z:"Pelle",r:"skin-pale"},{z:"Capelli",r:"hair-green",t:"#4e8a4a"},{z:"Maschera",s:[["Base",{ssb:1},""],["Luce",{ssl:1},""]]},{z:"Cloth",r:"metal-silver"}],noEyes:1,
+    tips:["Thunder Claw: una velatura di Blu Ultramar sulle dita dà l'effetto elettrico."]},
+   {id:"misty",g:"argento",n:"Misty",al:"",c:"Lucertola",q:"Lizard Misty",v:"",
+    z:[{z:"Pelle",r:"skin-pale"},{z:"Capelli",r:"hair-blond",t:"#ebd387"},{z:"Cloth",r:"metal-silver"}],tips:[]},
+   {id:"mu",g:"oro",n:"Mu",al:"Mur",c:"Ariete",q:"Aries Mu",v:"Capelli lilla, due puntini sulla fronte tipici del suo popolo.",
+    z:[{z:"Pelle",r:"skin-pale"},{z:"Capelli",r:"hair-lilac",t:"#b89cc9"},{z:"Puntini sulla fronte",s:[["Puntini",{bs:1,br:1},"Due puntini. Controlla il colore sulla tua reference."]]},{z:"Gold Cloth",r:"metal-gold"},{z:"Mantello",r:"fab-white"}],tips:[]},
+   {id:"aldebaran",g:"oro",n:"Aldebaran",al:"Toro",c:"Toro",q:"Taurus Aldebaran",v:"Nell'anime ha la pelle scura; nel manga è biondo.",
+    z:[{z:"Pelle",r:"skin-dark"},{z:"Capelli",r:"hair-darkbrown",t:"#3a2a22"},{z:"Gold Cloth",r:"metal-gold"},{z:"Mantello",r:"fab-white"}],
+    tips:["In molte versioni un corno dell'elmo è spezzato: dentro la frattura Imperial Gold Shade, sui bordi Light."]},
+   {id:"saga",g:"oro",n:"Saga",al:"Gemini",c:"Gemelli",q:"Gemini Saga",v:"Anime: capelli blu. Nella versione malvagia capelli grigi e occhi rossi. Nell'arco di Hades torna con una Surplice.",
+    z:[{z:"Pelle",r:"skin-pale"},{z:"Capelli",r:"hair-blue",t:"#3a5a9e"},{z:"Capelli (versione malvagia)",r:"hair-grey"},{z:"Occhi (versione malvagia)",s:[["Iride",{br:1},"Rossi."],["Pupilla",{bk:1},""]]}],
+    cv:[{id:"gold",label:"Gold Cloth",sub:"Santuario",n:"",z:[{z:"Gold Cloth",r:"metal-gold"},{z:"Mantello",r:"fab-white"}]},{id:"surplice",label:"Surplice",sub:"Arco di Hades",n:"Torna in vita come Specter, con una Surplice nera.",z:[{z:"Surplice",r:"metal-surplice"}]}],
+    tips:["L'elmo ha due volti: dipingine uno con più Shade per differenziarli."]},
+   {id:"kanon",g:"oro",n:"Kanon",al:"",c:"Gemelli",q:"Gemini Kanon",v:"Nell'anime ha capelli più verdi di Saga (teal).",
+    z:[{z:"Pelle",r:"skin-pale"},{z:"Capelli",r:"hair-teal",t:"#3e8c88"}],
+    cv:[{id:"gold",label:"Gold Cloth",sub:"Hades",n:"",z:[{z:"Gold Cloth",r:"metal-gold"}]},{id:"scale",label:"Scaglia",sub:"Poseidone (Sea Dragon)",n:"Come Generale di Poseidone indossa una Scaglia di oricalco.",z:[{z:"Scaglia",r:"metal-orichalcum"}]}],tips:[]},
+   {id:"deathmask",g:"oro",n:"Deathmask",al:"Cancer",c:"Cancro",q:"Cancer Deathmask",v:"Anime: capelli e occhi blu. Manga: capelli grigi e occhi rossi.",
+    z:[{z:"Pelle",r:"skin-tan"},{z:"Capelli",r:"hair-blue",t:"#3d63a8"},{z:"Occhi",s:[["Contorno",{bb:1},""],["Bianco",{bo:1},""],["Iride",{ub:1,dw:1},"Blu."],["Pupilla",{bk:1},""]]}],
+    cv:[{id:"gold",label:"Gold Cloth",sub:"Santuario",n:"",z:[{z:"Gold Cloth",r:"metal-gold"},{z:"Mantello",r:"fab-white"}]},{id:"surplice",label:"Surplice",sub:"Arco di Hades",n:"Torna in vita come Specter, con una Surplice nera.",z:[{z:"Surplice",r:"metal-surplice"}]}],
+    tips:["Se la basetta ha i volti delle anime: Bianco Osso, wash di Sterling Silver Shade, luce di Bianco Teschio."]},
+   {id:"aiolia",g:"oro",n:"Aiolia",al:"Ioria",c:"Leone",q:"Leo Aiolia",v:"Nell'anime castano chiaro, nel manga biondo.",
+    z:[{z:"Pelle",r:"skin-tan"},{z:"Capelli",r:"hair-lightbrown",t:"#9a6a3e"},{z:"Gold Cloth",r:"metal-gold"},{z:"Mantello",r:"fab-white"}],tips:["Lightning Plasma: velature di Bianco Teschio e Giallo Soleggiato sulla basetta."]},
+   {id:"shaka",g:"oro",n:"Shaka",al:"Virgo",c:"Vergine",q:"Virgo Shaka",v:"Biondo sia nel manga sia nell'anime. Occhi quasi sempre chiusi (azzurri nell'anime, verdi nel manga). Punto rosso sulla fronte.",
+    z:[{z:"Pelle",r:"skin-pale"},{z:"Capelli",r:"hair-blond",t:"#e9cd6e"},{z:"Occhi chiusi",s:[["Linea delle ciglia",{bb:1},"Una linea curva sottile per occhio."]]},{z:"Punto sulla fronte",s:[["Punto",{br:1},"Un punto preciso."],["Riflesso",{dw:1},"Microriflesso."]]},{z:"Rosario",r:"wood"},{z:"Gold Cloth",r:"metal-gold"},{z:"Mantello",r:"fab-white"}],tips:[]},
+   {id:"dohko",g:"oro",n:"Dohko",al:"Il Vecchio Maestro",c:"Bilancia",q:"Libra Dohko",v:"Giovane: capelli castano-rossicci scuri (anime). Anziano: piccolo e con la pelle viola.",
+    z:[{z:"Pelle (giovane)",r:"skin-tan"},{z:"Pelle (anziano)",r:"skin-purple"},{z:"Capelli",r:"hair-auburn",t:"#5e2e24"},{z:"Gold Cloth e armi",r:"metal-gold"}],tips:["Le dodici armi della Bilancia: alterna Oro antico e Oro normale per non farle sembrare tutte uguali."]},
+   {id:"milo",g:"oro",n:"Milo",al:"Scorpio",c:"Scorpione",q:"Scorpio Milo",v:"Anime: capelli viola. Manga: biondo.",
+    z:[{z:"Pelle",r:"skin-tan"},{z:"Capelli",r:"hair-purple",t:"#5b3e86"},{z:"Unghia rossa (Scarlet Needle)",k:"dettagli",s:[["Base",{br:1},""],["Luce",{br:1,of:1},""],["Riflesso",{dw:1},""]]},{z:"Gold Cloth",r:"metal-gold"},{z:"Mantello",r:"fab-white"}],tips:[]},
+   {id:"aiolos",g:"oro",n:"Aiolos",al:"Micene",c:"Sagittario",q:"Sagittarius Aiolos",v:"Capelli castani. La Gold Cloth ha grandi ali.",
+    z:[{z:"Pelle",r:"skin-tan"},{z:"Capelli",r:"hair-brown",t:"#6a4430"},{z:"Gold Cloth e ali",r:"metal-gold"},{z:"Mantello",r:"fab-white"}],tips:["Ali: Imperial Gold Base, Shade tra le piume, poi drybrush di Imperial Gold Light sulle punte."]},
+   {id:"shura",g:"oro",n:"Shura",al:"Capricorn",c:"Capricorno",q:"Capricorn Shura",v:"Anime: capelli verde scuro. Manga: neri.",
+    z:[{z:"Pelle",r:"skin-tan"},{z:"Capelli",r:"hair-darkgreen",t:"#24533d"}],
+    cv:[{id:"gold",label:"Gold Cloth",sub:"Santuario",n:"",z:[{z:"Gold Cloth",r:"metal-gold"},{z:"Mantello",r:"fab-white"}]},{id:"surplice",label:"Surplice",sub:"Arco di Hades",n:"Torna in vita come Specter, con una Surplice nera.",z:[{z:"Surplice",r:"metal-surplice"}]}],tips:[]},
+   {id:"camus",g:"oro",n:"Camus",al:"Acquarius",c:"Acquario",q:"Aquarius Camus",b:["base-snow","fx-ice"],v:"Anime: capelli blu-verdi. Manga: rossi.",
+    z:[{z:"Pelle",r:"skin-pale"},{z:"Capelli",r:"hair-teal",t:"#2e7f84"},{z:"Effetto ghiaccio",k:"dettagli",r:"fx-ice"}],
+    cv:[{id:"gold",label:"Gold Cloth",sub:"Santuario",n:"",z:[{z:"Gold Cloth",r:"metal-gold"},{z:"Mantello",r:"fab-white"}]},{id:"surplice",label:"Surplice",sub:"Arco di Hades",n:"Torna in vita come Specter, con una Surplice nera.",z:[{z:"Surplice",r:"metal-surplice"}]}],tips:[]},
+   {id:"aphrodite",g:"oro",n:"Aphrodite",al:"Fish",c:"Pesci",q:"Pisces Aphrodite",v:"Anime: capelli azzurri (blu-verdi nell'arco del Santuario). Manga: biondo. Neo sotto l'occhio.",
+    z:[{z:"Pelle",r:"skin-pale"},{z:"Capelli",r:"hair-lightblue",t:"#8ec3e0"},{z:"Neo",s:[["Neo",{bb:1},"Un puntino sotto l'occhio."]]},{z:"Rosa",k:"dettagli",r:"rose"}],
+    cv:[{id:"gold",label:"Gold Cloth",sub:"Santuario",n:"",z:[{z:"Gold Cloth",r:"metal-gold"},{z:"Mantello",r:"fab-white"}]},{id:"surplice",label:"Surplice",sub:"Arco di Hades",n:"Torna in vita come Specter, con una Surplice nera.",z:[{z:"Surplice",r:"metal-surplice"}]}],tips:[]},
+   {id:"shion",g:"oro",n:"Shion",al:"Gran Sacerdote",c:"Ariete",q:"Aries Shion",v:"Capelli verde chiaro e due puntini sulla fronte, come Mu.",
+    z:[{z:"Pelle",r:"skin-pale"},{z:"Capelli",r:"hair-lightgreen",t:"#a9cf8e"}],
+    cv:[{id:"gold",label:"Gold Cloth",sub:"",n:"",z:[{z:"Gold Cloth",r:"metal-gold"}]},{id:"surplice",label:"Surplice",sub:"Arco di Hades",n:"Torna in vita come Specter, con una Surplice nera.",z:[{z:"Surplice",r:"metal-surplice"}]}],tips:[]},
+   {id:"saori",g:"altri",n:"Saori",al:"Athena / Lady Isabel",c:"Dea Athena",q:"Saori Kido Athena",v:"Capelli viola, vestito bianco, bastone di Nike dorato.",
+    z:[{z:"Pelle",r:"skin-pale"},{z:"Capelli",r:"hair-purple",t:"#7e57a8"},{z:"Vestito",r:"fab-white"},{z:"Bastone e scudo",k:"armatura",r:"metal-gold"}],tips:["Per un viola vivo come nell'anime conviene comprare Royal Purple 72.016."]},
+   {id:"kiki",g:"altri",n:"Kiki",al:"",c:"Allievo di Mu",q:"Kiki Saint Seiya",v:"Capelli arancio-rossi.",
+    z:[{z:"Pelle",r:"skin-pale"},{z:"Capelli",r:"hair-orange",t:"#c4552c"}],tips:[]}
+  ],
+  armors:[
+   {id:"gold",t:"Cloth d'oro",who:"Tutti i Cavalieri d'Oro",d:"Il sistema TMM Imperial Gold fa quasi tutto il lavoro.",r:["metal-gold","metal-goldanime","metal-oldgold"],g:"gold"},
+   {id:"silver",t:"Cloth d'argento",who:"Marin, Shaina, Misty e gli altri",d:"Il sistema TMM Sterling Silver, con Gun Metal sotto per dare profondità.",r:["metal-silver","cm-icy"],g:"silver"},
+   {id:"bronze",t:"Cloth di bronzo metalliche",who:"Pegaso, Dragone, Cigno, Andromeda, Fenice",d:"Argento come base e il colore del cavaliere in velatura sopra. È il modo per avere cloth colorate che brillano.",r:["cm-method","cm-green","cm-pink","cm-purple","cm-red","cm-pearl","cm-orange"],g:"bronze"},
+   {id:"bronze-flat",t:"Cloth di bronzo opache (stile cartone)",who:"Se vuoi l'aspetto piatto dell'anime",d:"Nell'anime molte cloth sembrano colori pieni con luci bianche: si dipingono come una stoffa, con base, ombra e luce.",r:["fab-white","fab-pink","fab-green","fab-lightblue"]},
+   {id:"god",t:"God Cloth",who:"Bronzi nell'arco di Hades (Elysion)",d:"Bianco perla con dettagli d'oro e il colore del cavaliere in piccoli punti.",r:["cm-pearl","metal-gold"]},
+   {id:"scale",t:"Scaglie di Poseidone",who:"Generali di Poseidone",d:"Oricalco: oro spinto verso l'arancio.",r:["metal-orichalcum"]},
+   {id:"surplice",t:"Surplici di Hades",who:"Specter",d:"Metallo scurissimo con riflessi viola.",r:["metal-surplice"]},
+   {id:"black",t:"Cloth nere",who:"Black Saints",d:"Nero metallico con spigoli d'argento.",r:["metal-black"]},
+   {id:"godrobe",t:"God Robe di Asgard",who:"Guerrieri di Asgard",d:"Ogni God Robe ha il suo colore: usa il metodo del metallo colorato con la tinta della tua reference.",r:["cm-method","cm-blue"]}
+  ],
+  guides:[
+   {id:"gold",t:"Cloth d'oro, passo passo",i:"Il procedimento più importante per i Cavalieri d'Oro. Con lo Shade TMM il risultato è buono già alla prima prova.",s:[
+    ["Primer nero","Già fatto con la bomboletta.",null],
+    ["Prima mano d'oro (facoltativa)","Oro Lucidato su tutta l'armatura: copre il nero e risparmia i TMM.",{pg:1}],
+    ["Base","Imperial Gold Base, due mani sottili.",{igb:1}],
+    ["Ombra","Imperial Gold Shade negli incavi e sotto le placche. È un wash: stendilo e lascialo scorrere. Aspetta un'ora.",{igs:1}],
+    ["Recupera la base","Imperial Gold Base di nuovo sulle parti in rilievo, lasciando lo scuro negli incavi.",{igb:1}],
+    ["Luce intermedia","Base e Light mischiate, sulle superfici rivolte verso l'alto.",{igb:1,igl:1}],
+    ["Luce","Imperial Gold Light sui rilievi e sui bordi superiori.",{igl:1}],
+    ["Punti luce","Qualche puntino di Sterling Silver Light sugli spigoli più alti.",{ssl:1}],
+    ["Gemme","Ricetta della gemma rossa.",{br:1}],
+    ["Facoltativo","Velatura di Giallo Soleggiato per un oro più «anime».",{sy:1}]]},
+   {id:"silver",t:"Cloth d'argento, passo passo",i:"",s:[
+    ["Base scura","Gun Metal su tutta l'armatura.",{gm:1}],
+    ["Argento","Sterling Silver Base sulle superfici, lasciando Gun Metal negli incavi.",{ssb:1}],
+    ["Ombra","Sterling Silver Shade negli incavi.",{sss:1}],
+    ["Recupera","Sterling Silver Base di nuovo sui rilievi.",{ssb:1}],
+    ["Luce","Sterling Silver Light sugli spigoli.",{ssl:1}],
+    ["Facoltativo","Velatura leggerissima di Blu Ultramar per l'argento azzurrato dell'anime.",{ub:1}]]},
+   {id:"bronze",t:"Cloth di bronzo colorata, passo passo",i:"Esempio con Andromeda; per gli altri cambia solo il colore della velatura.",s:[
+    ["Argento","Sterling Silver Base su tutta la cloth.",{ssb:1}],
+    ["Prima velatura","Rosso Sanguina + Bianco Teschio molto diluiti, su tutta la cloth.",{br:1,dw:1}],
+    ["Altre velature","Altre 2–4 passate, aspettando che ognuna asciughi, finché il colore ti piace.",{br:1,dw:1}],
+    ["Ombra","Velatura di Rosso Sanguina puro negli incavi.",{br:1}],
+    ["Luce","Sterling Silver Light sugli spigoli, per riportare il brillante.",{ssl:1}],
+    ["Catene","Ricetta Acciaio e catene.",{gm:1}]]},
+   {id:"face",t:"Volto, passo passo",i:"La faccia è la parte che si guarda per prima: con calma e con il colore ben diluito.",s:[
+    ["Sottofondo","Bianco Osso diluito sopra il primer nero.",{bo:1}],
+    ["Base","Pelle Elfi, due o tre mani sottili.",{es:1}],
+    ["Occhi","Contorno, bianco, iride, pupilla (vedi Tecniche).",{bb:1}],
+    ["Ombra","Pelle Barbaro in orbite, sotto il naso, sotto il labbro, sotto il mento e sul collo.",{bs:1}],
+    ["Ripresa","Pelle Elfi sulle zone centrali, per ammorbidire.",{es:1}],
+    ["Luce","Pelle su fronte, naso, zigomi e mento.",{st:1}],
+    ["Luce estrema","Carne Elfica su punti piccoli.",{ef:1}],
+    ["Colore del volto","Velatura del rossore sulle guance e colore delle labbra.",{st:3,br:1}]]},
+   {id:"rock",t:"Basetta rocciosa, passo passo",i:"Il modo più veloce per un bel risultato e per esercitarsi con il drybrush.",s:[
+    ["Base","Grigio Muraglia + Nero.",{sg:1,bk:1}],
+    ["Wash","Sterling Silver Shade nelle fessure.",{sss:1}],
+    ["Drybrush","Grigio Muraglia.",{sg:1}],
+    ["Drybrush finale","Grigio Muraglia + Bianco Teschio, solo sugli spigoli.",{sg:1,dw:1}],
+    ["Dettagli","Qualche macchia d'erba o terra.",{dg:1}],
+    ["Bordo","Bordo della basetta nero pulito: fa subito più ordinato.",{bk:1}]]}
+  ],
+  links:[
+   ["Seiyapedia (wiki)","https://saintseiya.fandom.com/wiki/Gold_Saints","Enciclopedia dei personaggi, in inglese."],
+   ["Myth Cloth EX: foto","https://www.google.com/search?tbm=isch&q=Myth+Cloth+EX+Saint+Seiya","Le action figure ufficiali: ottime reference di colore."],
+   ["Statue in resina dipinte","https://www.google.com/search?tbm=isch&q=Saint+Seiya+resin+statue+painted","Come altri pittori hanno dipinto statue simili alla tua."],
+   ["Gold Cloth dipinte a pennello","https://www.youtube.com/results?search_query=Saint+Seiya+gold+cloth+painting","Video di pittura delle armature d'oro."]
+  ]
+ },
+ {id:"power-rangers", name:"Power Rangers", sub:"Mighty Morphin", theme:"t-pr", status:"anteprima",
+  intro:"Anteprima: le tavolozze delle tute classiche. Le tute sono tessuto colorato con parti bianche e visore nero lucido: un ottimo progetto per esercitarsi sui colori pieni.",
+  groups:[["ranger","Ranger"]],
+  chars:[
+   {id:"red",g:"ranger",n:"Ranger Rosso",al:"",c:"Mighty Morphin",noFace:1,q:"Mighty Morphin Red Ranger",v:"",z:[{z:"Tuta",r:"fab-red"},{z:"Parti bianche",r:"fab-white"},{z:"Visore",k:"dettagli",r:"visor"},{z:"Fibbia",r:"metal-silver"}],tips:["Per un rosso più vivo compra Scarlet Red 72.012."]},
+   {id:"blue",g:"ranger",n:"Ranger Blu",al:"",c:"Mighty Morphin",noFace:1,q:"Mighty Morphin Blue Ranger",v:"",z:[{z:"Tuta",r:"fab-blue"},{z:"Parti bianche",r:"fab-white"},{z:"Visore",k:"dettagli",r:"visor"},{z:"Fibbia",r:"metal-silver"}],tips:[]},
+   {id:"yellow",g:"ranger",n:"Ranger Giallo",al:"",c:"Mighty Morphin",noFace:1,q:"Mighty Morphin Yellow Ranger",v:"",z:[{z:"Tuta",r:"fab-yellow"},{z:"Parti bianche",r:"fab-white"},{z:"Visore",k:"dettagli",r:"visor"}],tips:["Il giallo sul nero ha bisogno di due mani di Bianco Osso prima."]},
+   {id:"pink",g:"ranger",n:"Ranger Rosa",al:"",c:"Mighty Morphin",noFace:1,q:"Mighty Morphin Pink Ranger",v:"",z:[{z:"Tuta",r:"fab-pink"},{z:"Parti bianche",r:"fab-white"},{z:"Visore",k:"dettagli",r:"visor"}],tips:["Per un rosa vivo compra Squid Pink 72.013."]},
+   {id:"black",g:"ranger",n:"Ranger Nero",al:"",c:"Mighty Morphin",noFace:1,q:"Mighty Morphin Black Ranger",v:"",z:[{z:"Tuta",r:"fab-black"},{z:"Parti bianche",r:"fab-white"},{z:"Visore",k:"dettagli",r:"visor"}],tips:[]},
+   {id:"green",g:"ranger",n:"Ranger Verde",al:"",c:"Mighty Morphin",noFace:1,q:"Mighty Morphin Green Ranger",v:"",z:[{z:"Tuta",r:"fab-green"},{z:"Parti bianche",r:"fab-white"},{z:"Scudo dorato",r:"metal-gold"},{z:"Visore",k:"dettagli",r:"visor"}],tips:["Lo scudo d'oro è perfetto per usare il sistema TMM Imperial Gold."]}
+  ], armors:[], guides:[], links:[["Reference Power Rangers","https://www.google.com/search?tbm=isch&q=Mighty+Morphin+Power+Rangers+statue+painted","Statue dipinte."]]
+ },
+ {id:"marvel", name:"Marvel", sub:"Supereroi", theme:"t-mv", status:"anteprima",
+  intro:"Anteprima: tavolozze per i supereroi più classici. Molte ricette sono le stesse dei cavalieri: tessuti, metalli, metalli colorati.",
+  groups:[["eroi","Eroi"]],
+  chars:[
+   {id:"spiderman",g:"eroi",n:"Spider-Man",al:"",c:"Costume classico",q:"Spider-Man statue painted",v:"",z:[{z:"Rosso",k:"vestiti",r:"fab-red"},{z:"Blu",k:"vestiti",r:"fab-blue"},{z:"Ragnatela",k:"vestiti",s:[["Linee",{bk:1},"Linee sottilissime, colore ben diluito. Con calma."]]},{z:"Lenti della maschera",k:"dettagli",s:[["Bianco",{bo:1,dw:1},""],["Contorno",{bk:1},""]]}],noFace:1,tips:["Prima la ragnatela o prima il rosso? Prima i colori pieni, poi la ragnatela sopra."]},
+   {id:"ironman",g:"eroi",n:"Iron Man",al:"",c:"Armatura",q:"Iron Man statue painted",v:"",z:[{z:"Rosso metallico",r:"cm-red"},{z:"Oro",k:"armatura",r:"metal-gold"},{z:"Reattore e occhi",k:"dettagli",r:"fx-cosmo"}],noFace:1,tips:["Il rosso di Iron Man viene benissimo con il metodo del metallo colorato: argento, poi velature di rosso."]},
+   {id:"cap",g:"eroi",n:"Captain America",al:"",c:"Costume classico",q:"Captain America statue painted",v:"",z:[{z:"Blu",k:"vestiti",r:"fab-blue"},{z:"Rosso",k:"vestiti",r:"fab-red"},{z:"Bianco",k:"vestiti",r:"fab-white"},{z:"Stella",k:"armatura",r:"metal-silver"},{z:"Cinghie",k:"dettagli",r:"fab-leather"}],tips:["Scudo: cerchi rossi e bianchi, stella d'argento al centro su fondo blu."]},
+   {id:"hulk",g:"eroi",n:"Hulk",al:"",c:"Classico",q:"Hulk statue painted",v:"",z:[{z:"Pelle",r:"skin-green"},{z:"Capelli",r:"hair-black"},{z:"Pantaloni",r:"fab-purple"}],tips:["I muscoli di Hulk sono perfetti per imparare ombra e luce."]},
+   {id:"thor",g:"eroi",n:"Thor",al:"",c:"Classico",q:"Thor statue painted",v:"",z:[{z:"Pelle",r:"skin-pale"},{z:"Capelli",r:"hair-blond"},{z:"Armatura",r:"metal-silver"},{z:"Mantello",r:"fab-red"},{z:"Martello",r:"metal-steel"}],tips:[]}
+  ], armors:[], guides:[], links:[["Reference Marvel","https://www.google.com/search?tbm=isch&q=Marvel+statue+painted+resin","Statue dipinte."]]
+ }
+];
+
+/* Percorso del principiante */
+var PATH = [
+ {t:"Stampa una testa e un pezzo di armatura di prova",d:"Non iniziare dalla statua grande: impara sui pezzi piccoli.",l:"#/tecniche/t-errori"},
+ {t:"Prepara la stampa",d:"Lavaggio in IPA, polimerizzazione, supporti, levigatura, sapone.",l:"#/tecniche/t-prep"},
+ {t:"Dai il primer nero",d:"Passate brevi e leggere, poi una notte di asciugatura.",l:"#/tecniche/t-primer"},
+ {t:"Conosci i tuoi pennelli",d:"Controlla le misure stampate sui manici e scegli quale tenere solo per i metallici.",l:"#/pennelli"},
+ {t:"Prepara la tavolozza bagnata",d:"Spugna umida, carta sopra, metallici a parte.",l:"#/tecniche/t-tavolozza"},
+ {t:"Impara a diluire",d:"Prova su un pezzo scartato finché il colore scorre come latte.",l:"#/tecniche/t-diluire"},
+ {t:"Prova una prima ricetta",d:"Mischia una ricetta di pelle contando le gocce e confronta con il mixer.",l:"#/ricette"},
+ {t:"Dipingi il pezzo d'armatura con il sistema TMM",d:"Base, Shade, Light: la tecnica più gratificante per iniziare.",l:"#/tecniche/t-tmm"},
+ {t:"Dipingi la testa di prova",d:"Base, occhi, ombra, luce.",l:"#/tecniche/t-occhi"},
+ {t:"Prova il drybrush su una basetta",d:"Una roccia grigia: veloce e d'effetto.",l:"#/tecniche/t-drybrush"},
+ {t:"Fotografa e confronta",d:"Una foto ravvicinata mostra subito cosa migliorare. Poi passa alla figura vera.",l:"#/tecniche/t-errori"}
+];
+
+/* Tutorial video (ricerche YouTube) */
+var TUTORIALS = [
+ ["Basi della pittura","come dipingere miniature principianti tutorial italiano","Le basi da zero, in italiano."],
+ ["Tavolozza bagnata","wet palette fai da te miniature","Come prepararla e usarla."],
+ ["Diluire il colore","come diluire colori acrilici miniature","La consistenza giusta."],
+ ["Wash","wash miniature tutorial italiano","Stendere la lavatura senza aloni."],
+ ["Drybrush","drybrush tutorial miniature italiano","Il pennello asciutto passo passo."],
+ ["True Metallic Metal","Vallejo True Metallic Metal tutorial","Il sistema Base, Shade, Light."],
+ ["Set Tanned Skin","Vallejo Game Color Tanned Skin set tutorial","Il video del set che hai."],
+ ["Occhi","come dipingere occhi miniature tutorial","Occhi puliti a mano libera."],
+ ["Edge highlight","edge highlighting armor miniature tutorial","Luci sugli spigoli."],
+ ["Metallo colorato (candy)","candy metallic brush painting miniature","Argento con velature di colore."],
+ ["Stampe in resina","preparare stampa resina per verniciatura primer","Lavaggio, levigatura, primer."],
+ ["Gold Cloth di Saint Seiya","Saint Seiya gold cloth painting","Armature d'oro dipinte."]
+];
+(function(){
+"use strict";
+var $=function(s){return document.querySelector(s);};
+function load(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}}
+function save(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+
+/* ================= COLORI POSSEDUTI ================= */
+var PAINTS=[],P={};
+function h2r(h){h=h.replace("#","");if(h.length===3)h=h.split("").map(function(c){return c+c;}).join("");return [0,2,4].map(function(i){return parseInt(h.substr(i,2),16)/255;});}
+function toLin(c){return c<=0.04045?c/12.92:Math.pow((c+0.055)/1.055,2.4);}
+function toS(c){c=Math.max(0,Math.min(1,c));return c<=0.0031308?12.92*c:1.055*Math.pow(c,1/2.4)-0.055;}
+function lin2hex(l){return "#"+l.map(function(c){return Math.round(toS(c)*255).toString(16).padStart(2,"0");}).join("").toUpperCase();}
+function hexLin(h){return h2r(h).map(toLin);}
+function lab(l){
+  var r=l[0],g=l[1],b=l[2];
+  var X=(r*0.4124+g*0.3576+b*0.1805)/0.95047,Y=r*0.2126+g*0.7152+b*0.0722,Z=(r*0.0193+g*0.1192+b*0.9505)/1.08883;
+  function f(t){return t>0.008856?Math.cbrt(t):7.787*t+16/116;}
+  var fx=f(X),fy=f(Y),fz=f(Z);return [116*fy-16,500*(fx-fy),200*(fy-fz)];
+}
+function lab2lin(L){
+  var fy=(L[0]+16)/116,fx=fy+L[1]/500,fz=fy-L[2]/200;
+  function inv(t){var t3=t*t*t;return t3>0.008856?t3:(t-16/116)/7.787;}
+  var X=inv(fx)*0.95047,Y=inv(fy),Z=inv(fz)*1.08883;
+  var r=3.2406*X-1.5372*Y-0.4986*Z,g=-0.9689*X+1.8758*Y+0.0415*Z,b=0.0557*X-0.2040*Y+1.0570*Z;
+  return [r,g,b].map(function(v){return Math.max(0.0005,Math.min(1,v));});
+}
+function dE(a,b){return Math.sqrt(Math.pow(a[0]-b[0],2)+Math.pow(a[1]-b[1],2)+Math.pow(a[2]-b[2],2));}
+
+function buildPaints(){
+  var custom=load("pr-custom",[]);
+  PAINTS=BASE_PAINTS.concat(custom.map(function(c){return {id:c.id,code:c.code||"—",it:c.it,en:c.en||"",hex:c.hex,line:"Aggiunto da te",metal:c.metal?1:0,custom:1,use:c.use||""};}));
+  P={};
+  PAINTS.forEach(function(p){p.lin=hexLin(p.hex);p.log=p.lin.map(function(v){return Math.log(Math.max(v,0.002));});p.lab=lab(p.lin);P[p.id]=p;});
+  FCACHE={};
+}
+
+/* Miscela "tipo pigmento": media geometrica pesata in luce lineare */
+function mixLin(mix){
+  var S=0,acc=[0,0,0];
+  Object.keys(mix).forEach(function(id){var n=mix[id],p=P[id];if(!n||!p)return;S+=n;for(var k=0;k<3;k++)acc[k]+=n*p.log[k];});
+  return S?acc.map(function(v){return Math.exp(v/S);}):null;
+}
+function isMetal(mix){var S=0,M=0;Object.keys(mix).forEach(function(id){var p=P[id];if(!p)return;S+=mix[id];if(p.metal)M+=mix[id];});return S>0&&M/S>=0.3;}
+function swStyle(lin,metal){
+  var hex=lin2hex(lin);
+  if(!metal)return "background:"+hex;
+  var light=lin2hex(lin.map(function(v){return v+(1-v)*0.6;})),dark=lin2hex(lin.map(function(v){return v*0.3;}));
+  return "background:linear-gradient(135deg,"+light+" 0%,"+hex+" 30%,"+dark+" 55%,"+hex+" 78%,"+light+" 100%)";
+}
+function paintStyle(p){return swStyle(p.lin,p.metal);}
+function mixStyle(mix){var l=mixLin(mix);return l?swStyle(l,isMetal(mix)):"background:var(--chip)";}
+function mixHex(mix){var l=mixLin(mix);return l?lin2hex(l):"—";}
+function drops(n){return n+(n==1?" goccia":" gocce");}
+function pn(p){return '<span class="pn">'+esc(p.it)+'<small>'+esc(p.code)+'</small></span>';}
+function formula(mix){
+  var ids=Object.keys(mix).filter(function(id){return P[id];});
+  if(!ids.length)return '<span class="muted small">colore non disponibile</span>';
+  return ids.map(function(id){var p=P[id];return '<span class="ing"><i class="dot" style="'+paintStyle(p)+'"></i>'+drops(mix[id])+"&nbsp;"+pn(p)+"</span>";}).join('<span class="plus">+</span>');
+}
+function ratioText(mix){return Object.keys(mix).filter(function(id){return P[id];}).map(function(id){return drops(mix[id])+" "+P[id].it+" ("+P[id].code+")";}).join(" + ");}
+function closeness(d){return d<4?["b-ok","quasi identico"]:d<10?["b-mid","vicino"]:["b-far","approssimativo"];}
+
+/* ================= RICERCA DELLE MISCELE ================= */
+var FCACHE={};
+function gcd(a,b){return b?gcd(b,a%b):a;}
+function findMixes(targetHex,three){
+  var key=targetHex+(three?"3":"2");if(FCACHE[key])return FCACHE[key];
+  var tLab=lab(hexLin(targetHex));
+  var pool=PAINTS.filter(function(p){return !p.metal&&!p.wash&&!p.aero;});
+  var n=pool.length,best={};
+  function consider(ids,parts){
+    var S=0,a0=0,a1=0,a2=0;
+    for(var i=0;i<ids.length;i++){var L=pool[ids[i]].log,w=parts[i];S+=w;a0+=w*L[0];a1+=w*L[1];a2+=w*L[2];}
+    var l=[Math.exp(a0/S),Math.exp(a1/S),Math.exp(a2/S)];
+    var d=dE(lab(l),tLab),score=d+0.9*(ids.length-1)+0.05*S,k=ids.join(",");
+    if(!best[k]||best[k].score>score)best[k]={score:score,d:d,ids:ids.slice(),parts:parts.slice(),lin:l};
+  }
+  var a,b,c,x,y,z;
+  for(a=0;a<n;a++)consider([a],[1]);
+  for(a=0;a<n;a++)for(b=a+1;b<n;b++)for(x=1;x<=8;x++)for(y=1;y<=8;y++){if(gcd(x,y)===1)consider([a,b],[x,y]);}
+  if(three)for(a=0;a<n;a++)for(b=a+1;b<n;b++)for(c=b+1;c<n;c++)for(x=1;x<=5;x++)for(y=1;y<=5;y++)for(z=1;z<=5;z++){if(gcd(gcd(x,y),z)===1)consider([a,b,c],[x,y,z]);}
+  var list=Object.keys(best).map(function(k){return best[k];}).sort(function(p,q){return p.score-q.score;}).slice(0,6).map(function(r){
+    var mix={};r.ids.forEach(function(ix,i){mix[pool[ix].id]=r.parts[i];});return {mix:mix,d:r.d,hex:lin2hex(r.lin)};});
+  FCACHE[key]=list;return list;
+}
+function autoBSL(hex){
+  var L=lab(hexLin(hex));
+  var sh=lin2hex(lab2lin([Math.max(8,L[0]-17),L[1]*0.92,L[2]*0.92]));
+  var li=lin2hex(lab2lin([Math.min(96,L[0]+15),L[1]*0.82,L[2]*0.82]));
+  var b=findMixes(hex,true)[0],s=findMixes(sh,true)[0],l=findMixes(li,true)[0];
+  return [["Ombra",s.mix,"Calcolata in automatico: incavi e zone basse.",s.d],["Base",b.mix,"Calcolata in automatico: su tutta la zona.",b.d],["Luce",l.mix,"Calcolata in automatico: rilievi.",l.d]];
+}
+function nearestBuy(hex){
+  var t=lab(hexLin(hex));
+  return BUY.map(function(b){return {b:b,d:dE(t,lab(hexLin(b.hex)))};}).sort(function(x,y){return x.d-y.d;})[0];
+}
+function buyHTML(hex){
+  var nb=nearestBuy(hex);if(!nb)return "";
+  var owned=PAINTS.some(function(p){return p.code===nb.b.code;});
+  if(owned)return "";
+  return '<div class="buy"><i class="sw" style="background:'+nb.b.hex+'"></i><div><b>Per il colore esatto:</b> Vallejo Game Color '+esc(nb.b.it)+' <span class="code">'+nb.b.code+'</span>. '+esc(nb.b.why)+' <button class="btn sm" data-addbuy="'+nb.b.code+'">L\'ho comprato</button></div></div>';
+}
+
+/* ================= COMPONENTI ================= */
+var RMAP={};RECIPES.forEach(function(r){RMAP[r.id]=r;});
+var PMAP={};PROJECTS.forEach(function(p){PMAP[p.id]=p;});
+
+/* Ordine reale di lavoro: i passaggi vengono ordinati come si dipingono */
+var ROLE_RULES=[[/^prima mano/i,5],[/^base scura/i,6],[/^fondo/i,8],[/^mix/i,10],[/^base$/i,10],[/^velatura/i,15],
+ [/^ombra \(wash\)/i,20],[/^ombra$/i,20],[/^ombra profonda/i,25],[/^(ripresa|recupera)/i,30],
+ [/^luce intermedia/i,35],[/^luce$/i,40],[/^luce estrema/i,50],[/^spigoli/i,55],[/^punt[oi] luce/i,60]];
+function rolePri(role){for(var i=0;i<ROLE_RULES.length;i++)if(ROLE_RULES[i][0].test(role))return ROLE_RULES[i][1];return null;}
+var ORDER_CATS={pelle:1,capelli:1,tessuti:1,metalli:1,colmet:1},OCACHE={};
+function orderedSteps(r){
+  if(OCACHE[r.id])return OCACHE[r.id];
+  var st=r.s.slice();
+  if(ORDER_CATS[r.cat]){
+    var pr=st.map(function(s){return rolePri(s[0]);});
+    if(pr.every(function(p){return p!=null;}))st=st.map(function(s,i){return {s:s,p:pr[i],i:i};}).sort(function(a,b){return a.p-b.p||a.i-b.i;}).map(function(o){return o.s;});
+  }
+  return (OCACHE[r.id]=st);
+}
+function isOpt(s){return /facoltativ|^ombra profonda|^luce estrema|^punt[oi] luce|^variante/i.test(s[0]);}
+function techOf(s){
+  var r=s[0].toLowerCase(),t=r+" "+(s[2]||"").toLowerCase();
+  if(/wash|shade/.test(r))return ["wash","t-wash"];
+  if(/drybrush/.test(t))return ["drybrush","t-drybrush"];
+  if(/velatura/.test(t))return ["velatura","t-velatura"];
+  if(/^spigoli/.test(r)||/linea sottil/.test(t))return ["luce sugli spigoli","t-spigoli"];
+  if(/^(punt[oi] luce|riflesso|pupilla|punto|neo|puntini|contorno|linea)/.test(r))return ["punta del pennello","t-occhi"];
+  if(/^(base|prima mano|fondo|mix|ripresa|recupera)/.test(r))return ["strato coprente","t-diluire"];
+  if(/^(ombra|luce)/.test(r))return ["strato sottile","t-bsl"];
+  return null;
+}
+function coverage(s){
+  var r=s[0].toLowerCase();
+  if(/wash|velatura/.test(r))return null;
+  if(/^(base|prima mano|fondo|mix)/.test(r))return 100;
+  if(/^ombra profonda/.test(r))return 10;
+  if(/^ombra/.test(r))return 35;
+  if(/^(ripresa|recupera|luce intermedia)/.test(r))return 50;
+  if(/^luce estrema/.test(r))return 10;
+  if(/^luce/.test(r))return 30;
+  if(/^spigoli/.test(r))return 5;
+  if(/^punt/.test(r))return 3;
+  if(/drybrush/.test(r))return 40;
+  return null;
+}
+function stepHTML(s,i,o){
+  o=o||{};var mix=s[1],opt=isOpt(s),t=techOf(s),cov=coverage(s),extra="";
+  if(s[3]!=null){var c=closeness(s[3]);extra=' <span class="badge '+c[0]+'">'+c[1]+'</span>';}
+  var tags=(opt?' <span class="tag opt">facoltativo</span>':'')+(t?' <a class="tag ttag" href="#/tecniche/'+t[1]+'" title="Come si fa">'+t[0]+'</a>':'')+' '+brushChip(s,o.zone);
+  var covh=cov!=null?'<div class="covrow"><div class="cov" aria-hidden="true"><i style="width:'+cov+'%"></i></div><span>'+(cov===100?'copre tutta la zona':'copre circa il '+cov+'% della zona')+'</span></div>':'';
+  return '<div class="step'+(o.done?' done':'')+(opt?' isopt':'')+'"><div class="num">'+(i+1)+'</div><i class="sw" style="'+mixStyle(mix)+'"></i>'+
+    '<div class="sbody"><div class="shead"><b class="role">'+esc(s[0])+'</b>'+extra+tags+'</div><div class="f">'+formula(mix)+'</div>'+(s[2]?'<div class="use">'+esc(s[2])+'</div>':'')+covh+'</div>'+
+    '<div class="hexbox"><code>'+mixHex(mix)+'</code><button class="btn sm" data-mix="'+esc(JSON.stringify(mix))+'">Mixer</button>'+(o.check?'<label class="chk done-chk"><input type="checkbox" data-done="'+esc(o.check)+'"'+(o.done?' checked':'')+'> fatto</label>':'')+'</div></div>';
+}
+function scaleHTML(steps){
+  var arr=steps.map(function(s){var l=mixLin(s[1]);return {s:s,L:l?lab(l)[0]:0};}).sort(function(a,b){return a.L-b.L;});
+  return '<div class="scale">'+arr.map(function(a){return '<i style="'+mixStyle(a.s[1])+'" title="'+esc(a.s[0])+'"></i>';}).join("")+'</div>';
+}
+function recipeHTML(r){
+  var st=orderedSteps(r);
+  return '<article class="group" id="r-'+r.id+'"><header><div><h3>'+esc(r.title)+'</h3><div class="who">'+esc(r.who)+'</div></div><div class="scalebox"><span>Toni, dal più scuro al più chiaro</span>'+scaleHTML(st)+'</div></header>'+(r.tip?'<div class="tip">'+esc(r.tip)+'</div>':"")+'<p class="order-note">I passaggi sono nell\'ordine in cui si dipingono.</p>'+st.map(function(s,i){return stepHTML(s,i,{zone:{z:r.title,k:r.cat==="basette"?"basetta":r.cat==="occhi"?"volto":""}});}).join("")+"</article>";
+}
+function baseOf(steps){
+  for(var i=0;i<steps.length;i++){if(/^base$/i.test(steps[i][0]))return steps[i][1];}
+  for(i=0;i<steps.length;i++){if(/^(mix|base\b)/i.test(steps[i][0])&&!/scura|facolt/i.test(steps[i][0]))return steps[i][1];}
+  return steps[0][1];
+}
+function zoneSteps(z){
+  if(z.r&&RMAP[z.r])return orderedSteps(RMAP[z.r]);
+  if(z.s)return z.s;
+  if(z.t)return autoBSL(z.t);
+  return [];
+}
+function zoneColor(z){
+  var st=zoneSteps(z);if(!st.length)return "background:var(--chip)";
+  if(z.t&&!z.r&&!z.s)return "background:"+z.t;
+  return mixStyle(baseOf(st));
+}
+function zoneHTML(z,ctx){
+  var st=zoneSteps(z),r=z.r&&RMAP[z.r],extra="";
+  var sub=r?'Ricetta: <a href="#/ricette/'+r.id+'">'+esc(r.title)+'</a>':(z.t&&!z.s?"Ricetta calcolata dai tuoi colori":"");
+  if(z.t){
+    var bm=st.length?baseOf(st):null,d=bm?dE(lab(hexLin(z.t)),lab(mixLin(bm))):99,c=closeness(d);
+    extra='<p class="auto-note"><i class="dot" style="background:'+z.t+'"></i>Colore di riferimento <code>'+z.t.toUpperCase()+'</code> · base della ricetta <span class="badge '+c[0]+'">'+c[1]+'</span></p>';
+    if(d>=10)extra+=buyHTML(z.t);
+  }
+  var optN=st.filter(isOpt).length;
+  var info=st.length>1?'<p class="order-note">'+st.length+' passaggi, nell\'ordine in cui si dipingono'+(optN?'. Quelli segnati «facoltativo» ('+optN+') puoi saltarli nelle prime figure':'')+'.</p>':'';
+  var head='<header><i class="sw" style="'+zoneColor(z)+'"></i><div><h3 style="margin:0">'+esc(z.z)+'</h3><div class="sub">'+sub+'</div></div>'+(st.length>1?'<div class="scalebox"><span>Toni</span>'+scaleHTML(st)+'</div>':'')+'</header>';
+  var body=st.map(function(s,i){var key=ctx?ctx.pre+"|"+z.z+"|"+i:null;return stepHTML(s,i,key?{check:key,done:!!ctx.done[key],zone:z}:{zone:z});}).join("");
+  return '<article class="zone">'+head+(z.n?'<div class="tip">'+esc(z.n)+'</div>':"")+extra+(r&&r.tip?'<div class="tip">'+esc(r.tip)+'</div>':"")+info+body+'</article>';
+}
+function palHTML(zones){return zones.map(function(z){return '<i style="'+zoneColor(z)+'" title="'+esc(z.z)+'"></i>';}).join("");}
+function linksHTML(q){
+  var e=encodeURIComponent;
+  var L=[["Immagini dell'anime","https://www.google.com/search?tbm=isch&q="+e(q+" anime"),"Colori originali della serie."],
+         ["Myth Cloth e figure","https://www.google.com/search?tbm=isch&q="+e(q+" Myth Cloth EX"),"Le action figure ufficiali."],
+         ["Statue dipinte","https://www.google.com/search?tbm=isch&q="+e(q+" statue painted"),"Come altri hanno dipinto statue simili."],
+         ["Pinterest","https://www.pinterest.com/search/pins/?q="+e(q+" painted figure"),"Raccolte di reference."],
+         ["Video di pittura","https://www.youtube.com/results?search_query="+e(q+" painting figure"),"Tutorial su YouTube."]];
+  return '<div class="linkgrid">'+L.map(function(l){return '<a href="'+l[1]+'" target="_blank" rel="noopener"><b>'+l[0]+'</b><span>'+l[2]+'</span></a>';}).join("")+'</div>';
+}
+function seqHTML(steps,zone){
+  return '<ol class="seq">'+steps.map(function(s){return '<li><div><b class="stitle">'+esc(s[0])+'</b>'+(s[2]?' '+brushChip([s[0],s[2],s[1]],zone||{z:"",k:""}):'')+'<div>'+esc(s[1])+'</div>'+(s[2]?'<div class="f">'+formula(s[2])+'</div>':"")+'</div><span></span></li>';}).join("")+'</ol>';
+}
+
+/* ================= PENNELLI ================= */
+var BTYPES={tondo:"Tondo",liner:"Liner",spot:"Spot Detail",piatto:"Piatto",angolato:"Angolato",drybrush:"Drybrush"};
+var DEFAULT_BRUSHES=[
+ {id:"b1",t:"piatto",s:"2"},{id:"b2",t:"piatto",s:"0"},{id:"b3",t:"angolato",s:"1"},
+ {id:"b4",t:"tondo",s:"2"},{id:"b5",t:"tondo",s:"1"},{id:"b6",t:"tondo",s:"0"},{id:"b7",t:"tondo",s:"3/0"},{id:"b8",t:"tondo",s:"5/0"},{id:"b9",t:"tondo",s:"10/0"},
+ {id:"b10",t:"liner",s:"3/0"},{id:"b11",t:"liner",s:"5/0"},{id:"b12",t:"spot",s:"20/0"},
+ {id:"b13",t:"drybrush",s:"9"},{id:"b14",t:"drybrush",s:"7"},{id:"b15",t:"drybrush",s:"5"},{id:"b16",t:"drybrush",s:"3"}];
+function brushes(){return load("pr-brushes2",null)||DEFAULT_BRUSHES;}
+function bval(s){s=String(s||"").trim().toUpperCase();var m=/^(\d+)\s*\/\s*0$/.exec(s);if(m){var n=+m[1];return n<=1?0:-(n-1);}if(s==="00")return -1;if(s==="000")return -2;var x=parseFloat(s.replace(",","."));return isNaN(x)?0:x;}
+function dval(s){var u=String(s||"").toUpperCase(),m={XS:1,S:3,M:5,L:7,XL:9};return m[u]!=null?m[u]:(parseFloat(u)||5);}
+function bLabel(b){return BTYPES[b.t]+" "+b.s;}
+var SLOTS={
+ spot:{t:"spot",v:-19,n:"Spot Detail",d:"Il più fine di tutti: pupille, riflessi negli occhi, punti luce, nei."},
+ micro:{t:"tondo",v:-4,n:"Tondo micro",d:"Contorno e iride degli occhi, puntini, dettagli minuscoli."},
+ fine:{t:"tondo",v:-2,n:"Tondo fine",d:"Spigoli, luci estreme, ombre profonde, dettagli piccoli, labbra."},
+ medio:{t:"tondo",v:1,n:"Tondo medio",d:"Basi, ombre e luci su pelle, capelli, tute. È il pennello che userai di più."},
+ grande:{t:"tondo",v:2,n:"Tondo grande",d:"Basi e wash su superfici grandi: mantelli, armature, basette."},
+ liner:{t:"liner",v:-2,n:"Liner",d:"Linee lunghe e sottili: ragnatele, venature del marmo, contorni lunghi, cuciture."},
+ piatto:{t:"piatto",v:2,n:"Piatto",d:"Velature su superfici piatte e larghe (scudi, mantelli, placche)."},
+ angolato:{t:"angolato",v:1,n:"Angolato",d:"Spigoli dritti e lunghi: bordi di placche, scudi e basette."},
+ "dry-s":{t:"drybrush",v:3,n:"Drybrush piccolo",d:"Drybrush su capelli, piume, catene, bordi delle armature."},
+ "dry-m":{t:"drybrush",v:6,n:"Drybrush medio",d:"Drybrush su armature intere, mantelli, rocce piccole."},
+ "dry-l":{t:"drybrush",v:9,n:"Drybrush grande",d:"Drybrush su rocce, terra, neve, basette."}};
+function pickBrush(slot){
+  var S=SLOTS[slot],all=brushes(),list=all.filter(function(b){return b.t===S.t;});
+  if(!list.length){
+    if(S.t==="liner"||S.t==="angolato")return pickBrush("fine");
+    if(S.t==="spot")return pickBrush("micro");
+    if(S.t==="piatto")return pickBrush("grande");
+    list=all.filter(function(b){return b.t==="tondo";});if(!list.length)return null;
+  }
+  var f=S.t==="drybrush"?dval:bval;
+  return list.slice().sort(function(a,b){return Math.abs(f(a.s)-S.v)-Math.abs(f(b.s)-S.v);})[0];
+}
+function metalBrush(){return brushes().find(function(b){return b.m;});}
+function zoneSize(z){
+  if(!z)return "m";var n=(z.z||"").toLowerCase();
+  if(z.k==="basetta"||/mantello|cloth|surplice|scaglia|armatura|roccia|terra|marmo|neve|lava|sabbia|erba|pantaloni|tuta|vestito|abito|scudo|ali\b|pietra|colonne/.test(n))return "l";
+  if(z.k==="volto"||/occhi|gemm|neo|puntini|punto|unghia|cicatrice|stella|visore|lenti|rosario|labbra|catene|reattore|ragnatela|maschera/.test(n))return "s";
+  return "m";
+}
+function brushFor(s,z){
+  var r=s[0].toLowerCase(),u=(s[2]||"").toLowerCase(),t=techOf(s),tk=t?t[0]:"",sz=zoneSize(z),slot,why;
+  if(tk==="drybrush"){slot=z&&z.k==="basetta"?"dry-l":sz==="l"?"dry-m":"dry-s";why="Pennello quasi asciutto, colpi leggeri avanti e indietro.";}
+  else if(tk==="wash"){slot=sz==="s"?"fine":sz==="l"?"grande":"medio";why="Deve tenere tanto liquido: caricalo bene.";}
+  else if(tk==="velatura"){slot=sz==="l"?"piatto":"medio";why="Passate larghe e trasparenti, pennello umido ma non gocciolante.";}
+  else if(/linee|venature|ragnatela/.test(r+" "+u)){slot="liner";why="Le linee lunghe vengono più regolari con un liner.";}
+  else if(tk==="luce sugli spigoli"){slot=sz==="s"?"micro":sz==="l"?"angolato":"fine";why="Appoggia il fianco della punta sul bordo.";}
+  else if(/^(pupilla|riflesso|punt[oi] luce|punto|neo|puntini)/.test(r)){slot="spot";why="Il pennello più fine: tocca appena la superficie.";}
+  else if(tk==="punta del pennello"){slot="micro";why="Solo la punta, colore ben diluito.";}
+  else if(/^(ombra profonda|luce estrema)/.test(r)){slot=sz==="s"?"micro":"fine";why="Aree piccole: serve precisione.";}
+  else if(tk==="strato coprente"){slot=sz==="l"?"grande":sz==="s"?"fine":"medio";why="Strati sottili e uniformi, due o tre mani.";}
+  else if(tk==="strato sottile"){slot=sz==="s"?"fine":"medio";why="Serve controllo sui bordi della zona.";}
+  else{slot=sz==="s"?"micro":"fine";why="Lavoro di dettaglio.";}
+  return {slot:slot,b:pickBrush(slot),why:why};
+}
+function brushChip(s,z){
+  var bf=brushFor(s,z),metal=s[1]&&isMetal(s[1]),mb=metal&&metalBrush()&&bf.b&&bf.b.t==="tondo"?metalBrush():null;
+  var b=mb||bf.b,tip=bf.why+(metal?" Metallico: usa un pennello che tieni solo per i metallici.":"");
+  return '<a class="tag brush" href="#/pennelli" title="'+esc(tip)+'">🖌 '+(b?esc(bLabel(b)):esc(SLOTS[bf.slot].n))+(metal&&!mb?' · solo metallici':'')+'</a>';
+}
+
+/* ================= MODELLO DELLA SCHEDA PERSONAGGIO ================= */
+function zoneTab(z){
+  if(z.k)return z.k;var n=z.z.toLowerCase();
+  if(/pelle/.test(n))return "pelle";
+  if(/capelli/.test(n))return "capelli";
+  if(/occhi|neo|cicatrice|puntini|punto sulla fronte|labbra|sopracc/.test(n))return "volto";
+  if(/tuta|mantello|vestito|pantaloni|parti bianche|abito/.test(n))return "vestiti";
+  if(/cloth|maschera|scudo|catene|gemme|armatura|ali|armi|elmo|stella|surplice|scaglia|fibbia|oro/.test(n))return "armatura";
+  return "dettagli";
+}
+var CTABS=[["panoramica","Panoramica"],["pelle","Pelle"],["volto","Occhi e volto"],["vestiti","Tuta e vestiti"],["armatura",""],["capelli","Capelli"],["dettagli","Dettagli"],["basetta","Basetta"],["reference","Reference"]];
+function getVer(pr,c){if(!c.cv)return null;var m=load("pr-ver",{}),id=m[pr.id+"/"+c.id];return c.cv.find(function(v){return v.id===id;})||c.cv[0];}
+function charZones(pr,c,v){
+  var z=c.z.map(function(x){return x;});
+  if(v)v.z.forEach(function(vz){var o=Object.assign({},vz,{ver:v.id});var i=-1;z.forEach(function(x,j){if(x.z===vz.z)i=j;});if(i>=0)z[i]=o;else z.push(o);});
+  var hasFace=!(c.noFace);
+  if(hasFace&&!c.noEyes&&!z.some(function(x){return /^occhi/i.test(x.z);}))z.push({z:"Occhi",r:"eyes",k:"volto"});
+  if(hasFace)z.push({z:"Labbra, guance e sopracciglia",r:"face",k:"volto",auto:1});
+  (c.b||pr.defBase||["base-rock","base-earth"]).forEach(function(id){if(RMAP[id])z.push({z:RMAP[id].title,r:id,k:"basetta",auto:1});});
+  return z;
+}
+
+/* ================= ROUTER ================= */
+var VIEWS=["pennelli","analizza","home","progetti","project","char","percorso","trova","mixer","ricette","tecniche","colori","comprare","tutorial","figure","figura"];
+function show(v){VIEWS.forEach(function(x){var el=document.getElementById("v-"+x);if(el)el.classList.toggle("on",x===v);});}
+function route(){
+  var parts=location.hash.replace(/^#\/?/,"").split("/").filter(Boolean).map(decodeURIComponent);
+  var nav=parts[0]||"home",theme="",anchor=null;
+  switch(parts[0]){
+    case undefined: renderHome();show("home");break;
+    case "progetti": renderProjects();show("progetti");break;
+    case "p":
+      var pr=PMAP[parts[1]];nav="progetti";
+      if(!pr){renderProjects();show("progetti");break;}
+      theme=pr.theme;
+      if(parts[2]==="c"){renderChar(pr,parts[3],parts[4]||"panoramica");show("char");}
+      else{renderProject(pr,parts[2]||"personaggi");show("project");}
+      break;
+    case "percorso": renderPath();show("percorso");break;
+    case "pennelli": renderBrushes();show("pennelli");break;
+    case "analizza": renderAnalizza();show("analizza");break;
+    case "trova": show("trova");if(!$("#fResults").innerHTML)runFinder();break;
+    case "mixer": show("mixer");renderMixer();break;
+    case "ricette": renderRecipes();show("ricette");anchor=parts[1]?"r-"+parts[1]:null;break;
+    case "tecniche": show("tecniche");anchor=parts[1]||null;break;
+    case "colori": renderColors();show("colori");break;
+    case "comprare": renderBuy();show("comprare");nav="colori";break;
+    case "tutorial": renderTutorials();show("tutorial");nav="home";break;
+    case "figure":
+      if(parts[1]){renderFigura(parts[1],parts[2]);show("figura");}else{renderFigure();show("figure");}
+      break;
+    default: renderHome();show("home");nav="home";
+  }
+  document.body.className=theme;
+  [].forEach.call(document.querySelectorAll(".mainnav a"),function(a){a.classList.toggle("on",a.dataset.nav===nav);});
+  if(anchor){var el=document.getElementById(anchor);if(el){setTimeout(function(){el.scrollIntoView({block:"start"});},0);return;}}
+  window.scrollTo(0,0);
+}
+window.addEventListener("hashchange",route);
+
+/* ================= HOME ================= */
+function shelfHTML(){
+  var groups={};PAINTS.forEach(function(p){(groups[p.line]=groups[p.line]||[]).push(p);});
+  return Object.keys(groups).map(function(g){
+    return '<div class="shelf-group"><h3>'+esc(g)+'</h3><div class="bottles">'+groups[g].map(function(p){
+      return '<button class="bottle" type="button" data-bottle="'+p.id+'" title="'+esc(p.it+" "+p.code)+'"><i class="sw" style="'+paintStyle(p)+'"></i><span class="n">'+esc(p.it)+'<small>'+esc(p.code)+'</small></span></button>';}).join("")+'</div></div>';
+  }).join("");
+}
+function pathDone(){var d=load("pr-path",[]);return PATH.filter(function(_,i){return d[i];}).length;}
+function renderHome(){
+  var done=pathDone(),pct=Math.round(done/PATH.length*100);
+  var next=PATH.find(function(_,i){return !load("pr-path",[])[i];});
+  $("#v-home").innerHTML=
+   '<div class="hero"><h1>Pennello &amp; Resina</h1><p class="lead">Il tuo laboratorio per dipingere a pennello le stampe in resina, anche partendo da zero. Ricette in gocce fatte con i colori che hai, un percorso guidato e schede pronte per ogni progetto.</p>'+
+   '<div class="cta"><a class="btn primary" href="#/percorso">'+(done?"Continua il percorso":"Inizia il percorso")+'</a><a class="btn" href="#/progetti">Apri un progetto</a><a class="btn" href="#/trova">Trova un colore</a></div></div>'+
+   '<div class="shelfbox"><h2>La tua mensola</h2><p class="small muted" style="margin:0">'+PAINTS.length+' flaconi. Tocca un colore per metterlo nel mixer.</p><div class="shelf">'+shelfHTML()+'</div></div>'+
+   '<h2 class="sec">Da dove partire</h2>'+
+   '<div class="grid g3">'+
+     '<a class="card tile" href="#/percorso"><div class="ic">🧭</div><h3>Percorso principiante</h3><p>'+done+' di '+PATH.length+' passi fatti.'+(next?' Prossimo: '+esc(next.t)+'.':' Completato!')+'</p><div class="progress"><i style="width:'+pct+'%"></i></div></a>'+
+     '<a class="card tile" href="#/tecniche"><div class="ic">🖌️</div><h3>Tecniche</h3><p>Diluire, base-ombra-luce, wash, drybrush, metallici, occhi.</p></a>'+
+     '<a class="card tile" href="#/ricette"><div class="ic">📒</div><h3>Ricettario</h3><p>'+RECIPES.length+' ricette in gocce: pelle, capelli, metalli, tessuti, basette.</p></a>'+
+   '</div>'+
+   '<h2 class="sec">Progetti</h2>'+projectsGrid()+
+   '<h2 class="sec">Strumenti</h2>'+
+   '<div class="grid g3">'+
+     '<a class="card tile" href="#/analizza"><div class="ic">📷</div><h3>Analizza una foto</h3><p>Carica un\'immagine, scegli il personaggio e ottieni la guida con colori e pennelli.</p></a>'+
+     '<a class="card tile" href="#/pennelli"><div class="ic">🖌️</div><h3>I miei pennelli</h3><p>Il tuo kit e a cosa serve ogni pennello.</p></a>'+
+     '<a class="card tile" href="#/trova"><div class="ic">🎯</div><h3>Trova un colore</h3><p>Scegli un colore, ti dico come ottenerlo.</p></a>'+
+     '<a class="card tile" href="#/mixer"><div class="ic">🧪</div><h3>Mixer</h3><p>Prova le miscele prima di sprecare colore.</p></a>'+
+     '<a class="card tile" href="#/figure"><div class="ic">🗿</div><h3>Le mie figure</h3><p>Crea la scheda colori di qualsiasi figura.</p></a>'+
+     '<a class="card tile" href="#/colori"><div class="ic">🎨</div><h3>I miei colori</h3><p>Inventario, codici e aggiunta di nuovi flaconi.</p></a>'+
+     '<a class="card tile" href="#/comprare"><div class="ic">🛒</div><h3>Da comprare</h3><p>Cosa ti manca, in ordine di importanza.</p></a>'+
+     '<a class="card tile" href="#/tutorial"><div class="ic">▶️</div><h3>Tutorial video</h3><p>Ricerche YouTube già pronte.</p></a>'+
+   '</div>';
+}
+function projectsGrid(){
+  var bands={"t-ss":"#1F2548","t-pr":"#2A1414","t-mv":"#1B1D2B"};
+  var accents={"t-ss":"#F6E4B0","t-pr":"#FFD2CC","t-mv":"#FFD0D5"};
+  return '<div class="grid g3">'+PROJECTS.map(function(p){
+    return '<a class="card tile proj" href="#/p/'+p.id+'"><div class="top" style="background:'+bands[p.theme]+'"><span class="pill '+(p.status==="completo"?"ok":"")+'" style="align-self:flex-start;margin-bottom:auto">'+(p.status==="completo"?"Completo":"Anteprima")+'</span><h3 style="color:'+accents[p.theme]+'" class="'+(p.theme==="t-ss"?"epic":"")+'">'+esc(p.name)+'</h3></div><div class="body"><b>'+esc(p.sub)+'</b><p>'+p.chars.length+' schede'+(p.armors.length?' · '+p.armors.length+' tipi di armatura':'')+'</p></div></a>';
+  }).join("")+'<a class="card tile" href="#/figure"><div class="ic">＋</div><h3>Un\'altra figura?</h3><p>Crea la tua scheda in «Le mie figure»: scegli le zone e i colori, le ricette si calcolano da sole.</p></a></div>';
+}
+function renderProjects(){
+  $("#v-progetti").innerHTML='<h2>Progetti</h2><p class="intro">Ogni progetto ha le schede colore dei personaggi e, dove serve, le armature e le procedure passo passo. Le tecniche e il ricettario sono in comune a tutti i progetti.</p>'+projectsGrid();
+}
+
+/* ================= PROGETTO ================= */
+var charFilter="tutti",charQuery="";
+var starsSVG='<svg class="stars" viewBox="0 0 1200 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="#fff"><circle cx="80" cy="60" r="1.6"/><circle cx="210" cy="120" r="1"/><circle cx="330" cy="40" r="1.3"/><circle cx="520" cy="90" r="1"/><circle cx="690" cy="30" r="1.5"/><circle cx="760" cy="240" r="1"/><circle cx="40" cy="250" r="1.2"/></g><g stroke="#F6E4B0" stroke-width="1" opacity=".6" fill="none"><polyline points="860,60 930,100 1010,80 1060,140 1000,190 930,170 930,100"/><line x1="1060" y1="140" x2="1140" y2="180"/></g><g fill="#F6E4B0"><circle cx="860" cy="60" r="3"/><circle cx="930" cy="100" r="3"/><circle cx="1010" cy="80" r="3.5"/><circle cx="1060" cy="140" r="3"/><circle cx="1000" cy="190" r="3"/><circle cx="930" cy="170" r="2.5"/><circle cx="1140" cy="180" r="3"/></g></svg>';
+function renderProject(pr,tab){
+  var tabs=[["personaggi","Personaggi"]];
+  if(pr.armors.length)tabs.push(["armature","Armature"]);
+  if(pr.guides.length)tabs.push(["passo","Passo passo"]);
+  tabs.push(["ricette","Ricette del progetto"],["riferimenti","Riferimenti"]);
+  var html='<div class="band">'+(pr.theme==="t-ss"?starsSVG:"")+'<div class="wrapin"><span class="pill" style="background:rgba(255,255,255,.12);color:var(--band-muted)">'+(pr.status==="completo"?"Progetto":"Anteprima")+'</span><h1 style="margin-top:8px">'+esc(pr.name)+'</h1><p>'+esc(pr.intro)+'</p></div></div>';
+  html+='<nav class="subnav">'+tabs.map(function(t){return '<a href="#/p/'+pr.id+'/'+t[0]+'" class="'+(t[0]===tab?"on":"")+'">'+t[1]+'</a>';}).join("")+'</nav>';
+  if(tab==="personaggi"){
+    html+='<div class="filters" id="cf">'+[["tutti","Tutti"]].concat(pr.groups).map(function(g){return '<button type="button" data-cf="'+g[0]+'" class="'+(g[0]===charFilter?"on":"")+'">'+g[1]+'</button>';}).join("")+'</div>';
+    html+='<input type="search" id="cq" placeholder="Cerca un personaggio o una costellazione" value="'+esc(charQuery)+'"><div id="clist"></div>';
+  }else if(tab==="armature"){
+    html+='<p class="intro">Le armature per tipo. Ogni scheda personaggio rimanda qui, e le procedure complete sono in «Passo passo».</p>';
+    html+=pr.armors.map(function(a){
+      return '<article class="tech noimg"><div><h3>'+esc(a.t)+'</h3><p class="muted small" style="margin:0 0 6px">'+esc(a.who)+'</p><p>'+esc(a.d)+'</p>'+
+        '<div class="f">'+a.r.map(function(id){var r=RMAP[id];return '<a class="ing" href="#/ricette/'+id+'" style="text-decoration:none;color:inherit"><i class="dot" style="'+mixStyle(baseOf(r.s))+'"></i>'+esc(r.title)+'</a>';}).join("")+'</div>'+
+        (a.g?'<p style="margin-top:10px"><a class="btn sm" href="#/p/'+pr.id+'/passo">Procedura passo passo</a></p>':"")+'</div></article>';
+    }).join("");
+  }else if(tab==="passo"){
+    html+=pr.guides.map(function(g){return '<article class="tech noimg" id="g-'+g.id+'"><div><h3>'+esc(g.t)+'</h3>'+(g.i?'<p>'+esc(g.i)+'</p>':"")+seqHTML(g.s,{z:g.t,k:g.id==="rock"?"basetta":g.id==="face"?"":"armatura"})+'</div></article>';}).join("");
+  }else if(tab==="ricette"){
+    var ids=[];pr.chars.forEach(function(c){var all=c.z.slice();(c.cv||[]).forEach(function(v){all=all.concat(v.z);});all.forEach(function(z){if(z.r&&ids.indexOf(z.r)<0)ids.push(z.r);});});
+    pr.armors.forEach(function(a){a.r.forEach(function(id){if(ids.indexOf(id)<0)ids.push(id);});});
+    ["fx-cosmo","fx-fire","base-rock","base-marble","base-lava"].forEach(function(id){if(pr.id==="saint-seiya"&&ids.indexOf(id)<0)ids.push(id);});
+    html+='<p class="intro">Tutte le ricette usate in questo progetto, in un solo posto.</p>'+ids.map(function(id){return recipeHTML(RMAP[id]);}).join("");
+  }else{
+    html+='<p class="intro">Link per trovare immagini di riferimento. Ogni scheda personaggio ha anche i suoi link specifici.</p><div class="linkgrid">'+pr.links.map(function(l){return '<a href="'+l[1]+'" target="_blank" rel="noopener"><b>'+esc(l[0])+'</b><span>'+esc(l[2])+'</span></a>';}).join("")+'</div>';
+  }
+  $("#v-project").innerHTML=html;
+  if(tab==="personaggi"){
+    var draw=function(){
+      var q=charQuery.trim().toLowerCase();
+      var list=pr.chars.filter(function(c){return (charFilter==="tutti"||c.g===charFilter)&&(!q||(c.n+" "+c.al+" "+c.c).toLowerCase().indexOf(q)>=0);});
+      $("#clist").innerHTML=pr.groups.map(function(g){
+        var cs=list.filter(function(c){return c.g===g[0];});if(!cs.length)return "";
+        return '<h3 class="grouptitle">'+g[1]+'</h3><div class="chars">'+cs.map(function(c){
+          return '<a class="ch" href="#/p/'+pr.id+'/c/'+c.id+'"><div class="pal">'+palHTML(charZones(pr,c,getVer(pr,c)).filter(function(z){return !z.auto&&z.k!=="basetta";}).slice(0,6))+'</div><div class="in"><b>'+esc(c.n)+'</b><span>'+esc(c.c)+(c.al?' · '+esc(c.al):'')+'</span></div></a>';}).join("")+'</div>';
+      }).join("")||'<p class="muted">Nessun personaggio trovato.</p>';
+    };
+    draw();
+    $("#cf").addEventListener("click",function(e){var b=e.target.closest("[data-cf]");if(!b)return;charFilter=b.dataset.cf;[].forEach.call($("#cf").children,function(x){x.classList.toggle("on",x===b);});draw();});
+    $("#cq").addEventListener("input",function(e){charQuery=e.target.value;draw();});
+  }
+}
+function buildGuide(pr,c,tab,base,opt){
+  opt=opt||{};
+  var v=getVer(pr,c),zones=charZones(pr,c,v),doneMap=load("pr-done",{})[pr.id+"/"+c.id]||{};
+  var byTab={};zones.forEach(function(z){var t=zoneTab(z);(byTab[t]=byTab[t]||[]).push(z);});
+  function keyPre(t,z){return t+(z.ver?"@"+z.ver:"");}
+  function tabStats(t){var tot=0,dn=0;(byTab[t]||[]).forEach(function(z){zoneSteps(z).forEach(function(s,i){if(isOpt(s))return;tot++;if(doneMap[keyPre(t,z)+"|"+z.z+"|"+i])dn++;});});return [dn,tot];}
+  var tabs=CTABS.filter(function(t){return t[0]==="panoramica"||t[0]==="reference"||(byTab[t[0]]&&byTab[t[0]].length);}).map(function(t){return [t[0],t[1]||pr.armorLabel||"Armatura"];});
+  if(!tabs.some(function(t){return t[0]===tab;}))tab="panoramica";
+  var html=opt.back||'';
+  html+='<h2 class="'+(pr.theme==="t-ss"?"epic":"")+'" style="font-size:clamp(1.8rem,5vw,2.8rem)">'+esc(c.n)+'</h2><p class="muted" style="margin:0">'+esc(c.c||"")+(c.al?' · nel doppiaggio italiano: '+esc(c.al):'')+'</p>'+(opt.after||'');
+  if(c.cv){
+    html+='<div class="verbar"><span class="small muted">Versione della '+esc((pr.armorLabel||"armatura").toLowerCase())+':</span><div class="filters" style="margin:0">'+c.cv.map(function(x){return '<button type="button" data-ver="'+pr.id+'/'+c.id+'/'+x.id+'" class="'+(x.id===v.id?"on":"")+'">'+esc(x.label)+(x.sub?' <small class="muted">'+esc(x.sub)+'</small>':'')+'</button>';}).join("")+'</div></div>';
+  }
+  html+='<div class="bigpal">'+zones.filter(function(z){return z.k!=="basetta"&&!z.auto;}).map(function(z){var st=zoneColor(z),m=/background:(#[0-9A-Fa-f]{6})$/.exec(st),ink="#1B1F2A";if(m&&lab(hexLin(m[1]))[0]<60)ink="#fff";return '<div style="'+st+';color:'+ink+'">'+esc(z.z)+'</div>';}).join("")+'</div>';
+  html+='<nav class="subnav ctabs">'+tabs.map(function(t){var st=tabStats(t[0]),badge=(t[0]!=="panoramica"&&t[0]!=="reference"&&st[1])?' <small class="cnt'+(st[0]===st[1]?' ok':'')+'">'+st[0]+'/'+st[1]+'</small>':'';return '<a href="'+base+t[0]+'" class="'+(t[0]===tab?"on":"")+'">'+esc(t[1])+badge+'</a>';}).join("")+'</nav>';
+
+  if(tab==="panoramica"){
+    var tot=0,dn=0;tabs.forEach(function(t){if(t[0]==="basetta")return;var s=tabStats(t[0]);dn+=s[0];tot+=s[1];});
+    html+='<div class="grid g2"><div class="card"><h3>Il tuo avanzamento</h3><div class="progress"><i style="width:'+(tot?Math.round(dn/tot*100):0)+'%"></i></div><p class="small muted" style="margin:0">'+dn+' di '+tot+' passaggi fatti (esclusi i facoltativi e la basetta). Spunta «fatto» sotto ogni passaggio mentre dipingi.</p></div>';
+    html+='<div class="card"><h3>Come usare questa scheda</h3><p class="small" style="margin:0">Le schede in alto sono già nell\'<b>ordine in cui dipingere</b>: da sinistra a destra. Dentro ogni scheda i passaggi sono numerati e vanno fatti in sequenza. Il numero accanto alla scheda indica i passaggi fatti.</p></div></div>';
+    if(c.v)html+='<div class="note"><b>Versioni.</b> '+esc(c.v)+'</div>';
+    if(v&&v.n)html+='<div class="note"><b>'+esc(v.label)+(v.sub?' · '+esc(v.sub):'')+'.</b> '+esc(v.n)+'</div>';
+    html+='<h3 class="sec">Ordine di lavoro</h3><ol class="seq">';
+    html+='<li><div><b class="stitle">Preparazione e primer nero</b><div class="small muted">Lavaggio, levigatura e primer. Poi sottofondo di Bianco Osso sulle zone chiare.</div><a class="small" href="#/tecniche/t-prep">Come si fa</a></div><span></span></li>';
+    tabs.forEach(function(t){if(t[0]==="panoramica"||t[0]==="reference")return;var s=tabStats(t[0]);html+='<li class="'+(s[1]&&s[0]===s[1]?"done":"")+'"><div><b class="stitle">'+esc(t[1])+'</b><div class="small muted">'+byTab[t[0]].map(function(z){return esc(z.z);}).join(" · ")+'</div><a class="small" href="'+base+t[0]+'">Apri · '+s[0]+'/'+s[1]+' passaggi</a></div><span></span></li>';});
+    html+='<li><div><b class="stitle">Vernice</b><div class="small muted">Opaca su pelle e stoffa, lucida o satinata (o niente) sui metalli. Dopo 24 ore.</div><a class="small" href="#/tecniche/t-vernice">Come si fa</a></div><span></span></li></ol>';
+    var used={};zones.forEach(function(z){if(z.k==="basetta")return;zoneSteps(z).forEach(function(s){Object.keys(s[1]).forEach(function(id){if(P[id])used[id]=1;});});});
+    var ids=PAINTS.filter(function(p){return used[p.id];});
+    html+='<h3 class="sec">Colori che userai ('+ids.length+')</h3><div class="f">'+ids.map(function(p){return '<span class="ing"><i class="dot" style="'+paintStyle(p)+'"></i>'+pn(p)+'</span>';}).join("")+'</div>';
+    var bu={};zones.forEach(function(z){zoneSteps(z).forEach(function(s){var bf=brushFor(s,z);var k=bf.b?bf.b.id:bf.slot;if(!bu[k])bu[k]={b:bf.b,slot:bf.slot,z:{}};bu[k].z[z.z]=1;});});
+    var bl=Object.keys(bu).map(function(k){return bu[k];}).sort(function(a,b){return (a.b?(a.b.t+bval(a.b.s)):"z").localeCompare(b.b?(b.b.t+bval(b.b.s)):"z");});
+    html+='<h3 class="sec">Pennelli che userai ('+bl.length+')</h3><div class="grid gauto">'+bl.map(function(x){return '<div class="card" style="padding:12px 14px"><b>🖌 '+(x.b?esc(bLabel(x.b)):esc(SLOTS[x.slot].n)+' <span class="tag opt">non ce l\'hai</span>')+'</b><div class="small muted">'+esc(SLOTS[x.slot].d)+'</div><div class="small" style="margin-top:4px">'+Object.keys(x.z).map(esc).join(" · ")+'</div></div>';}).join("")+'</div><p class="small muted">Le misure vengono dall\'elenco in <a href="#/pennelli">I miei pennelli</a>. Tieni un pennello tondo medio solo per i metallici.</p>';
+    html+='<h3 class="sec">Oltre ai colori ti serve</h3><div class="card"><ul class="tipslist">'+
+      '<li>Tavolozza bagnata per i colori normali, un <b>piattino</b> a parte per i metallici.</li>'+
+      '<li>Un bicchiere d\'acqua per sciacquare, carta assorbente, stuzzicadenti per mescolare.</li>'+
+      '<li>Un supporto per tenere la figura senza toccarla.</li>'+
+      '<li>Lampada a luce bianca e, alla fine, la vernice.</li></ul></div>';
+    if(c.tips&&c.tips.length)html+='<h3 class="sec">Consigli per '+esc(c.n)+'</h3><div class="card"><ul class="tipslist">'+c.tips.map(function(t){return '<li>'+esc(t)+'</li>';}).join("")+'</ul></div>';
+    html+='<div class="row" style="margin-top:16px">'+(opt.noCopy?'':'<button class="btn" data-copychar="'+pr.id+'/'+c.id+'">Copia nelle mie figure per personalizzarla</button>')+'<button class="btn" data-resetdone="'+pr.id+'/'+c.id+'">Azzera i «fatto»</button></div>';
+  }else if(tab==="reference"){
+    html+='<p class="intro">Prima di dipingere cerca un\'immagine della <b>versione esatta</b> della tua stampa: anime, manga e figure hanno spesso colori diversi.</p>'+linksHTML(c.q);
+    if(c.cv){html+='<h3 class="sec">Reference per versione</h3><div class="linkgrid">'+c.cv.map(function(x){return '<a href="https://www.google.com/search?tbm=isch&q='+encodeURIComponent(c.q+" "+x.label.replace("Anime ","anime ")+" cloth")+'" target="_blank" rel="noopener"><b>'+esc(x.label)+'</b><span>'+esc(x.sub||"")+'</span></a>';}).join("")+'</div>';}
+  }else{
+    var intro={pelle:"La pelle si dipinge per prima. Prima del colore dai una mano di Bianco Osso sopra il primer nero.",volto:"Occhi subito dopo la base della pelle: se sbagli, ricopri con la pelle e riprovi. Labbra e guance alla fine, come velatura.",vestiti:"Tuta e vestiti prima dell'armatura: se sbordi, l'armatura copre l'errore.",armatura:"L'armatura dopo pelle e vestiti. Metti i metallici su un piattino, non sulla tavolozza bagnata.",capelli:"I capelli dopo l'armatura. Il drybrush sulle ciocche fa gran parte del lavoro.",dettagli:"I dettagli si fanno quasi alla fine, con il pennello fine.",basetta:"La basetta si dipinge per ultima. Qui trovi le ricette più adatte al personaggio: scegline una."}[tab]||"";
+    html+='<p class="intro">'+esc(intro)+'</p>';
+    if(tab==="armatura"&&v&&v.n)html+='<div class="note"><b>'+esc(v.label)+(v.sub?' · '+esc(v.sub):'')+'.</b> '+esc(v.n)+'</div>';
+    html+=(byTab[tab]||[]).map(function(z){return zoneHTML(z,{pre:keyPre(tab,z),done:doneMap});}).join("");
+    var i=tabs.findIndex(function(t){return t[0]===tab;}),nx=tabs[i+1];
+    if(nx&&nx[0]!=="reference")html+='<p style="text-align:right"><a class="btn primary" href="'+base+nx[0]+'">Avanti: '+esc(nx[1])+' →</a></p>';
+  }
+  return '<div data-scope="'+pr.id+'/'+c.id+'">'+html+'</div>';
+}
+function renderChar(pr,cid,tab){
+  var c=pr.chars.find(function(x){return x.id===cid;}),back='<a class="backlink" href="#/p/'+pr.id+'">← '+esc(pr.name)+'</a>';
+  if(!c){$("#v-char").innerHTML=back+'<p>Personaggio non trovato.</p>';return;}
+  $("#v-char").innerHTML=buildGuide(pr,c,tab,"#/p/"+pr.id+"/c/"+c.id+"/",{back:back});
+}
+
+/* ================= PERCORSO ================= */
+function renderPath(){
+  var d=load("pr-path",[]),done=pathDone();
+  $("#v-percorso").innerHTML='<h2>Percorso principiante</h2><p class="intro">Dieci passi per arrivare alla prima figura senza bruciare la statua buona. Spunta ogni passo quando l\'hai fatto: il progresso resta salvato su questo browser.</p>'+
+   '<div class="card"><div class="progress"><i style="width:'+Math.round(done/PATH.length*100)+'%"></i></div><p class="small muted" style="margin:0 0 6px">'+done+' di '+PATH.length+' passi</p>'+
+   '<ol class="seq" id="pathlist">'+PATH.map(function(s,i){return '<li class="'+(d[i]?"done":"")+'"><div><b class="stitle">'+esc(s.t)+'</b><div class="small muted">'+esc(s.d)+'</div><a class="small" href="'+s.l+'">Come si fa</a></div><input type="checkbox" data-path="'+i+'" '+(d[i]?"checked":"")+' aria-label="Fatto"></li>';}).join("")+'</ol></div>'+
+   '<h2 class="sec">Ordine per dipingere una figura</h2><article class="tech noimg"><div><p>Si dipinge dall\'interno verso l\'esterno: prima quello che sta sotto, poi quello che sta sopra. Se sbordi, lo strato dopo copre l\'errore.</p>'+seqHTML([
+     ["Preparazione e primer","Vedi Tecniche.",null],
+     ["Sottofondo chiaro","Bianco Osso o Grigio Muraglia diluiti su pelle e parti chiare.",{bo:1}],
+     ["Pelle e occhi","Base, occhi, ombre, luci.",{es:1}],
+     ["Tuta o vestiti sotto l'armatura","Base, ombra, luce.",{ub:1}],
+     ["Armatura","Oro, argento o metallo colorato.",{igb:1}],
+     ["Capelli","Base, ombra, luce, drybrush sulle ciocche.",{lb:1}],
+     ["Dettagli","Gemme, cinghie, cuoio.",{br:1}],
+     ["Basetta","Terra o rocce con drybrush.",{sg:1}],
+     ["Vernice","Opaca su pelle e stoffa, lucida o satinata (o niente) sui metalli.",null]])+'</div></article>';
+  $("#pathlist").addEventListener("change",function(e){var i=e.target.dataset.path;if(i==null)return;var d=load("pr-path",[]);d[+i]=e.target.checked;save("pr-path",d);renderPath();});
+}
+
+/* ================= TROVA ================= */
+function runFinder(){
+  var hex=$("#fTarget").value.toUpperCase(),three=$("#fThree").checked;
+  $("#fResults").innerHTML='<p class="muted">Calcolo…</p>';
+  setTimeout(function(){
+    var list=findMixes(hex,three);
+    $("#fBuy").innerHTML=list.length&&list[0].d>=8?buyHTML(hex):"";
+    $("#fResults").innerHTML=list.map(function(r){var c=closeness(r.d);
+      return '<div class="res"><div class="pair"><i style="background:'+hex+'" title="Obiettivo"></i><i style="background:'+r.hex+'" title="Risultato"></i></div><div><div class="f">'+formula(r.mix)+'</div><div class="small muted">Risultato <code>'+r.hex+'</code> · obiettivo <code>'+hex+'</code> <span class="badge '+c[0]+'">'+c[1]+'</span></div></div><div class="act"><button class="btn sm" data-mix="'+esc(JSON.stringify(r.mix))+'">Apri nel mixer</button></div></div>';}).join("");
+  },20);
+}
+function initFinder(){
+  var pre=[];PROJECTS.forEach(function(p){p.chars.forEach(function(c){c.z.forEach(function(z){if(z.t)pre.push([c.n+" · "+z.z.toLowerCase(),z.t]);});});});
+  pre=[["Pelle anime","#D9A07A"],["Pelle chiara","#EFCFB4"],["Oro anime","#E6B83E"]].concat(pre).concat([["Terra","#6B4A30"],["Roccia","#7E7B74"],["Marmo","#E7E1D3"]]);
+  $("#fPresets").innerHTML=pre.map(function(p){return '<button type="button" data-preset="'+p[1]+'"><i class="dot" style="background:'+p[1]+'"></i>'+esc(p[0])+'</button>';}).join("");
+  $("#fPresets").addEventListener("click",function(e){var b=e.target.closest("[data-preset]");if(!b)return;$("#fTarget").value=b.dataset.preset.toLowerCase();$("#fHex").value=b.dataset.preset.toUpperCase();runFinder();});
+  $("#fTarget").addEventListener("input",function(){$("#fHex").value=$("#fTarget").value.toUpperCase();});
+  $("#fHex").addEventListener("change",function(){var v=$("#fHex").value.trim();if(v[0]!=="#")v="#"+v;if(/^#[0-9a-fA-F]{6}$/.test(v)){$("#fTarget").value=v.toLowerCase();$("#fHex").value=v.toUpperCase();runFinder();}});
+  $("#fGo").addEventListener("click",runFinder);
+  $("#fThree").addEventListener("change",runFinder);
+}
+
+/* ================= MIXER ================= */
+var mix=load("pr-mix",{});
+function addToMixer(id){mix[id]=(mix[id]||0)+1;save("pr-mix",mix);}
+function setMixer(m){mix={};Object.keys(m).forEach(function(k){if(P[k])mix[k]=m[k];});save("pr-mix",mix);}
+function fillMixerSelect(){
+  var groups={};PAINTS.forEach(function(p){(groups[p.line]=groups[p.line]||[]).push(p);});
+  $("#mAdd").innerHTML=Object.keys(groups).map(function(g){return '<optgroup label="'+esc(g)+'">'+groups[g].map(function(p){return '<option value="'+p.id+'">'+esc(p.it)+" · "+esc(p.code)+'</option>';}).join("")+'</optgroup>';}).join("");
+}
+function renderMixer(){
+  Object.keys(mix).forEach(function(k){if(!P[k])delete mix[k];});
+  var ids=Object.keys(mix);
+  $("#mEmpty").style.display=ids.length?"none":"block";
+  $("#mRows").innerHTML=ids.map(function(id){var p=P[id];return '<div class="mixrow"><i class="sw" style="'+paintStyle(p)+'"></i><span>'+pn(p)+'</span><span class="stepper"><button type="button" data-d="-1" data-id="'+id+'" aria-label="Meno">−</button><output>'+drops(mix[id])+'</output><button type="button" data-d="1" data-id="'+id+'" aria-label="Più">+</button></span><button class="x" type="button" data-rm="'+id+'" aria-label="Rimuovi">×</button></div>';}).join("");
+  if(!ids.length){$("#mBig").setAttribute("style","background:var(--chip)");$("#mHex").textContent="—";$("#mInfo").textContent="";renderSaved();return;}
+  var l=mixLin(mix),metal=isMetal(mix);
+  $("#mBig").setAttribute("style",swStyle(l,metal));$("#mHex").textContent=lin2hex(l);
+  var L=lab(l),near=PAINTS.map(function(p){return {p:p,d:dE(L,p.lab)};}).sort(function(a,b){return a.d-b.d;})[0];
+  var t="<b>Ricetta:</b> "+esc(ratioText(mix))+".<br>";
+  t+=near.d<4?"È praticamente uguale a <b>"+pn(near.p)+"</b>: puoi usare direttamente quello.":"Il colore singolo più vicino è "+pn(near.p)+".";
+  if(ids.some(function(id){return P[id].wash;}))t+="<br>Contiene uno Shade TMM: è un wash trasparente, il risultato reale sarà più velato.";
+  if(metal)t+="<br>Il risultato è metallico: mischialo su un piattino, non sulla tavolozza bagnata.";
+  else if(ids.some(function(id){return P[id].metal;}))t+="<br>C'è poco metallico nel mix: brillerà poco.";
+  $("#mInfo").innerHTML=t;renderSaved();
+}
+function renderSaved(){
+  var a=load("pr-saved",[]);
+  $("#mSaved").innerHTML=a.map(function(r,i){return '<div><i class="sw" style="width:26px;height:26px;'+mixStyle(r.m)+'"></i><span class="t"><b>'+esc(r.n)+'</b><br><span class="small muted">'+esc(ratioText(r.m))+'</span></span><button class="btn sm" data-load="'+i+'">Apri</button><button class="x" data-del="'+i+'" aria-label="Elimina">×</button></div>';}).join("");
+}
+function initMixer(){
+  fillMixerSelect();
+  $("#mAddBtn").addEventListener("click",function(){addToMixer($("#mAdd").value);renderMixer();});
+  $("#mClear").addEventListener("click",function(){setMixer({});renderMixer();});
+  $("#mRows").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;
+    if(b.dataset.rm)delete mix[b.dataset.rm];
+    else if(b.dataset.id){var v=(mix[b.dataset.id]||0)+Number(b.dataset.d);if(v<=0)delete mix[b.dataset.id];else mix[b.dataset.id]=Math.min(v,40);}
+    save("pr-mix",mix);renderMixer();});
+  $("#mSave").addEventListener("click",function(){if(!Object.keys(mix).length)return;var n=$("#mName").value.trim()||("Ricetta "+mixHex(mix));var a=load("pr-saved",[]);a.unshift({n:n,m:JSON.parse(JSON.stringify(mix))});save("pr-saved",a);$("#mName").value="";renderSaved();});
+  $("#mSaved").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;var a=load("pr-saved",[]);
+    if(b.dataset.load!=null){setMixer(a[+b.dataset.load].m);renderMixer();}
+    if(b.dataset.del!=null){a.splice(+b.dataset.del,1);save("pr-saved",a);renderSaved();}});
+}
+
+/* ================= RICETTARIO ================= */
+var rCat="tutte",rQuery="";
+function renderRecipes(){
+  var el=$("#v-ricette");
+  if(!el.dataset.ready){
+    el.innerHTML='<h2>Ricettario</h2><p class="intro">Ricette generiche valide per qualsiasi progetto, divise in ombra, base e luce. Una goccia dal flacone vale una parte; il cerchio mostra il colore previsto con il suo codice esadecimale.</p>'+
+      '<input type="search" id="rq" placeholder="Cerca: pelle, oro, viola, roccia, Shun…"><div class="filters" id="rf">'+RCATS.map(function(c){return '<button type="button" data-rc="'+c[0]+'" class="'+(c[0]===rCat?"on":"")+'">'+c[1]+'</button>';}).join("")+'</div><div id="rlist"></div>';
+    el.dataset.ready=1;
+    $("#rf").addEventListener("click",function(e){var b=e.target.closest("[data-rc]");if(!b)return;rCat=b.dataset.rc;[].forEach.call($("#rf").children,function(x){x.classList.toggle("on",x===b);});drawRecipes();});
+    $("#rq").addEventListener("input",function(e){rQuery=e.target.value;drawRecipes();});
+  }
+  drawRecipes();
+}
+function drawRecipes(){
+  var q=rQuery.trim().toLowerCase();
+  var list=RECIPES.filter(function(r){return (rCat==="tutte"||r.cat===rCat)&&(!q||(r.title+" "+r.who+" "+r.tip+" "+r.s.map(function(s){return s[0]+" "+Object.keys(s[1]).map(function(id){return P[id]?P[id].it+" "+P[id].code:"";}).join(" ");}).join(" ")).toLowerCase().indexOf(q)>=0);});
+  $("#rlist").innerHTML=list.map(recipeHTML).join("")||'<p class="muted">Nessuna ricetta trovata.</p>';
+}
+
+/* ================= I MIEI COLORI ================= */
+function renderColors(){
+  var html='<h2>I miei colori</h2><p class="intro">I flaconi che possiedi, con il codice Vallejo e a cosa servono. I valori esadecimali sono indicativi. Quando compri un colore nuovo, aggiungilo qui: entra subito nel mixer e nella ricerca delle ricette.</p>';
+  html+='<div class="note">Il set Tanned Skin 72.380 contiene una base, un\'ombra e due luci. Qui sono usati così: <b>ombra</b> Pelle Barbaro 72.071, <b>base</b> Pelle Elfi 72.004, <b>luci</b> Pelle 72.099 e Carne Elfica 72.098. Se il foglietto della confezione indica altri ruoli, segui il foglietto.</div>';
+  html+='<div class="tablewrap"><table><thead><tr><th></th><th>Colore</th><th>Codice</th><th>Hex</th><th>Linea</th><th>A cosa serve</th><th></th></tr></thead><tbody>'+PAINTS.map(function(p){
+    return '<tr><td><i class="sw" style="'+paintStyle(p)+'"></i></td><td><b>'+esc(p.it)+'</b>'+(p.en?'<br><span class="small muted">'+esc(p.en)+'</span>':"")+(p.metal?' <span class="tag">metallico</span>':"")+(p.wash?' <span class="tag">wash</span>':"")+'</td><td><code>'+esc(p.code)+'</code></td><td><code>'+esc(p.hex)+'</code></td><td class="small">'+esc(p.line)+'</td><td class="small">'+esc(p.use)+'</td><td>'+(p.custom?'<button class="x" data-rmpaint="'+p.id+'" aria-label="Rimuovi">×</button>':'<button class="btn sm" data-bottle="'+p.id+'">Mixer</button>')+'</td></tr>';}).join("")+'</tbody></table></div>';
+  html+='<h3 class="sec">Aggiungi un colore</h3><div class="card"><div class="row"><input type="text" id="npName" placeholder="Nome (es. Royal Purple)" style="flex:1;min-width:180px"><input type="text" id="npCode" placeholder="Codice (es. 72.016)" style="width:150px"><input type="color" id="npHex" value="#5b3a86" aria-label="Colore"><label class="chk"><input type="checkbox" id="npMetal"> Metallico</label><button class="btn primary" id="npAdd">Aggiungi</button></div><p class="small muted" style="margin:10px 0 0">Per l\'hex, scegli il colore più simile al flacone o copia quello della scheda del produttore. Oppure usa «L\'ho comprato» nella pagina <a href="#/comprare">Da comprare</a>.</p></div>';
+  $("#v-colori").innerHTML=html;
+  $("#npAdd").addEventListener("click",function(){var n=$("#npName").value.trim();if(!n)return;addCustom({it:n,code:$("#npCode").value.trim()||"—",hex:$("#npHex").value,metal:$("#npMetal").checked});renderColors();});
+}
+function addCustom(c){var a=load("pr-custom",[]);c.id="c"+Date.now().toString(36)+Math.random().toString(36).slice(2,5);a.push(c);save("pr-custom",a);buildPaints();fillMixerSelect();}
+
+/* ================= DA COMPRARE ================= */
+function renderBuy(){
+  var html='<h2>Da comprare</h2><p class="intro">Hai già una base ottima. Con i due set TMM hai anche i wash per oro e argento (gli Shade). Queste sono le cose che ti mancano, in ordine di importanza.</p>';
+  html+='<article class="tech noimg"><div><h3>Indispensabili</h3><ul>'+
+    '<li><b>Un wash seppia</b> per pelle, cuoio e capelli: Vallejo Game Color Wash Sepia <span class="code">73.200</span>.</li>'+
+    '<li><b>Un wash nero</b> per rocce, catene e dettagli scuri: Game Color Wash Black <span class="code">73.201</span>. Per le rocce funziona anche lo Sterling Silver Shade che hai già.</li>'+
+    '<li><b>Vernice</b>: una opaca (pelle, stoffa) e una lucida o satinata (metalli, gemme, visori).</li>'+
+    '<li><b>Un pennello piatto economico</b> per il drybrush e un pennello vecchio per mescolare.</li>'+
+    '<li><b>Guanti in nitrile e mascherina</b> per levigare la resina.</li></ul></div></article>';
+  html+='<article class="tech noimg"><div><h3>Molto utili</h3><ul>'+
+    '<li><b>Glaze Medium Vallejo</b>: velature e wash fatti in casa senza aloni.</li>'+
+    '<li><b>Wash Flesh</b> <span class="code">73.204</span>: ombre della pelle in un solo passaggio.</li>'+
+    '<li><b>Un supporto</b> per tenere la figura senza toccarla: tappo di sughero o barattolo con un po\' di Patafix.</li>'+
+    '<li><b>Una lampada a luce bianca</b> (4000–5000 K).</li>'+
+    '<li><b>Sapone per pennelli</b>, per farli durare.</li>'+
+    '<li><b>Flaconi contagocce vuoti</b> per conservare i mix che usi spesso.</li>'+
+    '<li><b>Un primer grigio o bianco a bomboletta</b>, per figure con tanta pelle o armature chiare (Cigno, Andromeda, Ranger Giallo).</li></ul></div></article>';
+  html+='<h3 class="sec">Colori che non hai</h3><p class="small muted">Alcuni colori con i tuoi flaconi vengono spenti. Questi Vallejo Game Color li risolvono (hex indicativo). Quando ne compri uno, premi «L\'ho comprato» e lo trovi subito nel mixer e nelle ricerche.</p>';
+  html+='<div class="grid gauto">'+BUY.map(function(b){var owned=PAINTS.some(function(p){return p.code===b.code;});
+    var best=findMixes(b.hex,true)[0],c=closeness(best.d);
+    return '<div class="card"><div class="row" style="flex-wrap:nowrap"><i class="sw" style="width:44px;height:44px;background:'+b.hex+'"></i><div><b>'+esc(b.it)+'</b> <span class="code">'+b.code+'</span><div class="small muted">'+esc(b.why)+'</div></div></div>'+
+      '<p class="small" style="margin:10px 0 4px">Il più vicino con i tuoi colori <span class="badge '+c[0]+'">'+c[1]+'</span></p><div class="f small">'+formula(best.mix)+'</div>'+
+      '<p style="margin:10px 0 0">'+(owned?'<span class="pill ok">Ce l\'hai</span>':'<button class="btn sm" data-addbuy="'+b.code+'">L\'ho comprato</button>')+'</p></div>';}).join("")+'</div>';
+  $("#v-comprare").innerHTML=html;
+}
+
+/* ================= TUTORIAL ================= */
+function renderTutorials(){
+  $("#v-tutorial").innerHTML='<h2>Tutorial video</h2><p class="intro">Guardare qualcuno che dipinge aiuta più di qualsiasi spiegazione. Questi link aprono ricerche YouTube già impostate. Secondo Vallejo, il set Tanned Skin include anche l\'accesso a un video tutorial: guarda il foglietto nella confezione.</p><div class="linkgrid">'+
+    TUTORIALS.map(function(l){return '<a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query='+encodeURIComponent(l[1])+'"><b>'+esc(l[0])+'</b><span>'+esc(l[2])+'</span></a>';}).join("")+'</div>';
+}
+
+/* ================= LE MIE FIGURE ================= */
+function figs(){return load("pr-figures",[]);}
+function saveFigs(a){save("pr-figures",a);}
+function renderFigure(){
+  var a=figs();
+  var html='<h2>Le mie figure</h2><p class="intro">Crea la scheda colori di qualsiasi figura, anche di progetti che qui non ci sono. Per ogni zona scegli una ricetta del ricettario, oppure un colore libero: la ricetta con ombra, base e luce si calcola da sola con i tuoi colori.</p>';
+  html+='<div class="row" style="margin-bottom:16px"><input type="text" id="nfName" placeholder="Nome della figura (es. Goku, Batman…)" style="flex:1;min-width:220px"><button class="btn primary" id="nfAdd">Crea scheda</button></div>';
+  html+=a.length?'<div class="chars">'+a.map(function(f){return '<a class="ch" href="#/figure/'+f.id+'">'+(f.thumb?'<img src="'+f.thumb+'" alt="" style="width:100%;height:120px;object-fit:cover;display:block">':'')+'<div class="pal">'+(f.z.length?palHTML(f.z.slice(0,6)):'<i style="background:var(--chip)"></i>')+'</div><div class="in"><b>'+esc(f.n)+'</b><span>'+f.z.length+' zone</span></div></a>';}).join("")+'</div>':'<p class="muted">Non hai ancora creato schede. Puoi anche partire da un personaggio esistente con «Copia nelle mie figure».</p>';
+  $("#v-figure").innerHTML=html;
+  $("#nfAdd").addEventListener("click",function(){var n=$("#nfName").value.trim();if(!n)return;var a=figs();var id="f"+Date.now().toString(36);a.unshift({id:id,n:n,z:[{z:"Pelle",r:"skin-tan"}]});saveFigs(a);location.hash="#/figure/"+id;});
+}
+function recipeOptions(sel){
+  var html='<option value="">— colore libero —</option>';
+  RCATS.slice(1).forEach(function(c){var rs=RECIPES.filter(function(r){return r.cat===c[0];});if(!rs.length)return;
+    html+='<optgroup label="'+esc(c[1])+'">'+rs.map(function(r){return '<option value="'+r.id+'"'+(r.id===sel?" selected":"")+'>'+esc(r.title)+'</option>';}).join("")+'</optgroup>';});
+  return html;
+}
+var MINE={id:"mine",name:"Le mie figure",theme:"",armorLabel:"Armatura",defBase:["base-rock","base-earth"],chars:[]};
+function renderFigura(id,tab){
+  var a=figs(),f=a.find(function(x){return x.id===id;});
+  if(!f){$("#v-figura").innerHTML='<a class="backlink" href="#/figure">← Le mie figure</a><p>Scheda non trovata.</p>';return;}
+  var ed='<details class="card editor" style="margin:14px 0"'+(f.z.length?'':' open')+'><summary><b>Modifica nome e zone</b> <span class="small muted">('+f.z.length+' zone)</span></summary>';
+  ed+='<div class="row" style="margin-top:12px"><input type="text" id="efName" value="'+esc(f.n)+'" aria-label="Nome" style="flex:1;min-width:200px;font-weight:700"><button class="btn" id="efDel">Elimina scheda</button></div>';
+  ed+='<div id="efZones" class="editor">'+f.z.map(function(z,i){return '<div class="zrow" data-i="'+i+'"><input type="text" data-k="z" value="'+esc(z.z)+'" aria-label="Nome zona"><select data-k="r" aria-label="Ricetta">'+recipeOptions(z.r)+'</select><input type="color" data-k="t" value="'+esc((z.t||"#8f9697").toLowerCase())+'" aria-label="Colore libero" '+(z.r?"disabled":"")+'><select data-k="k" aria-label="Scheda">'+CTABS.filter(function(t){return t[0]!=="panoramica"&&t[0]!=="reference";}).map(function(t){var cur=zoneTab(z);return '<option value="'+t[0]+'"'+(cur===t[0]?" selected":"")+'>'+(t[1]||"Armatura")+'</option>';}).join("")+'</select><button class="x" data-rmz="'+i+'" aria-label="Rimuovi zona">×</button></div>';}).join("")+'</div>';
+  ed+='<div class="row"><button class="btn" id="efAddZ">Aggiungi zona</button><span class="small muted">Le modifiche si salvano da sole.</span></div></details>';
+  var head=(f.thumb?'<img src="'+f.thumb+'" alt="Immagine di riferimento" class="thumb">':'')+(f.note?'<div class="note">'+esc(f.note)+'</div>':'');
+  var c={id:f.id,n:f.n,c:f.src==="foto"?"Guida creata da una foto":"Scheda personale",z:f.z,tips:f.tips||[],q:f.n,v:""};
+  $("#v-figura").innerHTML=buildGuide(MINE,c,tab||"panoramica","#/figure/"+f.id+"/",{back:'<a class="backlink" href="#/figure">← Le mie figure</a>',after:head+ed,noCopy:1});
+  function upd(fn){var a=figs(),g=a.find(function(x){return x.id===id;});fn(g);saveFigs(a);var y=window.scrollY;renderFigura(id,tab);window.scrollTo(0,y);var d=document.querySelector("#v-figura details");if(d)d.open=true;}
+  $("#efName").addEventListener("change",function(e){upd(function(g){g.n=e.target.value.trim()||g.n;});});
+  $("#efDel").addEventListener("click",function(){if(!confirm("Eliminare questa scheda?"))return;saveFigs(figs().filter(function(x){return x.id!==id;}));location.hash="#/figure";});
+  $("#efAddZ").addEventListener("click",function(){upd(function(g){g.z.push({z:"Nuova zona",t:"#8f9697",k:"dettagli"});});});
+  $("#efZones").addEventListener("change",function(e){var row=e.target.closest(".zrow");if(!row)return;var i=+row.dataset.i,k=e.target.dataset.k;
+    upd(function(g){var z=g.z[i];if(k==="z")z.z=e.target.value;if(k==="k")z.k=e.target.value;if(k==="r"){if(e.target.value){z.r=e.target.value;}else{delete z.r;z.t=z.t||"#8f9697";}}if(k==="t")z.t=e.target.value;});});
+  $("#efZones").addEventListener("click",function(e){var b=e.target.closest("[data-rmz]");if(!b)return;upd(function(g){g.z.splice(+b.dataset.rmz,1);});});
+}
+
+/* ================= I MIEI PENNELLI ================= */
+function renderBrushes(){
+  var bs=brushes(),custom=!!load("pr-brushes2",null);
+  var html='<h2>I miei pennelli</h2><p class="intro">Ogni passaggio delle ricette e delle schede ti dice quale pennello usare, scelto tra quelli di questo elenco. Il kit Nicpro che hai contiene 12 pennelli da dettaglio e 4 drybrush di forme e misure diverse.</p>';
+  html+='<div class="note"><b>Kit Nicpro da 16 pennelli.</b> Piatti 2 e 0, angolato 1, tondi 2, 1, 0, 3/0, 5/0 e 10/0, liner 3/0 e 5/0, Spot Detail 20/0, drybrush 9, 7, 5 e 3. Il numero è stampato sul manico. Se compri altri pennelli, aggiungili qui: le indicazioni in tutto il sito si aggiornano da sole.</div>';
+  html+='<div class="card"><div id="brRows" class="editor">'+bs.map(function(b,i){return '<div class="zrow brrow" data-i="'+i+'"><select data-k="t" aria-label="Tipo">'+Object.keys(BTYPES).map(function(t){return '<option value="'+t+'"'+(t===b.t?" selected":"")+'>'+BTYPES[t]+'</option>';}).join("")+'</select><input type="text" data-k="s" value="'+esc(b.s)+'" aria-label="Misura" placeholder="es. 3/0, 1, M"><label class="chk"><input type="checkbox" data-k="m"'+(b.m?" checked":"")+'> solo metallici</label><button class="x" data-rmb="'+i+'" aria-label="Rimuovi">×</button></div>';}).join("")+'</div>';
+  html+='<div class="row" style="margin-top:10px"><button class="btn" id="brAdd">Aggiungi pennello</button><button class="btn" id="brReset">Ripristina il kit Nicpro</button></div>';
+  html+='<p class="small muted" style="margin:10px 0 0">Misure dei tondi: più è alto il numero prima di «/0», più il pennello è fine (10/0 è finissimo, 3/0 = 000, 2/0 = 00). Dopo lo 0 si sale: 1, 2, 4 sono sempre più grandi. I drybrush vanno dal 3 (piccolo) al 9 (grande).</p></div>';
+  html+='<h3 class="sec">A cosa serve ognuno</h3><div class="tablewrap"><table><thead><tr><th>Funzione</th><th>Il tuo pennello</th><th>Quando lo usi</th></tr></thead><tbody>'+Object.keys(SLOTS).map(function(k){var b=pickBrush(k),S=SLOTS[k];var exact=b&&b.t===S.t;return '<tr><td><b>'+esc(S.n)+'</b></td><td>'+(b?esc(bLabel(b))+(exact?'':' <span class="tag opt">sostituto</span>'):'<span class="muted">non ce l\'hai</span>')+'</td><td class="small">'+esc(S.d)+'</td></tr>';}).join("")+'</tbody></table></div>';
+  html+='<h3 class="sec">Come trattarli</h3><article class="tech noimg"><div><ul>'+
+    '<li>I metallici consumano la punta. Il tuo kit ha un solo tondo per misura: se puoi, compra un tondo 1 economico da usare <b>solo per i metallici</b> e aggiungilo qui con la spunta «solo metallici». Altrimenti lava molto bene il pennello subito dopo il metallo.</li>'+
+    '<li>Lo <b>Spot Detail 20/0</b> e il <b>Tondo 10/0</b> sono delicatissimi: usali solo per pupille, riflessi e puntini, mai per stendere basi.</li>'+
+    '<li>I <b>drybrush</b> si rovinano per natura: usali solo per il drybrush, mai per stendere colore liquido.</li>'+
+    '<li>Non intingere mai fino alla ghiera; sciacqua spesso e non lasciarli in piedi nell\'acqua.</li>'+
+    '<li>A fine sessione lavali con acqua tiepida e sapone, rifai la punta con le dita e rimetti il cappuccio.</li>'+
+    '<li>I tondi più fini (10/0, 5/0) tengono pochissimo colore: si asciugano in fretta, quindi ricaricali spesso.</li></ul></div></article>';
+  $("#v-pennelli").innerHTML=html;
+  function upd(fn){var a=brushes().map(function(b){return Object.assign({},b);});fn(a);save("pr-brushes2",a);renderBrushes();}
+  $("#brRows").addEventListener("change",function(e){var row=e.target.closest(".brrow");if(!row)return;var i=+row.dataset.i,k=e.target.dataset.k;upd(function(a){if(k==="m"){a.forEach(function(x){delete x.m;});if(e.target.checked)a[i].m=1;}else a[i][k]=e.target.value.trim();});});
+  $("#brRows").addEventListener("click",function(e){var b=e.target.closest("[data-rmb]");if(!b)return;upd(function(a){a.splice(+b.dataset.rmb,1);});});
+  $("#brAdd").addEventListener("click",function(){upd(function(a){a.push({id:"b"+Date.now().toString(36),t:"tondo",s:"1"});});});
+  $("#brReset").addEventListener("click",function(){if(!confirm("Ripristinare l'elenco preimpostato del kit Nicpro?"))return;try{localStorage.removeItem("pr-brushes2");}catch(e){}renderBrushes();});
+}
+
+/* ================= ANALIZZA UNA FOTO ================= */
+var SAMPLE=null,SAMPLE_IMG=false,SAMPLE_STATE="checking";
+(function(){
+  var done=false;function fin(st){if(done)return;done=true;SAMPLE_STATE=st;updAIbox();}
+  try{
+    if(!window.claude||typeof window.claude.use!=="function"){SAMPLE_STATE="none";return;}
+    setTimeout(function(){fin(SAMPLE?"ok":"none");},12000);
+    window.claude.use("sample").then(function(s){
+      if(!s){fin("none");return;}
+      SAMPLE=s;
+      return s.limits().then(function(l){SAMPLE_IMG=!!(l&&l.images);},function(){SAMPLE_IMG=false;}).then(function(){fin("ok");});
+    },function(){fin("none");});
+  }catch(e){SAMPLE_STATE="none";}
+})();
+var AN={img:null,file:null,thumb:null,colors:[],ai:null,busy:false,ctl:null};
+var ZCATS=[["","— ignora —"],["pelle","Pelle"],["volto","Occhi e volto"],["capelli","Capelli"],["vestiti","Tuta e vestiti"],["armatura","Armatura / cloth"],["dettagli","Dettagli"],["basetta","Basetta"]];
+function allCharsOptions(sel){
+  var html='<option value="">— personaggio nuovo o non in elenco —</option>';
+  PROJECTS.forEach(function(p){html+='<optgroup label="'+esc(p.name)+'">'+p.chars.map(function(c){var v=p.id+"/"+c.id;return '<option value="'+v+'"'+(v===sel?" selected":"")+'>'+esc(c.n)+(c.c?' · '+esc(c.c):'')+'</option>';}).join("")+'</optgroup>';});
+  return html;
+}
+function renderAnalizza(){
+  var el=$("#v-analizza");
+  if(!el.dataset.ready){
+    el.dataset.ready=1;
+    el.innerHTML='<h2>Analizza una foto</h2><p class="intro">Carica una foto della figura, di una statua già dipinta o un\'immagine dell\'anime. Scegli il personaggio (o descrivilo se non è in elenco) e ottieni una guida completa: zone, ricette in gocce con i tuoi colori, pennelli e ordine di lavoro. La guida viene salvata in «Le mie figure».</p>'+
+     '<div class="grid g2">'+
+      '<div class="card"><h3>1. Carica l\'immagine</h3><label class="drop" id="anDrop"><input type="file" id="anFile" accept="image/jpeg,image/png,image/webp,image/gif" hidden><span>Tocca per scegliere una foto, oppure trascinala qui</span></label><canvas id="anCanvas" hidden></canvas><p class="small muted" id="anHint" hidden>Tocca un punto dell\'immagine per aggiungere quel colore all\'elenco.</p></div>'+
+      '<div class="card"><h3>2. Di chi si tratta?</h3><select id="anChar" style="width:100%">'+allCharsOptions("")+'</select><div id="anVer" style="margin-top:10px"></div>'+
+       '<div id="anNew" class="editor" style="margin-top:10px"><input type="text" id="anName" placeholder="Nome del personaggio (es. Goku, Batman)"><input type="text" id="anSeries" placeholder="Serie o progetto (es. Dragon Ball)"><textarea id="anNotes" rows="3" placeholder="Note: versione, colori particolari, cosa vuoi ottenere…"></textarea></div></div>'+
+     '</div>'+
+     '<div class="card" style="margin-top:14px"><h3>3. I colori della foto</h3><p class="small muted" style="margin-top:0">Calcolati sul tuo dispositivo. Per ogni colore scegli a quale zona appartiene e, se vuoi, dagli un nome (es. «Mantello»). Ignora lo sfondo.</p><div id="anColors"><p class="muted small">Carica prima un\'immagine.</p></div></div>'+
+     '<div class="card" id="anAI" style="margin-top:14px"></div>'+
+     '<div class="row" style="margin-top:16px"><button class="btn primary" id="anMake">Crea la guida</button><span class="small muted" id="anMsg"></span></div>';
+    var drop=$("#anDrop");
+    $("#anFile").addEventListener("change",function(e){if(e.target.files[0])loadImage(e.target.files[0]);});
+    ["dragover","dragenter"].forEach(function(ev){drop.addEventListener(ev,function(e){e.preventDefault();drop.classList.add("over");});});
+    ["dragleave","drop"].forEach(function(ev){drop.addEventListener(ev,function(e){e.preventDefault();drop.classList.remove("over");});});
+    drop.addEventListener("drop",function(e){var f=e.dataTransfer.files[0];if(f)loadImage(f);});
+    $("#anCanvas").addEventListener("click",pickFromCanvas);
+    $("#anChar").addEventListener("change",function(){AN.ai=null;updChar();updAIbox();});
+    $("#anColors").addEventListener("change",function(e){var r=e.target.closest("[data-ci]");if(!r)return;var i=+r.dataset.ci;if(e.target.dataset.k==="k")AN.colors[i].k=e.target.value;if(e.target.dataset.k==="n")AN.colors[i].n=e.target.value;});
+    $("#anColors").addEventListener("click",function(e){var b=e.target.closest("[data-rmc]");if(!b)return;AN.colors.splice(+b.dataset.rmc,1);drawColors();});
+    $("#anMake").addEventListener("click",makeGuide);
+    updChar();
+  }
+  updAIbox();
+}
+function updChar(){
+  var v=$("#anChar").value;$("#anNew").style.display=v?"none":"grid";
+  var box=$("#anVer");box.innerHTML="";
+  if(v){var p=v.split("/"),pr=PMAP[p[0]],c=pr.chars.find(function(x){return x.id===p[1];});
+    if(c.cv)box.innerHTML='<label class="small muted">Versione</label><select id="anVerSel" style="width:100%">'+c.cv.map(function(x){return '<option value="'+x.id+'">'+esc(x.label+(x.sub?" · "+x.sub:""))+'</option>';}).join("")+'</select>';
+    box.innerHTML+='<p class="small" style="margin:8px 0 0">Scheda già pronta: <a href="#/p/'+pr.id+'/c/'+c.id+'">apri '+esc(c.n)+'</a>. La foto serve a personalizzarla con i colori della tua reference.</p>';}
+}
+function loadImage(file){
+  if(!/^image\//.test(file.type)){$("#anMsg").textContent="Il file non è un'immagine.";return;}
+  AN.file=file;AN.ai=null;
+  var fr=new FileReader();
+  fr.onload=function(){var img=new Image();img.onload=function(){
+    var cv=$("#anCanvas"),max=900,sc=Math.min(1,max/Math.max(img.width,img.height));
+    cv.width=Math.round(img.width*sc);cv.height=Math.round(img.height*sc);var ctx=cv.getContext("2d");ctx.drawImage(img,0,0,cv.width,cv.height);
+    cv.hidden=false;$("#anHint").hidden=false;$("#anDrop").querySelector("span").textContent="Cambia immagine";
+    var t=document.createElement("canvas"),ts=Math.min(1,220/Math.max(img.width,img.height));t.width=Math.round(img.width*ts);t.height=Math.round(img.height*ts);t.getContext("2d").drawImage(img,0,0,t.width,t.height);
+    try{AN.thumb=t.toDataURL("image/jpeg",0.7);}catch(e){AN.thumb=null;}
+    AN.colors=dominantColors(t,8).map(function(c){return {hex:c.hex,pct:c.pct,k:"",n:""};});
+    drawColors();updAIbox();
+  };img.src=fr.result;};
+  fr.readAsDataURL(file);
+}
+function dominantColors(cv,k){
+  var d=cv.getContext("2d").getImageData(0,0,cv.width,cv.height).data,px=[];
+  for(var i=0;i<d.length;i+=8){if(d[i+3]<128)continue;px.push([d[i],d[i+1],d[i+2]]);}
+  if(!px.length)return [];
+  var sorted=px.slice().sort(function(a,b){return (a[0]+a[1]+a[2])-(b[0]+b[1]+b[2]);});
+  var c=[];for(var j=0;j<k;j++)c.push(sorted[Math.floor((j+0.5)*sorted.length/k)].slice());
+  var cnt=[];
+  for(var it=0;it<12;it++){
+    var sum=c.map(function(){return [0,0,0,0];});
+    px.forEach(function(p){var bi=0,bd=1e12;for(var q=0;q<c.length;q++){var x=p[0]-c[q][0],y=p[1]-c[q][1],z=p[2]-c[q][2],dd=x*x+y*y+z*z;if(dd<bd){bd=dd;bi=q;}}var s=sum[bi];s[0]+=p[0];s[1]+=p[1];s[2]+=p[2];s[3]++;});
+    c=sum.map(function(s,q){return s[3]?[s[0]/s[3],s[1]/s[3],s[2]/s[3]]:c[q];});cnt=sum.map(function(s){return s[3];});
+  }
+  var out=c.map(function(v,q){return {hex:"#"+v.map(function(x){return Math.round(x).toString(16).padStart(2,"0");}).join("").toUpperCase(),pct:cnt[q]/px.length};}).filter(function(o){return o.pct>=0.02;}).sort(function(a,b){return b.pct-a.pct;});
+  var res=[];out.forEach(function(o){var L=lab(hexLin(o.hex));if(!res.some(function(r){return dE(lab(hexLin(r.hex)),L)<9;}))res.push(o);});
+  return res;
+}
+function pickFromCanvas(e){
+  var cv=e.currentTarget,r=cv.getBoundingClientRect(),x=Math.round((e.clientX-r.left)*cv.width/r.width),y=Math.round((e.clientY-r.top)*cv.height/r.height);
+  var d=cv.getContext("2d").getImageData(Math.max(0,x-2),Math.max(0,y-2),5,5).data,s=[0,0,0],n=0;
+  for(var i=0;i<d.length;i+=4){s[0]+=d[i];s[1]+=d[i+1];s[2]+=d[i+2];n++;}
+  var hex="#"+s.map(function(v){return Math.round(v/n).toString(16).padStart(2,"0");}).join("").toUpperCase();
+  AN.colors.unshift({hex:hex,pct:0,k:"",n:"",picked:1});drawColors();
+}
+function drawColors(){
+  var el=$("#anColors");
+  if(!AN.colors.length){el.innerHTML='<p class="muted small">Nessun colore. Tocca l\'immagine per aggiungerne.</p>';return;}
+  el.innerHTML='<div class="editor">'+AN.colors.map(function(c,i){var best=findMixes(c.hex,true)[0],cl=closeness(best.d);
+    return '<div class="anrow" data-ci="'+i+'"><i class="sw" style="width:38px;height:38px;background:'+c.hex+'"></i><div><code>'+c.hex+'</code>'+(c.picked?' <span class="tag">campionato</span>':c.pct?' <span class="small muted">'+Math.round(c.pct*100)+'% della foto</span>':'')+'<div class="f small">'+formula(best.mix)+' <span class="badge '+cl[0]+'">'+cl[1]+'</span></div></div><select data-k="k" aria-label="Zona">'+ZCATS.map(function(z){return '<option value="'+z[0]+'"'+(z[0]===c.k?" selected":"")+'>'+z[1]+'</option>';}).join("")+'</select><input type="text" data-k="n" value="'+esc(c.n)+'" placeholder="Nome zona (facoltativo)"><button class="x" data-rmc="'+i+'" aria-label="Rimuovi">×</button></div>';}).join("")+'</div>';
+}
+function updAIbox(){
+  var box=$("#anAI");if(!box)return;
+  var html='<h3>4. Analisi con Claude</h3>';
+  if(SAMPLE_STATE==="checking"){box.innerHTML=html+'<p class="small muted" style="margin:0">Controllo il collegamento a Claude… (qualche secondo)</p>';return;}
+  if(SAMPLE_STATE!=="ok"){box.innerHTML=html+'<p class="small" style="margin:0 0 6px">Il collegamento a Claude non è disponibile in questa vista.</p><p class="small muted" style="margin:0">Funziona solo quando la pagina è aperta dentro claude.ai (nel riquadro dell\'artifact o dal link dell\'artifact aperto dal tuo account), non da un file salvato sul computer. Puoi comunque creare la guida con i colori del punto 3.</p>';return;}
+  html+=SAMPLE_IMG?'<p class="small muted" style="margin-top:0">Claude guarda la foto e prepara la guida con i tuoi colori, le ricette del sito e i tuoi pennelli. Usa il tuo piano Claude; la prima volta ti chiede il permesso.</p>'
+    :'<div class="note" style="margin-top:0"><b>In questa app l\'invio della foto a Claude non è supportato.</b> Claude può comunque preparare la guida partendo dal personaggio, dalle tue note e dai colori che hai assegnato al punto 3. Se vuoi che guardi anche la foto, apri la pagina da claude.ai nel browser del computer.</div>';
+  var can=SAMPLE_IMG?!!AN.file:true;
+  html+='<div class="row"><button class="btn primary" id="anAsk"'+(can&&!AN.busy?'':' disabled')+'>'+(AN.busy?'Analisi in corso…':(SAMPLE_IMG?'Analizza con Claude':'Chiedi la guida a Claude'))+'</button>'+(AN.busy?'<button class="btn" id="anStop">Ferma</button>':'')+(can?'':'<span class="small muted">Carica prima un\'immagine.</span>')+'</div><div id="anAIout">'+(AN.ai?aiHTML(AN.ai):'')+'</div>';
+  box.innerHTML=html;
+  var ask=$("#anAsk");if(ask)ask.addEventListener("click",askClaude);
+  var st=$("#anStop");if(st)st.addEventListener("click",function(){if(AN.ctl)AN.ctl.abort();});
+}
+function aiHTML(a){
+  var h='<div class="note"><b>'+esc(a.versione||"Analisi")+'.</b> '+esc(a.descrizione||"")+'</div>';
+  h+='<div class="editor">'+(a.zone||[]).map(function(z){var r=RMAP[z.ricetta];return '<div class="anrow" style="grid-template-columns:38px 1fr"><i class="sw" style="width:38px;height:38px;background:'+esc(z.hex||"#888")+'"></i><div><b>'+esc(z.nome)+'</b> <span class="tag">'+esc((ZCATS.find(function(c){return c[0]===z.categoria;})||["",z.categoria])[1])+'</span>'+(r?' <span class="small">Ricetta: '+esc(r.title)+'</span>':' <span class="small muted">ricetta calcolata dai tuoi colori</span>')+(z.nota?'<div class="small muted">'+esc(z.nota)+'</div>':'')+'</div></div>';}).join("")+'</div>';
+  if(a.consigli&&a.consigli.length)h+='<h3 class="sec" style="margin-top:14px">Consigli</h3><ul class="tipslist">'+a.consigli.map(function(t){return '<li>'+esc(t)+'</li>';}).join("")+'</ul>';
+  if(a.pennelli&&a.pennelli.length)h+='<h3 class="sec" style="margin-top:14px">Pennelli</h3><ul class="tipslist">'+a.pennelli.map(function(p){return '<li><b>'+esc(p.pennello)+'</b> – '+esc(p.zona)+': '+esc(p.uso)+'</li>';}).join("")+'</ul>';
+  return h+'<p class="small muted">Premi «Crea la guida» per trasformare questa analisi in una scheda con tab, ricette in gocce e pennelli.</p>';
+}
+function charContext(){
+  var v=$("#anChar").value;
+  if(v){var p=v.split("/"),pr=PMAP[p[0]],c=pr.chars.find(function(x){return x.id===p[1];}),vs=$("#anVerSel"),ver=c.cv&&vs?c.cv.find(function(x){return x.id===vs.value;}):null;
+    return {pr:pr,c:c,ver:ver,text:"Personaggio: "+c.n+" ("+c.c+") dal progetto "+pr.name+(ver?". Versione: "+ver.label+" "+(ver.sub||"")+". "+(ver.n||""):"")+". Note: "+(c.v||"")};}
+  var n=$("#anName").value.trim(),s=$("#anSeries").value.trim(),no=$("#anNotes").value.trim();
+  return {pr:null,c:null,ver:null,name:n,text:"Personaggio: "+(n||"sconosciuto")+(s?" dalla serie "+s:"")+". Note dell'utente: "+(no||"nessuna")};
+}
+function askClaude(){
+  if(!SAMPLE||AN.busy||(SAMPLE_IMG&&!AN.file))return;
+  var ctx=charContext();
+  var paints=PAINTS.map(function(p){return p.code+" | "+p.it+" | "+p.hex+(p.metal?" | metallico":"")+(p.wash?" | wash":"");}).join("\n");
+  var rec=RECIPES.map(function(r){return r.id+": "+r.title+" ("+r.cat+")";}).join("\n");
+  var br=brushes().map(bLabel).join(", ");
+  var prompt="Sei un esperto di pittura di miniature e insegni a un principiante assoluto. "+(SAMPLE_IMG&&AN.file?"L'immagine allegata è la reference di una figura da dipingere":"Non hai l'immagine: basati sul personaggio, sulle note e sui colori indicati, per una figura da dipingere")+" a pennello su una stampa 3D in resina con primer nero.\n\n"+ctx.text+"\n\n"+
+   (AN.colors.some(function(c){return c.k;})?"Colori indicati dall'utente sulla foto: "+AN.colors.filter(function(c){return c.k;}).map(function(c){return (c.n||c.k)+"="+c.hex;}).join(", ")+"\n\n":"")+
+   "COLORI POSSEDUTI (codice | nome | hex):\n"+paints+"\n\nRICETTE DISPONIBILI (id: titolo (categoria)):\n"+rec+"\n\nPENNELLI POSSEDUTI: "+br+"\n\n"+
+   "Individua le zone da dipingere nell'ordine di lavoro (dall'interno verso l'esterno). Rispondi SOLO con un oggetto JSON in italiano semplice, così:\n"+
+   '{"versione":"quale versione/costume vedi","descrizione":"1-2 frasi","zone":[{"nome":"Capelli","categoria":"capelli","hex":"#RRGGBB","ricetta":"hair-blond","nota":"consiglio breve"}],"consigli":["..."],"pennelli":[{"zona":"Capelli","pennello":"Tondo 1","uso":"base e ombre"}]}\n'+
+   "Regole: da 4 a 12 zone; categoria tra pelle, volto, capelli, vestiti, armatura, dettagli, basetta; "+(SAMPLE_IMG&&AN.file?"hex = colore osservato nella foto;":"hex = colore tipico della zona;")+" ricetta = un id dall'elenco solo se è davvero adatta, altrimenti null (il sito calcolerà la miscela con i colori posseduti); pennelli solo tra quelli posseduti; massimo 6 consigli.";
+  AN.busy=true;AN.ctl=new AbortController();updAIbox();$("#anAIout").innerHTML='<p class="muted">Claude sta guardando la foto… può volerci fino a un minuto.</p>';
+  SAMPLE.json(prompt,SAMPLE_IMG&&AN.file?{images:AN.file,signal:AN.ctl.signal}:{signal:AN.ctl.signal}).then(function(res){
+    if(!res||!Array.isArray(res.zone))throw {code:"invalid_json"};
+    res.zone=res.zone.filter(function(z){return z&&z.nome;}).map(function(z){z.hex=/^#[0-9a-fA-F]{6}$/.test(z.hex||"")?z.hex.toUpperCase():null;if(z.ricetta&&!RMAP[z.ricetta])z.ricetta=null;if(!ZCATS.some(function(c){return c[0]===z.categoria;}))z.categoria="dettagli";return z;});
+    AN.ai=res;
+  }).catch(function(e){
+    var m={not_granted:"Non hai dato il permesso a Claude per questa pagina.",rate_limited:"Troppe richieste o limite di utilizzo raggiunto: riprova più tardi.",image_rejected:"L'immagine non è stata accettata: prova con un JPG o PNG più piccolo.",invalid_json:"La risposta non era nel formato previsto: riprova.",cancelled:"Analisi fermata.",refused:"Claude non ha potuto analizzare questa immagine.",session_expired:"Accedi di nuovo a claude.ai e riprova."}[e&&e.code]||"Qualcosa non ha funzionato: riprova tra poco.";
+    AN.aiErr=m;
+  }).then(function(){AN.busy=false;AN.ctl=null;updAIbox();if(AN.aiErr&&!AN.ai){$("#anAIout").innerHTML='<p class="small" style="color:var(--warn)">'+esc(AN.aiErr)+'</p>';}AN.aiErr=null;});
+}
+function makeGuide(){
+  var ctx=charContext(),zones=[],tips=[],note="",name;
+  if(ctx.c){
+    name=ctx.c.n+" (dalla foto)";
+    zones=charZones(ctx.pr,ctx.c,ctx.ver).filter(function(z){return !z.auto;}).map(function(z){var o={z:z.z,k:zoneTab(z)};if(z.r)o.r=z.r;else if(z.s)o.s=z.s;else if(z.t)o.t=z.t;if(z.n)o.n=z.n;return o;});
+    tips=(ctx.c.tips||[]).slice();note=ctx.ver?ctx.ver.label+(ctx.ver.sub?" · "+ctx.ver.sub:"")+". "+(ctx.ver.n||""):"";
+  }else{
+    name=ctx.name||"Figura dalla foto";
+    note=$("#anNotes").value.trim();
+  }
+  if(AN.ai){
+    AN.ai.zone.forEach(function(z){var o={z:z.nome,k:z.categoria};if(z.ricetta)o.r=z.ricetta;else if(z.hex)o.t=z.hex;else return;if(z.nota)o.n=z.nota;
+      var i=zones.findIndex(function(x){return x.z.toLowerCase()===o.z.toLowerCase();});if(i>=0)zones[i]=o;else zones.push(o);});
+    tips=tips.concat(AN.ai.consigli||[]).concat((AN.ai.pennelli||[]).map(function(p){return "Pennello "+p.pennello+" per "+p.zona+": "+p.uso;}));
+    if(AN.ai.descrizione)note=(AN.ai.versione?AN.ai.versione+". ":"")+AN.ai.descrizione+(note?" "+note:"");
+  }
+  var labels={pelle:"Pelle",volto:"Occhi",capelli:"Capelli",vestiti:"Tuta",armatura:"Armatura",dettagli:"Dettaglio",basetta:"Basetta"};
+  AN.colors.filter(function(c){return c.k;}).forEach(function(c,j){
+    var nm=c.n.trim()||labels[c.k];var i=zones.findIndex(function(x){return x.z.toLowerCase()===nm.toLowerCase();});
+    var o={z:nm,k:c.k,t:c.hex,n:"Colore preso dalla tua foto."};
+    if(i>=0)zones[i]=o;else if(zones.some(function(x){return x.z===nm;}))zones.push(Object.assign(o,{z:nm+" "+(j+1)}));else zones.push(o);
+  });
+  if(!zones.length){$("#anMsg").textContent="Assegna almeno un colore a una zona, scegli un personaggio o usa l'analisi con Claude.";return;}
+  var a=figs(),id="f"+Date.now().toString(36);
+  a.unshift({id:id,n:name,src:"foto",z:zones,tips:tips.slice(0,12),note:note,thumb:AN.thumb});
+  saveFigs(a);$("#anMsg").textContent="";location.hash="#/figure/"+id;
+}
+
+/* ================= AZIONI GLOBALI ================= */
+document.addEventListener("change",function(e){
+  var k=e.target.dataset&&e.target.dataset.done;if(k==null)return;
+  var sc=e.target.closest("[data-scope]");if(!sc)return;var ck=sc.dataset.scope;
+  var all=load("pr-done",{}),m=all[ck]||{};if(e.target.checked)m[k]=1;else delete m[k];all[ck]=m;save("pr-done",all);
+  var y=window.scrollY;route();window.scrollTo(0,y);
+});
+document.addEventListener("click",function(e){
+  var vb=e.target.closest("[data-ver]");if(vb){var p=vb.dataset.ver.split("/"),m=load("pr-ver",{});m[p[0]+"/"+p[1]]=p[2];save("pr-ver",m);var y=window.scrollY;route();window.scrollTo(0,y);return;}
+  var rd=e.target.closest("[data-resetdone]");if(rd){if(confirm("Azzerare tutti i passaggi segnati come fatti per questo personaggio?")){var all=load("pr-done",{});delete all[rd.dataset.resetdone];save("pr-done",all);route();}return;}
+  var b=e.target.closest("[data-mix],[data-bottle],[data-addbuy],[data-rmpaint],[data-copychar]");if(!b)return;
+  if(b.dataset.mix){try{setMixer(JSON.parse(b.dataset.mix));location.hash="#/mixer";renderMixer();}catch(err){}return;}
+  if(b.dataset.bottle){addToMixer(b.dataset.bottle);location.hash="#/mixer";if(location.hash==="#/mixer")renderMixer();return;}
+  if(b.dataset.addbuy){var it=BUY.find(function(x){return x.code===b.dataset.addbuy;});if(it&&!PAINTS.some(function(p){return p.code===it.code;})){addCustom({it:it.it,code:it.code,hex:it.hex,metal:false,use:it.why});}route();return;}
+  if(b.dataset.rmpaint){save("pr-custom",load("pr-custom",[]).filter(function(c){return c.id!==b.dataset.rmpaint;}));buildPaints();fillMixerSelect();renderColors();return;}
+  if(b.dataset.copychar){var ps=b.dataset.copychar.split("/"),pr=PMAP[ps[0]],c=pr&&pr.chars.find(function(x){return x.id===ps[1];});if(!c)return;
+    var a=figs(),id="f"+Date.now().toString(36);var vv=getVer(pr,c);a.unshift({id:id,n:c.n+" (mia versione)",z:charZones(pr,c,vv).filter(function(z){return !z.auto;}).filter(function(z){return z.r||z.t||z.s;}).map(function(z){var o={z:z.z,k:zoneTab(z)};if(z.r)o.r=z.r;else if(z.s)o.s=z.s;else if(z.t)o.t=z.t;if(z.n)o.n=z.n;return o;})});saveFigs(a);location.hash="#/figure/"+id;}
+});
+
+/* ================= AVVIO ================= */
+buildPaints();
+initFinder();
+initMixer();
+route();
+})();
+</script>
+</body></html>

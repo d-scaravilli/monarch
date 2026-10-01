@@ -1,0 +1,68 @@
+[
+ {
+  "position": 1,
+  "title": "Stampa una testa e un pezzo di armatura di prova",
+  "description": "Non iniziare dalla statua grande: impara sui pezzi piccoli.",
+  "link": "#/tecniche/t-errori"
+ },
+ {
+  "position": 2,
+  "title": "Prepara la stampa",
+  "description": "Lavaggio in IPA, polimerizzazione, supporti, levigatura, sapone.",
+  "link": "#/tecniche/t-prep"
+ },
+ {
+  "position": 3,
+  "title": "Dai il primer nero",
+  "description": "Passate brevi e leggere, poi una notte di asciugatura.",
+  "link": "#/tecniche/t-primer"
+ },
+ {
+  "position": 4,
+  "title": "Conosci i tuoi pennelli",
+  "description": "Controlla le misure stampate sui manici e scegli quale tenere solo per i metallici.",
+  "link": "#/pennelli"
+ },
+ {
+  "position": 5,
+  "title": "Prepara la tavolozza bagnata",
+  "description": "Spugna umida, carta sopra, metallici a parte.",
+  "link": "#/tecniche/t-tavolozza"
+ },
+ {
+  "position": 6,
+  "title": "Impara a diluire",
+  "description": "Prova su un pezzo scartato finché il colore scorre come latte.",
+  "link": "#/tecniche/t-diluire"
+ },
+ {
+  "position": 7,
+  "title": "Prova una prima ricetta",
+  "description": "Mischia una ricetta di pelle contando le gocce e confronta con il mixer.",
+  "link": "#/ricette"
+ },
+ {
+  "position": 8,
+  "title": "Dipingi il pezzo d'armatura con il sistema TMM",
+  "description": "Base, Shade, Light: la tecnica più gratificante per iniziare.",
+  "link": "#/tecniche/t-tmm"
+ },
+ {
+  "position": 9,
+  "title": "Dipingi la testa di prova",
+  "description": "Base, occhi, ombra, luce.",
+  "link": "#/tecniche/t-occhi"
+ },
+ {
+  "position": 10,
+  "title": "Prova il drybrush su una basetta",
+  "description": "Una roccia grigia: veloce e d'effetto.",
+  "link": "#/tecniche/t-drybrush"
+ },
+ {
+  "position": 11,
+  "title": "Fotografa e confronta",
+  "description": "Una foto ravvicinata mostra subito cosa migliorare. Poi passa alla figura vera.",
+  "link": "#/tecniche/t-errori"
+ }
+]
