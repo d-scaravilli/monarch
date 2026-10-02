@@ -7,7 +7,7 @@
 import * as color from './color.js';
 import * as brushes from './brushes.js';
 import { baseMixOf } from './steps.js';
-import { charZones, referenceLinks, TAB_INTROS, versionReferenceLink, visibleTabs, zoneStyle, zoneTab } from './guide.js';
+import { charZones, referenceLinks, TAB_INTROS, visibleTabs, zoneStyle, zoneTab } from './guide.js';
 import { runMixJobs } from './mix-jobs.js';
 import { decorateStep, ingredient, paintStyle, readPayload, sendJson, toneScale, withDerivedFields } from './view.js';
 
@@ -48,10 +48,16 @@ export function characterSheet(payloadId) {
         versions: character.versions,
         urls: data.urls,
         copyUrl: data.copyUrl,
+        canUploadReferences: !!data.canUploadReferences,
         referenceLinks: referenceLinks(character.search_query),
 
         init() {
             this.computeAutoZones();
+            // A reference photo loaded from this page shows up at once.
+            window.addEventListener('resina-reference-saved', (event) => {
+                const version = this.versions.find((v) => v.id === event.detail.id);
+                if (version) Object.assign(version, { photo: event.detail.photo, source: event.detail.source });
+            });
             this.$nextTick(() => this.revealActive());
         },
 
@@ -262,7 +268,7 @@ export function characterSheet(payloadId) {
         },
 
         get versionLinks() {
-            return this.versions.map((v) => ({ label: v.label, subtitle: v.subtitle, url: versionReferenceLink(character.search_query, v) }));
+            return this.versions.map((v) => ({ label: v.label, subtitle: v.subtitle, url: v.searchUrl }));
         },
 
         intro(tabKey) {

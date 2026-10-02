@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Resina;
 use App\Http\Controllers\Controller;
 use App\Models\Resina\ArmorType;
 use App\Models\Resina\Character;
+use App\Models\Resina\CharacterVersion;
 use App\Models\Resina\Guide;
 use App\Models\Resina\GuideStep;
 use App\Models\Resina\Project;
 use App\Models\Resina\Recipe;
 use App\Models\Resina\RecipeCategory;
 use App\Services\Resina\ClientPayload;
+use App\Services\Resina\ReferencePhotos;
 use App\Support\ResinaProjectTheme;
 use App\Support\ResinaRows;
 use App\Support\ResinaSlug;
@@ -57,6 +59,7 @@ class ProjectController extends Controller
 
         $user = $request->user();
         $characters = $project->characters;
+        $characters->each->setRelation('project', $project);
 
         return view('resina.projects.show', [
             'project' => $project,
@@ -147,10 +150,13 @@ class ProjectController extends Controller
     {
         $this->authorizeAdmin($request);
 
+        $versions = CharacterVersion::whereIn('character_id', $project->characters()->pluck('id'))->get();
+
         DB::transaction(function () use ($project) {
             $project->delete();
             Recipe::deleteOrphanInline();
         });
+        app(ReferencePhotos::class)->deleteFiles($versions);
 
         if ($project->cover_image_path) {
             Storage::disk('public')->delete($project->cover_image_path);

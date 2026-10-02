@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Resina;
 
 use App\Http\Controllers\Controller;
+use App\Models\Resina\CharacterVersion;
 use App\Models\Resina\PathStep;
 use App\Models\Resina\Project;
 use App\Models\Resina\Recipe;
@@ -26,6 +27,10 @@ class HomeController extends Controller
             'brushCount' => $user->resinBrushes()->count(),
             'projects' => Project::withCount(['characters', 'armorTypes'])->orderBy('position')->get(),
             'recipeCount' => Recipe::catalog()->count(),
+            // Admin only: reference photos still to add (a gentle reminder).
+            'missingReferences' => $user->hasRole('admin')
+                ? CharacterVersion::whereNull('reference_image_path')->whereHas('character', fn ($q) => $q->catalog())->count()
+                : 0,
             'path' => [
                 'done' => $doneIds->count(),
                 'total' => $pathSteps->count(),

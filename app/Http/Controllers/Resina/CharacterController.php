@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Resina;
 
 use App\Http\Controllers\Controller;
 use App\Models\Resina\Character;
+use App\Models\Resina\CharacterVersion;
 use App\Models\Resina\Project;
 use App\Models\Resina\Recipe;
 use App\Models\Resina\RecipeCategory;
 use App\Models\Resina\Zone;
 use App\Services\Resina\ClientPayload;
+use App\Services\Resina\ReferencePhotos;
 use App\Services\Resina\ZoneSync;
 use App\Support\ResinaProjectTheme;
 use App\Support\ResinaSlug;
@@ -90,6 +92,8 @@ class CharacterController extends Controller
                 'position' => ($project->characters()->max('position') ?? 0) + 1,
             ]);
             $this->zoneSync->sync($character, null, $data['zones'] ?? []);
+            // Every catalog character has a version: its photo comes later.
+            $character->versions()->create(['slug' => CharacterVersion::SINGLE_SLUG, 'position' => 1, 'label' => 'Unica']);
 
             return $character;
         });
@@ -125,10 +129,13 @@ class CharacterController extends Controller
     {
         $this->authorizeAdmin($request);
 
+        $versions = $character->versions()->get();
+
         DB::transaction(function () use ($character) {
             $character->delete();
             Recipe::deleteOrphanInline();
         });
+        app(ReferencePhotos::class)->deleteFiles($versions);
 
         return redirect()->route('resina.projects.show', $project)->with('status', "«{$character->name}» eliminato.");
     }

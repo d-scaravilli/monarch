@@ -20,8 +20,8 @@
 
     <p x-show="error" x-cloak x-text="error" class="rounded-xl bg-red-50 px-4 py-2.5 text-sm text-red-700 dark:bg-red-500/10 dark:text-red-400"></p>
 
-    {{-- Version picker, above the big palette. --}}
-    <template x-if="versions.length">
+    {{-- Version picker, above the big palette (hidden when there's only one). --}}
+    <template x-if="versions.length > 1">
         <div class="flex flex-col gap-2 sm:flex-row sm:items-center">
             <span class="shrink-0 text-xs text-gray-500 dark:text-gray-400">Versione della <span x-text="armorLabelLower"></span>:</span>
             <div x-ref="versionStrip" class="relative -mx-4 flex gap-2 overflow-x-auto px-4 sm:mx-0 sm:flex-wrap sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
@@ -34,6 +34,31 @@
                     </button>
                 </template>
             </div>
+        </div>
+    </template>
+
+    {{-- The chosen version's reference photo. --}}
+    <template x-if="version">
+        <div>
+            <template x-if="version.photo">
+                <a :href="version.photo.original" target="_blank" rel="noopener" class="inline-flex items-end gap-3" title="Apri la foto">
+                    <img :src="version.photo.thumb" alt="Foto di riferimento" class="h-40 max-w-full rounded-2xl object-cover ring-1 ring-black/10 dark:ring-white/10">
+                    <span class="pb-1 text-xs text-gray-500 dark:text-gray-400">
+                        Foto di riferimento<template x-if="version.source"><span> · <span x-text="version.source"></span></span></template>
+                    </span>
+                </a>
+            </template>
+            <template x-if="! version.photo">
+                <div class="flex flex-wrap items-center gap-3 rounded-2xl border-2 border-dashed border-gray-200 px-4 py-3 dark:border-white/15">
+                    <x-heroicon-o-photo class="h-6 w-6 shrink-0 text-gray-400" />
+                    <div class="min-w-0 flex-1 text-sm">
+                        <p class="font-medium text-gray-700 dark:text-gray-200">Manca la foto di riferimento</p>
+                        <p x-show="! canUploadReferences" class="text-gray-500 dark:text-gray-400">L'admin non l'ha ancora aggiunta.</p>
+                    </div>
+                    <button type="button" x-show="canUploadReferences" @click="$dispatch('resina-reference-open', version)"
+                            class="rounded-xl px-3.5 py-2 text-sm font-semibold text-white {{ $accent['badge'] }}">Carica la foto</button>
+                </div>
+            </template>
         </div>
     </template>
 
@@ -221,7 +246,7 @@
                 </a>
             </template>
         </div>
-        <template x-if="versions.length">
+        <template x-if="versions.length > 1">
             <div>
                 <x-section-header>Reference per versione</x-section-header>
                 <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">

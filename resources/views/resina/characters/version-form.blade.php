@@ -38,6 +38,25 @@
             </x-card>
 
             <div>
+                <x-section-header>Foto di riferimento{{ $editing ? '' : ' (obbligatoria)' }}</x-section-header>
+                <x-card class="space-y-3">
+                    @if ($editing && $version->hasReferencePhoto())
+                        <div class="flex items-end gap-3">
+                            <img src="{{ route('resina.references.show', [$version, 'miniatura']) }}?v={{ $version->reference_updated_at?->timestamp }}" alt="Foto attuale"
+                                 class="h-28 rounded-xl object-cover ring-1 ring-black/10 dark:ring-white/10">
+                            <p class="text-xs text-gray-500 dark:text-gray-400">Foto attuale{{ $version->reference_source ? ' · '.$version->reference_source : '' }}. Caricane un'altra solo se vuoi sostituirla.</p>
+                        </div>
+                        <div class="space-y-1">
+                            <x-input-label for="reference_source_current" value="Fonte" />
+                            <x-text-input id="reference_source_current" name="reference_source" value="{{ old('reference_source', $version->reference_source) }}" class="w-full" />
+                        </div>
+                    @endif
+                    <x-resina.reference-uploader mode="form" :search-url="$referenceSearchUrl" />
+                    <x-input-error :messages="$errors->get('reference_token')" />
+                </x-card>
+            </div>
+
+            <div>
                 <x-section-header>Zone di questa versione</x-section-header>
                 <p class="mb-3 text-xs text-gray-400">
                     Una zona con lo stesso nome di una zona comune la sostituisce; le altre si aggiungono.
@@ -52,6 +71,7 @@
         </form>
 
         @if ($editing)
+            <x-input-error :messages="$errors->get('version')" />
             <x-resina.delete-card :action="route('resina.versions.destroy', [$project, $character, $version])" title="Elimina versione"
                                   confirm="Eliminare la versione {{ $version->label }}?">
                 Cancella la versione e le sue zone. Chi l'aveva scelta torna alla prima versione.

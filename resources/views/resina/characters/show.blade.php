@@ -20,4 +20,8 @@
             </div>
         </x-slot:top>
     </x-resina.character-sheet>
+
+    @if ($isAdmin)
+        <x-resina.reference-uploader mode="panel" />
+    @endif
 </x-app-layout>

@@ -14,6 +14,7 @@ use App\Models\Resina\ShopSuggestion;
 use App\Models\Resina\UserPaint;
 use App\Models\Resina\Zone;
 use App\Models\User;
+use App\Support\ResinaReferenceSearch;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
 
@@ -170,7 +171,9 @@ class ClientPayload
                 ->get(['zone_key', 'step_position'])
                 ->map(fn ($progress) => $progress->zone_key.'|'.$progress->step_position)
                 ->all(),
+            'canUploadReferences' => $user->hasRole('admin') && ! $character->isPersonal(),
             'endpoints' => [
+                'temporaryReference' => route('resina.references.temporary'),
                 'version' => route('resina.characters.version', $character),
                 'progress' => route('resina.progress.toggle', $character),
                 'reset' => route('resina.progress.reset', $character),
@@ -201,13 +204,39 @@ class ClientPayload
             'tips' => $character->tips ?? [],
             'base_zones' => $character->zones->whereNull('character_version_id')->sortBy('position')->map(fn (Zone $zone) => $this->zone($zone))->values()->all(),
             'versions' => $character->versions->sortBy('position')->map(fn (CharacterVersion $version) => [
-                'id' => $version->id,
-                'slug' => $version->slug,
-                'label' => $version->label,
-                'subtitle' => $version->subtitle,
-                'note' => $version->note,
+                ...$this->version($character, $version, $character->project),
                 'zones' => $character->zones->where('character_version_id', $version->id)->sortBy('position')->map(fn (Zone $zone) => $this->zone($zone))->values()->all(),
             ])->values()->all(),
+        ];
+    }
+
+    /**
+     * A version with its reference photo, source, search link and where
+     * to attach a new photo (the admin uses those).
+     *
+     * @return array<string, mixed>
+     */
+    public function version(Character $character, CharacterVersion $version, ?Project $project): array
+    {
+        $character->setRelation('project', $project);
+        $stamp = $version->reference_updated_at?->timestamp;
+
+        return [
+            'id' => $version->id,
+            'slug' => $version->slug,
+            'label' => $version->label,
+            'subtitle' => $version->subtitle,
+            'note' => $version->note,
+            'title' => $character->name.' · '.$version->label,
+            'photo' => $version->hasReferencePhoto() ? [
+                'thumb' => route('resina.references.show', [$version, 'miniatura']).'?v='.$stamp,
+                'original' => route('resina.references.show', [$version, 'originale']).'?v='.$stamp,
+            ] : null,
+            'source' => $version->reference_source,
+            'searchQuery' => ResinaReferenceSearch::query($character, $version),
+            'searchUrl' => ResinaReferenceSearch::url($character, $version),
+            'attachUrl' => route('resina.references.attach', $version),
+            'sourceUrl' => route('resina.references.source', $version),
         ];
     }
 

@@ -11,6 +11,7 @@ import { characterSheet } from './character-sheet.js';
 import { guideEditor, rowsEditor, zoneEditor } from './editors.js';
 import { figureList, photoAnalysis } from './figures.js';
 import { projectPage } from './project-page.js';
+import { referenceChecklist, referenceUploader } from './reference.js';
 import { beginnerPath, finder, mixer } from './tools.js';
 import { decorateRecipe, ingredient, readPayload, sendJson, uid } from './view.js';
 
@@ -222,4 +223,6 @@ document.addEventListener('alpine:init', () => {
     Alpine.data('resinaPath', beginnerPath);
     Alpine.data('resinaFigureList', figureList);
     Alpine.data('resinaPhotoAnalysis', photoAnalysis);
+    Alpine.data('resinaReferenceUploader', referenceUploader);
+    Alpine.data('resinaReferenceChecklist', referenceChecklist);
 });

@@ -22,6 +22,13 @@
             </div>
         </x-card>
 
+        @if ($missingReferences)
+            <a href="{{ route('resina.references.index') }}" class="flex items-center justify-between gap-3 rounded-2xl px-4 py-2.5 text-sm text-gray-500 ring-1 ring-gray-100 hover:bg-white dark:text-gray-400 dark:ring-white/10 dark:hover:bg-white/5">
+                <span class="flex items-center gap-2"><x-heroicon-o-photo class="h-4 w-4" /> {{ $missingReferences }} foto di riferimento da aggiungere</span>
+                <span class="text-xs font-medium">Completa →</span>
+            </a>
+        @endif
+
         <div>
             <x-section-header>La tua mensola</x-section-header>
             <x-card class="space-y-4">

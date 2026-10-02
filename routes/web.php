@@ -41,6 +41,7 @@ use App\Http\Controllers\Resina\PathController as ResinaPathController;
 use App\Http\Controllers\Resina\PhotoAnalysisController as ResinaPhotoAnalysisController;
 use App\Http\Controllers\Resina\ProjectController as ResinaProjectController;
 use App\Http\Controllers\Resina\RecipeController as ResinaRecipeController;
+use App\Http\Controllers\Resina\ReferencePhotoController as ResinaReferencePhotoController;
 use App\Http\Controllers\Resina\ShopController as ResinaShopController;
 use App\Http\Controllers\Resina\StepProgressController as ResinaStepProgressController;
 use App\Http\Controllers\Resina\TechniqueController as ResinaTechniqueController;
@@ -238,6 +239,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/figure/{figure}/{tab?}', [ResinaFigureController::class, 'show'])
             ->whereIn('tab', ResinaCharacterController::TABS)
             ->name('figures.show');
+
+        Route::get('/foto-riferimento', [ResinaReferencePhotoController::class, 'index'])->name('references.index');
+        Route::post('/foto-riferimento/temporanea', [ResinaReferencePhotoController::class, 'temporary'])->name('references.temporary');
+        Route::get('/foto-riferimento/temporanea/{token}', [ResinaReferencePhotoController::class, 'temporaryImage'])->name('references.temporary.image');
+        Route::put('/versioni/{version}/foto', [ResinaReferencePhotoController::class, 'attach'])->name('references.attach');
+        Route::patch('/versioni/{version}/fonte', [ResinaReferencePhotoController::class, 'updateSource'])->name('references.source');
+        Route::get('/versioni/{version}/foto/{variant}', [ResinaReferencePhotoController::class, 'show'])->whereIn('variant', ['originale', 'miniatura'])->name('references.show');
 
         Route::get('/analizza', [ResinaPhotoAnalysisController::class, 'create'])->name('photo.create');
         Route::post('/analizza', [ResinaPhotoAnalysisController::class, 'store'])->name('photo.store');

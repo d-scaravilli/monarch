@@ -9,6 +9,8 @@ use App\Models\Resina\StepProgress;
 use App\Models\Resina\Zone;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
@@ -227,6 +229,16 @@ class ResinaCharacterSheetTest extends TestCase
 
         $this->actingAs($admin)->post(route('resina.versions.store', ['saint-seiya', 'seiya']), [
             'label' => 'Cloth divina', 'position' => 7, 'zones' => [['name' => 'Cloth', 'recipe_id' => $gold]],
+        ])->assertSessionHasErrors('reference_token');
+
+        Storage::fake('local');
+        $token = $this->actingAs($admin)->post(route('resina.references.temporary'), [
+            'photo' => UploadedFile::fake()->image('foto.jpg', 1200, 900),
+            'thumb' => UploadedFile::fake()->image('m.jpg', 400, 300),
+        ], ['Accept' => 'application/json'])->json('token');
+
+        $this->actingAs($admin)->post(route('resina.versions.store', ['saint-seiya', 'seiya']), [
+            'label' => 'Cloth divina', 'position' => 7, 'zones' => [['name' => 'Cloth', 'recipe_id' => $gold]], 'reference_token' => $token,
         ])->assertRedirect(route('resina.characters.edit', ['saint-seiya', 'seiya']));
 
         $version = Character::where('slug', 'seiya')->firstOrFail()->versions()->where('slug', 'cloth-divina')->firstOrFail();

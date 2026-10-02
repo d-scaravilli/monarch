@@ -8,11 +8,14 @@ use App\Models\Resina\CharacterVersion;
 use App\Models\Resina\Project;
 use App\Models\Resina\Recipe;
 use App\Models\Resina\Zone;
+use App\Services\Resina\ReferencePhotos;
 use App\Services\Resina\ZoneSync;
+use App\Support\ResinaReferenceSearch;
 use App\Support\ResinaSlug;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 /**
@@ -21,7 +24,7 @@ use Illuminate\View\View;
  */
 class CharacterVersionController extends Controller
 {
-    public function __construct(private ZoneSync $zoneSync) {}
+    public function __construct(private ZoneSync $zoneSync, private ReferencePhotos $photos) {}
 
     public function create(Request $request, Project $project, Character $character): View
     {
@@ -34,7 +37,7 @@ class CharacterVersionController extends Controller
     {
         $this->authorizeAdmin($request);
 
-        $data = $this->validateVersion($request);
+        $data = $this->validateVersion($request, photoRequired: true);
 
         DB::transaction(function () use ($character, $data) {
             $version = $character->versions()->create([
@@ -42,6 +45,7 @@ class CharacterVersionController extends Controller
                 'slug' => ResinaSlug::unique($character->versions(), $data['label'], 'versione'),
             ]);
             $this->zoneSync->sync($character, $version, $data['zones'] ?? []);
+            $this->photos->attach($version, $data['reference_token'], $data['reference_source'] ?? null);
         });
 
         return redirect()->route('resina.characters.edit', [$project, $character])->with('status', 'Versione aggiunta.');
@@ -61,25 +65,33 @@ class CharacterVersionController extends Controller
         $data = $this->validateVersion($request);
 
         DB::transaction(function () use ($character, $version, $data) {
-            $version->update($this->attributes($data));
+            $version->update([...$this->attributes($data), 'reference_source' => $data['reference_source'] ?? null]);
             $this->zoneSync->sync($character, $version, $data['zones'] ?? []);
+            if (! empty($data['reference_token'])) {
+                $this->photos->attach($version, $data['reference_token'], $data['reference_source'] ?? null);
+            }
         });
 
         return redirect()->route('resina.characters.edit', [$project, $character])->with('status', 'Versione aggiornata.');
     }
 
     /**
-     * Its zones go with it; users who had picked it fall back to the
-     * first version.
+     * Its zones and photo go with it; users who had picked it fall back
+     * to the first version. A character always keeps one version.
      */
     public function destroy(Request $request, Project $project, Character $character, CharacterVersion $version): RedirectResponse
     {
         $this->authorizeAdmin($request);
 
+        if ($character->versions()->count() <= 1) {
+            return back()->withErrors(['version' => 'È l\'ultima versione del personaggio: non si può eliminare. Modificala, oppure aggiungine un\'altra prima.']);
+        }
+
         DB::transaction(function () use ($version) {
             $version->delete();
             Recipe::deleteOrphanInline();
         });
+        $this->photos->deleteFiles(collect([$version]));
 
         return redirect()->route('resina.characters.edit', [$project, $character])->with('status', "Versione «{$version->label}» eliminata.");
     }
@@ -88,10 +100,14 @@ class CharacterVersionController extends Controller
     {
         $zones = $version->exists ? $version->zones()->with('recipe')->get() : collect();
 
+        $character->setRelation('project', $project);
+
         return view('resina.characters.version-form', [
             'project' => $project,
             'character' => $character,
             'version' => $version,
+            // A new version has no label yet: search for the character alone.
+            'referenceSearchUrl' => ResinaReferenceSearch::url($character, $version->exists ? $version : new CharacterVersion(['slug' => CharacterVersion::SINGLE_SLUG, 'label' => ''])),
             'zoneEditor' => CharacterController::zoneEditorPayload(old('zones', $zones->map(fn (Zone $zone) => CharacterController::zoneRow($zone))->all()), $zones),
         ]);
     }
@@ -99,15 +115,26 @@ class CharacterVersionController extends Controller
     /**
      * @return array<string, mixed>
      */
-    private function validateVersion(Request $request): array
+    private function validateVersion(Request $request, bool $photoRequired = false): array
     {
-        return $request->validate([
+        $data = $request->validate([
+            'reference_token' => [$photoRequired ? 'required' : 'nullable', 'uuid'],
+            'reference_source' => 'nullable|string|max:255',
             'label' => 'required|string|max:100',
             'subtitle' => 'nullable|string|max:255',
             'note' => 'nullable|string|max:2000',
             'position' => 'required|integer|min:1|max:999',
             ...CharacterController::zoneRules(),
-        ], CharacterController::zoneMessages());
+        ], [
+            ...CharacterController::zoneMessages(),
+            'reference_token.required' => 'Una versione nuova ha bisogno della foto di riferimento.',
+        ]);
+
+        if (! empty($data['reference_token']) && ! $this->photos->temporaryExists($data['reference_token'])) {
+            throw ValidationException::withMessages(['reference_token' => 'La foto caricata non è più disponibile: caricala di nuovo.']);
+        }
+
+        return $data;
     }
 
     /**

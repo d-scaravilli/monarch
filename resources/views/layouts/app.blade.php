@@ -66,6 +66,7 @@
         $navItems[] = ['label' => 'Tecniche', 'route' => 'resina.techniques.index', 'icon' => 'light-bulb', 'active' => request()->routeIs('resina.techniques.*'), 'mobile' => false, 'section' => 'Imparare'];
         $navItems[] = ['label' => 'Tutorial', 'route' => 'resina.tutorials.index', 'icon' => 'play-circle', 'active' => request()->routeIs('resina.tutorials.*'), 'mobile' => false, 'section' => 'Imparare'];
         if ($isAdmin) {
+            $navItems[] = ['label' => 'Foto di riferimento', 'route' => 'resina.references.index', 'icon' => 'photo', 'active' => request()->routeIs('resina.references.*'), 'mobile' => false, 'section' => 'Modulo'];
             $navItems[] = ['label' => 'Gestisci', 'route' => 'modules.settings.edit', 'params' => [$currentModule], 'icon' => 'wrench-screwdriver', 'active' => request()->routeIs('modules.settings.*'), 'mobile' => false, 'section' => 'Modulo'];
         }
     } elseif ($currentModule->slug === 'amministrazione') {

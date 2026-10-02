@@ -125,6 +125,3 @@ export function referenceLinks(query) {
     ].map(([title, url, description]) => ({ title, url, description }));
 }
 
-export function versionReferenceLink(query, version) {
-    return 'https://www.google.com/search?tbm=isch&q=' + encodeURIComponent(query + ' ' + version.label.replace('Anime ', 'anime ') + ' cloth');
-}
