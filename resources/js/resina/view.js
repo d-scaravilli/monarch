@@ -62,6 +62,7 @@ export function decorateStep(step, zone, palette, brushList, urls) {
         role: step.role,
         usage: step.usage,
         optional: !!step.optional,
+        choice: !!step.choice_group,
         swatch: color.mixStyle(mix, palette),
         hex: color.mixHex(mix, palette),
         lightness: color.mixLightness(mix, palette),

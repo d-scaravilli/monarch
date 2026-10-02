@@ -26,6 +26,7 @@ class RecipeStep extends Model
         'optional',
         'technique',
         'coverage',
+        'choice_group',
     ];
 
     protected function casts(): array

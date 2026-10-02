@@ -122,6 +122,10 @@ class FigureBuilder
         $character->loadMissing('zones.recipe');
         $zones = $character->zones->whereNull('character_version_id')->sortBy('position')->values()->all();
 
+        // Version zones that don't replace a shared one come first: inside
+        // each tab they're painted before the shared zones (paintingOrder()
+        // in guide.js). A replacing zone keeps the shared zone's place.
+        $added = [];
         if ($version) {
             foreach ($character->zones->where('character_version_id', $version->id)->sortBy('position') as $versionZone) {
                 $index = null;
@@ -130,9 +134,10 @@ class FigureBuilder
                         $index = $j;
                     }
                 }
-                $index === null ? $zones[] = $versionZone : $zones[$index] = $versionZone;
+                $index === null ? $added[] = $versionZone : $zones[$index] = $versionZone;
             }
         }
+        $zones = [...$added, ...$zones];
 
         $rows = collect($zones)
             ->filter(fn (Zone $zone) => $zone->recipe_id || $zone->target_hex)
@@ -198,7 +203,7 @@ class FigureBuilder
         ]);
 
         foreach ($source->steps as $step) {
-            $copy->steps()->create($step->only(['position', 'role', 'usage', 'optional', 'technique', 'coverage']))
+            $copy->steps()->create($step->only(['position', 'role', 'usage', 'optional', 'technique', 'coverage', 'choice_group']))
                 ->paints()->attach($step->paints->mapWithKeys(fn ($paint) => [$paint->id => ['drops' => $paint->pivot->drops]])->all());
         }
 

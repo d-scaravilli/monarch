@@ -531,7 +531,7 @@
     "role": "Labbra",
     "usage": "Solo il labbro inferiore; quello superiore resta in ombra.",
     "optional": false,
-    "technique": null,
+    "technique": "velatura",
     "coverage": null,
     "mix": [
      {
@@ -547,7 +547,7 @@
    {
     "position": 3,
     "role": "Sopracciglia",
-    "usage": "Linea sottile; per capelli colorati usa il colore dei capelli.",
+    "usage": "Sopra gli occhi: una linea sottile per sopracciglio. Per capelli colorati usa il colore dei capelli.",
     "optional": false,
     "technique": "spigoli",
     "coverage": null,
@@ -565,8 +565,8 @@
    {
     "position": 4,
     "role": "Cicatrice",
-    "usage": "Linea sottile, poi una luce di Carne Elfica su un solo lato.",
-    "optional": false,
+    "usage": "Solo se il personaggio ha una cicatrice: una linea sottile dove c'è, poi una luce di Carne Elfica su un solo lato.",
+    "optional": true,
     "technique": "spigoli",
     "coverage": null,
     "mix": [
@@ -606,9 +606,9 @@
    {
     "position": 2,
     "role": "Bianco dell'occhio",
-    "usage": "Mai bianco puro.",
+    "usage": "Dentro il contorno, ai lati dell'iride. Mai bianco puro.",
     "optional": false,
-    "technique": null,
+    "technique": "punta",
     "coverage": null,
     "mix": [
      {
@@ -620,9 +620,9 @@
    {
     "position": 3,
     "role": "Iride azzurra",
-    "usage": "Occhi azzurri.",
+    "usage": "Un cerchio che tocca la palpebra superiore. Per occhi azzurri.",
     "optional": false,
-    "technique": null,
+    "technique": "punta",
     "coverage": null,
     "mix": [
      {
@@ -633,14 +633,15 @@
       "paint": "72.001",
       "drops": 1
      }
-    ]
+    ],
+    "choice_group": "iride"
    },
    {
     "position": 4,
     "role": "Iride blu scura",
-    "usage": "Occhi blu intensi.",
+    "usage": "Un cerchio che tocca la palpebra superiore. Per occhi blu intensi.",
     "optional": false,
-    "technique": null,
+    "technique": "punta",
     "coverage": null,
     "mix": [
      {
@@ -651,28 +652,30 @@
       "paint": "72.051",
       "drops": 1
      }
-    ]
+    ],
+    "choice_group": "iride"
    },
    {
     "position": 5,
     "role": "Iride castana",
-    "usage": "Occhi castani.",
+    "usage": "Un cerchio che tocca la palpebra superiore. Per occhi castani.",
     "optional": false,
-    "technique": null,
+    "technique": "punta",
     "coverage": null,
     "mix": [
      {
       "paint": "72.040",
       "drops": 1
      }
-    ]
+    ],
+    "choice_group": "iride"
    },
    {
     "position": 6,
     "role": "Iride verde",
-    "usage": "Occhi verdi.",
+    "usage": "Un cerchio che tocca la palpebra superiore. Per occhi verdi.",
     "optional": false,
-    "technique": null,
+    "technique": "punta",
     "coverage": null,
     "mix": [
      {
@@ -683,26 +686,28 @@
       "paint": "72.034",
       "drops": 1
      }
-    ]
+    ],
+    "choice_group": "iride"
    },
    {
     "position": 7,
     "role": "Iride rossa",
-    "usage": "Occhi rossi (personaggi malvagi).",
+    "usage": "Un cerchio che tocca la palpebra superiore. Per occhi rossi (personaggi malvagi).",
     "optional": false,
-    "technique": null,
+    "technique": "punta",
     "coverage": null,
     "mix": [
      {
       "paint": "72.010",
       "drops": 1
      }
-    ]
+    ],
+    "choice_group": "iride"
    },
    {
     "position": 8,
     "role": "Pupilla",
-    "usage": "Punto al centro.",
+    "usage": "Un punto al centro dell'iride.",
     "optional": false,
     "technique": "punta",
     "coverage": null,
@@ -2334,7 +2339,7 @@
    {
     "position": 5,
     "role": "Punti luce",
-    "usage": "Micro punti.",
+    "usage": "Micro punti sugli spigoli più esposti.",
     "optional": true,
     "technique": "punta",
     "coverage": 3,
@@ -2361,7 +2366,7 @@
    {
     "position": 1,
     "role": "Mix rapido",
-    "usage": "Oro più giallo.",
+    "usage": "Su tutta la zona: è un oro più giallo.",
     "optional": false,
     "technique": "coprente",
     "coverage": 100,
@@ -2379,7 +2384,7 @@
    {
     "position": 2,
     "role": "Velatura",
-    "usage": "1 goccia + 5 d'acqua sopra l'oro, più passate.",
+    "usage": "Su tutto l'oro: 1 goccia + 5 d'acqua, più passate.",
     "optional": false,
     "technique": "velatura",
     "coverage": null,
@@ -2402,7 +2407,7 @@
    {
     "position": 1,
     "role": "Mix",
-    "usage": "Oro scurito con il suo Shade.",
+    "usage": "Su tutta la zona: oro scurito con il suo Shade.",
     "optional": false,
     "technique": "coprente",
     "coverage": 100,
@@ -2420,9 +2425,9 @@
    {
     "position": 2,
     "role": "Variante",
-    "usage": "Più marrone.",
+    "usage": "Al posto del Mix, su tutta la zona, se lo vuoi più marrone.",
     "optional": true,
-    "technique": null,
+    "technique": "coprente",
     "coverage": null,
     "mix": [
      {
@@ -2757,7 +2762,7 @@
    {
     "position": 2,
     "role": "Velatura viola",
-    "usage": "1 goccia + 4 d'acqua, più passate.",
+    "usage": "Su tutta la zona: 1 goccia + 4 d'acqua, più passate.",
     "optional": false,
     "technique": "velatura",
     "coverage": null,
@@ -2793,7 +2798,7 @@
    {
     "position": 4,
     "role": "Spigoli",
-    "usage": "Linea sottilissima.",
+    "usage": "Sui bordi delle placche, una linea sottilissima.",
     "optional": false,
     "technique": "spigoli",
     "coverage": 5,
@@ -2848,7 +2853,7 @@
    {
     "position": 3,
     "role": "Spigoli",
-    "usage": "Linea sottile.",
+    "usage": "Sui bordi delle placche, una linea sottile.",
     "optional": false,
     "technique": "spigoli",
     "coverage": 5,
@@ -2873,7 +2878,7 @@
     "role": "1. Argento",
     "usage": "Su tutta la zona, lascia asciugare.",
     "optional": false,
-    "technique": null,
+    "technique": "coprente",
     "coverage": null,
     "mix": [
      {
@@ -2885,7 +2890,7 @@
    {
     "position": 2,
     "role": "2. Velatura",
-    "usage": "Il colore che vuoi, 1 goccia + 4–5 d'acqua, più passate.",
+    "usage": "Su tutta la zona argentata: il colore che vuoi, 1 goccia + 4–5 d'acqua, più passate.",
     "optional": false,
     "technique": "velatura",
     "coverage": null,
@@ -2940,7 +2945,7 @@
    {
     "position": 1,
     "role": "Mix rapido",
-    "usage": "Rosso metallico.",
+    "usage": "Su tutta la zona: rosso metallico.",
     "optional": false,
     "technique": "coprente",
     "coverage": 100,
@@ -3007,7 +3012,7 @@
    {
     "position": 1,
     "role": "Mix rapido",
-    "usage": "Verde metallico.",
+    "usage": "Su tutta la zona: verde metallico.",
     "optional": false,
     "technique": "coprente",
     "coverage": 100,
@@ -3070,7 +3075,7 @@
    {
     "position": 1,
     "role": "Mix rapido",
-    "usage": "Rosa metallico.",
+    "usage": "Su tutta la zona: rosa metallico.",
     "optional": false,
     "technique": "coprente",
     "coverage": 100,
@@ -3141,7 +3146,7 @@
    {
     "position": 1,
     "role": "Mix rapido",
-    "usage": "Blu metallico scuro.",
+    "usage": "Su tutta la zona: blu metallico scuro.",
     "optional": false,
     "technique": "coprente",
     "coverage": 100,
@@ -3177,7 +3182,7 @@
    {
     "position": 3,
     "role": "Spigoli",
-    "usage": "Linea sottile.",
+    "usage": "Sui bordi delle placche, una linea sottile.",
     "optional": false,
     "technique": "spigoli",
     "coverage": 5,
@@ -3200,7 +3205,7 @@
    {
     "position": 1,
     "role": "Mix rapido",
-    "usage": "Argento freddo.",
+    "usage": "Su tutta la zona: argento freddo.",
     "optional": false,
     "technique": "coprente",
     "coverage": 100,
@@ -3220,7 +3225,7 @@
     "role": "Ombra",
     "usage": "Wash azzurrato negli incavi.",
     "optional": false,
-    "technique": "sottile",
+    "technique": "wash",
     "coverage": 35,
     "mix": [
      {
@@ -3259,7 +3264,7 @@
    {
     "position": 1,
     "role": "Mix rapido",
-    "usage": "Viola metallico scuro.",
+    "usage": "Su tutta la zona: viola metallico scuro.",
     "optional": false,
     "technique": "coprente",
     "coverage": 100,
@@ -3312,7 +3317,7 @@
    {
     "position": 1,
     "role": "Mix rapido",
-    "usage": "Arancio metallico.",
+    "usage": "Su tutta la zona: arancio metallico.",
     "optional": false,
     "technique": "coprente",
     "coverage": 100,
@@ -3330,9 +3335,9 @@
    {
     "position": 2,
     "role": "Ombra",
-    "usage": "Incavi.",
+    "usage": "Negli incavi.",
     "optional": false,
-    "technique": "sottile",
+    "technique": "wash",
     "coverage": 35,
     "mix": [
      {
@@ -3375,7 +3380,7 @@
    {
     "position": 1,
     "role": "Mix",
-    "usage": "Bianco perlato.",
+    "usage": "Su tutta la zona: bianco perlato.",
     "optional": false,
     "technique": "coprente",
     "coverage": 100,
@@ -3393,9 +3398,9 @@
    {
     "position": 2,
     "role": "Ombra",
-    "usage": "Incavi.",
+    "usage": "Negli incavi.",
     "optional": false,
-    "technique": "sottile",
+    "technique": "wash",
     "coverage": 35,
     "mix": [
      {
@@ -3448,7 +3453,7 @@
    {
     "position": 1,
     "role": "Mix rapido",
-    "usage": "Bordeaux metallico.",
+    "usage": "Su tutta la zona: bordeaux metallico.",
     "optional": false,
     "technique": "coprente",
     "coverage": 100,
@@ -3506,7 +3511,7 @@
    {
     "position": 4,
     "role": "Spigoli",
-    "usage": "Linea sottile.",
+    "usage": "Sui bordi delle placche, una linea sottile.",
     "optional": false,
     "technique": "spigoli",
     "coverage": 5,
@@ -3529,7 +3534,7 @@
    {
     "position": 1,
     "role": "Mix rapido",
-    "usage": "Verde scurissimo metallico.",
+    "usage": "Su tutta la zona: verde scurissimo metallico.",
     "optional": false,
     "technique": "coprente",
     "coverage": 100,
@@ -3565,7 +3570,7 @@
    {
     "position": 3,
     "role": "Spigoli",
-    "usage": "Linea sottile.",
+    "usage": "Sui bordi delle placche, una linea sottile.",
     "optional": false,
     "technique": "spigoli",
     "coverage": 5,
@@ -3588,7 +3593,7 @@
    {
     "position": 1,
     "role": "Mix rapido",
-    "usage": "Argento blu ferro.",
+    "usage": "Su tutta la zona: argento blu ferro.",
     "optional": false,
     "technique": "coprente",
     "coverage": 100,
@@ -3651,7 +3656,7 @@
    {
     "position": 1,
     "role": "Base",
-    "usage": "Su tutto.",
+    "usage": "Su tutto il tessuto.",
     "optional": false,
     "technique": "coprente",
     "coverage": 100,
@@ -3710,7 +3715,7 @@
    {
     "position": 1,
     "role": "Base",
-    "usage": "Su tutto.",
+    "usage": "Su tutto il tessuto.",
     "optional": false,
     "technique": "coprente",
     "coverage": 100,
@@ -3791,7 +3796,7 @@
    {
     "position": 1,
     "role": "Base",
-    "usage": "Su tutto.",
+    "usage": "Su tutto il tessuto.",
     "optional": false,
     "technique": "coprente",
     "coverage": 100,
@@ -3868,7 +3873,7 @@
    {
     "position": 1,
     "role": "Base",
-    "usage": "Su tutto.",
+    "usage": "Su tutto il tessuto.",
     "optional": false,
     "technique": "coprente",
     "coverage": 100,
@@ -3945,7 +3950,7 @@
    {
     "position": 1,
     "role": "Base",
-    "usage": "Su tutto.",
+    "usage": "Su tutto il tessuto.",
     "optional": false,
     "technique": "coprente",
     "coverage": 100,
@@ -4018,7 +4023,7 @@
    {
     "position": 1,
     "role": "Base",
-    "usage": "Su tutto.",
+    "usage": "Su tutto il tessuto.",
     "optional": false,
     "technique": "coprente",
     "coverage": 100,
@@ -4077,7 +4082,7 @@
    {
     "position": 1,
     "role": "Base",
-    "usage": "Su tutto.",
+    "usage": "Su tutto il tessuto.",
     "optional": false,
     "technique": "coprente",
     "coverage": 100,
@@ -4154,7 +4159,7 @@
    {
     "position": 1,
     "role": "Base",
-    "usage": "Su tutto.",
+    "usage": "Su tutto il tessuto.",
     "optional": false,
     "technique": "coprente",
     "coverage": 100,
@@ -4243,7 +4248,7 @@
    {
     "position": 1,
     "role": "Base",
-    "usage": "Su tutto.",
+    "usage": "Su tutto il tessuto.",
     "optional": false,
     "technique": "coprente",
     "coverage": 100,
@@ -4302,7 +4307,7 @@
    {
     "position": 1,
     "role": "Base",
-    "usage": "Su tutto.",
+    "usage": "Su tutto il tessuto.",
     "optional": false,
     "technique": "coprente",
     "coverage": 100,
@@ -4377,7 +4382,7 @@
    {
     "position": 1,
     "role": "Base",
-    "usage": "Su tutto.",
+    "usage": "Su tutto il tessuto.",
     "optional": false,
     "technique": "coprente",
     "coverage": 100,
@@ -4450,7 +4455,7 @@
    {
     "position": 1,
     "role": "Base",
-    "usage": "Su tutto.",
+    "usage": "Su tutto il tessuto.",
     "optional": false,
     "technique": "coprente",
     "coverage": 100,
@@ -4509,7 +4514,7 @@
    {
     "position": 1,
     "role": "Base",
-    "usage": "Su tutto.",
+    "usage": "Su tutto il tessuto.",
     "optional": false,
     "technique": "coprente",
     "coverage": 100,
@@ -4568,7 +4573,7 @@
    {
     "position": 1,
     "role": "Base",
-    "usage": "Su tutto.",
+    "usage": "Su tutto il cuoio.",
     "optional": false,
     "technique": "coprente",
     "coverage": 100,
@@ -4876,7 +4881,7 @@
     "role": "Petali",
     "usage": "Petali esterni.",
     "optional": false,
-    "technique": null,
+    "technique": "sottile",
     "coverage": null,
     "mix": [
      {
@@ -4888,9 +4893,9 @@
    {
     "position": 3,
     "role": "Bordi",
-    "usage": "Solo i bordi.",
+    "usage": "Solo i bordi dei petali.",
     "optional": false,
-    "technique": null,
+    "technique": "spigoli",
     "coverage": null,
     "mix": [
      {
@@ -4908,7 +4913,7 @@
     "role": "Stelo",
     "usage": "Stelo e foglie.",
     "optional": false,
-    "technique": null,
+    "technique": "coprente",
     "coverage": null,
     "mix": [
      {
@@ -4929,7 +4934,7 @@
    {
     "position": 1,
     "role": "Base",
-    "usage": "Tutto.",
+    "usage": "Su tutto il legno.",
     "optional": false,
     "technique": "coprente",
     "coverage": 100,
@@ -4943,9 +4948,9 @@
    {
     "position": 2,
     "role": "Venature",
-    "usage": "Linee sottili.",
+    "usage": "Linee sottili lungo il legno, seguendo le venature.",
     "optional": false,
-    "technique": null,
+    "technique": "punta",
     "coverage": null,
     "mix": [
      {
@@ -5031,7 +5036,7 @@
    {
     "position": 1,
     "role": "Cosmo d'oro",
-    "usage": "Velatura calda.",
+    "usage": "Sull'aura attorno alla figura: velatura calda.",
     "optional": false,
     "technique": "velatura",
     "coverage": null,
@@ -5049,7 +5054,7 @@
    {
     "position": 2,
     "role": "Cosmo blu",
-    "usage": "Velatura fredda.",
+    "usage": "Sull'aura attorno alla figura: velatura fredda.",
     "optional": false,
     "technique": "velatura",
     "coverage": null,
@@ -5067,9 +5072,9 @@
    {
     "position": 3,
     "role": "Cosmo viola",
-    "usage": "Hades, energie oscure.",
+    "usage": "Sull'aura attorno alla figura: per Hades e le energie oscure.",
     "optional": false,
-    "technique": null,
+    "technique": "velatura",
     "coverage": null,
     "mix": [
      {
@@ -5089,9 +5094,9 @@
    {
     "position": 4,
     "role": "Cosmo rosso",
-    "usage": "Scorpione, rabbia.",
+    "usage": "Sull'aura attorno alla figura: per Scorpione e la rabbia.",
     "optional": false,
-    "technique": null,
+    "technique": "velatura",
     "coverage": null,
     "mix": [
      {
@@ -5118,7 +5123,7 @@
     "role": "Centro",
     "usage": "Nucleo della fiamma.",
     "optional": false,
-    "technique": null,
+    "technique": "coprente",
     "coverage": null,
     "mix": [
      {
@@ -5136,7 +5141,7 @@
     "role": "Giallo",
     "usage": "Attorno al centro.",
     "optional": false,
-    "technique": null,
+    "technique": "sottile",
     "coverage": null,
     "mix": [
      {
@@ -5150,7 +5155,7 @@
     "role": "Arancio",
     "usage": "Corpo della fiamma.",
     "optional": false,
-    "technique": null,
+    "technique": "sottile",
     "coverage": null,
     "mix": [
      {
@@ -5164,7 +5169,7 @@
     "role": "Bordi",
     "usage": "Punte esterne.",
     "optional": false,
-    "technique": null,
+    "technique": "sottile",
     "coverage": null,
     "mix": [
      {
@@ -5223,7 +5228,7 @@
     "role": "Punte",
     "usage": "Spigoli e punte.",
     "optional": false,
-    "technique": null,
+    "technique": "spigoli",
     "coverage": 3,
     "mix": [
      {
@@ -5244,7 +5249,7 @@
    {
     "position": 1,
     "role": "Contorno",
-    "usage": "Molto diluito.",
+    "usage": "Sul disegno del tatuaggio, molto diluito.",
     "optional": false,
     "technique": "punta",
     "coverage": null,
@@ -5262,7 +5267,7 @@
    {
     "position": 2,
     "role": "Riempimento",
-    "usage": "Velatura.",
+    "usage": "Dentro il contorno del tatuaggio, in velatura.",
     "optional": false,
     "technique": "velatura",
     "coverage": null,
@@ -5293,7 +5298,7 @@
    {
     "position": 1,
     "role": "Ombra",
-    "usage": "Base scura o wash.",
+    "usage": "Su tutta la terra, come fondo scuro (o un wash).",
     "optional": false,
     "technique": "sottile",
     "coverage": 35,
@@ -5329,7 +5334,7 @@
    {
     "position": 3,
     "role": "Drybrush",
-    "usage": "Primo drybrush.",
+    "usage": "Su tutta la terra, sui rilievi.",
     "optional": false,
     "technique": "drybrush",
     "coverage": 40,
@@ -5347,7 +5352,7 @@
    {
     "position": 4,
     "role": "Drybrush finale",
-    "usage": "Leggerissimo.",
+    "usage": "Solo sui rilievi più alti, leggerissimo.",
     "optional": false,
     "technique": "drybrush",
     "coverage": 40,
@@ -5384,7 +5389,7 @@
    {
     "position": 2,
     "role": "Base",
-    "usage": "Tutto.",
+    "usage": "Su tutta la sabbia.",
     "optional": false,
     "technique": "coprente",
     "coverage": 100,
@@ -5402,7 +5407,7 @@
    {
     "position": 3,
     "role": "Luce",
-    "usage": "Drybrush.",
+    "usage": "Sui rilievi della sabbia, a drybrush.",
     "optional": false,
     "technique": "drybrush",
     "coverage": 30,
@@ -5443,7 +5448,7 @@
    {
     "position": 2,
     "role": "Wash",
-    "usage": "Lo Shade dell'argento funziona anche sulle rocce.",
+    "usage": "In tutte le fessure della roccia: lo Shade dell'argento funziona anche qui.",
     "optional": false,
     "technique": "wash",
     "coverage": null,
@@ -5457,7 +5462,7 @@
    {
     "position": 3,
     "role": "Drybrush",
-    "usage": "Primo drybrush.",
+    "usage": "Su tutta la roccia, sui rilievi.",
     "optional": false,
     "technique": "drybrush",
     "coverage": 40,
@@ -5498,7 +5503,7 @@
    {
     "position": 1,
     "role": "Base",
-    "usage": "Tutto.",
+    "usage": "Su tutta la pietra.",
     "optional": false,
     "technique": "coprente",
     "coverage": 100,
@@ -5575,7 +5580,7 @@
    {
     "position": 2,
     "role": "Base",
-    "usage": "Tutto.",
+    "usage": "Su tutto il marmo.",
     "optional": false,
     "technique": "coprente",
     "coverage": 100,
@@ -5593,9 +5598,9 @@
    {
     "position": 3,
     "role": "Venature",
-    "usage": "Molto diluito.",
+    "usage": "Linee sottili e spezzate sul marmo, molto diluite.",
     "optional": false,
-    "technique": null,
+    "technique": "punta",
     "coverage": null,
     "mix": [
      {
@@ -5630,7 +5635,7 @@
    {
     "position": 1,
     "role": "Base",
-    "usage": "Tutto.",
+    "usage": "Su tutta l'erba.",
     "optional": false,
     "technique": "coprente",
     "coverage": 100,
@@ -5644,7 +5649,7 @@
    {
     "position": 2,
     "role": "Luce",
-    "usage": "Drybrush.",
+    "usage": "Sui fili d'erba, a drybrush.",
     "optional": false,
     "technique": "drybrush",
     "coverage": 30,
@@ -5658,7 +5663,7 @@
    {
     "position": 3,
     "role": "Punte",
-    "usage": "Drybrush leggero.",
+    "usage": "Sulle punte dell'erba, drybrush leggero.",
     "optional": false,
     "technique": "drybrush",
     "coverage": 3,
@@ -5676,9 +5681,9 @@
    {
     "position": 4,
     "role": "Erba secca",
-    "usage": "Qua e là per variare.",
+    "usage": "Qua e là sull'erba, per variare.",
     "optional": false,
-    "technique": null,
+    "technique": "drybrush",
     "coverage": null,
     "mix": [
      {
@@ -5729,7 +5734,7 @@
    {
     "position": 2,
     "role": "Base",
-    "usage": "Tutto.",
+    "usage": "Su tutta la neve.",
     "optional": false,
     "technique": "coprente",
     "coverage": 100,
@@ -5766,9 +5771,9 @@
    {
     "position": 1,
     "role": "Roccia",
-    "usage": "Tutto.",
+    "usage": "Su tutta la roccia.",
     "optional": false,
-    "technique": null,
+    "technique": "coprente",
     "coverage": null,
     "mix": [
      {
@@ -5782,7 +5787,7 @@
     "role": "Crepe",
     "usage": "Dentro le crepe.",
     "optional": false,
-    "technique": null,
+    "technique": "punta",
     "coverage": null,
     "mix": [
      {
@@ -5796,7 +5801,7 @@
     "role": "Calore",
     "usage": "Centro delle crepe.",
     "optional": false,
-    "technique": null,
+    "technique": "punta",
     "coverage": null,
     "mix": [
      {
@@ -5810,7 +5815,7 @@
     "role": "Nucleo",
     "usage": "Punti più profondi.",
     "optional": false,
-    "technique": null,
+    "technique": "punta",
     "coverage": null,
     "mix": [
      {

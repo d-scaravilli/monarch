@@ -67,7 +67,7 @@ export function charZones(character, version, recipesBySlug, defaultBases) {
             zones.forEach((x, j) => {
                 if (x.name === zone.name) index = j;
             });
-            if (index >= 0) zones[index] = zone;
+            if (index >= 0) zones[index] = { ...zone, replacesShared: true };
             else zones.push(zone);
         });
     }
@@ -91,6 +91,16 @@ export function charZones(character, version, recipesBySlug, defaultBases) {
     return zones;
 }
 
+/*
+ * The order zones are painted in, inside each tab: the version's own
+ * zones first (e.g. Seiya's Cloth before the shared Gemme), then the
+ * shared ones; a version zone that replaces a shared one keeps its
+ * place. Stable otherwise.
+ */
+export function paintingOrder(zones) {
+    const versionFirst = zones.filter((zone) => zone.versionId && !zone.replacesShared);
+    return [...versionFirst, ...zones.filter((zone) => !versionFirst.includes(zone))];
+}
 /*
  * A zone's swatch: its free color when it has no recipe, otherwise the
  * color of its recipe's base step (zoneColor() in the prototype).

@@ -90,9 +90,9 @@
        {
         "position": 2,
         "role": "Bianco",
-        "usage": "Mai bianco puro.",
+        "usage": "Dentro il contorno, ai lati dell'iride. Mai bianco puro.",
         "optional": false,
-        "technique": null,
+        "technique": "punta",
         "coverage": null,
         "mix": [
          {
@@ -104,9 +104,9 @@
        {
         "position": 3,
         "role": "Iride castana",
-        "usage": "Tocca la palpebra superiore.",
+        "usage": "Un cerchio che tocca la palpebra superiore.",
         "optional": false,
-        "technique": null,
+        "technique": "punta",
         "coverage": null,
         "mix": [
          {
@@ -118,7 +118,7 @@
        {
         "position": 4,
         "role": "Pupilla",
-        "usage": "",
+        "usage": "Un punto al centro dell'iride.",
         "optional": false,
         "technique": "punta",
         "coverage": null,
@@ -385,7 +385,7 @@
        {
         "position": 1,
         "role": "Contorno",
-        "usage": "",
+        "usage": "Linea superiore e fessura dell'occhio.",
         "optional": false,
         "technique": "punta",
         "coverage": null,
@@ -399,9 +399,9 @@
        {
         "position": 2,
         "role": "Bianco",
-        "usage": "",
+        "usage": "Dentro il contorno, ai lati dell'iride. Mai bianco puro.",
         "optional": false,
-        "technique": null,
+        "technique": "punta",
         "coverage": null,
         "mix": [
          {
@@ -413,9 +413,9 @@
        {
         "position": 3,
         "role": "Iride",
-        "usage": "Blu scurissimo, quasi nero.",
+        "usage": "Un cerchio che tocca la palpebra superiore: blu scurissimo, quasi nero.",
         "optional": false,
-        "technique": null,
+        "technique": "punta",
         "coverage": null,
         "mix": [
          {
@@ -431,7 +431,7 @@
        {
         "position": 4,
         "role": "Pupilla",
-        "usage": "",
+        "usage": "Un punto al centro dell'iride.",
         "optional": false,
         "technique": "punta",
         "coverage": null,
@@ -601,7 +601,7 @@
        {
         "position": 1,
         "role": "Contorno",
-        "usage": "",
+        "usage": "Linea superiore e fessura dell'occhio.",
         "optional": false,
         "technique": "punta",
         "coverage": null,
@@ -615,9 +615,9 @@
        {
         "position": 2,
         "role": "Bianco",
-        "usage": "",
+        "usage": "Dentro il contorno, ai lati dell'iride. Mai bianco puro.",
         "optional": false,
-        "technique": null,
+        "technique": "punta",
         "coverage": null,
         "mix": [
          {
@@ -629,9 +629,9 @@
        {
         "position": 3,
         "role": "Iride",
-        "usage": "Azzurri.",
+        "usage": "Un cerchio che tocca la palpebra superiore: azzurri.",
         "optional": false,
-        "technique": null,
+        "technique": "punta",
         "coverage": null,
         "mix": [
          {
@@ -647,7 +647,7 @@
        {
         "position": 4,
         "role": "Pupilla",
-        "usage": "",
+        "usage": "Un punto al centro dell'iride.",
         "optional": false,
         "technique": "punta",
         "coverage": null,
@@ -817,7 +817,7 @@
        {
         "position": 1,
         "role": "Contorno",
-        "usage": "",
+        "usage": "Linea superiore e fessura dell'occhio.",
         "optional": false,
         "technique": "punta",
         "coverage": null,
@@ -831,9 +831,9 @@
        {
         "position": 2,
         "role": "Bianco",
-        "usage": "",
+        "usage": "Dentro il contorno, ai lati dell'iride. Mai bianco puro.",
         "optional": false,
-        "technique": null,
+        "technique": "punta",
         "coverage": null,
         "mix": [
          {
@@ -845,9 +845,9 @@
        {
         "position": 3,
         "role": "Iride",
-        "usage": "Verdi (anime).",
+        "usage": "Un cerchio che tocca la palpebra superiore: verdi (anime).",
         "optional": false,
-        "technique": null,
+        "technique": "punta",
         "coverage": null,
         "mix": [
          {
@@ -863,7 +863,7 @@
        {
         "position": 4,
         "role": "Pupilla",
-        "usage": "",
+        "usage": "Un punto al centro dell'iride.",
         "optional": false,
         "technique": "punta",
         "coverage": null,
@@ -970,7 +970,7 @@
          {
           "position": 1,
           "role": "Contorno",
-          "usage": "",
+          "usage": "Linea superiore e fessura dell'occhio.",
           "optional": false,
           "technique": "punta",
           "coverage": null,
@@ -984,9 +984,9 @@
          {
           "position": 2,
           "role": "Bianco",
-          "usage": "",
+          "usage": "Dentro il contorno, ai lati dell'iride. Mai bianco puro.",
           "optional": false,
-          "technique": null,
+          "technique": "punta",
           "coverage": null,
           "mix": [
            {
@@ -998,9 +998,9 @@
          {
           "position": 3,
           "role": "Iride",
-          "usage": "Azzurri (manga).",
+          "usage": "Un cerchio che tocca la palpebra superiore: azzurri (manga).",
           "optional": false,
-          "technique": null,
+          "technique": "punta",
           "coverage": null,
           "mix": [
            {
@@ -1016,7 +1016,7 @@
          {
           "position": 4,
           "role": "Pupilla",
-          "usage": "",
+          "usage": "Un punto al centro dell'iride.",
           "optional": false,
           "technique": "punta",
           "coverage": null,
@@ -1112,7 +1112,7 @@
        {
         "position": 1,
         "role": "Contorno",
-        "usage": "",
+        "usage": "Linea superiore e fessura dell'occhio.",
         "optional": false,
         "technique": "punta",
         "coverage": null,
@@ -1126,9 +1126,9 @@
        {
         "position": 2,
         "role": "Bianco",
-        "usage": "",
+        "usage": "Dentro il contorno, ai lati dell'iride. Mai bianco puro.",
         "optional": false,
-        "technique": null,
+        "technique": "punta",
         "coverage": null,
         "mix": [
          {
@@ -1140,9 +1140,9 @@
        {
         "position": 3,
         "role": "Iride",
-        "usage": "Blu scuri.",
+        "usage": "Un cerchio che tocca la palpebra superiore: blu scuri.",
         "optional": false,
-        "technique": null,
+        "technique": "punta",
         "coverage": null,
         "mix": [
          {
@@ -1158,7 +1158,7 @@
        {
         "position": 4,
         "role": "Pupilla",
-        "usage": "",
+        "usage": "Un punto al centro dell'iride.",
         "optional": false,
         "technique": "punta",
         "coverage": null,
@@ -1463,7 +1463,7 @@
        {
         "position": 1,
         "role": "Base",
-        "usage": "",
+        "usage": "Su tutta la maschera, due mani sottilissime.",
         "optional": false,
         "technique": "coprente",
         "coverage": 100,
@@ -1477,7 +1477,7 @@
        {
         "position": 2,
         "role": "Luce",
-        "usage": "",
+        "usage": "Fronte e zigomi della maschera.",
         "optional": false,
         "technique": "sottile",
         "coverage": 30,
@@ -1717,9 +1717,9 @@
        {
         "position": 1,
         "role": "Iride",
-        "usage": "Rossi.",
+        "usage": "Un cerchio che tocca la palpebra superiore: rossi.",
         "optional": false,
-        "technique": null,
+        "technique": "punta",
         "coverage": null,
         "mix": [
          {
@@ -1731,7 +1731,7 @@
        {
         "position": 2,
         "role": "Pupilla",
-        "usage": "",
+        "usage": "Un punto al centro dell'iride.",
         "optional": false,
         "technique": "punta",
         "coverage": null,
@@ -1899,7 +1899,7 @@
        {
         "position": 1,
         "role": "Contorno",
-        "usage": "",
+        "usage": "Linea superiore e fessura dell'occhio.",
         "optional": false,
         "technique": "punta",
         "coverage": null,
@@ -1913,9 +1913,9 @@
        {
         "position": 2,
         "role": "Bianco",
-        "usage": "",
+        "usage": "Dentro il contorno, ai lati dell'iride. Mai bianco puro.",
         "optional": false,
-        "technique": null,
+        "technique": "punta",
         "coverage": null,
         "mix": [
          {
@@ -1927,9 +1927,9 @@
        {
         "position": 3,
         "role": "Iride",
-        "usage": "Blu.",
+        "usage": "Un cerchio che tocca la palpebra superiore: blu.",
         "optional": false,
-        "technique": null,
+        "technique": "punta",
         "coverage": null,
         "mix": [
          {
@@ -1945,7 +1945,7 @@
        {
         "position": 4,
         "role": "Pupilla",
-        "usage": "",
+        "usage": "Un punto al centro dell'iride.",
         "optional": false,
         "technique": "punta",
         "coverage": null,
@@ -2262,7 +2262,7 @@
        {
         "position": 1,
         "role": "Base",
-        "usage": "",
+        "usage": "Su tutta l'unghia.",
         "optional": false,
         "technique": "coprente",
         "coverage": 100,
@@ -2276,7 +2276,7 @@
        {
         "position": 2,
         "role": "Luce",
-        "usage": "",
+        "usage": "Sulla parte alta dell'unghia.",
         "optional": false,
         "technique": "sottile",
         "coverage": 30,
@@ -2294,7 +2294,7 @@
        {
         "position": 3,
         "role": "Riflesso",
-        "usage": "",
+        "usage": "Un punto sulla punta dell'unghia.",
         "optional": false,
         "technique": "punta",
         "coverage": null,
@@ -3752,9 +3752,9 @@
        {
         "position": 1,
         "role": "Linee",
-        "usage": "Linee sottilissime, colore ben diluito. Con calma.",
+        "usage": "Sul costume, seguendo il disegno della ragnatela: linee sottilissime, colore ben diluito. Con calma.",
         "optional": false,
-        "technique": null,
+        "technique": "punta",
         "coverage": null,
         "mix": [
          {
@@ -3776,9 +3776,9 @@
        {
         "position": 1,
         "role": "Bianco",
-        "usage": "",
+        "usage": "Dentro le lenti, su tutta la superficie.",
         "optional": false,
-        "technique": null,
+        "technique": "coprente",
         "coverage": null,
         "mix": [
          {
@@ -3794,7 +3794,7 @@
        {
         "position": 2,
         "role": "Contorno",
-        "usage": "",
+        "usage": "Il bordo nero attorno alle lenti.",
         "optional": false,
         "technique": "punta",
         "coverage": null,

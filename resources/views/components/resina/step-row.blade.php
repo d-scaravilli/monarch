@@ -20,6 +20,9 @@
                       :class="{ ok: 'bg-green-100 text-green-700 dark:bg-green-500/10 dark:text-green-400', mid: 'bg-amber-100 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400', far: 'bg-red-100 text-red-700 dark:bg-red-500/10 dark:text-red-400' }[s.closeness[0]]"
                       x-text="s.closeness[1]"></span>
             </template>
+            <template x-if="s.choice">
+                <span class="rounded-full bg-sky-100 px-2 py-0.5 text-[11px] font-medium text-sky-700 dark:bg-sky-500/10 dark:text-sky-300">una a scelta</span>
+            </template>
             <template x-if="s.optional">
                 <span class="rounded-full bg-gray-100 px-2 py-0.5 text-[11px] font-medium text-gray-500 dark:bg-white/10 dark:text-gray-400">facoltativo</span>
             </template>

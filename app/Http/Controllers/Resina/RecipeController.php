@@ -133,6 +133,7 @@ class RecipeController extends Controller
                 'optional' => $step->optional,
                 'technique' => $step->technique,
                 'coverage' => $step->coverage,
+                'choice_group' => $step->choice_group,
                 'paints' => $step->paints->map(fn (Paint $paint) => ['paint_id' => $paint->id, 'drops' => $paint->pivot->drops])->values()->all(),
             ])->all()
             : [];
@@ -166,6 +167,7 @@ class RecipeController extends Controller
             'steps.*.optional' => 'boolean',
             'steps.*.technique' => ['nullable', Rule::in(RecipeStep::TECHNIQUES)],
             'steps.*.coverage' => 'nullable|integer|min:1|max:100',
+            'steps.*.choice_group' => 'nullable|string|max:50',
             'steps.*.paints' => 'required|array|min:1|max:6',
             'steps.*.paints.*.paint_id' => 'required|exists:resin_paints,id',
             'steps.*.paints.*.drops' => 'required|integer|min:1|max:40',
@@ -193,6 +195,7 @@ class RecipeController extends Controller
                 'optional' => (bool) ($step['optional'] ?? false),
                 'technique' => $step['technique'] ?? null,
                 'coverage' => $step['coverage'] ?? null,
+                'choice_group' => ($step['choice_group'] ?? null) ?: null,
             ]);
 
             // The same paint twice in one step adds up its drops.

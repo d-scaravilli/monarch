@@ -17,6 +17,7 @@ use App\Models\Resina\ShopSuggestion;
 use App\Models\Resina\Tutorial;
 use App\Models\Resina\Zone;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use RuntimeException;
 
@@ -67,6 +68,8 @@ class CatalogImporter
 
     /** @var array<string, int> */
     private array $counts = [];
+
+    private ?bool $choiceGroups = null;
 
     public function __construct(private ?string $dataPath = null)
     {
@@ -173,10 +176,20 @@ class CatalogImporter
                 'optional' => (bool) ($step['optional'] ?? false),
                 'technique' => $step['technique'] ?? null,
                 'coverage' => $step['coverage'] ?? null,
+                ...($this->hasChoiceGroups() ? ['choice_group' => $step['choice_group'] ?? null] : []),
             ]);
 
             $model->paints()->attach($this->mixToPivot($step['mix'] ?? [], "ricetta {$recipe->slug}"));
         }
+    }
+
+    /**
+     * The first import runs inside its own data migration, before the
+     * choice_group column exists: write it only once it does.
+     */
+    private function hasChoiceGroups(): bool
+    {
+        return $this->choiceGroups ??= Schema::hasColumn('resin_recipe_steps', 'choice_group');
     }
 
     private function importProjects(): void

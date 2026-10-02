@@ -46,7 +46,7 @@ function recipeBook(payloadId) {
 }
 
 function blankStep() {
-    return { uid: uid(), role: '', usage: '', optional: false, technique: '', coverage: '', paints: [{ paint_id: '', drops: 1 }] };
+    return { uid: uid(), role: '', usage: '', optional: false, technique: '', coverage: '', choice_group: '', paints: [{ paint_id: '', drops: 1 }] };
 }
 
 /*
@@ -73,6 +73,7 @@ function recipeEditor(payloadId) {
         optional: s.optional === true || s.optional === '1' || s.optional === 1,
         technique: s.technique ?? '',
         coverage: s.coverage ?? '',
+        choice_group: s.choice_group ?? '',
         paints: (s.paints || []).map((p) => ({ paint_id: String(p.paint_id ?? ''), drops: Number(p.drops) || 1 })),
     }));
 

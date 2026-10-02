@@ -6,8 +6,8 @@
  */
 import * as color from './color.js';
 import * as brushes from './brushes.js';
-import { baseMixOf } from './steps.js';
-import { charZones, referenceLinks, TAB_INTROS, visibleTabs, zoneStyle, zoneTab } from './guide.js';
+import { baseMixOf, progressUnits } from './steps.js';
+import { charZones, paintingOrder, referenceLinks, TAB_INTROS, visibleTabs, zoneStyle, zoneTab } from './guide.js';
 import { runMixJobs } from './mix-jobs.js';
 import { decorateStep, ingredient, paintStyle, readPayload, sendJson, toneScale, withDerivedFields } from './view.js';
 
@@ -127,7 +127,7 @@ export function characterSheet(payloadId) {
         },
 
         zonesOf(tabKey) {
-            return this.zones.filter((zone) => zoneTab(zone) === tabKey);
+            return paintingOrder(this.zones).filter((zone) => zoneTab(zone) === tabKey);
         },
 
         doneKey(zone, index) {
@@ -144,10 +144,10 @@ export function characterSheet(payloadId) {
                     for (let i = 0; i < AUTO_STEP_COUNT; i++) if (this.done[this.doneKey(zone, i)]) done++;
                     return;
                 }
-                steps.forEach((step, i) => {
-                    if (step.optional) return;
+                // Alternatives (the iris colors) count once: done when any of them is.
+                progressUnits(steps).forEach((unit) => {
                     total++;
-                    if (this.done[this.doneKey(zone, i)]) done++;
+                    if (unit.some((i) => this.done[this.doneKey(zone, i)])) done++;
                 });
             });
             return [done, total];
