@@ -17,7 +17,29 @@ class CharacterVersion extends Model
         'label',
         'subtitle',
         'note',
+        'reference_image_path',
+        'reference_thumb_path',
+        'reference_source',
+        'reference_updated_at',
     ];
+
+    /**
+     * Name of the version every catalog character has when it has no
+     * real ones (see the migration that creates them).
+     */
+    public const SINGLE_SLUG = 'unica';
+
+    protected function casts(): array
+    {
+        return [
+            'reference_updated_at' => 'datetime',
+        ];
+    }
+
+    public function hasReferencePhoto(): bool
+    {
+        return $this->reference_image_path !== null;
+    }
 
     public function character(): BelongsTo
     {

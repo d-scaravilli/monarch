@@ -270,6 +270,14 @@ class CatalogImporter
                 $this->importZone($project, $model, $versionModel, $zone);
             }
         }
+
+        // Every catalog character has at least one version (it carries the
+        // reference photo). Only columns that exist when this importer
+        // first runs, inside its data migration, are written here.
+        if (! $model->versions()->exists()) {
+            CharacterVersion::create(['character_id' => $model->id, 'slug' => CharacterVersion::SINGLE_SLUG, 'position' => 1, 'label' => 'Unica']);
+            $this->count('versioni');
+        }
     }
 
     /**

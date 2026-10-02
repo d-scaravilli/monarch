@@ -41,7 +41,8 @@ class ResinaCatalogImportTest extends TestCase
         $this->assertSame(18, Recipe::where('is_inline', true)->count());
         $this->assertSame(3, Project::count());
         $this->assertSame(35, Character::catalog()->count());
-        $this->assertSame(36, DB::table('resin_character_versions')->count());
+        // 36 imported versions + "Unica" for the 23 characters that had none.
+        $this->assertSame(59, DB::table('resin_character_versions')->count());
         $this->assertSame(203, Zone::count());
         $this->assertSame(5, DB::table('resin_guides')->count());
         $this->assertSame(9, ArmorType::count());
