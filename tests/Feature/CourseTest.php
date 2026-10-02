@@ -10,6 +10,7 @@ use App\Models\Lesson;
 use App\Models\Room;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Carbon;
 use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
@@ -87,6 +88,11 @@ class CourseTest extends TestCase
      */
     public function test_cancelled_lessons_are_excluded_from_average_and_trend(): void
     {
+        // The lessons table below defaults to the current month: pin "now"
+        // mid-month so both lessons (5 and 2 days ago) fall inside it,
+        // whatever day the suite runs.
+        $this->travelTo(Carbon::parse('2026-03-18 12:00:00'));
+
         Role::create(['name' => 'admin']);
         Role::create(['name' => 'instructor']);
         Role::create(['name' => 'member']);
