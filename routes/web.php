@@ -45,6 +45,7 @@ use App\Http\Controllers\Resina\ReferencePhotoController as ResinaReferencePhoto
 use App\Http\Controllers\Resina\ShopController as ResinaShopController;
 use App\Http\Controllers\Resina\StepProgressController as ResinaStepProgressController;
 use App\Http\Controllers\Resina\TechniqueController as ResinaTechniqueController;
+use App\Http\Controllers\Resina\TechniqueGuideController as ResinaTechniqueGuideController;
 use App\Http\Controllers\Resina\TutorialController as ResinaTutorialController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\SettingsController;
@@ -180,6 +181,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/percorso/{pathStep}/fatto', [ResinaPathController::class, 'toggle'])->name('path.toggle');
 
         Route::get('/tecniche', [ResinaTechniqueController::class, 'index'])->name('techniques.index');
+        Route::get('/tecniche/istruzioni', [ResinaTechniqueGuideController::class, 'edit'])->name('technique-guides.edit');
+        Route::put('/tecniche/istruzioni', [ResinaTechniqueGuideController::class, 'update'])->name('technique-guides.update');
 
         Route::get('/tutorial', [ResinaTutorialController::class, 'index'])->name('tutorials.index');
         Route::get('/tutorial/modifica', [ResinaTutorialController::class, 'edit'])->name('tutorials.edit');

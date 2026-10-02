@@ -11,6 +11,7 @@ use App\Models\Module;
 use App\Models\User;
 use App\Services\Resina\CatalogImporter as ResinaCatalogImporter;
 use App\Services\Resina\ModuleDataReset as ResinaModuleDataReset;
+use App\Services\Resina\TechniqueGuideImporter as ResinaTechniqueGuideImporter;
 use App\Support\ModuleTheme;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -145,6 +146,7 @@ class ModuleSettingsController extends Controller
         abort_unless($data['confirm_name'] === $module->name, 422);
 
         app(ResinaCatalogImporter::class)->import();
+        app(ResinaTechniqueGuideImporter::class)->import();
 
         AuditLog::record('module.reimport', "Catalogo iniziale del modulo \"{$module->name}\" reimportato da {$request->user()->name}.");
 

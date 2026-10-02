@@ -210,8 +210,8 @@
                             <div>
                                 <p class="font-medium text-gray-900 dark:text-gray-100">Reimporta catalogo iniziale</p>
                                 <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                                    Ricarica colori, ricette, progetti, personaggi, guide, percorso e tutorial dai dati
-                                    iniziali. <strong class="text-gray-700 dark:text-gray-200">Sovrascrive tutte le modifiche fatte al catalogo</strong>
+                                    Ricarica colori, ricette, progetti, personaggi, guide, percorso, tutorial e istruzioni
+                                    delle tecniche dai dati iniziali. <strong class="text-gray-700 dark:text-gray-200">Sovrascrive tutte le modifiche fatte al catalogo</strong>
                                     sulle voci importate; le voci aggiunte a mano e i dati personali degli utenti restano.
                                 </p>
                             </div>
@@ -284,8 +284,8 @@
                             Reimporta catalogo iniziale
                         </h2>
                         <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
-                            Colori, ricette, progetti, personaggi, versioni, zone, guide, armature, percorso e tutorial
-                            tornano come nei dati iniziali. <strong>Ogni modifica fatta a queste voci andrà persa</strong>,
+                            Colori, ricette, progetti, personaggi, versioni, zone, guide, armature, percorso, tutorial e
+                            istruzioni delle tecniche tornano come nei dati iniziali. <strong>Ogni modifica fatta a queste voci andrà persa</strong>,
                             e i passaggi delle ricette e delle guide importate vengono riscritti. Le voci aggiunte a mano
                             e i dati personali degli utenti non vengono toccati.
                         </p>

@@ -2,6 +2,13 @@
     <x-slot name="header">Tecniche</x-slot>
 
     <div class="max-w-4xl space-y-4">
+        @if (auth()->user()->hasRole('admin'))
+            <div class="flex justify-end">
+                <a href="{{ route('resina.technique-guides.edit') }}" class="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-white/10 dark:text-gray-200 dark:hover:bg-white/5">
+                    <x-heroicon-o-pencil-square class="h-4 w-4" /> Istruzioni della modalità pittura
+                </a>
+            </div>
+        @endif
         <p class="text-sm text-gray-500 dark:text-gray-400">
             Tutto quello che serve partendo da zero, nell'ordine in cui ti servirà. Ogni tecnica vale per qualsiasi progetto:
             cavalieri, supereroi o qualunque altra figura.

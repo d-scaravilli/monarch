@@ -6,11 +6,14 @@ use App\Models\Resina\Brush;
 use App\Models\Resina\Character;
 use App\Models\Resina\CharacterVersion;
 use App\Models\Resina\GuideStep;
+use App\Models\Resina\GuideText;
 use App\Models\Resina\Paint;
 use App\Models\Resina\Project;
 use App\Models\Resina\Recipe;
 use App\Models\Resina\RecipeStep;
 use App\Models\Resina\ShopSuggestion;
+use App\Models\Resina\StepTitle;
+use App\Models\Resina\TechniqueGuide;
 use App\Models\Resina\UserPaint;
 use App\Models\Resina\Zone;
 use App\Models\User;
@@ -101,6 +104,7 @@ class ClientPayload
                 'optional' => $step->optional,
                 'technique' => $step->technique,
                 'coverage' => $step->coverage,
+                'choice_group' => $step->choice_group,
                 'mix' => (object) $step->paints->mapWithKeys(fn (Paint $paint) => ['p'.$paint->id => $paint->pivot->drops])->all(),
             ])->all(),
         ];
@@ -305,6 +309,28 @@ class ClientPayload
             'title' => $step->title,
             'description' => $step->description,
             'mix' => (object) $step->paints->mapWithKeys(fn (Paint $paint) => ['p'.$paint->id => $paint->pivot->drops])->all(),
+        ];
+    }
+
+    /**
+     * The painting-mode instructions as steps.js expects them (see
+     * stepGuide() there).
+     *
+     * @return array{guides: array<string, array<string, mixed>>, titles: array<int, array{pattern: string, title: string}>, texts: array<string, array<int, string>>}
+     */
+    public function techniqueGuides(): array
+    {
+        return [
+            'guides' => TechniqueGuide::orderBy('position')->get()->mapWithKeys(fn (TechniqueGuide $guide) => [$guide->code => [
+                'name' => $guide->name,
+                'preparation' => $guide->preparation,
+                'steps' => $guide->steps,
+                'wait_minutes' => $guide->wait_minutes,
+                'result' => $guide->result,
+                'mistakes' => $guide->mistakes,
+            ]])->all(),
+            'titles' => StepTitle::orderBy('position')->get(['pattern', 'title'])->map(fn (StepTitle $title) => $title->only(['pattern', 'title']))->all(),
+            'texts' => GuideText::all()->mapWithKeys(fn (GuideText $text) => [$text->key => $text->lines])->all(),
         ];
     }
 
