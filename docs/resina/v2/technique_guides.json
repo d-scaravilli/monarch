@@ -1,0 +1,191 @@
+{
+  "formato": "resina-tecniche/1",
+  "nota": "Istruzioni mostrate nella Modalità pittura, una scheda per passaggio. 'tecnica' corrisponde al campo technique dei passaggi delle ricette. Le varianti 'metallico' e 'shade_tmm' si aggiungono quando la miscela del passaggio è metallica o contiene uno Shade TMM.",
+  "titoli_semplici": [
+    {"ruolo": "^prima mano", "titolo": "Prima mano di copertura"},
+    {"ruolo": "^base scura", "titolo": "Prima mano scura"},
+    {"ruolo": "^fondo", "titolo": "Colore di fondo"},
+    {"ruolo": "^mix", "titolo": "Stendi il colore"},
+    {"ruolo": "^base$", "titolo": "Stendi il colore base"},
+    {"ruolo": "^velatura", "titolo": "Velatura di colore"},
+    {"ruolo": "^ombra \\(wash\\)", "titolo": "Scurisci gli incavi con il wash"},
+    {"ruolo": "^wash", "titolo": "Scurisci gli incavi con il wash"},
+    {"ruolo": "^ombra profonda", "titolo": "Rinforza l'ombra nei punti più scuri"},
+    {"ruolo": "^ombra", "titolo": "Metti l'ombra nelle zone basse"},
+    {"ruolo": "^(ripresa|recupera)", "titolo": "Ripulisci con il colore base"},
+    {"ruolo": "^luce intermedia", "titolo": "Prima luce sulle superfici in alto"},
+    {"ruolo": "^luce estrema", "titolo": "Luce sui punti più alti"},
+    {"ruolo": "^luce", "titolo": "Schiarisci i rilievi"},
+    {"ruolo": "^spigoli", "titolo": "Linea di luce sui bordi"},
+    {"ruolo": "^punt[oi] luce", "titolo": "Puntini di luce"},
+    {"ruolo": "drybrush", "titolo": "Spazzola i rilievi (drybrush)"},
+    {"ruolo": "^contorno", "titolo": "Disegna il contorno"},
+    {"ruolo": "^bianco", "titolo": "Bianco dell'occhio"},
+    {"ruolo": "^iride", "titolo": "Iride"},
+    {"ruolo": "^pupilla", "titolo": "Pupilla"},
+    {"ruolo": "^riflesso", "titolo": "Riflesso"}
+  ],
+  "tecniche": {
+    "coprente": {
+      "nome": "Strato coprente",
+      "preparazione": [
+        "Metti sulla tavolozza bagnata le gocce indicate e mescolale bene.",
+        "Aggiungi circa la stessa quantità d'acqua: il colore deve scorrere come latte."
+      ],
+      "come": [
+        "Carica solo la punta del pennello e togli l'eccesso sul bordo della tavolozza.",
+        "Stendi uno strato sottile su tutta la zona, con pennellate nella stessa direzione.",
+        "Dopo la prima mano il nero sotto si vede ancora: è normale.",
+        "Aspetta che asciughi e dai la seconda mano. Se serve, una terza."
+      ],
+      "attesa_minuti": 20,
+      "risultato": "Colore uniforme, senza striature e senza nero visibile, con i dettagli incisi ancora leggibili.",
+      "errori": [
+        "Colore troppo denso: copre i dettagli e lascia segni del pennello.",
+        "Una mano sola e spessa invece di due sottili."
+      ]
+    },
+    "sottile": {
+      "nome": "Strato sottile (ombra o luce)",
+      "preparazione": [
+        "Prepara la miscela indicata e diluiscila un po' più della base.",
+        "Tieni accanto anche il colore base: ti serve per correggere."
+      ],
+      "come": [
+        "Guarda dove deve andare (lo dice la riga «Dove») e tocca solo quella zona.",
+        "Ombra: nelle parti basse, sotto i rilievi, nelle pieghe. Luce: sulle parti in alto e in rilievo.",
+        "Copri un'area più piccola dello strato precedente: ogni strato è un gradino più piccolo.",
+        "Se il passaggio tra i due colori è troppo netto, ammorbidiscilo con il colore base molto diluito."
+      ],
+      "attesa_minuti": 15,
+      "risultato": "Si vede la differenza tra zone scure e chiare, ma senza macchie nette.",
+      "errori": [
+        "Coprire tutta la zona: l'ombra e la luce devono restare solo dove servono.",
+        "Usare il nero per le ombre di pelle e stoffe calde: meglio i marroni."
+      ]
+    },
+    "wash": {
+      "nome": "Wash (lavatura)",
+      "preparazione": [
+        "Agita bene il flacone.",
+        "Metti 3–4 gocce su un piattino: il wash è già pronto, non serve acqua."
+      ],
+      "come": [
+        "Carica bene il pennello, ma senza che goccioli.",
+        "Appoggia la punta dentro un incavo (linee incise, spazi tra placche, sotto i bordi) e lascia che il liquido scorra da solo.",
+        "Non pennellare avanti e indietro: il wash si deposita, non si dipinge.",
+        "Se si forma una pozza su una parte piatta: sciacqua il pennello, asciugalo sul tovagliolo e tocca la pozza con la punta asciutta per assorbirla.",
+        "Poi non toccare più niente finché non è asciutto."
+      ],
+      "attesa_minuti": 45,
+      "risultato": "Le fessure e gli incavi sono scuri, le parti piatte e in rilievo restano quasi del colore di prima.",
+      "errori": [
+        "Ripassare mentre asciuga: lascia aloni.",
+        "Lasciare pozze sulle parti piatte: diventano macchie scure con il bordo.",
+        "Metterlo su tutto il pezzo la prima volta: meglio solo negli incavi."
+      ]
+    },
+    "drybrush": {
+      "nome": "Drybrush (pennello asciutto)",
+      "preparazione": [
+        "Usa un drybrush (mai un pennello buono).",
+        "Prendi pochissimo colore, senza acqua."
+      ],
+      "come": [
+        "Strofina il pennello sul tovagliolo finché quasi non lascia più segno.",
+        "Spazzola la zona con colpi veloci e leggeri, avanti e indietro.",
+        "Il colore si attacca solo agli spigoli e ai rilievi: è proprio quello che vuoi.",
+        "Se serve, ripeti: meglio tre passate leggere che una pesante."
+      ],
+      "attesa_minuti": 10,
+      "risultato": "Spigoli e rilievi più chiari, incavi ancora scuri.",
+      "errori": [
+        "Troppo colore sul pennello: lascia strisce e macchie.",
+        "Premere forte: sporca anche gli incavi."
+      ]
+    },
+    "velatura": {
+      "nome": "Velatura",
+      "preparazione": [
+        "1 goccia di colore e 4–6 gocce d'acqua (o Glaze Medium).",
+        "Il colore deve essere quasi trasparente."
+      ],
+      "come": [
+        "Pennello umido ma non gocciolante: se lascia una pozza, asciugalo un po' sul tovagliolo.",
+        "Stendi un velo leggero sulla zona.",
+        "Aspetta che asciughi e ripeti 2–4 volte, finché il colore ti piace."
+      ],
+      "attesa_minuti": 15,
+      "risultato": "La zona è tinta, ma si vede ancora quello che c'è sotto.",
+      "errori": [
+        "Una passata sola carica invece di tante leggere: crea macchie.",
+        "Ripassare prima che sia asciutto."
+      ]
+    },
+    "spigoli": {
+      "nome": "Luce sugli spigoli",
+      "preparazione": [
+        "Colore ben diluito, ma non acquoso.",
+        "Appoggia i polsi uno contro l'altro o sul tavolo per stare fermo."
+      ],
+      "come": [
+        "Appoggia il fianco della punta sul bordo, non la punta dritta.",
+        "Fai scorrere il pennello lungo il bordo, in un solo movimento.",
+        "Solo sui bordi rivolti verso l'alto o verso chi guarda: non tutti."
+      ],
+      "attesa_minuti": 10,
+      "risultato": "Una linea sottile e chiara che fa risaltare la forma della placca.",
+      "errori": [
+        "Linea troppo spessa: diventa una riga disegnata.",
+        "Fare tutti i bordi: perde l'effetto della luce dall'alto."
+      ]
+    },
+    "punta": {
+      "nome": "Lavoro di punta",
+      "preparazione": [
+        "Colore ben diluito.",
+        "Pennello finissimo, con la punta in ordine."
+      ],
+      "come": [
+        "Tocca appena la superficie con la sola punta.",
+        "Per i puntini: un tocco solo, senza trascinare.",
+        "Se sbagli, aspetta che asciughi e ricopri con il colore che c'era sotto."
+      ],
+      "attesa_minuti": 10,
+      "risultato": "Punti e linee piccoli e precisi.",
+      "errori": [
+        "Colore denso: fa una goccia in rilievo invece di un punto.",
+        "Pennello troppo carico."
+      ]
+    }
+  },
+  "varianti": {
+    "metallico": {
+      "preparazione_extra": [
+        "Agita il flacone per un minuto intero: il metallo si deposita sul fondo.",
+        "Metti il colore su un piattino di ceramica, non sulla tavolozza bagnata.",
+        "Non diluire, o al massimo una goccia d'acqua ogni 3–4 di colore."
+      ],
+      "dopo": "Lava subito bene il pennello: i brillantini rovinano la punta."
+    },
+    "shade_tmm": {
+      "nota": "Lo Shade TMM non è un metallo: è un wash scuro e trasparente che lascia vedere il brillante sotto. Usalo direttamente dal flacone."
+    },
+    "light_metallico_drybrush": {
+      "nota": "Alternativa più facile per chi inizia: invece di stendere la luce a pennello, fai un drybrush leggero con il colore Light usando il Drybrush 3."
+    }
+  },
+  "sessione": {
+    "prima_di_iniziare": [
+      "Primer asciutto da almeno qualche ora.",
+      "Tavolozza bagnata pronta e piattino di ceramica per i metallici.",
+      "Bicchiere d'acqua, tovagliolo di carta, stuzzicadenti per mescolare.",
+      "Lampada a luce bianca."
+    ],
+    "fine_sessione": [
+      "Lava i pennelli con acqua tiepida e sapone e rifai la punta.",
+      "Chiudi la tavolozza bagnata con il coperchio.",
+      "Chiudi bene i flaconi."
+    ]
+  }
+}

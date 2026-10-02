@@ -1,0 +1,38 @@
+{
+  "formato": "resina-figura/1",
+  "nome": "Seiya – la mia statua",
+  "serie": "Saint Seiya",
+  "personaggio_catalogo": "saint-seiya/seiya",
+  "versione_catalogo": "a1",
+  "versione_vista": "Cloth V1 anime, argento chiaro con dettagli rossi, tuta rossa",
+  "descrizione": "Statua in piedi con le ali della cloth aperte e basetta rocciosa.",
+  "note": "Le ali sono molto sottili: dipingile prima di montarle.",
+  "pezzi": [
+    {
+      "nome": "Ali della cloth",
+      "scheda": "armatura",
+      "colore_riferimento": "#D9DCDD",
+      "nota": "Sono la parte più visibile: tieni le piume ben pulite.",
+      "passaggi": [
+        {"titolo": "Base", "tecnica": "coprente", "miscela": [{"codice": "77.121", "gocce": 1}], "dove": "Su tutte le ali, due mani sottili."},
+        {"titolo": "Ombra (wash)", "tecnica": "wash", "miscela": [{"codice": "77.141", "gocce": 1}], "dove": "Solo tra una piuma e l'altra."},
+        {"titolo": "Drybrush", "tecnica": "drybrush", "miscela": [{"codice": "77.101", "gocce": 1}], "dove": "Punte e bordi delle piume."},
+        {"titolo": "Punti luce", "tecnica": "punta", "miscela": [{"codice": "72.001", "gocce": 1}], "dove": "Le 4–5 punte più alte.", "facoltativo": true}
+      ]
+    },
+    {
+      "nome": "Basetta",
+      "scheda": "basetta",
+      "ricetta": "base-rock"
+    },
+    {
+      "nome": "Fascia sulla fronte",
+      "scheda": "dettagli",
+      "colore_riferimento": "#B82D35"
+    }
+  ],
+  "consigli": [
+    "Dipingi le ali prima di incollarle al corpo.",
+    "Usa il Drybrush 3 per le piume, il 7 per la roccia."
+  ]
+}
